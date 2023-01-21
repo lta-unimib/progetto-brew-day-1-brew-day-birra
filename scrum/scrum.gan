@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-18" view-index="0" gantt-divider-location="535" resource-divider-location="300" version="3.2.3247" locale="it_IT">
+    <description/>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd3" name="Nome" width="282" order="0"/>
+        <field id="tpd4" name="Data d'inizio" width="115" order="1"/>
+        <field id="tpd5" name="Data di fine" width="137" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nome" width="199" order="0"/>
+        <field id="1" name="Ruolo predefinito" width="82" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="sprint 1" color="#8cb6ce" meeting="false" project="true" start="2023-01-20" duration="4" complete="22" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true">
+            <depend id="19" type="2" difference="0" hardness="Strong"/>
+            <task id="1" name="analisi" meeting="false" start="2023-01-20" duration="1" complete="50" expand="true">
+                <depend id="2" type="2" difference="0" hardness="Strong"/>
+                <depend id="8" type="2" difference="0" hardness="Strong"/>
+                <task id="6" name="definizione del tech stack" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="5" name="definizione dei casi d'uso" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="9" name="modello di dominio" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="10" name="ssd" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="11" name="contratti" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="17" name="definire le fasi di deploy" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="8" name="progettazione" color="#000000" meeting="false" start="2023-01-23" duration="1" complete="0" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true">
+                <task id="12" name="sd" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="2" name="sviluppo" color="#000000" meeting="false" start="2023-01-23" duration="1" complete="7" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true">
+                <depend id="3" type="2" difference="0" hardness="Strong"/>
+                <task id="7" name="setup ambiente react per frontend" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="30" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="70" name="creazione prima dashboard UI" meeting="false" start="2023-01-23" duration="1" complete="0" expand="true"/>
+                <task id="18" name="setup ambiente java per backend" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="0" thirdDate="2023-01-19" thirdDate-constraint="0" expand="true"/>
+                <task id="68" name="creazione prima backbone api" meeting="false" start="2023-01-23" duration="1" complete="0" expand="true"/>
+            </task>
+            <task id="3" name="testing" color="#000000" meeting="false" start="2023-01-24" duration="1" complete="0" thirdDate="2023-01-24" thirdDate-constraint="0" expand="true">
+                <depend id="4" type="2" difference="0" hardness="Strong"/>
+                <task id="13" name="coverage" color="#8cb6ce" meeting="false" start="2023-01-24" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="14" name="refactoring" color="#8cb6ce" meeting="false" start="2023-01-24" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="4" name="integrazione" color="#000000" meeting="false" start="2023-01-25" duration="1" complete="0" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true">
+                <task id="15" name="sonarqube" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="16" name="deploy su github" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+            </task>
+        </task>
+        <task id="19" name="sprint 2" color="#8cb6ce" meeting="false" project="true" start="2023-01-27" duration="5" complete="0" thirdDate="2023-01-13" thirdDate-constraint="0" expand="true">
+            <depend id="47" type="2" difference="0" hardness="Strong"/>
+            <task id="23" name="backlog" meeting="false" start="2023-01-27" duration="1" complete="0" expand="true">
+                <depend id="27" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="27" name="analisi" color="#8cb6ce" meeting="false" start="2023-01-30" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+                <depend id="28" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="28" name="progettazione" color="#8cb6ce" meeting="false" start="2023-01-31" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+                <depend id="29" type="2" difference="0" hardness="Strong"/>
+                <depend id="30" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="29" name="sviluppo" color="#8cb6ce" meeting="false" start="2023-02-01" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+                <depend id="31" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="30" name="testing" color="#8cb6ce" meeting="false" start="2023-02-01" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+                <depend id="31" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="31" name="integrazione" color="#8cb6ce" meeting="false" start="2023-02-02" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="47" name="sprint 3" color="#8cb6ce" meeting="false" project="true" start="2023-02-03" duration="5" complete="0" thirdDate="2023-02-03" thirdDate-constraint="0" expand="true">
+            <depend id="61" type="2" difference="0" hardness="Strong"/>
+            <task id="48" name="backlog" color="#8cb6ce" meeting="false" start="2023-02-03" duration="1" complete="0" expand="true">
+                <depend id="49" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="49" name="analisi" color="#8cb6ce" meeting="false" start="2023-02-06" duration="1" complete="0" expand="true">
+                <depend id="50" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="50" name="progettazione" color="#8cb6ce" meeting="false" start="2023-02-07" duration="1" complete="0" expand="true">
+                <depend id="51" type="2" difference="0" hardness="Strong"/>
+                <depend id="52" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="51" name="sviluppo" color="#8cb6ce" meeting="false" start="2023-02-08" duration="1" complete="0" expand="true">
+                <depend id="53" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="52" name="testing" color="#8cb6ce" meeting="false" start="2023-02-08" duration="1" complete="0" expand="true">
+                <depend id="53" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="53" name="integrazione" color="#8cb6ce" meeting="false" start="2023-02-09" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="61" name="sprint 4" color="#8cb6ce" meeting="false" project="true" start="2023-02-10" duration="5" complete="0" thirdDate="2023-02-10" thirdDate-constraint="0" expand="true">
+            <task id="62" name="backlog" color="#8cb6ce" meeting="false" start="2023-02-10" duration="1" complete="0" expand="true">
+                <depend id="63" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="63" name="analisi" color="#8cb6ce" meeting="false" start="2023-02-13" duration="1" complete="0" expand="true">
+                <depend id="64" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="64" name="progettazione" color="#8cb6ce" meeting="false" start="2023-02-14" duration="1" complete="0" expand="true">
+                <depend id="65" type="2" difference="0" hardness="Strong"/>
+                <depend id="66" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="65" name="sviluppo" color="#8cb6ce" meeting="false" start="2023-02-15" duration="1" complete="0" expand="true">
+                <depend id="67" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="66" name="testing" color="#8cb6ce" meeting="false" start="2023-02-15" duration="1" complete="0" expand="true">
+                <depend id="67" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="67" name="integrazione" color="#8cb6ce" meeting="false" start="2023-02-16" duration="1" complete="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Francesco" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Qazim" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Alessandro" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="6" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="5" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="10" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="11" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="17" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="6" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="5" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="7" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="17" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="6" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="5" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="9" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="10" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="17" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
