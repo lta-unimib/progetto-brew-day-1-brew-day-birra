@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-18" view-index="0" gantt-divider-location="535" resource-divider-location="300" version="3.2.3247" locale="it_IT">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
-        <field id="tpd3" name="Nome" width="282" order="0"/>
-        <field id="tpd4" name="Data d'inizio" width="115" order="1"/>
-        <field id="tpd5" name="Data di fine" width="137" order="2"/>
+        <field id="tpd3" name="Nome" width="274" order="0"/>
+        <field id="tpd4" name="Data d'inizio" width="112" order="1"/>
+        <field id="tpd5" name="Data di fine" width="133" order="2"/>
         <option id="filter.completedTasks" value="false"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Nome" width="199" order="0"/>
-        <field id="1" name="Ruolo predefinito" width="82" order="1"/>
+        <field id="0" name="Nome" width="206" order="0"/>
+        <field id="1" name="Ruolo predefinito" width="90" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -36,6 +36,7 @@
         </taskproperties>
         <task id="0" name="sprint 1" color="#8cb6ce" meeting="false" project="true" start="2023-01-20" duration="4" complete="22" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true">
             <depend id="19" type="2" difference="0" hardness="Strong"/>
+            <depend id="71" type="3" difference="0" hardness="Strong"/>
             <task id="1" name="analisi" meeting="false" start="2023-01-20" duration="1" complete="50" expand="true">
                 <depend id="2" type="2" difference="0" hardness="Strong"/>
                 <depend id="8" type="2" difference="0" hardness="Strong"/>
@@ -68,6 +69,7 @@
         </task>
         <task id="19" name="sprint 2" color="#8cb6ce" meeting="false" project="true" start="2023-01-27" duration="5" complete="0" thirdDate="2023-01-13" thirdDate-constraint="0" expand="true">
             <depend id="47" type="2" difference="0" hardness="Strong"/>
+            <depend id="71" type="3" difference="0" hardness="Strong"/>
             <task id="23" name="backlog" meeting="false" start="2023-01-27" duration="1" complete="0" expand="true">
                 <depend id="27" type="2" difference="0" hardness="Strong"/>
             </task>
@@ -86,6 +88,7 @@
             </task>
             <task id="31" name="integrazione" color="#8cb6ce" meeting="false" start="2023-02-02" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
         </task>
+        <task id="71" name="Bare Bone" color="#8cb6ce" meeting="true" start="2023-02-03" duration="0" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true"/>
         <task id="47" name="sprint 3" color="#8cb6ce" meeting="false" project="true" start="2023-02-03" duration="5" complete="0" thirdDate="2023-02-03" thirdDate-constraint="0" expand="true">
             <depend id="61" type="2" difference="0" hardness="Strong"/>
             <task id="48" name="backlog" color="#8cb6ce" meeting="false" start="2023-02-03" duration="1" complete="0" expand="true">

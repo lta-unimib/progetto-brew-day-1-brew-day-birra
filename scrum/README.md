@@ -31,7 +31,7 @@ Per tenere traccia dell'attivita' e dello stato di avanzamento del progetto, e' 
 | ricetta | collezione di ingredienti con associata una quantita' |
 | inventario | collezione di ingredienti che l'home brewer ha a disposizione |
 | consiglio | ricetta che massimizza l'uso degli ingredienti nell'inventario |
-| istanza di ricetta | birra prodotta con una certa ricetta |
+| istanza di birra | anche chiamata `istanza di ricetta` nel testo, birra prodotta con una certa ricetta |
 
 # Requisiti
 
@@ -46,7 +46,7 @@ Per tenere traccia dell'attivita' e dello stato di avanzamento del progetto, e' 
 | il sistema deve permettere all'utente di produrre la lista della spesa per gli ingredienti mancanti di una ricetta | M |
 | il sistema deve permettere all'utente di generare un consiglio per la prossima birra | M |
 | il sistema deve permettere all'utente di mantenere le istanze di una ricetta | M |
-| il sistema deve permettere all'utente di aggiungere, aggiornare, eliminare note alle istanze di una ricetta | M |
+| il sistema deve permettere all'utente di aggiungere, aggiornare, eliminare note alle istanze di una birra | M |
 | il sistema deve notificare l'utente quando mancano degli ingredienti per la prossima birra | M |
 
 ## Requisiti non funzionali
@@ -67,26 +67,40 @@ Per tenere traccia dell'attivita' e dello stato di avanzamento del progetto, e' 
 
 # Casi d'Uso
 
+## Bare Bone
+
 | nome | descrizione |
 | --- | --- |
 | aggiungiRicetta |  |
 | modificaRicetta |  |
 | eliminaRicetta |  |
+| cercaRicetta |  |
+| visualizzaRicetta |  |
+| visualizzaInventario |  |
 | aggiungiIngredienteAllInventario |  |
 | modificaIngredienteNellInventario |  |
 | eliminaIngredienteDallInventario |  |
+
+## Dress Code
+
+| nome | descrizione |
+| --- | --- |
 | eseguiRicetta |  |
-| eseguiSpesa |  |
-| preparaListaDellaSpesa |  |
-| indicaFuturaBirra |  |
-| suggeriscimiBirra |  |
 | eliminaIstanzaDiBirra |  |
 | aggiungiNotaAllIstanzaDiBirra |  |
 | eliminaNotaDallIstanzaDiBirra |  |
 | modificaNotaDellIstanzaDiBirra |  |
+
+## Planning
+
+| nome | descrizione |
+| --- | --- |
+| eseguiSpesa |  |
+| indicaFuturaBirra |  |
+| preparaListaDellaSpesa |  |
+| suggeriscimiBirra |  |
+| notificaIngredientiMancanti |  |
 | modificaCapacitaEquipaggiamentoTotale |  |
-| cercaRicetta |  |
-| visualizzaRicetta |  |
 
 ## aggiungiRicetta
 
