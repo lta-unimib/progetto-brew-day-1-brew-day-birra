@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-ul {
+#navBar {
   position: fixed;
   top: 0;
   width: 100%;
@@ -20,7 +20,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: #9A6854;
 }
 
 li {
@@ -37,5 +37,18 @@ li a {
 }
 
 li a:hover {
-  background-color: #111;
+  background-color: #654336;
+}
+
+#logo-text {
+  margin-left: 10px;
+}
+
+#logo-image {
+  height: 50px;
+}
+
+.navComponents {
+  position: relative;
+  top: 100px;
 }

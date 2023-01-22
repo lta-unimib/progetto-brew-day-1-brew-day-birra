@@ -1,7 +1,7 @@
 import React from 'react';
-import NavBar from './NavBar';
+import NavBar from './components/NavBar';
 
-function App() {
+const App = () => {
   return (
     <React.Fragment>
       <NavBar />
