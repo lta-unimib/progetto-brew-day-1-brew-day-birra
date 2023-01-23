@@ -18,3 +18,23 @@
 | `/api/inventory/:ingredientID` | `GET` | get inventory ingredient by ID |
 | `/api/inventory/:ingredientID` | `PUT` | update inventory ingredient |
 | `/api/inventory/:ingredientID` | `DELETE` | delete inventory ingredient |
+
+### GET /api/recipes?name=name
+
+returns a json object like:
+
+```json
+["id0", "id1", "id2"]
+```
+
+### POST /api/recipes/
+
+requires a json object like:
+
+```json
+{
+  "name": "name"
+}
+```
+
+put in Location header the path of created resource

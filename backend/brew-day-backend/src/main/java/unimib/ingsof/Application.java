@@ -16,18 +16,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("unimib.ingsof.model")
 @ComponentScan("unimib.ingsof.controller")
 public class Application {
-	public static void main(String[] args) {
-		try {
-			Connection con = DriverManager.getConnection("jdbc:sqlite:database.db");
-			String sql = "create table if not exists recipe_ingredient (recipeID varchar(10), ingredientID varchar(10) primary key, quantity real);";
-			try (Statement s = con.createStatement()) {
-				s.execute(sql);
-            }
+	public static void executeSQL(String sql) {
+		try (Connection con = DriverManager.getConnection("jdbc:sqlite:database.db");
+				Statement s = con.createStatement()) {
+			s.execute(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println(sql);
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public static void main(String[] args) {
+		executeSQL("create table if not exists recipe (recipeID TEXT primary key, name TEXT NOT NULL);");
+		executeSQL("create table if not exists recipe_ingredient (ingredientID TEXT NOT NULL, recipeID TEXT NOT NULL, quantity REAL NOT NULL, FOREIGN KEY (recipeID) REFERENCES recipe(recipeID) ON DELETE CASCADE, PRIMARY KEY (recipeID, ingredientID));");
 		SpringApplication.run(Application.class, args);
 	}
 }

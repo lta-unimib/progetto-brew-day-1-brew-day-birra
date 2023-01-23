@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecipeIngredientRepository extends CrudRepository<RecipeIngredient, String> {
-    @Query("SELECT ingredientID FROM RecipeIngredient WHERE recipeID = :recipeID")
-    ArrayList<String> getAll(@Param("recipeID") String recipeID);
+    @Query(value = "SELECT RI.* FROM recipe_ingredient AS RI JOIN recipe AS R WHERE RI.recipeID = R.recipeID AND RI.recipeID = :recipeID", nativeQuery = true)
+    ArrayList<RecipeIngredient> getAll(@Param("recipeID") String recipeID);
     
     @Modifying
     @Query("INSERT INTO RecipeIngredient (recipeID, ingredientID, quantity) values (:recipeID, :ingredientID, :quantity)")
