@@ -20,7 +20,7 @@ public class Application {
         try {
             Connection con = DriverManager.getConnection("jdbc:sqlite:database.db");
             String sql = "create table if not exists recipe_ingredient (recipeID varchar(10), ingredientID varchar(10) primary key, quantity real);";
-            String sql2 = "create table if not exists inventory_ingredient (ingredientID varchar(10) primary key, quantity real);";
+            String sql2 = "create table if not exists inventory_ingredient (name varchar(10) primary key, quantity real);";
             try (Statement s = con.createStatement()) {
                 s.execute(sql);
                 s.execute(sql2);

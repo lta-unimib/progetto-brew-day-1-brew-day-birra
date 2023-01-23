@@ -9,6 +9,8 @@ public class InventoryIngredient {
 	private String name;
 	private String quantity;
 
+	public InventoryIngredient(){};
+	
 	public InventoryIngredient(String name, String quantity) {
 		super();
 		this.name = name;

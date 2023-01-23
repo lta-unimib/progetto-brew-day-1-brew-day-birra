@@ -16,8 +16,8 @@ public interface InventoryIngredientRepository extends CrudRepository<InventoryI
 	
 	
 	@Modifying 
-	@Query("INSERT INTO inventory_ingredient (ingredientId, quantity) value (:ingredientId, :quantity)")
-	void addIngredient(@Param("ingredientId") String ingredientId, @Param("quantity") float quantity);
+	@Query("INSERT INTO InventoryIngredient (name, quantity) VALUES (:name, :quantity)")
+	void addIngredient(@Param("name") String name, @Param("quantity") float quantity);
 	
 
 }
