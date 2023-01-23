@@ -10,23 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/recipes/{recipeID}")
-public class RecipeController {
-	public ResponseEntity<Object> getRecipeByID(@PathVariable String recipeID) {
+@RequestMapping("/api/recipes/{recipeID}/{ingredientID}")
+public class RecipeIngredientController {
+	public ResponseEntity<Object> getRecipeIngredientByID(@PathVariable String recipeID,
+															@PathVariable String ingredientID) {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	public ResponseEntity<Object> updateRecipe(@PathVariable String recipeID,
-												@RequestBody Map<String, String> body) {
+	public ResponseEntity<Object> updateRecipeIngredient(@PathVariable String recipeID,
+															@PathVariable String ingredientID,
+															@RequestBody Map<String, String> body) {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	public ResponseEntity<Object> deleteRecipe(@PathVariable String recipeID) {
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	public ResponseEntity<Object> postRecipeIngredient(@PathVariable String recipeID,
-														@RequestBody Map<String, String> body) {
+	public ResponseEntity<Object> deleteRecipeIngredient(@PathVariable String recipeID,
+															@PathVariable String ingredientID) {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
