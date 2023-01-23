@@ -55,7 +55,7 @@ li a:hover {
   font-size: 16px;
 }
 
-#inventoryTable {
+.myTable {
   width: 80%;
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -65,9 +65,7 @@ li a:hover {
   border: 5px;
 }
 
-table,
-th,
-td {
+table, th, td {
   border: 3px solid white;
   border-collapse: collapse;
 }
@@ -93,18 +91,28 @@ button:hover {
   background-color: #f9c301;
 }
 
-#shoppingItemDiv {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.shoppingImage {
+  height: 50px;
+  padding: 10px;
 }
 
-.shoppingItemText {
-  color: white;
-  padding: 30px;
-  font-size: 25px;
+input {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-#divSpesa {
+td {
+  text-align: center;
+}
+
+#shoppingBuyButton {
+  margin: 0 auto;
   margin-top: 30px;
+  display: flex;
+  justify-content: center;
 }
