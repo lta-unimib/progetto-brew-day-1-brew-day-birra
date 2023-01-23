@@ -15,7 +15,7 @@ class QuantityInput extends React.Component {
     if (string == '.') this.setState({ value: '0.'});
     else if (string.endsWith('.') && !this.comma) this.setState({ value: string });
     else if (string.startsWith('0') && string.endsWith('00') && !string.includes('.')) this.setState({ value: '0' });
-    else if (/[0-9]$/.test(string)) {
+    else if (/\d$/.test(string)) {
         if(parseFloat(string) <= 999) this.setState({ value: string });
         else this.setState({ value: this.max });
     }
