@@ -2,12 +2,12 @@ package unimib.ingsof.controller;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,14 +24,14 @@ public class RecipeListController {
 	private RecipeRepository recipesRepo;
 	
 	@GetMapping
-	public ResponseEntity<ArrayList<String>> getRecipeIDs(@RequestParam String name) {
+	public ResponseEntity<ArrayList<String>> getRecipeIDs(@RequestParam Optional<String> nameFilter) {
+		String name = nameFilter.orElse(null);
 		if (name != null)
 			return new ResponseEntity<>(recipesRepo.getIDByName(name), HttpStatus.OK);
 		return new ResponseEntity<>(recipesRepo.getAllRecipeIDs(), HttpStatus.OK);
 	}
 	
 	@PostMapping
-	@Transactional
 	public ResponseEntity<Object> postRecipe(@RequestBody Map<String, String> body) {
 		if (body == null || body.get("name") == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

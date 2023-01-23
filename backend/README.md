@@ -38,3 +38,5 @@ requires a json object like:
 ```
 
 put in Location header the path of created resource
+
+### GET /api/recipes/:recipeID
