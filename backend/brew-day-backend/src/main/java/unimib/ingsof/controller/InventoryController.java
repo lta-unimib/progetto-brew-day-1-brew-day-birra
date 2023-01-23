@@ -29,18 +29,23 @@ public class InventoryController {
 
 	@GetMapping
     public ResponseEntity<ArrayList<InventoryIngredient>> getAllIngredients() {
-        return new ResponseEntity<>(inventoryRepository.getAllIngredients(),
-        		HttpStatus.OK);
+		
+		ArrayList<InventoryIngredient> result = inventoryRepository.getAllIngredients();
+		
+		if (result.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+		return new ResponseEntity<>(result, HttpStatus.OK);
+		
     }
-	
 	
 	@PostMapping 
 	@Transactional
-	public ResponseEntity<Object> addIngredient(@RequestBody Map<String, String> newIngredient) {
+	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> newIngredient) {
         if (newIngredient == null ||
             newIngredient.get("name") == null || newIngredient.get("quantity") == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }  
+        }
         try {
             inventoryRepository.addIngredient(newIngredient.get("name"), 
                             Float.parseFloat(newIngredient.get("quantity")));
@@ -50,6 +55,5 @@ public class InventoryController {
         
         return new ResponseEntity<>(HttpStatus.OK);
     }
-	
 
 }
