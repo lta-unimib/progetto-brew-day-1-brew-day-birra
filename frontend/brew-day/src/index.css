@@ -1,26 +1,28 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url("../public/icons/background.jpg");
+  background-size: cover;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 #navBar {
-  position: fixed;
+  position: relative;
   top: 0;
   width: 100%;
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #9A6854;
+  background-color: #9a6854;
 }
 
 li {
@@ -48,7 +50,61 @@ li a:hover {
   height: 50px;
 }
 
-.navComponents {
-  position: relative;
-  top: 100px;
+.inventoryText {
+  color: #292929;
+  font-size: 16px;
+}
+
+#inventoryTable {
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  border: 5px;
+}
+
+table,
+th,
+td {
+  border: 3px solid white;
+  border-collapse: collapse;
+}
+
+.inventoryImage {
+  height: 150px;
+  padding: 20px;
+}
+
+button {
+  background-color: #fcdd2e;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f9c301;
+}
+
+#shoppingItemDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shoppingItemText {
+  color: white;
+  padding: 30px;
+  font-size: 25px;
+}
+
+#divSpesa {
+  margin-top: 30px;
 }
