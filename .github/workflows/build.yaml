@@ -20,6 +20,8 @@ jobs:
           fetch-depth: 0
       - name: Install dependencies
         run: npm install
+      - name: Run tests and coverage
+        run: npx jest --coverage
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
@@ -27,7 +29,7 @@ jobs:
             -Dsonar.projectKey=brew.day.frontend
             -Dsonar.organization=se-unimib
             -Dsonar.sources="./frontend/brew-day/src"
-
+            -Dsonar.javascript.lcov.reportPaths="./frontend/brew-day/coverage/lcov.info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
