@@ -1,10 +1,10 @@
 import React from "react";
 import '@testing-library/jest-dom/extend-expect';
 import { render, fireEvent } from '@testing-library/react';
-import Button from '../components/Button';
-import GridInventoryItem from '../components/GridInventoryItem';
-import NavBar from '../components/NavBar';
-import QuantityInput from '../components/QuantityInput';
+import Button from '../src/components/Button';
+import GridInventoryItem from '../src/components/GridInventoryItem';
+import NavBar from '../src/components/NavBar';
+import QuantityInput from '../src/components/QuantityInput';
 
 describe('Button component', () => {
     test('should render correctly', () => {

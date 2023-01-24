@@ -1,10 +1,10 @@
 import React from "react";
 import { render } from '@testing-library/react';
-import Birre from '../pages/Birre';
-import Home from '../pages/Home';
-import Inventario from '../pages/Inventario';
-import Ricette from '../pages/Ricette';
-import Spesa from '../pages/Spesa';
+import Birre from '../src/pages/Birre';
+import Home from '../src/pages/Home';
+import Inventario from '../src/pages/Inventario';
+import Ricette from '../src/pages/Ricette';
+import Spesa from '../src/pages/Spesa';
 
 describe('Birre component', () => {
     test('should render correctly', () => {
