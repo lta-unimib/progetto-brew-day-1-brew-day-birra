@@ -97,8 +97,8 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-$BRANCH_NAME"
+          automatic_release_tag: "latest-${{ env.BRANCH_NAME }}"
           prerelease: true
-          title: "Latest $BRANCH_NAME Build"
+          title: "Latest ${{ env.BRANCH_NAME }} Build"
           files: |
             ./applicativo/applicativo.jar
