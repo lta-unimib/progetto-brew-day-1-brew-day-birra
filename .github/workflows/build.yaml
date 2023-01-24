@@ -81,20 +81,20 @@ jobs:
         with:
           name: applicativo
           path: ./backend/brew-day-backend/applicativo.jar
-  deploy:
-    needs: [backend]
-    name: Deploy phase
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
-      - name:
-        run: ls
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            ./applicativo/applicativo.jar
+  # deploy:
+    # needs: [backend]
+    # name: Deploy phase
+    # runs-on: ubuntu-latest
+    # steps:
+      # - name: Download all workflow run artifacts
+        # uses: actions/download-artifact@v3
+      # - name:
+        # run: ls
+      # - uses: "marvinpinto/action-automatic-releases@latest"
+        # with:
+          # repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          # automatic_release_tag: "latest"
+          # prerelease: true
+          # title: "Development Build"
+          # files: |
+            # ./applicativo/applicativo.jar
