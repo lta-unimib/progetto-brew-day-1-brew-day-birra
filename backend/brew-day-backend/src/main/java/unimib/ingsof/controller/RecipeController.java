@@ -33,7 +33,7 @@ public class RecipeController {
 		if (name == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
-		Map<String, Object> response = new TreeMap<String, Object>();
+		Map<String, Object> response = new TreeMap<>();
 		response.put("recipeID", recipeID);
 		response.put("name", name);
 		response.put("ingredients", ingredientsRepo.getAll(recipeID));

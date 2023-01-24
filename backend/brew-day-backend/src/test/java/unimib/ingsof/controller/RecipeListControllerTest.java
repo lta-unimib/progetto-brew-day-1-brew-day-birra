@@ -15,18 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import unimib.ingsof.model.RecipeRepository;
 
 @SpringBootTest
-public class RecipeListControllerTest {
+class RecipeListControllerTest {
 	@Autowired
 	private RecipeListController recipeListController;
 	@Autowired
 	private RecipeRepository recipesRepository;
-
-	@Test
-	void contextLoads() {
-	}
 	
 	@Test
-	public void testBehavior() {
+	void testBehavior() {
 		recipesRepository.assure();
 		
 		int oldnum = recipeListController.getRecipeIDs(Optional.empty()).getBody().size();

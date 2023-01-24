@@ -13,7 +13,7 @@ import unimib.ingsof.model.RecipeRepository;
 import unimib.ingsof.model.RecipeIngredientRepository;
 
 @SpringBootTest
-public class RecipeControllerTest {
+class RecipeControllerTest {
 	@Autowired
 	private RecipeListController recipeListController;
 	@Autowired
@@ -22,13 +22,9 @@ public class RecipeControllerTest {
 	private RecipeRepository recipesRepository;
 	@Autowired
 	private RecipeIngredientRepository ingredientsRepository;
-
-	@Test
-	void contextLoads() {
-	}
 	
 	@Test
-	public void testBehavior() {
+	void testBehavior() {
 		recipesRepository.assure();
 		ingredientsRepository.assure();
 		

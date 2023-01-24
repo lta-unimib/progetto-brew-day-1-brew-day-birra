@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class RecipeIngredientTest {
+class RecipeIngredientTest {
 	@Test
 	void testBehavior() {
 		RecipeIngredient recipeIngredient = new RecipeIngredient("ingredientID", "recipeID", 7);
