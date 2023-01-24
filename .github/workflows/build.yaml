@@ -74,3 +74,38 @@ jobs:
       - name: Package application into a JAR
         working-directory: ./backend/brew-day-backend
         run: mvn verify package
+      - name: Rename the package
+        working-directory: ./backend/brew-day-backend
+        run: mv ./target/demo-0.0.1-SNAPSHOT.jar applicativo.jar
+      - uses: actions/upload-artifact@v2
+        working-directory: ./backend/brew-day-backend
+        with:
+          name: applicativo.jar
+          path: ./applicativo.jar
+  deploy:
+    needs: [backend]
+    name: Deploy phase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./applicativo.jar
+          asset_name: applicativo.jar
+          asset_content_type: application/java-archive
