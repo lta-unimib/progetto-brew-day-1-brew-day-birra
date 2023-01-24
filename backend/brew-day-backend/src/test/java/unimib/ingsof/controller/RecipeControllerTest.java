@@ -1,11 +1,8 @@
 package unimib.ingsof.controller;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
@@ -35,25 +32,29 @@ public class RecipeControllerTest {
 		recipesRepository.assure();
 		ingredientsRepository.assure();
 		
+		String recipeName = "RecipeControllerTest";
+		String recipeID = recipeName;
+		String ingredientName = recipeName;
+		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", "RecipeControllerTest");
-
-		assertEquals(0, recipeListController.getRecipeIDs(Optional.empty()).getBody().size());
-		assertTrue(recipeListController.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
-		assertEquals(1, recipeListController.getRecipeIDs(Optional.empty()).getBody().size());
+		recipeBody.put("name", recipeName);
+		recipeListController.postRecipe(recipeBody).getStatusCode();
 		
-		assertTrue(recipeController.getRecipeByID("RecipeControllerTest").getStatusCode().is2xxSuccessful());
+		assertTrue(recipeController.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
 		
 		recipeBody.clear();
-		recipeBody.put("name", "RecipeControllerTest");
-		assertTrue(recipeController.updateRecipe("name", recipeBody).getStatusCode().is2xxSuccessful());
+		recipeBody.put("name", recipeName);
+		assertTrue(recipeController.updateRecipe(recipeName, recipeBody).getStatusCode().is2xxSuccessful());
 
 		recipeBody.clear();
-		recipeBody.put("name", "RecipeControllerTest");
+		recipeBody.put("name", ingredientName);
 		recipeBody.put("quantity", "7");
-		assertTrue(recipeController.postRecipeIngredient("name", recipeBody).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeController.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 		
-		assertTrue(recipeController.deleteRecipe("name").getStatusCode().is2xxSuccessful());
+		assertTrue(recipeController.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeController.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
 		
+		recipesRepository.rebase();
+		ingredientsRepository.rebase();
 	}
 }

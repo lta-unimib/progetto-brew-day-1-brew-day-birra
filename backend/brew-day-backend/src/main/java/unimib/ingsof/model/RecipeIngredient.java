@@ -30,6 +30,10 @@ public class RecipeIngredient {
 		this.quantity = quantity;
 	}
 	
+	public RecipeIngredient() {
+		super();
+	}
+	
 	public RecipeIngredient(String ingredientID, String recipeID, float quantity) {
 		super();
 		this.ingredientID = ingredientID;

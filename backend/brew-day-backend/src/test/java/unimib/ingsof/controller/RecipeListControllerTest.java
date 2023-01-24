@@ -17,9 +17,9 @@ import unimib.ingsof.model.RecipeRepository;
 @SpringBootTest
 public class RecipeListControllerTest {
 	@Autowired
-	private RecipeListController controller;
+	private RecipeListController recipeListController;
 	@Autowired
-	private RecipeRepository repository;
+	private RecipeRepository recipeRepository;
 
 	@Test
 	void contextLoads() {
@@ -27,16 +27,16 @@ public class RecipeListControllerTest {
 	
 	@Test
 	public void testBehavior() {
-		repository.assure();
+		recipeRepository.assure();
 		
-		int oldnum = controller.getRecipeIDs(Optional.empty()).getBody().size();
+		int oldnum = recipeListController.getRecipeIDs(Optional.empty()).getBody().size();
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
 		recipeBody.put("name", "RecipeListControllerTest");
-		assertTrue(controller.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, controller.getRecipeIDs(Optional.empty()).getBody().size());
+		assertTrue(recipeListController.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
+		assertEquals(oldnum + 1, recipeListController.getRecipeIDs(Optional.empty()).getBody().size());
 		
-		assertFalse(controller.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, controller.getRecipeIDs(Optional.empty()).getBody().size());
+		assertFalse(recipeListController.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
+		assertEquals(oldnum + 1, recipeListController.getRecipeIDs(Optional.empty()).getBody().size());
 	}
 }
