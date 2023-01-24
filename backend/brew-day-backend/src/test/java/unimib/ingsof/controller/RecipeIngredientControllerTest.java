@@ -55,4 +55,32 @@ class RecipeIngredientControllerTest {
 		ingredientsRepository.drop();
 		recipesRepository.drop();
 	}
+	
+	@Test
+	void allGoesWrong() {
+		recipesRepository.assure();
+		ingredientsRepository.assure();
+		
+		String recipeID = "RecipeIngredientControllerTest";
+		String ingredientID = recipeID;
+		
+		Map<String, String> recipeBody = new TreeMap<>();
+		recipeBody.put("name", recipeID);
+		recipeListController.postRecipe(recipeBody);
+		
+		Map<String, String> ingredientBody = null;
+		assertTrue(ingredientController.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody = new TreeMap<>();
+		assertTrue(ingredientController.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody.put("quantity", ingredientID);
+		assertTrue(ingredientController.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody.put("quantity", "17");
+		assertTrue(ingredientController.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientsRepository.drop();
+		recipesRepository.drop();
+	}
 }

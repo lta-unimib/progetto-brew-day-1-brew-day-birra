@@ -1,5 +1,6 @@
 package unimib.ingsof.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.model.Recipe;
 import unimib.ingsof.model.RecipeIngredientRepository;
 import unimib.ingsof.model.RecipeRepository;
 
@@ -42,14 +44,16 @@ public class RecipeController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateRecipe(@PathVariable String recipeID,
+	public ResponseEntity<Recipe> updateRecipe(@PathVariable String recipeID,
 												@RequestBody Map<String, String> body) {
 		if (body == null)
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		String name = body.get("name");
 		if (name != null) {
-			recipesRepo.updateRecipeName(recipeID, name);
-			return new ResponseEntity<>(HttpStatus.OK);
+			ArrayList<Recipe> result = recipesRepo.updateRecipeName(recipeID, name);
+			if (result.isEmpty())
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(result.get(0), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}

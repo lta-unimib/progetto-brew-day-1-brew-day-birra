@@ -48,4 +48,23 @@ class InventoryControllerTest {
 
 		ingredientsRepository.drop();
 	}
+	
+	@Test
+	void allGoesWrong() {
+		ingredientsRepository.assure();
+		String ingredientID = "name";
+		Map<String, String> ingredientBody = new TreeMap<String, String>();
+		
+		ingredientBody.put("name", ingredientID);
+		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody.clear();
+		ingredientBody.put("quantity", "7");
+		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody.clear();
+		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+
+		ingredientsRepository.drop();
+	}
 }

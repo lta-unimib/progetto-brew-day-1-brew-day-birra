@@ -41,6 +41,79 @@ put in Location header the path of created resource
 
 ### GET /api/recipes/:recipeID
 
+returns a json object like:
+
+```json
+{
+  "name": "name",
+  "ingredients": [{
+    "name": "name",
+    "quantity": "17.0"
+  }]
+}
+```
+
+### PUT /api/recipes/:recipeID
+
+requires a json object like:
+
+```json
+{
+  "name": "new name"
+}
+```
+
+returns a json object like:
+
+```json
+{
+  "name": "new name",
+  "ingredients": [{
+    "name": "name",
+    "quantity": "17.0"
+  }]
+}
+```
+
+### POST /api/recipes/:recipeID
+
+requires a json object like:
+
+```json
+{
+  "name": "name",
+  "quantity": "17.0"
+}
+```
+
+### GET /api/recipes/:recipeID/:ingredientID
+
+```json
+{
+  "name": "name",
+  "quantity": "17.0"
+}
+```
+
+### PUT /api/recipes/:recipeID/:ingredientID
+
+requires a json object like:
+
+```json
+{
+  "quantity": "17.0"
+}
+```
+
+returns a json object like:
+
+```json
+{
+  "name": "name",
+  "quantity": "17.0"
+}
+```
+
 ### GET /api/inventory
 
 get a json object like:

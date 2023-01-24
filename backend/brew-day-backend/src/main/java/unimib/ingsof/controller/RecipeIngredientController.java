@@ -1,5 +1,6 @@
 package unimib.ingsof.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,18 @@ public class RecipeIngredientController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateRecipeIngredient(@PathVariable String recipeID,
+	public ResponseEntity<RecipeIngredient> updateRecipeIngredient(@PathVariable String recipeID,
 															@PathVariable String ingredientID,
 															@RequestBody Map<String, String> body) {
 		if (body == null)
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		String quantity = body.get("quantity");
 		if (quantity != null) {
 			try {
-			ingredientRepository.updateRecipeIngredientQuantity(recipeID, ingredientID, Float.valueOf(quantity));
-			return new ResponseEntity<>(HttpStatus.OK);
+				ArrayList<RecipeIngredient> result = ingredientRepository.updateRecipeIngredientQuantity(recipeID, ingredientID, Float.valueOf(quantity));
+				if (result.isEmpty())
+					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(result.get(0), HttpStatus.OK);
 			} catch(Exception exception) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
