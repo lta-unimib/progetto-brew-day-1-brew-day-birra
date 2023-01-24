@@ -32,7 +32,7 @@ public class InventoryIngredientController {
 		InventoryIngredient result;
 		try {
 			result = inventoryRepository.getIngredientById(name);
-	    } catch (IllegalArgumentException e) {
+	    } catch (Exception e) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 		
@@ -52,7 +52,7 @@ public class InventoryIngredientController {
         try {
             result = inventoryRepository.updateIngredient(name, 
             		Float.parseFloat(body.get("quantity")));
-	    } catch (IllegalArgumentException e) {
+	    } catch (Exception e) {
 	    	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
         if (result.isEmpty())
@@ -69,7 +69,7 @@ public class InventoryIngredientController {
 	    }  
         try {
             inventoryRepository.deleteIngredient(name);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 		return new ResponseEntity<>(HttpStatus.OK);

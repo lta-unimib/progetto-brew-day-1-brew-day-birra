@@ -43,7 +43,8 @@ class InventoryControllerTest {
 		assertFalse(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());
 		
-		
+		assertFalse(inventoryController.postIngredient(null).getStatusCode().is2xxSuccessful());
+		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());	
 
 		ingredientsRepository.drop();
 	}

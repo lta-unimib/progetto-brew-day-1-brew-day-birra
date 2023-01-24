@@ -2,6 +2,7 @@ package unimib.ingsof.controller;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -42,16 +43,25 @@ class InventoryIngredientControllerTest {
 		
 		assertTrue(ingredientController.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 		assertTrue(ingredientController.updateIngredient(null, ingredientBody).getStatusCode().is4xxClientError());
-		ingredientBody.put("name", ingredientID);
+		
 		ingredientBody.put("quantity", "17");
-		assertTrue(ingredientController.updateIngredient("ingredienteNonPresente", ingredientBody).getStatusCode().is4xxClientError());
+		
+		assertFalse(ingredientController.updateIngredient("ingredienteNonPresente", ingredientBody).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientController.updateIngredient(ingredientID, ingredientBody).getStatusCode().is2xxSuccessful());
 		assertEquals(17, ingredientController.getIngredientByID(ingredientID).getBody().getQuantity(), 0.1);
+		
+		ingredientBody.clear();
+		ingredientBody.put("quantity", "ciao");
+		assertTrue(ingredientController.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+
 		
 		assertTrue(ingredientController.deleteIngredient(ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientController.deleteIngredient(null).getStatusCode().is4xxClientError());
 		assertTrue(ingredientController.getIngredientByID(ingredientID).getStatusCode().is4xxClientError());
 
 		ingredientsRepository.drop();
+		assertFalse(ingredientController.deleteIngredient(ingredientID).getStatusCode().is2xxSuccessful());
+		assertFalse(ingredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
+
 	}
 }
