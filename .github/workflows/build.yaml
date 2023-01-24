@@ -78,10 +78,9 @@ jobs:
         working-directory: ./backend/brew-day-backend
         run: mv ./target/demo-0.0.1-SNAPSHOT.jar applicativo.jar
       - uses: actions/upload-artifact@v2
-        working-directory: ./backend/brew-day-backend
         with:
           name: applicativo.jar
-          path: ./applicativo.jar
+          path: ./backend/brew-day-backend/applicativo.jar
   deploy:
     needs: [backend]
     name: Deploy phase
