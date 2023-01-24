@@ -7,7 +7,38 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
+  frontend:
+    name: Build and analyze frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/brew-day/
+    steps:
+      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: npm install
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.projectKey=brew.day.frontend
+            -Dsonar.organization=se-unimib
+            -Dsonar.sources="./frontend/brew-day/src"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Build frontend
+        run: CI= npm run build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: frontend-static
+          path: ./frontend/brew-day/build
   backend:
+    needs: [frontend]
     name: Build and analyze backend
     runs-on: ubuntu-latest
     steps:
@@ -36,27 +67,34 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn clean verify test sonar:sonar -Dsonar.host.url=https://sonarcloud.io
-  frontend:
-    name: Build and analyze frontend
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+      - name: Copy built frontend into backend jar path
+        run: cp -r frontend-static backend/brew-day-backend/src/main/resources/static
+      - name: Package application into a JAR
+        working-directory: ./backend/brew-day-backend
+        run: mvn verify package
+      - name: Rename the package
+        working-directory: ./backend/brew-day-backend
+        run: mv ./target/demo-0.0.1-SNAPSHOT.jar applicativo.jar
+      - uses: actions/upload-artifact@v2
+        with:
+          name: applicativo
+          path: ./backend/brew-day-backend/applicativo.jar
+  deploy:
+    needs: [backend]
+    name: Deploy phase
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend/brew-day/
     steps:
-      - uses: actions/checkout@v2
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+      - name:
+        run: ls
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          fetch-depth: 0
-
-      - name: Install dependencies
-        run: npm install
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.projectKey=brew.day.frontend
-            -Dsonar.organization=se-unimib
-            -Dsonar.sources="./frontend/brew-day/src"
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            ./applicativo/applicativo.jar
