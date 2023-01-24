@@ -40,3 +40,58 @@ requires a json object like:
 put in Location header the path of created resource
 
 ### GET /api/recipes/:recipeID
+
+### GET /api/inventory
+
+get a json object like:
+
+```json
+[{
+    "name": "nome1",
+    "quantity": 17.0
+}, {
+    "name": "nome2",
+    "quantity": 2.0
+},...
+]
+```
+
+### POST /api/inventory
+
+requires a json object like:
+
+```json
+{
+    "name": "nome1",
+    "quantity": 17.0
+}
+```
+
+### GET /api/inventory/:ingredientID
+
+get a json object like:
+
+```json
+{
+    "name": "nome1",
+    "quantity": 17.0
+}
+```
+
+### PUT /api/inventory/:ingredientID
+
+requires a json object like:
+
+```json
+{
+    "quantity": 17.2
+}
+```
+get a json object like:
+
+```json
+[{
+    "name": "nome1",
+    "quantity": 17.2
+}]
+```
