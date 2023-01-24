@@ -24,3 +24,4 @@ yarn-error.log*
 
 /node_modules
 /src/__snapshots__
+/.scannerwork
