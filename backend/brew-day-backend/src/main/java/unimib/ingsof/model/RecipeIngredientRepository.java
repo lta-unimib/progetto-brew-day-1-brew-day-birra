@@ -40,12 +40,12 @@ public interface RecipeIngredientRepository extends CrudRepository<RecipeIngredi
     // ASSURE
     @Modifying
     @Transactional
-    @Query(value = "create table if not exists recipe_ingredient (ingredientID TEXT NOT NULL, recipeID TEXT NOT NULL, quantity REAL NOT NULL, FOREIGN KEY (recipeID) REFERENCES recipe(recipeID) ON DELETE CASCADE, PRIMARY KEY (recipeID, ingredientID));", nativeQuery = true)
+    @Query(value = "create table if not exists recipe_ingredient (ingredientID TEXT NOT NULL, recipeID TEXT NOT NULL, quantity REAL NOT NULL, FOREIGN KEY (recipeID) REFERENCES recipe(recipeID) ON DELETE CASCADE, PRIMARY KEY (recipeID, ingredientID))", nativeQuery = true)
 	void assure();
 
     // REBASE
     @Modifying
     @Transactional
-    @Query(value = "drop table if exists recipe_ingredient; create table if not exists recipe_ingredient (ingredientID TEXT NOT NULL, recipeID TEXT NOT NULL, quantity REAL NOT NULL, FOREIGN KEY (recipeID) REFERENCES recipe(recipeID) ON DELETE CASCADE, PRIMARY KEY (recipeID, ingredientID));", nativeQuery = true)
-	void rebase();
+    @Query(value = "drop table if exists recipe_ingredient", nativeQuery = true)
+	void drop();
 }

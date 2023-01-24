@@ -55,5 +55,8 @@ public class RecipeIngredientControllerTest {
 		
 		assertTrue(ingredientController.deleteRecipeIngredient(recipeID, ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientController.getRecipeIngredientByID(recipeID, ingredientID).getStatusCode().is4xxClientError());
+
+		ingredientsRepository.drop();
+		recipesRepository.drop();
 	}
 }

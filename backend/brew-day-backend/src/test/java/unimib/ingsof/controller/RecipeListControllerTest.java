@@ -19,7 +19,7 @@ public class RecipeListControllerTest {
 	@Autowired
 	private RecipeListController recipeListController;
 	@Autowired
-	private RecipeRepository recipeRepository;
+	private RecipeRepository recipesRepository;
 
 	@Test
 	void contextLoads() {
@@ -27,7 +27,7 @@ public class RecipeListControllerTest {
 	
 	@Test
 	public void testBehavior() {
-		recipeRepository.assure();
+		recipesRepository.assure();
 		
 		int oldnum = recipeListController.getRecipeIDs(Optional.empty()).getBody().size();
 		
@@ -38,5 +38,7 @@ public class RecipeListControllerTest {
 		
 		assertFalse(recipeListController.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, recipeListController.getRecipeIDs(Optional.empty()).getBody().size());
+
+		recipesRepository.drop();
 	}
 }

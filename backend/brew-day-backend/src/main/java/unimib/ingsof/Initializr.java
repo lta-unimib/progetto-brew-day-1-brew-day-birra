@@ -16,7 +16,7 @@ public class Initializr {
 
     @PostConstruct
     public void init(){
-        recipesRepo.rebase();
-        ingredientsRepo.rebase();
+        recipesRepo.assure();
+        ingredientsRepo.assure();
     }
 }

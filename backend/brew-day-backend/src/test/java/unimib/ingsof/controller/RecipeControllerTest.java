@@ -53,8 +53,8 @@ public class RecipeControllerTest {
 		
 		assertTrue(recipeController.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeController.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
-		
-		recipesRepository.rebase();
-		ingredientsRepository.rebase();
+
+		ingredientsRepository.drop();
+		recipesRepository.drop();
 	}
 }
