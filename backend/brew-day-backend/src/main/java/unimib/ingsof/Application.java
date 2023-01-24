@@ -12,11 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("unimib.ingsof.model")
 @ComponentScan("unimib.ingsof")
 public class Application {
-	
 	@SuppressWarnings("unused")
 	@Autowired
 	private Initializr initializr;
-	
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
