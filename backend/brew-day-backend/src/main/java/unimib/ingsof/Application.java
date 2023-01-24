@@ -15,8 +15,7 @@ public class Application {
 	@SuppressWarnings("unused")
 	@Autowired
 	private Initializr initializr;
-	
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }

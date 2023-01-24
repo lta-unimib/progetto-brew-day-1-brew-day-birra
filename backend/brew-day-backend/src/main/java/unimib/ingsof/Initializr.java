@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import unimib.ingsof.model.RecipeIngredientRepository;
 import unimib.ingsof.model.RecipeRepository;
+import unimib.ingsof.model.InventoryIngredientRepository;
 
 @Service
 public class Initializr {
@@ -13,10 +14,14 @@ public class Initializr {
 	private RecipeRepository recipesRepo;
 	@Autowired
 	private RecipeIngredientRepository ingredientsRepo;
-
-    @PostConstruct
-    public void init(){
-        recipesRepo.assure();
-        ingredientsRepo.assure();
-    }
+  @Autowired
+	private InventoryIngredientRepository invIngredientsRepo;
+	
+	@PostConstruct 
+	public void init() {
+		invIngredientsRepo.assure();
+    recipesRepo.assure();
+    ingredientsRepo.assure();
+	}
+	
 }
