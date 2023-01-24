@@ -25,18 +25,18 @@ public class InventoryIngredientController {
 	private InventoryIngredientRepository inventoryRepository;
 	
 	@GetMapping
-	public ResponseEntity<Object> getIngredientByID(@PathVariable String name) {
+	public ResponseEntity<InventoryIngredient> getIngredientByID(@PathVariable String name) {
 		if (name == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-		ArrayList<InventoryIngredient> result;
+		InventoryIngredient result;
 		try {
 			result = inventoryRepository.getIngredientById(name);
 	    } catch (IllegalArgumentException e) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 		
-		if (result.isEmpty())
+		if (result==null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -45,13 +45,12 @@ public class InventoryIngredientController {
 	@PutMapping
 	public ResponseEntity<Object> updateIngredient(@PathVariable String name,
 												@RequestBody Map<String, String> body) {
-		if (name == null ||
-	        body.get("name") == null || body.get("quantity") == null) {
+		if (name == null || body.get("quantity") == null) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 		ArrayList<InventoryIngredient> result;
         try {
-            result = inventoryRepository.updateIngredient(name, body.get("name"), 
+            result = inventoryRepository.updateIngredient(name, 
             		Float.parseFloat(body.get("quantity")));
 	    } catch (IllegalArgumentException e) {
 	    	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

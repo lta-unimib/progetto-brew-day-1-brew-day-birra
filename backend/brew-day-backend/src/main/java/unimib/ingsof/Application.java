@@ -11,9 +11,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("unimib.ingsof.model")
 @EntityScan("unimib.ingsof.model")
 @ComponentScan("unimib.ingsof")
-
 public class Application {
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private Initializr initializr;
 	
