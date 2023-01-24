@@ -7,3 +7,81 @@ exports[`Button component should render correctly 1`] = `
   0
 </span>
 `;
+
+exports[`GridInventoryItem component should render correctly 1`] = `
+<div>
+  <img
+    class="inventoryImage"
+  />
+  <p
+    class="inventoryText"
+  />
+  <p
+    class="inventoryText"
+  >
+    Disponibilità: 
+  </p>
+</div>
+`;
+
+exports[`NavBar component should render correctly 1`] = `
+<div>
+  <ul
+    id="navBar"
+  >
+    <li>
+      <a
+        href="/"
+      >
+        <img
+          id="logo-image"
+          src="../icons/logo2.png"
+        />
+        <span
+          id="logo-text"
+        >
+          Brew Day!
+        </span>
+      </a>
+    </li>
+    <li>
+      <a
+        href="/ricette"
+      >
+        Ricette
+      </a>
+    </li>
+    <li>
+      <a
+        href="/birre"
+      >
+        Birre
+      </a>
+    </li>
+    <li>
+      <a
+        href="/inventario"
+      >
+        Inventario
+      </a>
+    </li>
+    <li>
+      <a
+        href="/spesa"
+      >
+        Spesa
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`QuantityInput component should render correctly 1`] = `
+<div>
+  <input
+    id="shoppingItemId"
+    name="shoppingItemId"
+    value=""
+  />
+</div>
+`;
