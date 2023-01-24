@@ -9,6 +9,10 @@ public class Recipe {
 	private String recipeID;
 	private String name;
 	
+	public Recipe() {
+		super();
+	}
+	
 	public Recipe(String recipeID, String name) {
 		super();
 		this.recipeID = recipeID;

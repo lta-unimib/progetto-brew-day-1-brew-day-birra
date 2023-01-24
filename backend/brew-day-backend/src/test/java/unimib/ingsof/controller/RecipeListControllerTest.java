@@ -37,4 +37,22 @@ class RecipeListControllerTest {
 
 		recipesRepository.drop();
 	}
+	
+	@Test
+	void testAlternative() {
+		recipesRepository.assure();
+		assertTrue(recipeListController.getRecipeIDs(Optional.of("name")).getStatusCode().is2xxSuccessful());
+		recipesRepository.drop();
+	}
+	
+	@Test
+	void allGoesWrong() {
+		recipesRepository.assure();
+		Map<String, String> recipeBody = null;
+		assertTrue(recipeListController.postRecipe(recipeBody).getStatusCode().is4xxClientError());
+		
+		recipeBody = new TreeMap<>();
+		assertTrue(recipeListController.postRecipe(recipeBody).getStatusCode().is4xxClientError());
+		recipesRepository.drop();
+	}
 }

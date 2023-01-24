@@ -53,4 +53,43 @@ class RecipeControllerTest {
 		ingredientsRepository.drop();
 		recipesRepository.drop();
 	}
+	
+	@Test
+	void allGoesWrong() {
+		recipesRepository.assure();
+		ingredientsRepository.assure();
+
+		String recipeID = "name";
+		Map<String, String> recipeBody = null;
+		
+		assertTrue(recipeController.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		
+		recipeBody = new TreeMap<>();
+		assertTrue(recipeController.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
+
+		recipeBody.put("name", recipeID);
+		assertTrue(recipeController.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
+
+		assertTrue(recipeListController.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
+
+		Map<String, String> ingredientBody = null;
+		
+		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody = new TreeMap<>();
+		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+
+		ingredientBody.put("name", "name");
+		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody.clear();
+		ingredientBody.put("quantity", "quantity");
+		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		
+		ingredientBody.put("name", "name");
+		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+
+		ingredientsRepository.drop();
+		recipesRepository.drop();
+	}
 }

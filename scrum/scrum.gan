@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-16" view-index="0" gantt-divider-location="475" resource-divider-location="300" version="3.2.3247" locale="it_IT">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-14" view-index="0" gantt-divider-location="430" resource-divider-location="300" version="3.2.3247" locale="it_IT">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
-        <field id="tpd3" name="Nome" width="242" order="0"/>
-        <field id="tpd4" name="Data d'inizio" width="100" order="1"/>
-        <field id="tpd5" name="Data di fine" width="117" order="2"/>
+        <field id="tpd3" name="Nome" width="218" order="0"/>
+        <field id="tpd4" name="Data d'inizio" width="91" order="1"/>
+        <field id="tpd5" name="Data di fine" width="105" order="2"/>
         <option id="filter.completedTasks" value="false"/>
     </view>
     <view id="resource-table">
-        <field id="0" name="Nome" width="206" order="0"/>
-        <field id="1" name="Ruolo predefinito" width="90" order="1"/>
+        <field id="0" name="Nome" width="195" order="0"/>
+        <field id="1" name="Ruolo predefinito" width="86" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -34,10 +34,10 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" name="sprint 1" color="#8cb6ce" meeting="false" project="true" start="2023-01-20" duration="4" complete="51" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true">
+        <task id="0" name="sprint 1" color="#8cb6ce" meeting="false" project="true" start="2023-01-20" duration="4" complete="95" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true">
             <depend id="19" type="2" difference="0" hardness="Strong"/>
             <depend id="71" type="3" difference="0" hardness="Strong"/>
-            <task id="1" name="analisi" meeting="false" start="2023-01-20" duration="1" complete="91" expand="true">
+            <task id="1" name="analisi" meeting="false" start="2023-01-20" duration="1" complete="100" expand="true">
                 <depend id="2" type="2" difference="0" hardness="Strong"/>
                 <depend id="8" type="2" difference="0" hardness="Strong"/>
                 <task id="6" name="definizione del tech stack" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
@@ -45,40 +45,43 @@
                 <task id="9" name="modello di dominio" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
                 <task id="10" name="ssd" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
                 <task id="11" name="contratti" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
-                <task id="17" name="definire le fasi di deploy" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="50" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="17" name="definire le fasi di deploy" color="#8cb6ce" meeting="false" start="2023-01-20" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
             </task>
             <task id="8" name="progettazione" color="#000000" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true">
                 <task id="12" name="sd" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
             </task>
-            <task id="2" name="sviluppo" color="#000000" meeting="false" start="2023-01-23" duration="1" complete="67" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true">
+            <task id="2" name="sviluppo" color="#000000" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true">
                 <depend id="3" type="2" difference="0" hardness="Strong"/>
-                <task id="7" name="setup ambiente react per frontend" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="90" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
-                <task id="70" name="creazione prima dashboard UI" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="30" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
+                <task id="7" name="setup ambiente react per frontend" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="70" name="creazione prima dashboard UI" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
                 <task id="18" name="setup ambiente java per backend" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-19" thirdDate-constraint="0" expand="true"/>
-                <task id="68" name="creazione prima backbone api" meeting="false" start="2023-01-23" duration="1" complete="64" expand="true">
-                    <task id="74" name="primer controller rest recipe list" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="90" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
-                    <task id="72" name="primer controller rest recipe" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="50" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
-                    <task id="73" name="primer controller rest recipe ingredient" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="0" expand="true"/>
-                    <task id="75" name="primer controller rest inventory" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="90" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
-                    <task id="76" name="primer controller rest inventory ingredient" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="90" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
+                <task id="68" name="creazione prima backbone api" meeting="false" start="2023-01-23" duration="1" complete="100" expand="true">
+                    <task id="74" name="primer controller rest recipe list" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
+                    <task id="72" name="primer controller rest recipe" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
+                    <task id="73" name="primer controller rest recipe ingredient" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
+                    <task id="75" name="primer controller rest inventory" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
+                    <task id="76" name="primer controller rest inventory ingredient" color="#8cb6ce" meeting="false" start="2023-01-23" duration="1" complete="100" thirdDate="2023-01-23" thirdDate-constraint="0" expand="true"/>
                 </task>
             </task>
-            <task id="3" name="testing" color="#000000" meeting="false" start="2023-01-24" duration="1" complete="0" thirdDate="2023-01-24" thirdDate-constraint="0" expand="true">
+            <task id="3" name="testing" color="#000000" meeting="false" start="2023-01-24" duration="1" complete="55" thirdDate="2023-01-24" thirdDate-constraint="0" expand="true">
                 <depend id="4" type="2" difference="0" hardness="Strong"/>
-                <task id="13" name="coverage" color="#8cb6ce" meeting="false" start="2023-01-24" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
-                <task id="14" name="refactoring" color="#8cb6ce" meeting="false" start="2023-01-24" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="13" name="coverage" color="#8cb6ce" meeting="false" start="2023-01-24" duration="1" complete="60" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="14" name="refactoring" color="#8cb6ce" meeting="false" start="2023-01-24" duration="1" complete="50" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
             </task>
-            <task id="4" name="integrazione" color="#000000" meeting="false" start="2023-01-25" duration="1" complete="0" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true">
-                <task id="15" name="sonarqube" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
-                <task id="16" name="deploy su github" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
-                <task id="82" name="merge delle due branch backend in una sola" meeting="false" start="2023-01-25" duration="1" complete="0" expand="true"/>
-                <task id="84" name="merge del frontend nel master" meeting="false" start="2023-01-25" duration="1" complete="0" expand="true"/>
-                <task id="83" name="scrittura della github action per frontend" meeting="false" start="2023-01-25" duration="1" complete="0" expand="true"/>
-                <task id="85" name="merge del backend intero nel master" meeting="false" start="2023-01-25" duration="1" complete="0" expand="true"/>
+            <task id="4" name="integrazione" color="#000000" meeting="false" start="2023-01-25" duration="1" complete="98" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true">
+                <task id="15" name="sonarqube" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="16" name="deploy su github" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="100" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
+                <task id="82" name="merge delle due branch backend in una sola" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="100" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true"/>
+                <task id="84" name="merge del frontend nel master" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="90" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true"/>
+                <task id="83" name="scrittura della github action per frontend" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="100" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true"/>
+                <task id="85" name="merge del backend intero nel master" color="#8cb6ce" meeting="false" start="2023-01-25" duration="1" complete="100" thirdDate="2023-01-25" thirdDate-constraint="0" expand="true"/>
             </task>
         </task>
+        <task id="71" name="Bare Bone" color="#8cb6ce" meeting="true" start="2023-01-26" duration="0" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true">
+            <depend id="86" type="2" difference="0" hardness="Strong"/>
+        </task>
         <task id="19" name="sprint 2" color="#8cb6ce" meeting="false" project="true" start="2023-01-27" duration="6" complete="0" thirdDate="2023-01-13" thirdDate-constraint="0" expand="true">
-            <depend id="71" type="3" difference="0" hardness="Strong"/>
+            <depend id="86" type="3" difference="0" hardness="Strong"/>
             <task id="23" name="backlog" meeting="false" start="2023-01-27" duration="1" complete="0" expand="true">
                 <depend id="27" type="2" difference="0" hardness="Strong"/>
             </task>
@@ -100,7 +103,7 @@
             </task>
             <task id="31" name="integrazione" color="#8cb6ce" meeting="false" start="2023-02-03" duration="1" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="71" name="Bare Bone" color="#8cb6ce" meeting="true" start="2023-02-06" duration="0" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true"/>
+        <task id="86" name="Dress Code" color="#8cb6ce" meeting="true" start="2023-02-06" duration="0" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Francesco" function="Default:0" contacts="" phone=""/>

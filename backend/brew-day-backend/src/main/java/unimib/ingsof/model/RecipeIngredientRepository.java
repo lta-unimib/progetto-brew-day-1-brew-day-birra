@@ -28,8 +28,8 @@ public interface RecipeIngredientRepository extends CrudRepository<RecipeIngredi
 	// PUT
     @Modifying
     @Transactional
-    @Query("UPDATE RecipeIngredient set quantity = :quantity WHERE recipeID = :recipeID AND ingredientID = :ingredientID")
-    void updateRecipeIngredientQuantity(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
+    @Query(value = "UPDATE recipe_ingredient set quantity = :quantity WHERE recipeID = :recipeID AND ingredientID = :ingredientID RETURNING *", nativeQuery = true)
+    ArrayList<RecipeIngredient> updateRecipeIngredientQuantity(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
     
     // DELETE
     @Modifying
