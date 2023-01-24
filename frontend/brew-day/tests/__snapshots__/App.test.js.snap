@@ -51,3 +51,63 @@ exports[`App component should render correctly 1`] = `
   </ul>
 </div>
 `;
+
+exports[`index.js should render the App component 1`] = `
+Array [
+  <div>
+    <ul
+      id="navBar"
+    >
+      <li>
+        <a
+          href="/"
+          onClick={[Function]}
+        >
+          <img
+            id="logo-image"
+            src="../icons/logo2.png"
+          />
+          <span
+            id="logo-text"
+          >
+            Brew Day!
+          </span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/ricette"
+          onClick={[Function]}
+        >
+          Ricette
+        </a>
+      </li>
+      <li>
+        <a
+          href="/birre"
+          onClick={[Function]}
+        >
+          Birre
+        </a>
+      </li>
+      <li>
+        <a
+          href="/inventario"
+          onClick={[Function]}
+        >
+          Inventario
+        </a>
+      </li>
+      <li>
+        <a
+          href="/spesa"
+          onClick={[Function]}
+        >
+          Spesa
+        </a>
+      </li>
+    </ul>
+  </div>,
+  <div />,
+]
+`;
