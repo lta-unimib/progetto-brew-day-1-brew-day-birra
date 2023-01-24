@@ -9,7 +9,9 @@ public class InventoryIngredient {
 	private String name;
 	private float quantity;
 
-	public InventoryIngredient(){};
+	public InventoryIngredient(){
+		super();
+	};
 	
 	public InventoryIngredient(String name, float quantity) {
 		super();
