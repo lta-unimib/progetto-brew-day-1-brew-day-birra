@@ -36,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: frontend-static
-          path: build
+          path: ./frontend/brew-day/build
   backend:
     needs: [frontend]
     name: Build and analyze backend
