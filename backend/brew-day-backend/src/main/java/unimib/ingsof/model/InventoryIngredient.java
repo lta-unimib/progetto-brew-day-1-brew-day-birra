@@ -11,7 +11,7 @@ public class InventoryIngredient {
 
 	public InventoryIngredient(){
 		super();
-	};
+	}
 	
 	public InventoryIngredient(String name, float quantity) {
 		super();
