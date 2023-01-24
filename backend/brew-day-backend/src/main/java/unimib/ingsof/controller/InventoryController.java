@@ -40,7 +40,6 @@ public class InventoryController {
     }
 	
 	@PostMapping 
-	@Transactional
 	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> newIngredient) {
         if (newIngredient == null ||
             newIngredient.get("name") == null || newIngredient.get("quantity") == null) {

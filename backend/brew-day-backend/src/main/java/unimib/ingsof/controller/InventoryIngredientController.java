@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +43,6 @@ public class InventoryIngredientController {
 	}
 	
 	@PutMapping
-	@Transactional
 	public ResponseEntity<Object> updateIngredient(@PathVariable String name,
 												@RequestBody Map<String, String> body) {
 		if (name == null ||
@@ -66,7 +64,6 @@ public class InventoryIngredientController {
 	
 	
 	@DeleteMapping
-	@Transactional
 	public ResponseEntity<Object> deleteIngredient(@PathVariable String name) {
 		if (name == null) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
