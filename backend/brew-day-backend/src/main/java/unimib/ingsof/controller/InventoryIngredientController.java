@@ -31,16 +31,9 @@ public class InventoryIngredientController {
 		if (ingredientID == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-		IngredientInstance result;
-		try {
-			result = inventoryRepository.getIngredientById(ingredientID);
-	    } catch (Exception e) {
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
-		
+		IngredientInstance result = inventoryRepository.getIngredientById(ingredientID);		
 		if (result==null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
@@ -70,13 +63,7 @@ public class InventoryIngredientController {
 		if (ingredientID == null) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }  
-        try {
-            inventoryRepository.deleteIngredient(ingredientID);
-        } catch (Exception e) {
-        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
+        inventoryRepository.deleteIngredient(ingredientID);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-
 }

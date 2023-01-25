@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface InventoryIngredientRepository extends CrudRepository<InventoryIngredient, String>{
 	
-	@Query(value = "SELECT name, quantity FROM inventory_ingredient LEFT JOIN ingredient ON inventory_ingredient.ingredientID = ingredient.ingredientID ", nativeQuery = true )
+	@Query("SELECT new IngredientInstance(name, quantity) FROM InventoryIngredient AS II LEFT JOIN Ingredient AS I ON I.ingredientID = II.ingredientID ")
 	ArrayList<IngredientInstance> getAllIngredients();
 	
 	@Modifying 
@@ -30,7 +30,7 @@ public interface InventoryIngredientRepository extends CrudRepository<InventoryI
 	@Query(value = "UPDATE inventory_ingredient SET quantity = :quantity WHERE ingredientID = :ingredientID RETURNING *", nativeQuery = true)
 	ArrayList<InventoryIngredient> updateIngredient(@Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
 	
-	@Query(value = "SELECT name, quantity FROM inventory_ingredient LEFT JOIN ingredient ON inventory_ingredient.ingredientID = ingredient.ingredientID WHERE ingredientID=:ingredientID", nativeQuery = true )
+	@Query("SELECT new IngredientInstance(name, quantity) FROM InventoryIngredient AS II LEFT JOIN Ingredient AS I ON II.ingredientID = I.ingredientID WHERE I.ingredientID=:ingredientID")
 	IngredientInstance getIngredientById(@Param("ingredientID") String ingredientID);
 	
 	@Modifying 

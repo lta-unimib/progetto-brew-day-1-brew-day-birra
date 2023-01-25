@@ -17,8 +17,8 @@ public interface IngredientRepository extends CrudRepository<Ingredient, String>
 	
 	@Modifying 
 	@Transactional
-	@Query("INSERT INTO Ingredient (name) VALUES (:name)")
-	void addIngredient(@Param("name") String name);
+	@Query("INSERT INTO Ingredient (ingredientID, name) VALUES (:ingredientID, :name)")
+	void addIngredient(@Param("ingredientID") String ingredientID, @Param("name") String name);
 	
 	@Modifying 	
 	@Transactional
@@ -30,7 +30,7 @@ public interface IngredientRepository extends CrudRepository<Ingredient, String>
 	
 	@Modifying 
 	@Transactional
-	@Query(value = "CREATE TABLE IF NOT EXISTS ingredient (ingredientID INT AUTO_INCREMENT, name TEXT NOT NULL, PRIMARY KEY(ingredientID))", nativeQuery=true)
+	@Query(value = "CREATE TABLE IF NOT EXISTS ingredient (ingredientID TEXT, name TEXT NOT NULL, PRIMARY KEY(ingredientID))", nativeQuery=true)
 	public void assure();
 	
 	@Modifying 

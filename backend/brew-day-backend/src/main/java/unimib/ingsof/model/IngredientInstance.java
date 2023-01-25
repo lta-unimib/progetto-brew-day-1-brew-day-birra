@@ -7,13 +7,13 @@ import jakarta.persistence.Id;
 public class IngredientInstance {
 	@Id
 	private String name;
-	private Float quantity;
+	private float quantity;
 	
 	public IngredientInstance() {
 		super();
 	}
 	
-	public IngredientInstance(String name, Float quantity) {
+	public IngredientInstance(String name, float quantity) {
 		super();
 		this.name = name;
 		this.quantity = quantity;
@@ -27,11 +27,11 @@ public class IngredientInstance {
 		this.name = name;
 	}
 	
-	public Float getQuantity() {
+	public float getQuantity() {
 		return quantity;
 	}
 	
-	public void setQuantity(Float quantity) {
+	public void setQuantity(float quantity) {
 		this.quantity = quantity;
 	}
 	
