@@ -59,4 +59,27 @@ describe('QuantityInput component', () => {
       const { container } = render(<QuantityInput />);
       expect(container.firstChild).toMatchSnapshot();
     });
+
+    test('correctly sets the value of the input element', () => {
+      const { container } = render(<QuantityInput />);
+      const input = container.querySelector('input');
+    
+      fireEvent.change(input, { target: { value: '100' } });
+      expect(input.value).toBe('100');
+    
+      fireEvent.change(input, { target: { value: '1000' } });
+      expect(input.value).toBe('999');
+    
+      fireEvent.change(input, { target: { value: '100.5' } });
+      expect(input.value).toBe('100.5');
+    });
+
+    test('correctly sets the value of the input element on blur', () => {
+      const { container } = render(<QuantityInput />);
+      const input = container.querySelector('input');
+    
+      fireEvent.change(input, { target: { value: '0.00' } });
+      fireEvent.blur(input);
+      expect(input.value).toBe('0');
+    });
 });
