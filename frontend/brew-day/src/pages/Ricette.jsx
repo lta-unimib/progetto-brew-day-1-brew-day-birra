@@ -12,6 +12,8 @@ const Ricette = () => {
   const [recipes, setRecipes] = useState([
     { id: 1, name: "Ricetta 1", description: "Descrizione della 1 ricetta" },
     { id: 2, name: "Ricetta 2", description: "Descrizione della 2 ricetta" },
+    { id: 3, name: "Ricetta 3", description: "Descrizione della 3 ricetta" },
+    { id: 3, name: "Ricetta 4", description: "Descrizione della 4 ricetta" },
   ]);
 
   const handleView = (id) => {
