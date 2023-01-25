@@ -1,0 +1,44 @@
+package unimib.ingsof.model;
+
+import java.util.ArrayList;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
+public interface IngredientRepository extends CrudRepository<Ingredient, String>{
+	
+	@Query(value = "SELECT * FROM ingredient", nativeQuery = true )
+	ArrayList<Ingredient> getAllIngredients();
+	
+	@Modifying 
+	@Transactional
+	@Query("INSERT INTO Ingredient (name) VALUES (:name)")
+	void addIngredient(@Param("name") String name);
+	
+	@Modifying 	
+	@Transactional
+	@Query("DELETE FROM Ingredient WHERE ingredientID=:ingredientID")
+	void deleteIngredient(@Param("ingredientID") String ingredientID);
+
+	@Query(value = "SELECT * FROM ingredient WHERE ingredientID=:ingredientID", nativeQuery = true )
+	Ingredient getIngredientById(@Param("ingredientID") String ingredientID);
+	
+	@Modifying 
+	@Transactional
+	@Query(value = "CREATE TABLE IF NOT EXISTS ingredient (ingredientID INT AUTO_INCREMENT, name TEXT NOT NULL, PRIMARY KEY(ingredientID))", nativeQuery=true)
+	public void assure();
+	
+	@Modifying 
+	@Transactional
+	@Query(value = "DROP TABLE IF EXISTS ingredient", nativeQuery=true)
+	void drop();
+
+	@Query(value = "SELECT * FROM ingredient WHERE name=:name", nativeQuery = true )
+	Ingredient getIngredientByName(@Param("name") String name);
+
+}

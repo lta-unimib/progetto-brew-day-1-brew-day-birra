@@ -4,35 +4,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class InventoryIngredient {
+public class Ingredient {
 	@Id
 	private String ingredientID;
-	private float quantity;
-
-	public InventoryIngredient(){
+	private String name;
+	
+	public Ingredient() {
 		super();
 	}
 	
-	public InventoryIngredient(String ingredientID, float quantity) {
+	public Ingredient(String ingredientID, String name) {
 		super();
 		this.ingredientID = ingredientID;
-		this.quantity = quantity;
+		this.name = name;
 	}
-
+	
 	public String getIngredientID() {
 		return ingredientID;
 	}
-
+	
 	public void setIngredientID(String ingredientID) {
 		this.ingredientID = ingredientID;
 	}
-
-	public float getQuantity() {
-		return quantity;
+	
+	public String getName() {
+		return name;
 	}
-
-	public void setQuantity(float quantity) {
-		this.quantity = quantity;
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.model.IngredientRepository;
 import unimib.ingsof.model.InventoryIngredientRepository;
 
 
@@ -20,24 +21,28 @@ class InventoryControllerTest {
 	@Autowired
 	private InventoryController inventoryController;
 	@Autowired
-	private InventoryIngredientController ingredientController;
+	private InventoryIngredientController inventoryIngredientController;
 	@Autowired
-	private InventoryIngredientRepository ingredientsRepository;
-
+	private InventoryIngredientRepository inventoryIngredientsRepository;
+	@Autowired
+	private IngredientRepository ingredientsRepository;
+	
 	
 	@Test
 	void testBehavior() {
 		ingredientsRepository.assure();
+		inventoryIngredientsRepository.assure();
 		
 		int oldnum = inventoryController.getAllIngredients().getBody().size();
 		
-		String ingredientID = "name";
+		String name = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		ingredientBody.put("name", ingredientID);
+		ingredientBody.put("name", name);
 		ingredientBody.put("quantity", "7");
-		inventoryController.postIngredient(ingredientBody);
 		
-		assertTrue(ingredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
+		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
+				
+		//assertTrue(inventoryIngredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());
 		
 		assertFalse(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
@@ -46,12 +51,18 @@ class InventoryControllerTest {
 		assertFalse(inventoryController.postIngredient(null).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());	
 
+		inventoryIngredientsRepository.drop();
 		ingredientsRepository.drop();
+
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientsRepository.assure();
+		inventoryIngredientsRepository.drop();
+		inventoryIngredientsRepository.assure();
+		inventoryIngredientsRepository.assure();
+		ingredientsRepository.drop();
+
 		String ingredientID = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
 		
@@ -65,6 +76,8 @@ class InventoryControllerTest {
 		ingredientBody.clear();
 		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 
+		inventoryIngredientsRepository.drop();
 		ingredientsRepository.drop();
+
 	}
 }

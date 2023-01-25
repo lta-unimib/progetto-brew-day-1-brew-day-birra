@@ -14,24 +14,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.model.IngredientInstance;
 import unimib.ingsof.model.InventoryIngredient;
 import unimib.ingsof.model.InventoryIngredientRepository;
 
 @RestController
-@RequestMapping("/api/inventory/{name}")
+@RequestMapping("/api/inventory/{ingredientID}")
 public class InventoryIngredientController {
+	
 	
 	@Autowired
 	private InventoryIngredientRepository inventoryRepository;
 	
 	@GetMapping
-	public ResponseEntity<InventoryIngredient> getIngredientByID(@PathVariable String name) {
-		if (name == null) {
+	public ResponseEntity<IngredientInstance> getIngredientByID(@PathVariable String ingredientID) {
+		if (ingredientID == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-		InventoryIngredient result;
+		IngredientInstance result;
 		try {
-			result = inventoryRepository.getIngredientById(name);
+			result = inventoryRepository.getIngredientById(ingredientID);
 	    } catch (Exception e) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
@@ -43,15 +45,16 @@ public class InventoryIngredientController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateIngredient(@PathVariable String name,
+	public ResponseEntity<Object> updateIngredient(@PathVariable String ingredientID,
 												@RequestBody Map<String, String> body) {
-		if (name == null || body.get("quantity") == null) {
+		if (ingredientID == null || body.get("quantity") == null) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
-		ArrayList<InventoryIngredient> result;
+		ArrayList<InventoryIngredient> result;        
         try {
-            result = inventoryRepository.updateIngredient(name, 
+        	result = inventoryRepository.updateIngredient(ingredientID, 
             		Float.parseFloat(body.get("quantity")));
+            
 	    } catch (Exception e) {
 	    	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
@@ -63,20 +66,17 @@ public class InventoryIngredientController {
 	
 	
 	@DeleteMapping
-	public ResponseEntity<Object> deleteIngredient(@PathVariable String name) {
-		if (name == null) {
+	public ResponseEntity<Object> deleteIngredient(@PathVariable String ingredientID) {
+		if (ingredientID == null) {
 	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }  
         try {
-            inventoryRepository.deleteIngredient(name);
+            inventoryRepository.deleteIngredient(ingredientID);
         } catch (Exception e) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	    }
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-
-	
 	
 
 }
