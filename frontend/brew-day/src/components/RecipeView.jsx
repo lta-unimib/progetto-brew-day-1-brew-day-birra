@@ -1,10 +1,10 @@
 import React from "react";
 
-const RecipeView = () => {
+const RecipeView = (props) => {
   return (
     <div>
-      <h1>RecipeView</h1>
-      <p>Descrizione</p>
+      <h1>{props.name}</h1>
+      <p>{props.description}</p>
     </div>
   );
 };

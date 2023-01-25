@@ -1,6 +1,6 @@
 import React from "react";
 
-const RecipeEdit = () => {
+const RecipeEdit = (props) => {
   return (
     <div>
       <h1>RecipeEdit</h1>

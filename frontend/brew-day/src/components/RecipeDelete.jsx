@@ -1,10 +1,10 @@
 import React from "react";
 
-const RecipeDelete = () => {
+const RecipeDelete = (props) => {
   return (
     <div>
-      <h1>RecipeDelete</h1>
-      <p>Descrizione</p>
+      <h1>{props.name}</h1>
+      <p>{props.description}</p>
     </div>
   );
 };
