@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Ricetta from '../components/Ricetta';
 
 const Recipes = () => {
   const [recipes, setRecipes] = useState([
@@ -7,15 +8,15 @@ const Recipes = () => {
   ]);
 
   const handleView = (id) => {
-
+    return <Ricetta />
   };
 
   const handleEdit = (id) => {
-
+    return <Ricetta />
   };
 
   const handleDelete = (id) => {
-
+    return <Ricetta />
   };
 
   return (
