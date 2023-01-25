@@ -7,10 +7,10 @@ const Ricetta = ({ match }) => {
   return (
     <div>
       <label>Nome:</label>
-      <input type="text" value={recipe.name} onChange={handleNameChange} />
+      <input type="text" value={recipe.name}/>
       <br/>
       <label>Descrizione:</label>
-      <textarea value={recipe.description} onChange={handleDescriptionChange} />
+      <textarea value={recipe.description}/>
     </div>
   );
 };
