@@ -82,4 +82,47 @@ describe('QuantityInput component', () => {
       fireEvent.blur(input);
       expect(input.value).toBe('0');
     });
+
+    test("Input only accepts numbers", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "a" } });
+      expect(component.getByTestId("quantity-input").value).toBe("");
+    });
+
+    test("Input does not allow minus sign, so negative numbers", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "-" } });
+      expect(component.getByTestId("quantity-input").value).toBe("");
+    });
+
+    test("If input starts with . it automatically returns 0.", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "." } });
+      expect(component.getByTestId("quantity-input").value).toBe("0.");
+    });
+
+    test("999 is the max input", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "1000" } });
+      expect(component.getByTestId("quantity-input").value).toBe("999");
+    });
+
+    test("00 is rendered to 0", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "00" } });
+      expect(component.getByTestId("quantity-input").value).toBe("0");
+    });
+
+    test("If the first comma comes after a digit or more, keep the number", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "0." } });
+      expect(component.getByTestId("quantity-input").value).toBe("0.");
+    });
+
+    test("0.0 renders to 0", () => {
+      const component = render(<QuantityInput />);
+      fireEvent.change(component.getByTestId("quantity-input"), { target: { value: "0.0" } });
+      fireEvent.blur(component.getByTestId("quantity-input"));
+      expect(component.getByTestId("quantity-input").value).toBe("0");
+    });
 });

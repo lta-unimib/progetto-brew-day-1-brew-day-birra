@@ -162,6 +162,7 @@ exports[`Spesa component should render correctly 1`] = `
       <td>
         <div>
           <input
+            data-testid="quantity-input"
             id="shoppingItemId"
             name="shoppingItemId"
             value=""
@@ -182,6 +183,7 @@ exports[`Spesa component should render correctly 1`] = `
       <td>
         <div>
           <input
+            data-testid="quantity-input"
             id="shoppingItemId"
             name="shoppingItemId"
             value=""
@@ -202,6 +204,7 @@ exports[`Spesa component should render correctly 1`] = `
       <td>
         <div>
           <input
+            data-testid="quantity-input"
             id="shoppingItemId"
             name="shoppingItemId"
             value=""
@@ -222,6 +225,7 @@ exports[`Spesa component should render correctly 1`] = `
       <td>
         <div>
           <input
+            data-testid="quantity-input"
             id="shoppingItemId"
             name="shoppingItemId"
             value=""
@@ -242,6 +246,7 @@ exports[`Spesa component should render correctly 1`] = `
       <td>
         <div>
           <input
+            data-testid="quantity-input"
             id="shoppingItemId"
             name="shoppingItemId"
             value=""
@@ -262,6 +267,7 @@ exports[`Spesa component should render correctly 1`] = `
       <td>
         <div>
           <input
+            data-testid="quantity-input"
             id="shoppingItemId"
             name="shoppingItemId"
             value=""

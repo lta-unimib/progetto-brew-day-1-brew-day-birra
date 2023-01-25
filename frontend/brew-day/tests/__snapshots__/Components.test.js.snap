@@ -79,6 +79,7 @@ exports[`NavBar component should render correctly 1`] = `
 exports[`QuantityInput component should render correctly 1`] = `
 <div>
   <input
+    data-testid="quantity-input"
     id="shoppingItemId"
     name="shoppingItemId"
     value=""
