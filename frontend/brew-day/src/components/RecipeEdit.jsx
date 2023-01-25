@@ -4,9 +4,9 @@ const RecipeEdit = (props) => {
   return (
     <div>
       <p>Nome:</p>
-      <textarea>{props.name}</textarea><br></br>
+      <textarea id="nameTextArea">{props.name}</textarea><br></br>
       <p>Descrizione:</p>
-      <textarea>{props.descrizione}</textarea>
+      <textarea id="descriptionTextArea">{props.description}</textarea>
     </div>
   );
 };
