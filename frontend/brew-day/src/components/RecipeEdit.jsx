@@ -3,8 +3,10 @@ import React from "react";
 const RecipeEdit = (props) => {
   return (
     <div>
-      <input type="text" value="This text can be selected"/>
-      <textarea>This text can also be selected</textarea>
+      <p>Nome:</p>
+      <textarea>{props.name}</textarea><br></br>
+      <p>Descrizione:</p>
+      <textarea>{props.descrizione}</textarea>
     </div>
   );
 };
