@@ -6,10 +6,16 @@ const Modal = ({ children, showModal, setShowModal }) => {
     };
 
     return (
-        <div className={`modal ${showModal ? 'show' : 'hide'}`} onClick={() => setShowModal(false)}>
-            <div className="modal-content" onClick={handleModalClick}>
-                {children}
-            </div>
+        <div>
+            {showModal ? (
+                <div className={`modal show`} onClick={() => setShowModal(false)}>
+                    <div className="modal-content" onClick={handleModalClick}>
+                        {children}
+                    </div>
+                </div>
+            ) : (
+                <div className={`modal hide`} onClick={() => setShowModal(false)}></div>
+            )}
         </div>
     );
 }
