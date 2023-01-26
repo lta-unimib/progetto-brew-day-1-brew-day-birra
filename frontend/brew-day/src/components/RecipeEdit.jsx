@@ -4,9 +4,9 @@ const RecipeEdit = (props) => {
   return (
     <div>
       <p>Nome:</p>
-      <textarea id="nameTextArea">{props.name}</textarea><br></br>
+      <textarea id="nameTextArea" defaultValue={props.name}></textarea>
       <p>Descrizione:</p>
-      <textarea id="descriptionTextArea">{props.description}</textarea>
+      <textarea id="descriptionTextArea" defaultValue={props.description} readOnly={false}></textarea>
     </div>
   );
 };
