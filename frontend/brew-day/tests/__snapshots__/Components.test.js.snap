@@ -24,6 +24,16 @@ exports[`GridInventoryItem component should render correctly 1`] = `
 </div>
 `;
 
+exports[`Modal component should render correctly 1`] = `
+<div
+  class="modal hide"
+>
+  <div
+    class="modal-content"
+  />
+</div>
+`;
+
 exports[`NavBar component should render correctly 1`] = `
 <div>
   <ul
@@ -84,5 +94,36 @@ exports[`QuantityInput component should render correctly 1`] = `
     name="shoppingItemId"
     value=""
   />
+</div>
+`;
+
+exports[`RecipeDelete component should render correctly 1`] = `
+<div>
+  <h1 />
+  <p />
+</div>
+`;
+
+exports[`RecipeEdit component should render correctly 1`] = `
+<div>
+  <p>
+    Nome:
+  </p>
+  <textarea
+    id="nameTextArea"
+  />
+  <p>
+    Descrizione:
+  </p>
+  <textarea
+    id="descriptionTextArea"
+  />
+</div>
+`;
+
+exports[`RecipeView component should render correctly 1`] = `
+<div>
+  <h1 />
+  <p />
 </div>
 `;

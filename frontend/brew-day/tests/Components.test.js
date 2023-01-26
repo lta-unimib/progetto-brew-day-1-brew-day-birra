@@ -5,6 +5,10 @@ import Button from '../src/components/Button';
 import GridInventoryItem from '../src/components/GridInventoryItem';
 import NavBar from '../src/components/NavBar';
 import QuantityInput from '../src/components/QuantityInput';
+import Modal from '../src/components/Modal';
+import RecipeView from '../src/components/RecipeView';
+import RecipeEdit from '../src/components/RecipeEdit';
+import RecipeDelete from '../src/components/RecipeDelete';
 
 describe('Button component', () => {
     test('should render correctly', () => {
@@ -125,4 +129,32 @@ describe('QuantityInput component', () => {
       fireEvent.blur(component.getByTestId("quantity-input"));
       expect(component.getByTestId("quantity-input").value).toBe("0");
     });
+});
+
+describe('RecipeDelete component', () => {
+  test('should render correctly', () => {
+    const { container } = render(<RecipeDelete />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+});
+
+describe('RecipeEdit component', () => {
+  test('should render correctly', () => {
+    const { container } = render(<RecipeEdit />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+});
+
+describe('RecipeView component', () => {
+  test('should render correctly', () => {
+    const { container } = render(<RecipeView />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+});
+
+describe('Modal component', () => {
+  test('should render correctly', () => {
+    const { container } = render(<Modal />);
+    expect(container.firstChild).toMatchSnapshot();
+  });
 });

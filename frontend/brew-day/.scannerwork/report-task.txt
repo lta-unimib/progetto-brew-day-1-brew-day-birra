@@ -2,5 +2,5 @@ projectKey=brew-day
 serverUrl=http://localhost:9000
 serverVersion=9.7.1.62043
 dashboardUrl=http://localhost:9000/dashboard?id=brew-day
-ceTaskId=AYXpg4s9r9joq9wdG5fH
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AYXpg4s9r9joq9wdG5fH
+ceTaskId=AYXr5eISeZbczMfKY-0m
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYXr5eISeZbczMfKY-0m

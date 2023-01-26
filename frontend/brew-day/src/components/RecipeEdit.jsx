@@ -6,7 +6,7 @@ const RecipeEdit = (props) => {
       <p>Nome:</p>
       <textarea id="nameTextArea" defaultValue={props.name}></textarea>
       <p>Descrizione:</p>
-      <textarea id="descriptionTextArea" defaultValue={props.description} readOnly={false}></textarea>
+      <textarea id="descriptionTextArea" defaultValue={props.description}></textarea>
     </div>
   );
 };
