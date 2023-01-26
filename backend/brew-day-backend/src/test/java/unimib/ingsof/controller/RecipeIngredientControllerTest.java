@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.model.IngredientRepository;
 import unimib.ingsof.model.RecipeIngredientRepository;
 import unimib.ingsof.model.RecipeRepository;
 
@@ -24,12 +25,15 @@ class RecipeIngredientControllerTest {
 	@Autowired
 	private RecipeRepository recipesRepository;
 	@Autowired
-	private RecipeIngredientRepository ingredientsRepository;
+	private RecipeIngredientRepository recipeIngredientsRepository;
+	@Autowired
+	private IngredientRepository ingredientsRepository;
 
 	@Test
 	void testBehavior() {
-		recipesRepository.assure();
 		ingredientsRepository.assure();
+		recipesRepository.assure();
+		recipeIngredientsRepository.assure();
 		
 		String recipeID = "RecipeIngredientControllerTest";
 		String ingredientID = recipeID;
@@ -52,14 +56,16 @@ class RecipeIngredientControllerTest {
 		assertTrue(ingredientController.deleteRecipeIngredient(recipeID, ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientController.getRecipeIngredientByID(recipeID, ingredientID).getStatusCode().is4xxClientError());
 
-		ingredientsRepository.drop();
+		recipeIngredientsRepository.drop();
 		recipesRepository.drop();
+		ingredientsRepository.drop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		recipesRepository.assure();
 		ingredientsRepository.assure();
+		recipesRepository.assure();
+		recipeIngredientsRepository.assure();
 		
 		String recipeID = "RecipeIngredientControllerTest";
 		String ingredientID = recipeID;
@@ -80,7 +86,8 @@ class RecipeIngredientControllerTest {
 		ingredientBody.put("quantity", "17");
 		assertTrue(ingredientController.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 		
-		ingredientsRepository.drop();
+		recipeIngredientsRepository.drop();
 		recipesRepository.drop();
+		ingredientsRepository.drop();
 	}
 }
