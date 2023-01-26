@@ -44,6 +44,22 @@ const Ricette = () => {
     setShowModal(true);
   };
 
+  const getCurrentComponent = (currentAction, selectedRecipe) => {
+    if (!selectedRecipe) return <div>Caricamento...</div>;
+    switch (currentAction) {
+      case "view":
+        return <RecipeView name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+      case "edit":
+        return <RecipeEdit name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+      case "delete":
+        return <RecipeDelete name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+      case "execute":
+        return <RecipeExecute name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+      default:
+        return null;
+    }
+  }
+
   return (
     <div>
       <table className="myTable">
@@ -76,46 +92,7 @@ const Ricette = () => {
         </tbody>
       </table>
       <Modal showModal={showModal} setShowModal={setShowModal}>
-        {currentAction === "view" &&
-          (selectedRecipe ? (
-            <RecipeView
-              name={selectedRecipe.name}
-              description={selectedRecipe.description}
-              ingredients={selectedRecipe.ingredients}
-            />
-          ) : (
-            <div>Caricamento...</div>
-          ))}
-        {currentAction === "edit" &&
-          (selectedRecipe ? (
-            <RecipeEdit
-              name={selectedRecipe.name}
-              description={selectedRecipe.description}
-              ingredients={selectedRecipe.ingredients}
-            />
-          ) : (
-            <div>Caricamento...</div>
-          ))}
-        {currentAction === "delete" &&
-          (selectedRecipe ? (
-            <RecipeDelete
-              name={selectedRecipe.name}
-              description={selectedRecipe.description}
-              ingredients={selectedRecipe.ingredients}
-            />
-          ) : (
-            <div>Caricamento...</div>
-          ))}
-        {currentAction === "execute" &&
-          (selectedRecipe ? (
-            <RecipeExecute
-              name={selectedRecipe.name}
-              description={selectedRecipe.description}
-              ingredients={selectedRecipe.ingredients}
-            />
-          ) : (
-            <div>Caricamento...</div>
-          ))}
+        {getCurrentComponent(currentAction, selectedRecipe)}
       </Modal>
     </div>
   );
