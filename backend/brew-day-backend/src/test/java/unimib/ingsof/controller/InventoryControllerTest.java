@@ -40,9 +40,10 @@ class InventoryControllerTest {
 		ingredientBody.put("name", name);
 		ingredientBody.put("quantity", "7");
 		
-		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-				
-		//assertTrue(inventoryIngredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
+		//assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
+		String ingredientID = inventoryController.postIngredient(ingredientBody).getHeaders().get("Location").get(0);
+		inventoryIngredientController.getIngredientByID(name);
+		assertTrue(inventoryIngredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());
 		
 		assertFalse(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());

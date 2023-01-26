@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.model.IngredientInstance;
 import unimib.ingsof.model.RecipeIngredient;
 import unimib.ingsof.model.RecipeIngredientRepository;
 
@@ -24,9 +25,9 @@ public class RecipeIngredientController {
 	private RecipeIngredientRepository ingredientRepository;
 	
 	@GetMapping
-	public ResponseEntity<RecipeIngredient> getRecipeIngredientByID(@PathVariable String recipeID,
+	public ResponseEntity<IngredientInstance> getRecipeIngredientByID(@PathVariable String recipeID,
 															@PathVariable String ingredientID) {
-		RecipeIngredient ingredient = ingredientRepository.getRecipeIngredient(recipeID, ingredientID);
+		IngredientInstance ingredient = ingredientRepository.getRecipeIngredient(recipeID, ingredientID);
 		if (ingredient == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(ingredient, HttpStatus.OK);

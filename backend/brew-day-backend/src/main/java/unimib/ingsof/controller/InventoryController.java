@@ -38,7 +38,8 @@ public class InventoryController {
 	
 	@PostMapping 
 	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> newIngredient) {
-        if (newIngredient == null ||
+        
+		if (newIngredient == null ||
             newIngredient.get("name") == null || newIngredient.get("quantity") == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

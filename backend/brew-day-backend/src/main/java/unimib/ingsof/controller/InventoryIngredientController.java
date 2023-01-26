@@ -22,7 +22,6 @@ import unimib.ingsof.model.InventoryIngredientRepository;
 @RequestMapping("/api/inventory/{ingredientID}")
 public class InventoryIngredientController {
 	
-	
 	@Autowired
 	private InventoryIngredientRepository inventoryRepository;
 	

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.model.Ingredient;
 import unimib.ingsof.model.Recipe;
 import unimib.ingsof.model.RecipeIngredientRepository;
 import unimib.ingsof.model.RecipeRepository;
@@ -28,6 +29,8 @@ public class RecipeController {
 	private RecipeRepository recipesRepo;
 	@Autowired
 	private RecipeIngredientRepository ingredientsRepo;
+	@Autowired
+	IngredientController ingredientController;
 	
 	@GetMapping
 	public ResponseEntity<Object> getRecipeByID(@PathVariable String recipeID) {
@@ -72,13 +75,25 @@ public class RecipeController {
 		
 		String name = body.get("name");
 		String quantity = body.get("quantity");
+		String ingredientID;
+		
 		if (name == null || quantity == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 		try {
-			ingredientsRepo.addRecipeIngredient(recipeID, name, Float.valueOf(quantity));
+			
+			Ingredient ingrediente = ingredientController.getIngredientByName(name);
+			
+			if(ingrediente == null) {
+        		ingrediente = ingredientController.addIngredient(name);
+        		ingredientID = ingrediente.getIngredientID();
+        	} else {
+        		ingredientID = ingrediente.getIngredientID();
+        	}
+			
+			ingredientsRepo.addRecipeIngredient(recipeID, ingredientID, Float.valueOf(quantity));
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Location",String.join("/api/recipes/%s/%s", recipeID, name));
+			headers.add("Location",String.join("/api/recipes/%s/%s", recipeID, ingredientID));
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

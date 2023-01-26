@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface RecipeIngredientRepository extends CrudRepository<RecipeIngredient, String> {
     // Get
-	@Query(value = "SELECT * FROM recipe_ingredient WHERE recipeID = :recipeID", nativeQuery = true)
-    ArrayList<RecipeIngredient> getAll(@Param("recipeID") String recipeID);
+	@Query("SELECT new IngredientInstance(name, quantity) FROM RecipeIngredient AS II LEFT JOIN Ingredient AS I ON I.ingredientID = II.ingredientID WHERE II.recipeID = :recipeID")
+    ArrayList<IngredientInstance> getAll(@Param("recipeID") String recipeID);
     
 	// Get
-	@Query(value = "SELECT * FROM recipe_ingredient WHERE recipeID = :recipeID AND ingredientID = :ingredientID", nativeQuery = true)
-    RecipeIngredient getRecipeIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID);
+	@Query("SELECT new IngredientInstance(name, quantity) FROM RecipeIngredient AS II LEFT JOIN Ingredient AS I ON II.ingredientID = I.ingredientID WHERE II.recipeID = :recipeID AND II.ingredientID = :ingredientID")
+	IngredientInstance getRecipeIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID);
 	
 	// POST
     @Modifying
