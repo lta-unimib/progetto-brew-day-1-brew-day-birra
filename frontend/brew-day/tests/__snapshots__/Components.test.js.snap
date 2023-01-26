@@ -99,8 +99,43 @@ exports[`QuantityInput component should render correctly 1`] = `
 
 exports[`RecipeDelete component should render correctly 1`] = `
 <div>
-  <h1 />
-  <p />
+  <div>
+    <h1>
+      name
+    </h1>
+    <p>
+      description
+    </p>
+    <table
+      id="recipeView"
+    >
+      <thead>
+        <tr>
+          <th>
+            Nome
+          </th>
+          <th>
+            Quantità
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            name
+          </td>
+          <td>
+            0
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button
+    class="recipeButton"
+  >
+    Sei sicuro di voler rimuovere la ricetta?
+  </button>
 </div>
 `;
 
@@ -111,19 +146,51 @@ exports[`RecipeEdit component should render correctly 1`] = `
   </p>
   <textarea
     id="nameTextArea"
-  />
+  >
+    name
+  </textarea>
   <p>
     Descrizione:
   </p>
   <textarea
     id="descriptionTextArea"
-  />
+  >
+    description
+  </textarea>
 </div>
 `;
 
 exports[`RecipeView component should render correctly 1`] = `
 <div>
-  <h1 />
-  <p />
+  <h1>
+    name
+  </h1>
+  <p>
+    description
+  </p>
+  <table
+    id="recipeView"
+  >
+    <thead>
+      <tr>
+        <th>
+          Nome
+        </th>
+        <th>
+          Quantità
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          name
+        </td>
+        <td>
+          0
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;

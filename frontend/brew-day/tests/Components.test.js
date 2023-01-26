@@ -10,6 +10,8 @@ import RecipeView from '../src/components/RecipeView';
 import RecipeEdit from '../src/components/RecipeEdit';
 import RecipeDelete from '../src/components/RecipeDelete';
 
+const testIngredient = [{"name": "name", "quantity": "0"}];
+
 describe('Button component', () => {
     test('should render correctly', () => {
       const { container } = render(<Button />);
@@ -133,21 +135,24 @@ describe('QuantityInput component', () => {
 
 describe('RecipeDelete component', () => {
   test('should render correctly', () => {
-    const { container } = render(<RecipeDelete />);
+    const { container } = render(<RecipeDelete name="name" 
+    description="description" ingredients={testIngredient}/>);
     expect(container.firstChild).toMatchSnapshot();
   });
 });
 
 describe('RecipeEdit component', () => {
   test('should render correctly', () => {
-    const { container } = render(<RecipeEdit />);
+    const { container } = render(<RecipeEdit name="name" 
+    description="description" ingredients={testIngredient}/>);
     expect(container.firstChild).toMatchSnapshot();
   });
 });
 
 describe('RecipeView component', () => {
   test('should render correctly', () => {
-    const { container } = render(<RecipeView />);
+    const { container } = render(<RecipeView name="name" 
+    description="description" ingredients={testIngredient}/>);
     expect(container.firstChild).toMatchSnapshot();
   });
 });

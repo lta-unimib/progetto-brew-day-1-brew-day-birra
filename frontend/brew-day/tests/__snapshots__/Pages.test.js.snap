@@ -161,6 +161,9 @@ exports[`Ricette component should render correctly 1`] = `
           <button>
             Rimuovi
           </button>
+          <button>
+            Esegui
+          </button>
         </td>
       </tr>
       <tr>
@@ -177,6 +180,9 @@ exports[`Ricette component should render correctly 1`] = `
           <button>
             Rimuovi
           </button>
+          <button>
+            Esegui
+          </button>
         </td>
       </tr>
     </tbody>
@@ -188,7 +194,7 @@ exports[`Ricette component should render correctly 1`] = `
       class="modal-content"
     >
       <div>
-        Loading...
+        Caricamento...
       </div>
     </div>
   </div>
