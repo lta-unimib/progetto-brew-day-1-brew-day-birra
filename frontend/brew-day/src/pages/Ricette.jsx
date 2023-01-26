@@ -3,6 +3,7 @@ import Modal from "../components/Modal";
 import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
+import RecipeExecute from "../components/RecipeExecute";
 
 const Ricette = () => {
   const [showModal, setShowModal] = useState(false);
@@ -10,8 +11,13 @@ const Ricette = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const [recipes] = useState([
-    { id: 1, name: "Ricetta 1", description: "Descrizione della 1 ricetta" },
-    { id: 2, name: "Ricetta 2", description: "Descrizione della 2 ricetta" },
+    { id: 1, name: "Ricetta 1", description: "Descrizione della 1 ricetta", 
+      ingredients: [{"name": "acqua", "quantity": "17.0"}, 
+                    {"name": "malto", "quantity": "1.0"},
+                    {"name": "luppoli", "quantity": "2"}]},
+    { id: 2, name: "Ricetta 2", description: "Descrizione della 2 ricetta", 
+      ingredients: [{"name": "acqua", "quantity": "17.0"},
+                    {"name": "luppoli", "quantity": "3"}]},
   ]);
 
   const handleView = (id) => {
@@ -28,6 +34,12 @@ const Ricette = () => {
 
   const handleDelete = (id) => {
     setCurrentAction("delete");
+    setSelectedRecipe(recipes.find((recipe) => recipe.id === id));
+    setShowModal(true);
+  };
+
+  const handleExecute = (id) => {
+    setCurrentAction("execute");
     setSelectedRecipe(recipes.find((recipe) => recipe.id === id));
     setShowModal(true);
   };
@@ -55,6 +67,9 @@ const Ricette = () => {
                 <button onClick={() => handleDelete(recipe.id)}>
                   Rimuovi
                 </button>
+                <button onClick={() => handleExecute(recipe.id)}>
+                  Esegui
+                </button>
               </td>
             </tr>
           ))}
@@ -66,27 +81,40 @@ const Ricette = () => {
             <RecipeView
               name={selectedRecipe.name}
               description={selectedRecipe.description}
+              ingredients={selectedRecipe.ingredients}
             />
           ) : (
-            <div>Loading...</div>
+            <div>Caricamento...</div>
           ))}
         {currentAction === "edit" &&
           (selectedRecipe ? (
             <RecipeEdit
               name={selectedRecipe.name}
               description={selectedRecipe.description}
+              ingredients={selectedRecipe.ingredients}
             />
           ) : (
-            <div>Loading...</div>
+            <div>Caricamento...</div>
           ))}
         {currentAction === "delete" &&
           (selectedRecipe ? (
             <RecipeDelete
               name={selectedRecipe.name}
               description={selectedRecipe.description}
+              ingredients={selectedRecipe.ingredients}
             />
           ) : (
-            <div>Loading...</div>
+            <div>Caricamento...</div>
+          ))}
+        {currentAction === "execute" &&
+          (selectedRecipe ? (
+            <RecipeExecute
+              name={selectedRecipe.name}
+              description={selectedRecipe.description}
+              ingredients={selectedRecipe.ingredients}
+            />
+          ) : (
+            <div>Caricamento...</div>
           ))}
       </Modal>
     </div>

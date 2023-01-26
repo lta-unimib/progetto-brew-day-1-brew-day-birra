@@ -164,3 +164,7 @@ td {
 textarea {
   resize: none;
 }
+
+#recipeView {
+  width: 100%;
+}
