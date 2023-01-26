@@ -153,22 +153,26 @@ td {
 }
 
 #nameTextArea {
-  width: 300px;
+  width: 800px;
 }
 
 #descriptionTextArea {
-  width: 300px;
-  height: 350px;
+  width: 800px;
+  height: 100px;
 }
 
 textarea {
   resize: none;
 }
 
-#recipeView {
+.recipeView {
   width: 100%;
 }
 
 .recipeButton {
   margin-top: 20px;
+}
+
+#recipeEditDiv {
+  text-align: center;
 }
