@@ -32,6 +32,7 @@ class QuantityInput extends React.Component {
         <input
           id="shoppingItemId"
           name="shoppingItemId"
+          data-testid="quantity-input"
           value={this.state.value}
           onChange={this.handleValue}
           onBlur={this.handleBlur}
