@@ -157,4 +157,28 @@ describe('Modal component', () => {
     const { container } = render(<Modal />);
     expect(container.firstChild).toMatchSnapshot();
   });
+
+  test('handleModalClick should stopPropagation', () => {
+    const { getByTestId } = render(<Modal showModal={true} setShowModal={() => {}}>
+      <div data-testid='modal-content'></div>
+    </Modal>);
+    const modalContent = getByTestId('modal-content');
+
+    fireEvent.click(modalContent);
+
+    expect(modalContent).toBeInTheDocument();
+  });
+
+  test("Clicking on modal container sets showModal to false", () => {
+    const setShowModal = jest.fn();
+    const { container } = render(
+      <Modal showModal={true} setShowModal={setShowModal}>
+        <div>Modal Content</div>
+      </Modal>
+    );
+
+    fireEvent.click(container.firstChild);
+
+    expect(setShowModal).toHaveBeenCalledWith(false);
+  });
 });
