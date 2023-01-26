@@ -9,7 +9,7 @@ const Ricette = () => {
   const [currentAction, setCurrentAction] = useState("view");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  const [recipes, setRecipes] = useState([
+  const [recipes] = useState([
     { id: 1, name: "Ricetta 1", description: "Descrizione della 1 ricetta" },
     { id: 2, name: "Ricetta 2", description: "Descrizione della 2 ricetta" },
   ]);
