@@ -168,3 +168,7 @@ textarea {
 #recipeView {
   width: 100%;
 }
+
+.recipeButton {
+  margin-top: 20px;
+}

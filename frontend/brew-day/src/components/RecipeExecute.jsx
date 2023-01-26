@@ -1,10 +1,11 @@
 import React from "react";
+import RecipeView from "./RecipeView";
 
 const RecipeExecute = (props) => {
   return (
     <div>
-      <h1>{props.name}</h1>
-      <p>{props.description}</p>
+      <RecipeView name={props.name} description={props.description} ingredients={props.ingredients}/>
+      <button class="recipeButton">Sei sicuro di voler eseguire la ricetta?</button>
     </div>
   );
 };
