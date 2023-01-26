@@ -12,8 +12,7 @@ public class IngredientController {
 	private IngredientRepository ingredientRepository;
 	
 	public Ingredient getIngredientByName(String name){	
-		Ingredient result = ingredientRepository.getIngredientByName(name);
-		return result;
+		return ingredientRepository.getIngredientByName(name);
 	}
 
 	public Ingredient addIngredient(String name) {
