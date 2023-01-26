@@ -131,7 +131,69 @@ exports[`Inventario component should render correctly 1`] = `
 </div>
 `;
 
-exports[`Ricette component should render correctly 1`] = `<div />`;
+exports[`Ricette component should render correctly 1`] = `
+<div>
+  <table
+    class="myTable"
+  >
+    <thead>
+      <tr>
+        <th>
+          Nome ricetta
+        </th>
+        <th>
+          Azioni
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          Ricetta 1
+        </td>
+        <td>
+          <button>
+            Visualizza
+          </button>
+          <button>
+            Modifica
+          </button>
+          <button>
+            Rimuovi
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Ricetta 2
+        </td>
+        <td>
+          <button>
+            Visualizza
+          </button>
+          <button>
+            Modifica
+          </button>
+          <button>
+            Rimuovi
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="modal hide"
+  >
+    <div
+      class="modal-content"
+    >
+      <div>
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 exports[`Spesa component should render correctly 1`] = `
 <div>
