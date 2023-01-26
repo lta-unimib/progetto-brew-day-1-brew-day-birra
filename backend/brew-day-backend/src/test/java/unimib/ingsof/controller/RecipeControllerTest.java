@@ -1,5 +1,6 @@
 package unimib.ingsof.controller;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.model.RecipeRepository;
+import unimib.ingsof.model.IngredientRepository;
 import unimib.ingsof.model.RecipeIngredientRepository;
 
 @SpringBootTest
@@ -21,12 +23,16 @@ class RecipeControllerTest {
 	@Autowired
 	private RecipeRepository recipesRepository;
 	@Autowired
-	private RecipeIngredientRepository ingredientsRepository;
+	private RecipeIngredientRepository recipeIngredientsRepository;
+	@Autowired
+	private IngredientRepository ingredientsRepository;
 	
+
 	@Test
 	void testBehavior() {
-		recipesRepository.assure();
 		ingredientsRepository.assure();
+		recipesRepository.assure();
+		recipeIngredientsRepository.assure();
 		
 		String recipeName = "RecipeControllerTest";
 		String recipeID = recipeName;
@@ -46,18 +52,22 @@ class RecipeControllerTest {
 		recipeBody.put("name", ingredientName);
 		recipeBody.put("quantity", "7");
 		assertTrue(recipeController.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
-		
+		assertFalse(recipeController.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+
 		assertTrue(recipeController.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeController.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
 
-		ingredientsRepository.drop();
+		recipeIngredientsRepository.drop();
 		recipesRepository.drop();
+		ingredientsRepository.drop();
+
 	}
 	
 	@Test
 	void allGoesWrong() {
-		recipesRepository.assure();
 		ingredientsRepository.assure();
+		recipesRepository.assure();
+		recipeIngredientsRepository.assure();
 
 		String recipeID = "name";
 		Map<String, String> recipeBody = null;
@@ -89,7 +99,8 @@ class RecipeControllerTest {
 		ingredientBody.put("name", "name");
 		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
-		ingredientsRepository.drop();
+		recipeIngredientsRepository.drop();
 		recipesRepository.drop();
+		ingredientsRepository.drop();
 	}
 }

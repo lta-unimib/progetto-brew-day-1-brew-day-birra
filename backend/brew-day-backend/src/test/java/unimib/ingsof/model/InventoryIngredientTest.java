@@ -8,9 +8,9 @@ class InventoryIngredientTest {
 	@Test
 	void testBehavior() {
 		InventoryIngredient inventoryIngredient = new InventoryIngredient("name", 5);
-		inventoryIngredient.setName("newName");
+		inventoryIngredient.setIngredientID("newName");
 		inventoryIngredient.setQuantity(9);
-		assertEquals("newName", inventoryIngredient.getName());
+		assertEquals("newName", inventoryIngredient.getIngredientID());
 		assertEquals(9, inventoryIngredient.getQuantity());
 	}
 }
