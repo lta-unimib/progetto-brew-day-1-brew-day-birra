@@ -12,6 +12,16 @@ class Inventory extends Component {
       .then((data) => this.setState({ inventory: data }));
   }
 
+  handleDelete = (name) => {
+    fetch(`/api/inventory/${name}`, {
+      method: "DELETE"
+    }).then(() => {
+      this.setState({
+        inventory: this.state.inventory.filter(item => item.name !== name)
+      });
+    });
+  };
+
   render() {
     const { inventory, isLoading } = this.state;
 
@@ -33,6 +43,11 @@ class Inventory extends Component {
           </td>
           <td>{item.name}</td>
           <td>{item.quantity}</td>
+          <td>
+            <button onClick={() => this.handleDelete(item.name)}>
+              Elimina ingrediente
+            </button>
+          </td>
         </tr>
       );
     });
@@ -42,9 +57,10 @@ class Inventory extends Component {
         <table className="myTable">
           <thead>
             <tr>
-              <th width="30%">Immagine</th>
-              <th width="30%">Nome</th>
-              <th width="30%">Quantità</th>
+              <th width="25%">Immagine</th>
+              <th width="25%">Nome</th>
+              <th width="25%">Quantità</th>
+              <th width="25%">Elimina ingrediente</th>
             </tr>
           </thead>
           <tbody>{itemList}</tbody>
