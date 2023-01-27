@@ -1,59 +1,56 @@
-import React from "react";
-import GridInventoryItem from "../components/GridInventoryItem";
+import React, { Component } from "react";
 
-const Inventario = () => {
-  return (
-    <div>
-      <table className="myTable">
-        <tr>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/acqua.png"
-              name="Acqua"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/additivi.png"
-              name="Additivi"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/lievito.png"
-              name="Lievito"
-              availability="0"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/luppoli.png"
-              name="Luppoli"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/malto.png"
-              name="Malto"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/zuccheri.png"
-              name="Zuccheri"
-              availability="0"
-            />
-          </td>
-        </tr>
-      </table>
-    </div>
-  );
-};
+class Inventory extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { inventory: [] };
+  }
 
-export default Inventario;
+  componentDidMount() {
+    fetch("/api/inventory")
+      .then((response) => response.json())
+      .then((data) => this.setState({ inventory: data }));
+  }
+
+  render() {
+    const { inventory, isLoading } = this.state;
+
+    if (isLoading) {
+      return <p>Caricamento...</p>;
+    }
+
+    const itemList = inventory.map((item) => {
+      let imagePath = `../../icons/inventory-icons/${item.name}.png`;
+      let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
+      return (
+        <tr key={item.name}>
+          <td>
+            <img
+              className="shoppingImage"
+              src={imagePath}
+              onError={(e) => { e.target.onerror = null; e.target.src=defaultImage }}
+            />
+          </td>
+          <td>{item.name}</td>
+          <td>{item.quantity}</td>
+        </tr>
+      );
+    });
+
+    return (
+      <div>
+        <table className="myTable">
+          <thead>
+            <tr>
+              <th width="30%">Immagine</th>
+              <th width="30%">Nome</th>
+              <th width="30%">Quantità</th>
+            </tr>
+          </thead>
+          <tbody>{itemList}</tbody>
+        </table>
+      </div>
+    );
+  }
+}
+export default Inventory;
