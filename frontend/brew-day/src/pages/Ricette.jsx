@@ -45,7 +45,7 @@ class Ricette extends Component {
         case "view":
           return <RecipeView name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         case "edit":
-          return <RecipeEdit name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+          return <RecipeEdit recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         case "delete":
           return <RecipeDelete name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         //case "execute":
@@ -100,8 +100,8 @@ class Ricette extends Component {
         );
     }
 
-    async deleteRecipe(id) {
-        await fetch(`/api/recipes/${id}`, {
+    deleteRecipe(id) {
+        fetch(`/api/recipes/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
