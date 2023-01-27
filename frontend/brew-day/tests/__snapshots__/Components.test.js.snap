@@ -28,6 +28,7 @@ exports[`Modal component should render correctly 1`] = `
 <div>
   <div
     class="modal hide"
+    data-testid="modal"
   />
 </div>
 `;
