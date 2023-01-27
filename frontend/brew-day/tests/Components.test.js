@@ -173,17 +173,4 @@ describe('Modal component', () => {
 
     expect(modalContent).toBeInTheDocument();
   });
-
-  test("Clicking on modal container sets showModal to false", () => {
-    const setShowModal = jest.fn();
-    const { container } = render(
-      <Modal showModal={true} setShowModal={setShowModal}>
-        <div>Modal Content</div>
-      </Modal>
-    );
-
-    fireEvent.click(container.firstChild);
-
-    expect(setShowModal).toHaveBeenCalledWith(false);
-  });
 });

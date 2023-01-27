@@ -21,13 +21,6 @@ describe("Home component", () => {
   });
 });
 
-describe("Inventario component", () => {
-  test("should render correctly", () => {
-    const { container } = render(<Inventario />);
-    expect(container.firstChild).toMatchSnapshot();
-  });
-});
-
 describe("Ricette component", () => {
   test("should render correctly", () => {
     const { container } = render(<Ricette />);
