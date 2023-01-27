@@ -1,59 +1,72 @@
-import React from "react";
-import GridInventoryItem from "../components/GridInventoryItem";
+import React, { Component } from "react";
 
-const Inventario = () => {
-  return (
-    <div>
-      <table className="myTable">
-        <tr>
+class Inventory extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { inventory: [] };
+  }
+
+  componentDidMount() {
+    fetch("/api/inventory")
+      .then((response) => response.json())
+      .then((data) => this.setState({ inventory: data }));
+  }
+
+  handleDelete = (name) => {
+    fetch(`/api/inventory/${name}`, {
+      method: "DELETE"
+    }).then(() => {
+      this.setState({
+        inventory: this.state.inventory.filter(item => item.name !== name)
+      });
+    });
+  };
+
+  render() {
+    const { inventory, isLoading } = this.state;
+
+    if (isLoading) {
+      return <p>Caricamento...</p>;
+    }
+
+    const itemList = inventory.map((item) => {
+      let imagePath = `../../icons/inventory-icons/${item.name}.png`;
+      let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
+      return (
+        <tr key={item.name}>
           <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/acqua.png"
-              name="Acqua"
-              availability="0"
+            <img
+              className="shoppingImage"
+              src={imagePath}
+              onError={(e) => { e.target.onerror = null; e.target.src=defaultImage }}
             />
           </td>
+          <td>{item.name}</td>
+          <td>{item.quantity}</td>
           <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/additivi.png"
-              name="Additivi"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/lievito.png"
-              name="Lievito"
-              availability="0"
-            />
+            <button onClick={() => this.handleDelete(item.name)}>
+              Elimina ingrediente
+            </button>
           </td>
         </tr>
-        <tr>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/luppoli.png"
-              name="Luppoli"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/malto.png"
-              name="Malto"
-              availability="0"
-            />
-          </td>
-          <td>
-            <GridInventoryItem
-              path="../../icons/inventory-icons/zuccheri.png"
-              name="Zuccheri"
-              availability="0"
-            />
-          </td>
-        </tr>
-      </table>
-    </div>
-  );
-};
+      );
+    });
 
-export default Inventario;
+    return (
+      <div>
+        <table className="myTable">
+          <thead>
+            <tr>
+              <th width="25%">Immagine</th>
+              <th width="25%">Nome</th>
+              <th width="25%">Quantità</th>
+              <th width="25%">Azioni</th>
+            </tr>
+          </thead>
+          <tbody>{itemList}</tbody>
+        </table>
+      </div>
+    );
+  }
+}
+export default Inventory;
