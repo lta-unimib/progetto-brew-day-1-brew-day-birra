@@ -60,7 +60,7 @@ class Inventory extends Component {
               <th width="25%">Immagine</th>
               <th width="25%">Nome</th>
               <th width="25%">Quantità</th>
-              <th width="25%">Elimina ingrediente</th>
+              <th width="25%">Azioni</th>
             </tr>
           </thead>
           <tbody>{itemList}</tbody>
