@@ -25,11 +25,9 @@ exports[`GridInventoryItem component should render correctly 1`] = `
 `;
 
 exports[`Modal component should render correctly 1`] = `
-<div
-  class="modal hide"
->
+<div>
   <div
-    class="modal-content"
+    class="modal hide"
   />
 </div>
 `;
@@ -107,7 +105,7 @@ exports[`RecipeDelete component should render correctly 1`] = `
       description
     </p>
     <table
-      id="recipeView"
+      class="recipeView"
     >
       <thead>
         <tr>
@@ -141,22 +139,108 @@ exports[`RecipeDelete component should render correctly 1`] = `
 
 exports[`RecipeEdit component should render correctly 1`] = `
 <div>
-  <p>
-    Nome:
-  </p>
-  <textarea
-    id="nameTextArea"
-  >
-    name
-  </textarea>
-  <p>
-    Descrizione:
-  </p>
-  <textarea
-    id="descriptionTextArea"
-  >
-    description
-  </textarea>
+  <div>
+    <div
+      id="recipeEditDiv"
+    >
+      <p>
+        Nome:
+      </p>
+      <textarea
+        id="nameTextArea"
+      >
+        name
+      </textarea>
+      <p>
+        Descrizione:
+      </p>
+      <textarea
+        id="descriptionTextArea"
+      >
+        description
+      </textarea>
+      <br />
+      <table
+        class="recipeView"
+      >
+        <thead>
+          <tr>
+            <th>
+              Ingrediente
+            </th>
+            <th>
+              Quantità
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <p>
+                Acqua
+              </p>
+            </td>
+            <td>
+              <textarea />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Additivi
+              </p>
+            </td>
+            <td>
+              <textarea />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Lievito
+              </p>
+            </td>
+            <td>
+              <textarea />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Luppoli
+              </p>
+            </td>
+            <td>
+              <textarea />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Malto
+              </p>
+            </td>
+            <td>
+              <textarea />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Zuccheri
+              </p>
+            </td>
+            <td>
+              <textarea />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button>
+        Modifica ricetta
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
@@ -169,7 +253,7 @@ exports[`RecipeView component should render correctly 1`] = `
     description
   </p>
   <table
-    id="recipeView"
+    class="recipeView"
   >
     <thead>
       <tr>

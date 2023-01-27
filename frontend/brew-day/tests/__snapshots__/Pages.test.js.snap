@@ -4,133 +4,6 @@ exports[`Birre component should render correctly 1`] = `<div />`;
 
 exports[`Home component should render correctly 1`] = `<div />`;
 
-exports[`Inventario component should render correctly 1`] = `
-<div>
-  <table
-    class="myTable"
-  >
-    <tr>
-      <td>
-        <div>
-          <img
-            class="inventoryImage"
-            src="../../icons/inventory-icons/acqua.png"
-          />
-          <p
-            class="inventoryText"
-          >
-            Acqua
-          </p>
-          <p
-            class="inventoryText"
-          >
-            Disponibilità: 
-            0
-          </p>
-        </div>
-      </td>
-      <td>
-        <div>
-          <img
-            class="inventoryImage"
-            src="../../icons/inventory-icons/additivi.png"
-          />
-          <p
-            class="inventoryText"
-          >
-            Additivi
-          </p>
-          <p
-            class="inventoryText"
-          >
-            Disponibilità: 
-            0
-          </p>
-        </div>
-      </td>
-      <td>
-        <div>
-          <img
-            class="inventoryImage"
-            src="../../icons/inventory-icons/lievito.png"
-          />
-          <p
-            class="inventoryText"
-          >
-            Lievito
-          </p>
-          <p
-            class="inventoryText"
-          >
-            Disponibilità: 
-            0
-          </p>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div>
-          <img
-            class="inventoryImage"
-            src="../../icons/inventory-icons/luppoli.png"
-          />
-          <p
-            class="inventoryText"
-          >
-            Luppoli
-          </p>
-          <p
-            class="inventoryText"
-          >
-            Disponibilità: 
-            0
-          </p>
-        </div>
-      </td>
-      <td>
-        <div>
-          <img
-            class="inventoryImage"
-            src="../../icons/inventory-icons/malto.png"
-          />
-          <p
-            class="inventoryText"
-          >
-            Malto
-          </p>
-          <p
-            class="inventoryText"
-          >
-            Disponibilità: 
-            0
-          </p>
-        </div>
-      </td>
-      <td>
-        <div>
-          <img
-            class="inventoryImage"
-            src="../../icons/inventory-icons/zuccheri.png"
-          />
-          <p
-            class="inventoryText"
-          >
-            Zuccheri
-          </p>
-          <p
-            class="inventoryText"
-          >
-            Disponibilità: 
-            0
-          </p>
-        </div>
-      </td>
-    </tr>
-  </table>
-</div>
-`;
-
 exports[`Ricette component should render correctly 1`] = `
 <div>
   <table
@@ -187,16 +60,10 @@ exports[`Ricette component should render correctly 1`] = `
       </tr>
     </tbody>
   </table>
-  <div
-    class="modal hide"
-  >
+  <div>
     <div
-      class="modal-content"
-    >
-      <div>
-        Caricamento...
-      </div>
-    </div>
+      class="modal hide"
+    />
   </div>
 </div>
 `;
