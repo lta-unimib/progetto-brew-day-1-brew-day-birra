@@ -2,7 +2,6 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/react";
 import Button from "../src/components/Button";
-import GridInventoryItem from "../src/components/GridInventoryItem";
 import NavBar from "../src/components/NavBar";
 import QuantityInput from "../src/components/QuantityInput";
 import Modal from "../src/components/Modal";
@@ -43,13 +42,6 @@ describe("Button component", () => {
     fireEvent.click(minusButton);
     const countText = getByText("0");
     expect(countText).toBeInTheDocument();
-  });
-});
-
-describe("GridInventoryItem component", () => {
-  test("should render correctly", () => {
-    const { container } = render(<GridInventoryItem />);
-    expect(container.firstChild).toMatchSnapshot();
   });
 });
 

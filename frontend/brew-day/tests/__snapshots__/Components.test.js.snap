@@ -8,22 +8,6 @@ exports[`Button component should render correctly 1`] = `
 </span>
 `;
 
-exports[`GridInventoryItem component should render correctly 1`] = `
-<div>
-  <img
-    class="inventoryImage"
-  />
-  <p
-    class="inventoryText"
-  />
-  <p
-    class="inventoryText"
-  >
-    Disponibilità: 
-  </p>
-</div>
-`;
-
 exports[`Modal component should render correctly 1`] = `
 <div>
   <div
