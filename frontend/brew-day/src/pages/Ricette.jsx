@@ -10,8 +10,9 @@ class Ricette extends Component {
     constructor(props) {
         super(props);
         this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false, newRecipeName: null, newRecipeDescription: null};
-        this.deleteRecipe = this.deleteRecipe.bind(this);
         this.handleView = this.handleView.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.getCurrentComponent = this.getCurrentComponent.bind(this);
         this.setShowModal = this.setShowModal.bind(this);
     }
@@ -84,7 +85,7 @@ class Ricette extends Component {
               <td>
                 <button onClick={() => this.handleView(item)}>Dettagli</button>
                 <button onClick={() => this.handleEdit(item)}>Modifica</button>
-                <button onClick={() => this.deleteRecipe(item.recipeID)}>Elimina</button>
+                <button onClick={() => this.handleDelete(item)}>Elimina</button>
               </td>
             </tr>
         });
@@ -113,19 +114,6 @@ class Ricette extends Component {
                 </Modal>
             </div>
         );
-    }
-
-    deleteRecipe(id) {
-        fetch(`/api/recipes/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            let updatedRecipes = [...this.state.recipes].filter(i => i.recipeID !== id);
-            this.setState({recipes: updatedRecipes});
-        });
     }
 
     addRecipe() {

@@ -1,12 +1,38 @@
-import React from "react";
+import React, { Component }  from "react";
 
-const RecipeDelete = (props) => {
-  return (
-    <div>
-      <h1>{props.name}</h1>
-      <p>{props.description}</p>
-    </div>
-  );
-};
+class RecipeDelete extends Component{
+
+  constructor(props) {
+    super(props);
+    this.state = props;
+    this.deleteRecipe = this.deleteRecipe.bind(this);
+  }
+
+  render(){
+    return (
+      <div>
+        <h1>{this.state.name}</h1>
+        <p>{this.state.description}</p>
+        <button onClick={() => this.deleteRecipe(this.state.name)}>Elimina</button>
+      </div>
+    );
+  }
+
+  deleteRecipe(id) {
+    fetch(`/api/recipes/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(() => {
+        //let updatedRecipes = [...this.state.recipes].filter(i => i.recipeID !== id);
+        //this.setState({recipes: updatedRecipes});
+    });
+}
+
+}
+
+
 
 export default RecipeDelete;
