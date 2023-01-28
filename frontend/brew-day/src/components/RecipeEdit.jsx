@@ -4,7 +4,7 @@ class RecipeEdit extends Component{
 
   constructor(props) {
     super(props);
-    this.state = props;
+    this.state = {newIngredientName: null, newIngredientQuantity: null, ...props};
   }
 
   setQuantity(id, event){
@@ -20,8 +20,18 @@ class RecipeEdit extends Component{
   }
 
   setName(event){
+    let newNameRecipe = event.target.value;
+    this.setState({name: newNameRecipe})
+  }
+
+  setNewIngredientName(event){
     let newName = event.target.value;
-    this.setState({name: newName})
+    this.setState({newIngredientName: newName});
+  }
+
+  setNewIngredientQuantity(event){
+    let newQuantity = event.target.value;
+    this.setState({newIngredientQuantity: newQuantity});
   }
 
   render(){
@@ -68,6 +78,11 @@ class RecipeEdit extends Component{
             </thead>
             <tbody>
               {itemList}
+              <tr>
+                <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
+                <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
+                <button onClick={() => this.addIngredient()}>V</button>
+              </tr>
             </tbody>
           </table>
         </center>
@@ -118,7 +133,17 @@ class RecipeEdit extends Component{
   }
 
   addIngredient() {
-    
+    fetch(`/api/recipes/${this.state.recipeID}`, {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name: this.state.newIngredientName, quantity: this.state.newIngredientQuantity})
+  }).then(() => {
+      //let updatedRecipes = [...this.state.recipes].filter(i => i.recipeID !== id);
+      //this.setState({recipes: updatedRecipes});
+  });
   }
 
 }
