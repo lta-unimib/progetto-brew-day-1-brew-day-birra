@@ -25,9 +25,6 @@ class RecipeDelete extends Component{
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    }).then(() => {
-        //let updatedRecipes = [...this.state.recipes].filter(i => i.recipeID !== id);
-        //this.setState({recipes: updatedRecipes});
     });
 }
 

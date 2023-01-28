@@ -125,9 +125,6 @@ class Ricette extends Component {
         },
         body: JSON.stringify({name: this.state.newRecipeName})
         //body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
-    }).then(() => {
-        //let updatedRecipes = [...this.state.recipes].filter(i => i.recipeID !== id);
-        //this.setState({recipes: updatedRecipes});
     });
     }
 
