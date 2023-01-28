@@ -8,8 +8,8 @@ const Modal = ({ children, showModal, setShowModal }) => {
     return (
         <div>
             {showModal ? (
-                <div className={`modal show`} onClick={() => setShowModal(false)} data-testid="modal">
-                    <div className="modal-content" onClick={handleModalClick}>
+                <div className={`modal show`} onClick={() => setShowModal(false)} data-testid="modal" style={{overflowY: "auto",}}>
+                    <div className="modal-content" onClick={handleModalClick} style={{width: "75%"}}>
                         {children}
                     </div>
                 </div>
