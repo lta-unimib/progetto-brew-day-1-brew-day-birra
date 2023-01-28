@@ -6,8 +6,9 @@ const Modal = ({ children, showModal, setShowModal }) => {
     };
 
     return (
-        <div className={`modal ${showModal ? 'show' : 'hide'}`} onClick={() => setShowModal(false)}>
-            <div className="modal-content" onClick={handleModalClick}>
+        <div className={`modal ${showModal ? 'show' : 'hide'}`} onClick={() => setShowModal(false)}
+                style={{overflowY: "auto",}}>
+            <div className="modal-content" onClick={handleModalClick} style={{width: "75%"}}>
                 {children}
             </div>
         </div>
