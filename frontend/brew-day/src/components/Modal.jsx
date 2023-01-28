@@ -6,11 +6,16 @@ const Modal = ({ children, showModal, setShowModal }) => {
     };
 
     return (
-        <div className={`modal ${showModal ? 'show' : 'hide'}`} onClick={() => setShowModal(false)}
-                style={{overflowY: "auto",}}>
-            <div className="modal-content" onClick={handleModalClick} style={{width: "75%"}}>
-                {children}
-            </div>
+        <div>
+            {showModal ? (
+                <div className={`modal show`} onClick={() => setShowModal(false)} data-testid="modal" style={{overflowY: "auto",}}>
+                    <div className="modal-content" onClick={handleModalClick} style={{width: "75%"}}>
+                        {children}
+                    </div>
+                </div>
+            ) : (
+                <div className={`modal hide`} onClick={() => setShowModal(false)} data-testid="modal"></div>
+            )}
         </div>
     );
 }

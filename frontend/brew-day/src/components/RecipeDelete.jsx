@@ -13,7 +13,7 @@ class RecipeDelete extends Component{
       <div>
         <h1>{this.state.name}</h1>
         <p>{this.state.description}</p>
-        <button onClick={() => this.deleteRecipe(this.state.name)}>Elimina</button>
+        <button className="recipeButton" onClick={() => this.deleteRecipe(this.state.name)}>Sei sicuro di voler rimuovere la ricetta?</button>
       </div>
     );
   }
@@ -29,7 +29,5 @@ class RecipeDelete extends Component{
 }
 
 }
-
-
 
 export default RecipeDelete;

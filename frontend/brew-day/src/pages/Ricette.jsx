@@ -3,7 +3,7 @@ import Modal from "../components/Modal";
 import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
-
+import RecipeExecute from "../components/RecipeExecute";
 
 class Ricette extends Component {
 

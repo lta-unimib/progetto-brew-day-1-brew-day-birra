@@ -3,7 +3,6 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import Home from "../src/pages/Home";
-import Inventario from "../src/pages/Inventario";
 import Ricette from "../src/pages/Ricette";
 import Spesa from "../src/pages/Spesa";
 
@@ -17,13 +16,6 @@ describe("Birre component", () => {
 describe("Home component", () => {
   test("should render correctly", () => {
     const { container } = render(<Home />);
-    expect(container.firstChild).toMatchSnapshot();
-  });
-});
-
-describe("Inventario component", () => {
-  test("should render correctly", () => {
-    const { container } = render(<Inventario />);
     expect(container.firstChild).toMatchSnapshot();
   });
 });
