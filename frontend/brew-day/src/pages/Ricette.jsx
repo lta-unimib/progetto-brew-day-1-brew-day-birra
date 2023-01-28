@@ -9,7 +9,7 @@ class Ricette extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false };
+        this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false, newRecipeName: null, newRecipeDescription: null};
         this.deleteRecipe = this.deleteRecipe.bind(this);
         this.handleView = this.handleView.bind(this);
         this.getCurrentComponent = this.getCurrentComponent.bind(this);
@@ -55,6 +55,16 @@ class Ricette extends Component {
       }
     }
 
+    setNewRecipeName(event){
+      let newRecipeName = event.target.value;
+      this.setState({newRecipeName: newRecipeName});
+    }
+  
+    setNewRecipeDescription(event){
+      let newRecipeDescription = event.target.value;
+      this.setState({newRecipeDescription: newRecipeDescription});
+    }
+
     setShowModal(flag){
       this.setState({showModal:flag})
     }
@@ -91,6 +101,11 @@ class Ricette extends Component {
                     </thead>
                     <tbody>
                         {itemList}
+                        <tr>
+                          <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
+                          <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
+                          <button onClick={() => this.addRecipe()}>V</button>
+                        </tr>
                     </tbody>
                 </table>
                 <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
@@ -113,7 +128,20 @@ class Ricette extends Component {
         });
     }
 
-
+    addRecipe() {
+      fetch(`/api/recipes`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: this.state.newRecipeName})
+        //body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
+    }).then(() => {
+        //let updatedRecipes = [...this.state.recipes].filter(i => i.recipeID !== id);
+        //this.setState({recipes: updatedRecipes});
+    });
+    }
 
 }
 export default Ricette;
