@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Inventory extends Component {
+class Inventario extends Component {
   constructor(props) {
     super(props);
     this.state = { inventory: [] };
@@ -69,4 +69,4 @@ class Inventory extends Component {
     );
   }
 }
-export default Inventory;
+export default Inventario;
