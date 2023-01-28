@@ -3,13 +3,15 @@ import React, { Component } from "react";
 class Inventario extends Component {
   constructor(props) {
     super(props);
-    this.state = { inventory: [] };
+    this.state = { inventory: [], isLoading: true};
   }
 
   componentDidMount() {
     fetch("/api/inventory")
       .then((response) => response.json())
-      .then((data) => this.setState({ inventory: data }));
+      .then((data) => this.setState({ inventory: data, isLoading: false }, () => {
+        return <p>Caricamento...</p>
+      }));
   }
 
   handleDelete = (name) => {

@@ -40,6 +40,12 @@ describe("Inventario component", () => {
       expect(screen.queryByText("ingredient1")).not.toBeInTheDocument();
     });
   });
+
+  it("displays loading message while data is being fetched", async () => {
+    render(<Inventario />);
+    await waitFor(() => screen.getByText("Caricamento..."));
+    expect(screen.getByText("Caricamento...")).toBeInTheDocument();
+  });
 });
 
 describe("Birre component", () => {
