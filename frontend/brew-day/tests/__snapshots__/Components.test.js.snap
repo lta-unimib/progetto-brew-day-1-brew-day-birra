@@ -189,6 +189,26 @@ exports[`RecipeEdit component should render correctly 1`] = `
         </tr>
         <tr>
           <td>
+            luppoli
+          </td>
+          <td>
+            <input
+              style="width: 50%; text-align: center;"
+              type="text"
+              value="1"
+            />
+          </td>
+          <td>
+            <button>
+              V
+            </button>
+            <button>
+              X
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <input
               style="width: 50%; text-align: center;"
               type="text"
@@ -209,6 +229,80 @@ exports[`RecipeEdit component should render correctly 1`] = `
       </tbody>
     </table>
   </center>
+</div>
+`;
+
+exports[`RecipeExecute component should render correctly 1`] = `
+<div>
+  <div>
+    <center>
+      <h1>
+         
+        name
+      </h1>
+      <p>
+        In RecipeView devo cambiare questo testo con props.description tra graffe per avere la descrizione
+      </p>
+      <table
+        class="myTable"
+      >
+        <thead>
+          <tr>
+            <th
+              width="25%"
+            >
+              Immagine
+            </th>
+            <th
+              width="25%"
+            >
+              Nome
+            </th>
+            <th
+              width="25%"
+            >
+              Quantità
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <img
+                class="shoppingImage"
+                src="../../icons/inventory-icons/name.png"
+              />
+            </td>
+            <td>
+              name
+            </td>
+            <td>
+              0
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img
+                class="shoppingImage"
+                src="../../icons/inventory-icons/luppoli.png"
+              />
+            </td>
+            <td>
+              luppoli
+            </td>
+            <td>
+              1
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </center>
+  </div>
+  <button
+    class="recipeButton"
+  >
+    Sei sicuro di voler eseguire la ricetta?
+  </button>
 </div>
 `;
 
@@ -257,6 +351,20 @@ exports[`RecipeView component should render correctly 1`] = `
           </td>
           <td>
             0
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img
+              class="shoppingImage"
+              src="../../icons/inventory-icons/luppoli.png"
+            />
+          </td>
+          <td>
+            luppoli
+          </td>
+          <td>
+            1
           </td>
         </tr>
       </tbody>

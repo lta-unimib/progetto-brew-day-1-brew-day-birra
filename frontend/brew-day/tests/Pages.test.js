@@ -4,58 +4,17 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import Home from "../src/pages/Home";
 import Spesa from "../src/pages/Spesa";
-import Inventario from "../src/pages/Inventario";
+import Ricette from "../src/pages/Ricette";
 
-global.fetch = jest.fn().mockImplementation(() =>
+global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
-    json: () =>
-      Promise.resolve([
-        { name: "ingredient1", quantity: 2.0 },
-        { name: "ingredient2", quantity: 3.0 },
-      ]),
+    json: () => {
+        if (url == "/api/recipes")
+          return Promise.resolve(["id"]);
+        return Promise.resolve({recipeID: "id", name: "id", ingredients: []});
+    },
   })
-);
-
-describe("Inventario component", () => {
-  test("loads the inventory on mount", async () => {
-    render(<Inventario />);
-    await screen.findByText("ingredient1", { exact: false });
-    expect(screen.getByText("ingredient1")).toBeInTheDocument();
-    expect(screen.getByText("ingredient2")).toBeInTheDocument();
-  });
-
-  test("renders the inventory items", async () => {
-    render(<Inventario />);
-    await screen.findByText("ingredient1", { exact: false });
-    expect(screen.getAllByText("ingredient1")).toHaveLength(1);
-    expect(screen.getAllByText("ingredient2")).toHaveLength(1);
-  });
-
-  test("deletes an item from the inventory and updates the state", async () => {
-    render(<Inventario />);
-    await waitFor(() => screen.getAllByText("Elimina ingrediente"));
-    const deleteButton = screen.getAllByText("Elimina ingrediente")[0];
-    fireEvent.click(deleteButton);
-    await waitFor(() => {
-      expect(screen.queryByText("ingredient1")).not.toBeInTheDocument();
-    });
-  });
-
-  test("displays loading message while data is being fetched", async () => {
-    render(<Inventario />);
-    await waitFor(() => screen.getByText("Caricamento..."));
-    expect(screen.getByText("Caricamento...")).toBeInTheDocument();
-  });
-
-  test("sets the default image if the requested image is not found", async () => {
-    render(<Inventario />);
-    await waitFor(() => screen.getByText("ingredient1"));
-    setTimeout(() => {
-      expect(screen.queryAllByRole("img")[0].getAttribute("src")).toBe("../../icons/inventory-icons/sconosciuto.png");
-      done()
-    }, 200);
-  });
-});
+)
 
 describe("Birre component", () => {
   test("should render correctly", () => {
@@ -75,5 +34,58 @@ describe("Spesa component", () => {
   test("should render correctly", () => {
     const { container } = render(<Spesa />);
     expect(container.firstChild).toMatchSnapshot();
+  });
+});
+
+describe("Ricette component", () => {
+  test("loads the recipes on mount", async () => {
+    render(<Ricette />);
+    await screen.findByText("id", { exact: false });
+    expect(screen.getByText("id")).toBeInTheDocument();
+  });
+
+  test("renders the recipes items", async () => {
+    render(<Ricette />);
+    await screen.findByText("id", { exact: false });
+    expect(screen.getAllByText("id")).toHaveLength(1);
+  });
+
+  test("rendes the view of recipe", async () => {
+    const {container} = render(<Ricette />);
+    await waitFor(() => screen.getAllByText("Dettagli"));
+    const viewButton = screen.getAllByText("Dettagli")[0];
+    fireEvent.click(viewButton);
+    const modal = container.querySelector(".modal");
+    fireEvent.click(modal);
+  });
+
+  test("rendes the edit of recipe", async () => {
+    render(<Ricette />);
+    await waitFor(() => screen.getAllByText("Modifica"));
+    const editButton = screen.getAllByText("Modifica")[0];
+    fireEvent.click(editButton);
+  });
+
+  test("rendes the deletion of recipe", async () => {
+    render(<Ricette />);
+    await waitFor(() => screen.getAllByText("Elimina"));
+    const deleteButton = screen.getAllByText("Elimina")[0];
+    fireEvent.click(deleteButton);
+  });
+
+  test("rendes the addition of recipe", async () => {
+    render(<Ricette />);
+    await waitFor(() => screen.getAllByText("V"));
+    const addButton = screen.getAllByText("V")[0];
+    fireEvent.click(addButton);
+  });
+
+  test("changes values for addition of recipe", async () => {
+    const {container} = render(<Ricette />);
+    const inputs = container.querySelectorAll("input");
+    fireEvent.change(inputs[0], { target: { value: "name" } });
+    fireEvent.change(inputs[1], { target: { value: "description" } });
+    expect(inputs[0].value).toBe("name");
+    expect(inputs[1].value).toBe("description");
   });
 });

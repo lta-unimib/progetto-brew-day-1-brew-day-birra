@@ -17,7 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sonarqube": "sonar-scanner -Dsonar.login=squ_f91b9a7394d69d0f9ac15370ad6d8fffa9001a62 -Dsonar.host.url=http://localhost:9000 -Dsonar.projectKey=brew.day.frontend -Dsonar.sources=\"src\" -Dsonar.javascript.lcov.reportPaths=\"./coverage/lcov.info\"",
+    "coverage": "jest --coverage"
   },
   "eslintConfig": {
     "extends": [

@@ -4,8 +4,7 @@ import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 
-class Ricette extends Component {
-
+export default class Ricette extends Component {
     constructor(props) {
         super(props);
         this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false, newRecipeName: null, newRecipeDescription: null};
@@ -35,7 +34,6 @@ class Ricette extends Component {
     handleDelete(item) {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true})
     };
-
 
     getCurrentComponent(){
       let selectedRecipe = this.state.selectedRecipe;
@@ -68,7 +66,6 @@ class Ricette extends Component {
     setShowModal(flag){
       this.setState({showModal:flag})
     }
-
     
     render() {
         const {recipes, isLoading} = this.state;
@@ -126,6 +123,4 @@ class Ricette extends Component {
         //body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
     });
     }
-
 }
-export default Ricette;

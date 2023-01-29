@@ -7,8 +7,15 @@ import Modal from "../src/components/Modal";
 import RecipeView from "../src/components/RecipeView";
 import RecipeEdit from "../src/components/RecipeEdit";
 import RecipeDelete from "../src/components/RecipeDelete";
+import RecipeExecute from "../src/components/RecipeExecute";
 
-const testIngredient = [{ name: "name", quantity: "0" }];
+const testIngredient = [{ name: "name", quantity: "0" }, { name: "luppoli", quantity: "1"}];
+
+global.fetch = jest.fn().mockImplementation((url) =>
+  Promise.resolve({
+    json: () => {},
+  })
+)
 
 describe("NavBar component", () => {
   test("should render correctly", () => {
@@ -127,6 +134,21 @@ describe("RecipeEdit component", () => {
       />
     );
     expect(container.firstChild).toMatchSnapshot();
+    const inputs = container.querySelectorAll("input");
+    inputs.forEach(() => fireEvent.change(inputs[0], { target: { value: "0" } }));
+  });
+});
+
+describe("RecipeExecute component", () => {
+  test("should render correctly", () => {
+    const { container } = render(
+      <RecipeExecute
+        name="name"
+        description="description"
+        ingredients={testIngredient}
+      />
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
 
@@ -184,3 +206,4 @@ describe("Modal component", () => {
     expect(setShowModal).toHaveBeenCalledWith(false);
   });
 });
+
