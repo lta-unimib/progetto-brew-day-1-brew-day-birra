@@ -41,10 +41,19 @@ describe("Inventario component", () => {
     });
   });
 
-  it("displays loading message while data is being fetched", async () => {
+  test("displays loading message while data is being fetched", async () => {
     render(<Inventario />);
     await waitFor(() => screen.getByText("Caricamento..."));
     expect(screen.getByText("Caricamento...")).toBeInTheDocument();
+  });
+
+  test("sets the default image if the requested image is not found", async () => {
+    render(<Inventario />);
+    await waitFor(() => screen.getByText("ingredient1"));
+    setTimeout(() => {
+      expect(screen.queryAllByRole("img")[0].getAttribute("src")).toBe("../../icons/inventory-icons/sconosciuto.png");
+      done()
+    }, 200);
   });
 });
 
