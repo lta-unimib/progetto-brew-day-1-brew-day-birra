@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.persistence.service.DatasourceConfiguration;
+
 @SpringBootTest
 class ApplicationTest {
 	@Test
