@@ -1,6 +1,5 @@
 package unimib.ingsof.api;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,55 +13,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import unimib.ingsof.persistence.model.IngredientInstance;
-import unimib.ingsof.persistence.model.InventoryIngredient;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.logic.InventoryIngredientController;
+import unimib.ingsof.persistence.view.IngredientView;
 
 @RestController
 @RequestMapping("/api/inventory/{ingredientID}")
 public class InventoryIngredientEndpoint {
 	
 	@Autowired
-	private InventoryIngredientRepository inventoryIngredientRepository;
+	private InventoryIngredientController inventoryIngredientController;
 	
 	@GetMapping
-	public ResponseEntity<IngredientInstance> getIngredientByID(@PathVariable String ingredientID) {
-		if (ingredientID == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
-		IngredientInstance result = inventoryIngredientRepository.getIngredientById(ingredientID);		
-		if (result==null)
+	public ResponseEntity<IngredientView> getIngredientByID(@PathVariable String ingredientID) {
+		try {
+			IngredientView ingredientView = this.inventoryIngredientController.getIngredient(ingredientID);
+			return new ResponseEntity<>(ingredientView, HttpStatus.OK);
+		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		}
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateIngredient(@PathVariable String ingredientID,
-												@RequestBody Map<String, String> body) {
-		if (ingredientID == null || body.get("quantity") == null) {
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
-		ArrayList<InventoryIngredient> result;        
-        try {
-        	result = inventoryIngredientRepository.updateIngredient(ingredientID, 
-            		Float.parseFloat(body.get("quantity")));
-            
-	    } catch (Exception e) {
-	    	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
-        if (result.isEmpty())
-        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        
-        return new ResponseEntity<>(result, HttpStatus.OK);
+	public ResponseEntity<IngredientView> updateIngredient(@PathVariable String ingredientID,
+												@RequestBody Map<String, String> ingredientObject) {
+		try {
+			IngredientView ingredientView = this.inventoryIngredientController.updateIngredient(ingredientID, ingredientObject);
+			return new ResponseEntity<>(ingredientView, HttpStatus.OK);
+		} catch(DoesntExistsException exception) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch(Exception exception) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	
 	@DeleteMapping
 	public ResponseEntity<Object> deleteIngredient(@PathVariable String ingredientID) {
-		if (ingredientID == null) {
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }  
-        inventoryIngredientRepository.deleteIngredient(ingredientID);
+		inventoryIngredientController.deleteIngredient(ingredientID);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

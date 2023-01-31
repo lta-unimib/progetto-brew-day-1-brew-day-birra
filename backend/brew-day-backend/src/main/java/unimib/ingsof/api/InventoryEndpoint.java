@@ -1,6 +1,6 @@
 package unimib.ingsof.api;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,55 +13,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import unimib.ingsof.logic.IngredientController;
-import unimib.ingsof.persistence.model.Ingredient;
-import unimib.ingsof.persistence.model.IngredientInstance;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.logic.InventoryController;
+import unimib.ingsof.persistence.view.IngredientView;
 
 @RestController
 @RequestMapping("/api/inventory")
 public class InventoryEndpoint {
 	@Autowired
-	InventoryIngredientRepository inventoryIngredientRepository;
-	
-	@Autowired
-	IngredientController ingredientController;
+	InventoryController inventoryController;
 
 	@GetMapping
-    public ResponseEntity<ArrayList<IngredientInstance>> getAllIngredients() {
-		ArrayList<IngredientInstance> result = inventoryIngredientRepository.getAllIngredients();
+    public ResponseEntity<List<IngredientView>> getAllIngredients() {
+		List<IngredientView> result = inventoryController.getAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
-		
     }
 	
 	@PostMapping 
-	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> newIngredient) {
-		if (newIngredient == null ||
-            newIngredient.get("name") == null || newIngredient.get("quantity") == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        
-        HttpHeaders headers;
-        String ingredientID;
-        String name = newIngredient.get("name");
-        Float quantity = Float.parseFloat(newIngredient.get("quantity"));
-
-        try {
-        	
-        	Ingredient ingrediente = ingredientController.getIngredientByName(name);
-        	if(ingrediente == null) {
-        		ingrediente = ingredientController.addIngredient(name);
-        		ingredientID = ingrediente.getIngredientID();
-        	} else {
-        		ingredientID = ingrediente.getIngredientID();
-        	}
-        	
-            inventoryIngredientRepository.addIngredient(ingredientID, quantity);
-			headers = new HttpHeaders();
-			headers.add("Location", ingredientID);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> ingredientObject) {
+		try {
+			String ingredientID = inventoryController.addIngredient(ingredientObject);
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("ingredientID", ingredientID);
+			return new ResponseEntity<>(headers, HttpStatus.CREATED);
+		} catch(Exception exception) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
     }
 }

@@ -17,17 +17,15 @@ import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 
 @SpringBootTest
 class InventoryIngredientEndpointTest {
-
 	@Autowired
-	private InventoryEndpoint inventoryController;
+	private InventoryEndpoint inventoryEndpoint;
 	@Autowired
-	private InventoryIngredientEndpoint ingredientController;
+	private InventoryIngredientEndpoint ingredientEndpoint;
 	@Autowired
 	private IngredientRepository ingredientRepository;
 	@Autowired
 	private InventoryIngredientRepository inventoryIngredientRepository;
 
-	
 	@Test
 	void testBehavior() {
 		ingredientRepository.assure();
@@ -37,31 +35,33 @@ class InventoryIngredientEndpointTest {
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
 		ingredientBody.put("name", ingredientID);
 		ingredientBody.put("quantity", "7");
-		inventoryController.postIngredient(ingredientBody);
+		inventoryEndpoint.postIngredient(ingredientBody);
 		
-		assertTrue(ingredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
-		assertTrue(ingredientController.getIngredientByID(null).getStatusCode().is4xxClientError());
-		assertTrue(ingredientController.getIngredientByID("ingredienteNonPresente").getStatusCode().is4xxClientError());
+		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
+		assertTrue(ingredientEndpoint.getIngredientByID(null).getStatusCode().is4xxClientError());
+		assertTrue(ingredientEndpoint.getIngredientByID("ingredienteNonPresente").getStatusCode().is4xxClientError());
+		
+		ingredientBody = null;
+		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 
-		ingredientBody.clear();
-		
-		assertTrue(ingredientController.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
-		assertTrue(ingredientController.updateIngredient(null, ingredientBody).getStatusCode().is4xxClientError());
+		ingredientBody = new TreeMap<String, String>();
+		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(ingredientEndpoint.updateIngredient(null, ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.put("quantity", "17");
 		
-		assertFalse(ingredientController.updateIngredient("ingredienteNonPresente", ingredientBody).getStatusCode().is2xxSuccessful());
-		assertTrue(ingredientController.updateIngredient(ingredientID, ingredientBody).getStatusCode().is2xxSuccessful());
-		assertEquals(17, ingredientController.getIngredientByID(ingredientID).getBody().getQuantity(), 0.1);
+		assertFalse(ingredientEndpoint.updateIngredient("ingredienteNonPresente", ingredientBody).getStatusCode().is2xxSuccessful());
+		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is2xxSuccessful());
+		assertEquals(17, ingredientEndpoint.getIngredientByID(ingredientID).getBody().getQuantity(), 0.1);
 		
 		ingredientBody.clear();
 		ingredientBody.put("quantity", "ciao");
-		assertTrue(ingredientController.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 
 		
-		assertTrue(ingredientController.deleteIngredient(ingredientID).getStatusCode().is2xxSuccessful());
-		assertTrue(ingredientController.deleteIngredient(null).getStatusCode().is4xxClientError());
-		assertTrue(ingredientController.getIngredientByID(ingredientID).getStatusCode().is4xxClientError());
+		assertTrue(ingredientEndpoint.deleteIngredient(ingredientID).getStatusCode().is2xxSuccessful());
+		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is4xxClientError());
+		
 		inventoryIngredientRepository.drop();
 		ingredientRepository.drop();
 	}

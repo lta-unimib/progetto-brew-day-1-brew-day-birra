@@ -17,22 +17,22 @@ import unimib.ingsof.persistence.repository.RecipeRepository;
 @SpringBootTest
 class RecipeEndpointTest {
 	@Autowired
-	private RecipeListEndpoint recipeListController;
+	private RecipeListEndpoint recipeListEndpoint;
 	@Autowired
-	private RecipeEndpoint recipeController;
+	private RecipeEndpoint recipeEndpoint;
 	@Autowired
-	private RecipeRepository recipesRepository;
+	private RecipeRepository recipeRepository;
 	@Autowired
-	private RecipeIngredientRepository recipeIngredientsRepository;
+	private RecipeIngredientRepository recipeIngredientRepository;
 	@Autowired
-	private IngredientRepository ingredientsRepository;
+	private IngredientRepository ingredientRepository;
 	
 
 	@Test
 	void testBehavior() {
-		ingredientsRepository.assure();
-		recipesRepository.assure();
-		recipeIngredientsRepository.assure();
+		ingredientRepository.assure();
+		recipeRepository.assure();
+		recipeIngredientRepository.assure();
 		
 		String recipeName = "RecipeControllerTest";
 		String recipeID = recipeName;
@@ -40,67 +40,76 @@ class RecipeEndpointTest {
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
 		recipeBody.put("name", recipeName);
-		recipeListController.postRecipe(recipeBody).getStatusCode();
+		recipeListEndpoint.postRecipe(recipeBody).getStatusCode();
 		
-		assertTrue(recipeController.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
 		
 		recipeBody.clear();
 		recipeBody.put("name", recipeName);
-		assertTrue(recipeController.updateRecipe(recipeName, recipeBody).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeEndpoint.updateRecipe(recipeName, recipeBody).getStatusCode().is2xxSuccessful());
 
 		recipeBody.clear();
 		recipeBody.put("name", ingredientName);
 		recipeBody.put("quantity", "7");
-		assertTrue(recipeController.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
-		assertFalse(recipeController.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+		assertFalse(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+		
+		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
 
-		assertTrue(recipeController.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
-		assertTrue(recipeController.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
 
-		recipeIngredientsRepository.drop();
-		recipesRepository.drop();
-		ingredientsRepository.drop();
+		recipeIngredientRepository.drop();
+		recipeRepository.drop();
+		ingredientRepository.drop();
 
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientsRepository.assure();
-		recipesRepository.assure();
-		recipeIngredientsRepository.assure();
+		ingredientRepository.assure();
+		recipeRepository.assure();
+		recipeIngredientRepository.assure();
 
 		String recipeID = "name";
-		Map<String, String> recipeBody = null;
+		Map<String, String> recipeBody = new TreeMap<String, String>();
+		recipeBody.put("name", recipeID);
+
+		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 		
-		assertTrue(recipeController.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		recipeBody = null;
+		
+		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 		
 		recipeBody = new TreeMap<>();
-		assertTrue(recipeController.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 
+		assertTrue(recipeEndpoint.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
+		
 		recipeBody.put("name", recipeID);
-		assertTrue(recipeController.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 
-		assertTrue(recipeListController.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 
 		Map<String, String> ingredientBody = null;
 		
-		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody = new TreeMap<>();
-		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
 		ingredientBody.put("name", "name");
-		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.clear();
 		ingredientBody.put("quantity", "quantity");
-		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.put("name", "name");
-		assertTrue(recipeController.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
-		recipeIngredientsRepository.drop();
-		recipesRepository.drop();
-		ingredientsRepository.drop();
+		recipeIngredientRepository.drop();
+		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 }

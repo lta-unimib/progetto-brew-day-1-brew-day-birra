@@ -18,34 +18,34 @@ public interface RecipeRepository extends CrudRepository<Recipe, String> {
     ArrayList<String> getAllRecipeIDs();
     
     // GET
-    @Query("SELECT name FROM Recipe WHERE recipeID = :recipeID")
-    String getNameByID(@Param("recipeID") String recipeID);
+    @Query("SELECT recipeID FROM Recipe WHERE name like %:name%")
+    ArrayList<String> getAllRecipeIDsByName(@Param("name") String name);
     
     // GET
-    @Query("SELECT recipeID FROM Recipe WHERE name = :name")
-    ArrayList<String> getIDByName(@Param("name") String name);
+    @Query(value = "SELECT * FROM recipe WHERE recipeID = :recipeID", nativeQuery = true)
+    Recipe getRecipe(@Param("recipeID") String recipeID);
     
     // POST
     @Modifying
-    @Query("INSERT INTO Recipe (recipeID, name) values (:recipeID, :name)")
+    @Query("INSERT INTO Recipe (recipeID, name, description) values (:recipeID, :name, :description)")
     @Transactional
-    void addRecipe(@Param("recipeID") String recipeID, @Param("name") String name);
+    void addRecipe(@Param("recipeID") String recipeID, @Param("name") String name, @Param("description") String description);
 
     // DELETE
     @Modifying
     @Query("DELETE FROM Recipe WHERE recipeID = :recipeID")
     @Transactional
-    void removeRecipe(@Param("recipeID") String recipeID);
+    void deleteRecipe(@Param("recipeID") String recipeID);
 
     // PUT
     @Modifying
     @Query(value = "UPDATE recipe SET name = :name WHERE recipeID = :recipeID RETURNING *", nativeQuery = true)
     @Transactional
-	ArrayList<Recipe> updateRecipeName(@Param("recipeID") String recipeID, @Param("name") String name);
+	ArrayList<Recipe> updateRecipe(@Param("recipeID") String recipeID, @Param("name") String name);
 
     // ASSURE
     @Modifying
-    @Query(value = "create table if not exists recipe (recipeID TEXT primary key, name TEXT NOT NULL)", nativeQuery = true)
+    @Query(value = "create table if not exists recipe (recipeID TEXT primary key, name TEXT NOT NULL, description TEXT NOT NULL)", nativeQuery = true)
     @Transactional
 	void assure();
 
