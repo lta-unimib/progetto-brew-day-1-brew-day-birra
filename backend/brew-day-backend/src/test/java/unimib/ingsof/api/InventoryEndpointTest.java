@@ -19,9 +19,9 @@ import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 class InventoryEndpointTest {
 
 	@Autowired
-	private InventoryEndpoint inventoryController;
+	private InventoryEndpoint inventoryEndpoint;
 	@Autowired
-	private InventoryIngredientEndpoint inventoryIngredientController;
+	private InventoryIngredientEndpoint inventoryIngredientEndpoint;
 	@Autowired
 	private InventoryIngredientRepository inventoryIngredientsRepository;
 	@Autowired
@@ -33,7 +33,7 @@ class InventoryEndpointTest {
 		ingredientsRepository.assure();
 		inventoryIngredientsRepository.assure();
 		
-		int oldnum = inventoryController.getAllIngredients().getBody().size();
+		int oldnum = inventoryEndpoint.getAllIngredients().getBody().size();
 		
 		String name = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
@@ -41,16 +41,16 @@ class InventoryEndpointTest {
 		ingredientBody.put("quantity", "7");
 		
 		//assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-		String ingredientID = inventoryController.postIngredient(ingredientBody).getHeaders().get("Location").get(0);
-		inventoryIngredientController.getIngredientByID(name);
-		assertTrue(inventoryIngredientController.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());
+		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get("Location").get(0);
+		inventoryIngredientEndpoint.getIngredientByID(name);
+		assertTrue(inventoryIngredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
+		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
 		
-		assertFalse(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());
+		assertFalse(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
+		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
 		
-		assertFalse(inventoryController.postIngredient(null).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, inventoryController.getAllIngredients().getBody().size());	
+		assertFalse(inventoryEndpoint.postIngredient(null).getStatusCode().is2xxSuccessful());
+		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());	
 
 		inventoryIngredientsRepository.drop();
 		ingredientsRepository.drop();
@@ -68,14 +68,14 @@ class InventoryEndpointTest {
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
 		
 		ingredientBody.put("name", ingredientID);
-		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.clear();
 		ingredientBody.put("quantity", "7");
-		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.clear();
-		assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 
 		inventoryIngredientsRepository.drop();
 		ingredientsRepository.drop();
