@@ -13,55 +13,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import unimib.ingsof.logic.IngredientController;
-import unimib.ingsof.persistence.model.Ingredient;
+import unimib.ingsof.logic.InventoryController;
 import unimib.ingsof.persistence.model.IngredientInstance;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 
 @RestController
 @RequestMapping("/api/inventory")
 public class InventoryEndpoint {
 	@Autowired
-	InventoryIngredientRepository inventoryIngredientRepository;
-	
-	@Autowired
-	IngredientController ingredientController;
+	InventoryController inventoryController;
 
 	@GetMapping
     public ResponseEntity<ArrayList<IngredientInstance>> getAllIngredients() {
-		ArrayList<IngredientInstance> result = inventoryIngredientRepository.getAllIngredients();
+		ArrayList<IngredientInstance> result = inventoryController.getAllIngredients();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 		
     }
 	
 	@PostMapping 
-	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> newIngredient) {
-		if (newIngredient == null ||
-            newIngredient.get("name") == null || newIngredient.get("quantity") == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        
-        HttpHeaders headers;
-        String ingredientID;
-        String name = newIngredient.get("name");
-        Float quantity = Float.parseFloat(newIngredient.get("quantity"));
-
-        try {
-        	
-        	Ingredient ingrediente = ingredientController.getIngredientByName(name);
-        	if(ingrediente == null) {
-        		ingrediente = ingredientController.addIngredient(name);
-        		ingredientID = ingrediente.getIngredientID();
-        	} else {
-        		ingredientID = ingrediente.getIngredientID();
-        	}
-        	
-            inventoryIngredientRepository.addIngredient(ingredientID, quantity);
-			headers = new HttpHeaders();
+	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> ingredientObject) {
+		try {
+			String ingredientID = inventoryController.addIngredient(ingredientObject);
+			HttpHeaders headers = new HttpHeaders();
 			headers.add("Location", ingredientID);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+			return new ResponseEntity<>(headers, HttpStatus.CREATED);
+		} catch(Exception exception) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
     }
 }
