@@ -15,7 +15,7 @@ import unimib.ingsof.persistence.model.Ingredient;
 public interface IngredientRepository extends CrudRepository<Ingredient, String>{
 	
 	@Query(value = "SELECT * FROM ingredient", nativeQuery = true )
-	ArrayList<Ingredient> getAllIngredients();
+	ArrayList<Ingredient> getAll();
 	
 	@Query(value = "SELECT * FROM ingredient WHERE ingredientID=:ingredientID", nativeQuery = true )
 	Ingredient getIngredient(@Param("ingredientID") String ingredientID);
@@ -32,9 +32,6 @@ public interface IngredientRepository extends CrudRepository<Ingredient, String>
 	@Transactional
 	@Query("DELETE FROM Ingredient WHERE ingredientID=:ingredientID")
 	void deleteIngredient(@Param("ingredientID") String ingredientID);
-
-	@Query(value = "SELECT * FROM ingredient WHERE ingredientID=:ingredientID", nativeQuery = true )
-	Ingredient getIngredientById(@Param("ingredientID") String ingredientID);
 	
 	@Modifying 
 	@Transactional
