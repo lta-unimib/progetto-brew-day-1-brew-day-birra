@@ -33,7 +33,7 @@ public class RecipeListEndpoint {
 		try {
 			String recipeID = recipeListController.addRecipe(recipeObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Location", recipeID);
+			headers.add("recipeID", recipeID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

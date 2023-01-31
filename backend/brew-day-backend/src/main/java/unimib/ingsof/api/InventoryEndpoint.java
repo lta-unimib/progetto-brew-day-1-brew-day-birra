@@ -33,7 +33,7 @@ public class InventoryEndpoint {
 		try {
 			String ingredientID = inventoryController.addIngredient(ingredientObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Location", ingredientID);
+			headers.add("ingredientID", ingredientID);
 			return new ResponseEntity<>(headers, HttpStatus.CREATED);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

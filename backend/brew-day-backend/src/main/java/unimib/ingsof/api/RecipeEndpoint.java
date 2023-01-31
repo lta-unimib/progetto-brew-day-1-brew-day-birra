@@ -60,7 +60,7 @@ public class RecipeEndpoint {
 		try {
 			String ingredientID = this.recipeController.addIngredient(recipeID, ingredientObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Location", ingredientID);
+			headers.add("ingredientID", ingredientID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

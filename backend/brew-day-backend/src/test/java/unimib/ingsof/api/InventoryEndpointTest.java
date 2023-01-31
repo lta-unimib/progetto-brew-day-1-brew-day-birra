@@ -39,7 +39,7 @@ class InventoryEndpointTest {
 		ingredientBody.put("quantity", "7");
 		
 		//assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get("Location").get(0);
+		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get("ingredientID").get(0);
 		inventoryIngredientEndpoint.getIngredientByID(name);
 		assertTrue(inventoryIngredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
