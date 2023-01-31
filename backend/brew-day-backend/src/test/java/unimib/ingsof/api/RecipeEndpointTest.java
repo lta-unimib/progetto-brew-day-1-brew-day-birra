@@ -70,13 +70,20 @@ class RecipeEndpointTest {
 		recipeIngredientsRepository.assure();
 
 		String recipeID = "name";
-		Map<String, String> recipeBody = null;
+		Map<String, String> recipeBody = new TreeMap<String, String>();
+		recipeBody.put("name", recipeID);
+
+		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
+		
+		recipeBody = null;
 		
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 		
 		recipeBody = new TreeMap<>();
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 
+		assertTrue(recipeEndpoint.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
+		
 		recipeBody.put("name", recipeID);
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 

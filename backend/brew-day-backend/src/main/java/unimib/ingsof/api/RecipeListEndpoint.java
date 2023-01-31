@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.logic.RecipeListController;
-import unimib.ingsof.persistence.repository.RecipeRepository;
 
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeListEndpoint {
 	@Autowired
 	private RecipeListController recipeListController;
+	
 	@GetMapping
 	public ResponseEntity<ArrayList<String>> getRecipeIDs(@RequestParam Optional<String> filterByName) {
 		return new ResponseEntity<>(recipeListController.getAllRecipeIDs(filterByName), HttpStatus.OK);

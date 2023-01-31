@@ -20,11 +20,11 @@ public class Recipe {
 	}
 	
 	public String getRecipeID() {
-		return recipeID;
+		return this.recipeID;
 	}
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	public void setRecipeID(String recipeID) {

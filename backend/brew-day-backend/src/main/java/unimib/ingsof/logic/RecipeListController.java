@@ -24,7 +24,7 @@ public class RecipeListController {
 	public ArrayList<String> getAllRecipeIDs(Optional<String> filterByName) {
 		if (filterByName.isEmpty())
 			return this.getAllRecipeIDs();
-		return recipeRepository.getIDByName(filterByName.get());
+		return recipeRepository.getAllRecipeIDsByName(filterByName.get());
 	}
 	
 	public String addRecipe(Map<String, String> recipeObject) throws Exception {
