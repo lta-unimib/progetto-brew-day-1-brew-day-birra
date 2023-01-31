@@ -24,7 +24,7 @@ public class RecipeListEndpoint {
 	private RecipeListController recipeListController;
 	
 	@GetMapping
-	public ResponseEntity<ArrayList<String>> getRecipeIDs(@RequestParam Optional<String> filterByName) {
+	public ResponseEntity<ArrayList<String>> getRecipeIDs(@RequestParam("name") Optional<String> filterByName) {
 		return new ResponseEntity<>(recipeListController.getAllRecipeIDs(filterByName), HttpStatus.OK);
 	}
 	

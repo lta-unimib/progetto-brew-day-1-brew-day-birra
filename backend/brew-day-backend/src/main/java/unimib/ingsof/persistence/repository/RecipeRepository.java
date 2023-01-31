@@ -18,7 +18,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, String> {
     ArrayList<String> getAllRecipeIDs();
     
     // GET
-    @Query("SELECT recipeID FROM Recipe WHERE name = :name")
+    @Query("SELECT recipeID FROM Recipe WHERE name like %:name%")
     ArrayList<String> getAllRecipeIDsByName(@Param("name") String name);
     
     // GET
