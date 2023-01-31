@@ -73,6 +73,10 @@ export default class Ricette extends Component {
       this.setState({showModal:flag})
     }
     
+    removeFilter(){
+      this.setState({recipesFiltered: this.state.recipes})
+    }
+
     render() {
         const {recipesFiltered: recipesFiltered, isLoading} = this.state;
         
@@ -99,7 +103,9 @@ export default class Ricette extends Component {
                         <tr>
                             <th width="30%">FILTRA PER NOME</th>
                             <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-                            <th width="10%"> <button onClick={() => this.filterRecipe()}>FILTRA</button></th>
+                            <th width="20%"> <button onClick={() => this.filterRecipe()}>FILTRA</button>
+                                             <button onClick={() => this.removeFilter()}>TOGLI</button>
+                            </th>
                         </tr>
                         <tr>
                             <th width="30%">Nome</th>
@@ -135,7 +141,7 @@ export default class Ricette extends Component {
     }
 
     filterRecipe() {
-      fetch(`/api/recipes?nameFilter=${this.state.filterName}`)
+      fetch(`/api/recipes?name=${this.state.filterName}`)
         .then(response => response.json())
         .then(recipesIDsFiltered => {
           let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.name));

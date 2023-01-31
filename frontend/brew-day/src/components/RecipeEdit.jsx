@@ -11,7 +11,7 @@ class RecipeEdit extends Component{
     let quantity = event.target.value;
     this.setState({ingredients:     
       this.state.ingredients.map( item => {
-        if(item.ingredientID == id){
+        if(item.ingredientID === id){
           item.quantity=quantity;
         }
         return item;
@@ -101,7 +101,7 @@ class RecipeEdit extends Component{
   }
 
   editQuantity(id) {
-    let newQuantity = [...this.state.ingredients].filter(i => i.ingredientID == id)[0].quantity;
+    let newQuantity = [...this.state.ingredients].filter(i => i.ingredientID === id)[0].quantity;
     fetch(`/api/recipes/${this.state.recipeID}/${id}`, {
         method: 'PUT',
         headers: {

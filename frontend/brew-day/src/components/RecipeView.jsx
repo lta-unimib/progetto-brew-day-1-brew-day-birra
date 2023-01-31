@@ -22,7 +22,7 @@ const RecipeView = (props) => {
     <div>
       <center>
         <h1> {props.name}</h1>
-        <p> {props.descriptions} </p>
+        <p> {props.description} </p>
         <table className="myTable">
           <thead>
             <tr>

@@ -34,7 +34,7 @@ public class RecipeIngredient {
 		super();
 	}
 	
-	public RecipeIngredient(String ingredientID, String recipeID, float quantity) {
+	public RecipeIngredient(String recipeID, String ingredientID, float quantity) {
 		super();
 		this.ingredientID = ingredientID;
 		this.recipeID = recipeID;

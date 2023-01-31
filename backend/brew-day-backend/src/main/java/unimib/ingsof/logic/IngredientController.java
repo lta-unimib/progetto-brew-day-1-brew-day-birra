@@ -17,6 +17,9 @@ public class IngredientController {
 
 	public Ingredient addIngredient(String name) {
 		String ingredientID = name;
+		Ingredient ingredient = this.getIngredientByName(name);
+		if(ingredient != null)
+			return ingredient;
 		ingredientRepository.addIngredient(ingredientID, name);
 		return this.getIngredientByName(name);
 	}

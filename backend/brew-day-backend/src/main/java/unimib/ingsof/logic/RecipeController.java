@@ -29,11 +29,13 @@ public class RecipeController {
 		if (recipe == null)
 			throw new DoesntExistsException();
 		
-		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
 		ArrayList<RecipeIngredientView> result =  new ArrayList<>();
-		for (RecipeIngredient ingredient : ingredients) {
-			String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
-			result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
+		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
+		if(ingredients != null) {
+			for (RecipeIngredient ingredient : ingredients) {
+				String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
+				result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
+			}
 		}
 		return new RecipeView(recipeID, recipe.getName(), recipe.getDescription(), result);
 	}
