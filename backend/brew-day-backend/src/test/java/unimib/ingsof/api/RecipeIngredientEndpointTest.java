@@ -23,17 +23,17 @@ class RecipeIngredientEndpointTest {
 	@Autowired
 	private RecipeIngredientEndpoint recipeIngredientEndpoint;
 	@Autowired
-	private RecipeRepository recipesRepository;
+	private RecipeRepository recipeRepository;
 	@Autowired
-	private RecipeIngredientRepository recipeIngredientsRepository;
+	private RecipeIngredientRepository recipeIngredientRepository;
 	@Autowired
-	private IngredientRepository ingredientsRepository;
+	private IngredientRepository ingredientRepository;
 
 	@Test
 	void testBehavior() {
-		ingredientsRepository.assure();
-		recipesRepository.assure();
-		recipeIngredientsRepository.assure();
+		ingredientRepository.assure();
+		recipeRepository.assure();
+		recipeIngredientRepository.assure();
 		
 		String recipeID = "RecipeIngredientControllerTest";
 		String ingredientID = recipeID;
@@ -58,16 +58,16 @@ class RecipeIngredientEndpointTest {
 		assertTrue(recipeIngredientEndpoint.deleteRecipeIngredient(recipeID, ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeIngredientEndpoint.getRecipeIngredientByID(recipeID, ingredientID).getStatusCode().is4xxClientError());
 
-		recipeIngredientsRepository.drop();
-		recipesRepository.drop();
-		ingredientsRepository.drop();
+		recipeIngredientRepository.drop();
+		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientsRepository.assure();
-		recipesRepository.assure();
-		recipeIngredientsRepository.assure();
+		ingredientRepository.assure();
+		recipeRepository.assure();
+		recipeIngredientRepository.assure();
 		
 		String recipeID = "RecipeIngredientControllerTest";
 		String ingredientID = recipeID;
@@ -88,8 +88,8 @@ class RecipeIngredientEndpointTest {
 		ingredientBody.put("quantity", "17");
 		assertTrue(recipeIngredientEndpoint.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 		
-		recipeIngredientsRepository.drop();
-		recipesRepository.drop();
-		ingredientsRepository.drop();
+		recipeIngredientRepository.drop();
+		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 }

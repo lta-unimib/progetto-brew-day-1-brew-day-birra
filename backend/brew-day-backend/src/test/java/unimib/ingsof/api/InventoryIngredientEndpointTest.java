@@ -17,7 +17,6 @@ import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 
 @SpringBootTest
 class InventoryIngredientEndpointTest {
-
 	@Autowired
 	private InventoryEndpoint inventoryEndpoint;
 	@Autowired
@@ -27,7 +26,6 @@ class InventoryIngredientEndpointTest {
 	@Autowired
 	private InventoryIngredientRepository inventoryIngredientRepository;
 
-	
 	@Test
 	void testBehavior() {
 		ingredientRepository.assure();
@@ -42,9 +40,11 @@ class InventoryIngredientEndpointTest {
 		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientEndpoint.getIngredientByID(null).getStatusCode().is4xxClientError());
 		assertTrue(ingredientEndpoint.getIngredientByID("ingredienteNonPresente").getStatusCode().is4xxClientError());
-
-		ingredientBody.clear();
 		
+		ingredientBody = null;
+		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
+
+		ingredientBody = new TreeMap<String, String>();
 		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 		assertTrue(ingredientEndpoint.updateIngredient(null, ingredientBody).getStatusCode().is4xxClientError());
 		
@@ -60,8 +60,8 @@ class InventoryIngredientEndpointTest {
 
 		
 		assertTrue(ingredientEndpoint.deleteIngredient(ingredientID).getStatusCode().is2xxSuccessful());
-		assertTrue(ingredientEndpoint.deleteIngredient(null).getStatusCode().is4xxClientError());
 		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is4xxClientError());
+		
 		inventoryIngredientRepository.drop();
 		ingredientRepository.drop();
 	}

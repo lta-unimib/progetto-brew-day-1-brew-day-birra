@@ -21,18 +21,18 @@ class RecipeEndpointTest {
 	@Autowired
 	private RecipeEndpoint recipeEndpoint;
 	@Autowired
-	private RecipeRepository recipesRepository;
+	private RecipeRepository recipeRepository;
 	@Autowired
-	private RecipeIngredientRepository recipeIngredientsRepository;
+	private RecipeIngredientRepository recipeIngredientRepository;
 	@Autowired
-	private IngredientRepository ingredientsRepository;
+	private IngredientRepository ingredientRepository;
 	
 
 	@Test
 	void testBehavior() {
-		ingredientsRepository.assure();
-		recipesRepository.assure();
-		recipeIngredientsRepository.assure();
+		ingredientRepository.assure();
+		recipeRepository.assure();
+		recipeIngredientRepository.assure();
 		
 		String recipeName = "RecipeControllerTest";
 		String recipeID = recipeName;
@@ -53,21 +53,23 @@ class RecipeEndpointTest {
 		recipeBody.put("quantity", "7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 		assertFalse(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+		
+		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
 
 		assertTrue(recipeEndpoint.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
 
-		recipeIngredientsRepository.drop();
-		recipesRepository.drop();
-		ingredientsRepository.drop();
+		recipeIngredientRepository.drop();
+		recipeRepository.drop();
+		ingredientRepository.drop();
 
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientsRepository.assure();
-		recipesRepository.assure();
-		recipeIngredientsRepository.assure();
+		ingredientRepository.assure();
+		recipeRepository.assure();
+		recipeIngredientRepository.assure();
 
 		String recipeID = "name";
 		Map<String, String> recipeBody = new TreeMap<String, String>();
@@ -106,8 +108,8 @@ class RecipeEndpointTest {
 		ingredientBody.put("name", "name");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
-		recipeIngredientsRepository.drop();
-		recipesRepository.drop();
-		ingredientsRepository.drop();
+		recipeIngredientRepository.drop();
+		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 }

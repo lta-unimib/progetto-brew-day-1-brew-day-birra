@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.logic.InventoryController;
-import unimib.ingsof.persistence.model.IngredientInstance;
+import unimib.ingsof.persistence.view.IngredientView;
 
 @RestController
 @RequestMapping("/api/inventory")
@@ -23,10 +23,9 @@ public class InventoryEndpoint {
 	InventoryController inventoryController;
 
 	@GetMapping
-    public ResponseEntity<ArrayList<IngredientInstance>> getAllIngredients() {
-		ArrayList<IngredientInstance> result = inventoryController.getAllIngredients();
+    public ResponseEntity<ArrayList<IngredientView>> getAllIngredients() {
+		ArrayList<IngredientView> result = inventoryController.getAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
-		
     }
 	
 	@PostMapping 

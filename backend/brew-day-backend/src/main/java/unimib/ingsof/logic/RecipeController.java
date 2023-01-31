@@ -6,11 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import unimib.ingsof.persistence.model.Ingredient;
-import unimib.ingsof.persistence.model.IngredientInstance;
 import unimib.ingsof.persistence.model.Recipe;
+import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
 
 @Service
@@ -27,8 +27,13 @@ public class RecipeController {
 		if (recipe == null)
 			throw new Exception();
 		
-		ArrayList<IngredientInstance> ingredients = recipeIngredientRepository.getAll(recipeID);
-		return new RecipeView(recipeID, recipe.getName(), ingredients);
+		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
+		ArrayList<RecipeIngredientView> result =  new ArrayList<>();
+		for (RecipeIngredient ingredient : ingredients) {
+			String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
+			result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
+		}
+		return new RecipeView(recipeID, recipe.getName(), result);
 	}
 	
 	public RecipeView updateRecipe(String recipeID, Map<String, String> recipeObject) throws Exception {
@@ -56,20 +61,12 @@ public class RecipeController {
 		
 		String name = ingredientObject.get("name");
 		String quantity = ingredientObject.get("quantity");
-		String ingredientID;
 		
 		if (name == null || quantity == null)
 			throw new Exception();
 		
-		Ingredient ingrediente = this.ingredientController.getIngredientByName(name);
-		if(ingrediente == null) {
-    		ingrediente = this.ingredientController.addIngredient(name);
-    		ingredientID = ingrediente.getIngredientID();
-    	} else {
-    		ingredientID = ingrediente.getIngredientID();
-    	}
-		
-		this.recipeIngredientRepository.addRecipeIngredient(recipeID, ingredientID, Float.valueOf(quantity));
+		String ingredientID = this.ingredientController.addIngredient(name).getIngredientID();
+		this.recipeIngredientRepository.addIngredient(recipeID, ingredientID, Float.valueOf(quantity));
 		return ingredientID;
 	}
 }

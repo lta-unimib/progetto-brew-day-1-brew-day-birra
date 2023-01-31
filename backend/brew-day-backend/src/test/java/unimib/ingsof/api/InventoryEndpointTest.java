@@ -17,21 +17,19 @@ import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 
 @SpringBootTest
 class InventoryEndpointTest {
-
 	@Autowired
 	private InventoryEndpoint inventoryEndpoint;
 	@Autowired
 	private InventoryIngredientEndpoint inventoryIngredientEndpoint;
 	@Autowired
-	private InventoryIngredientRepository inventoryIngredientsRepository;
+	private InventoryIngredientRepository inventoryIngredientRepository;
 	@Autowired
-	private IngredientRepository ingredientsRepository;
-	
+	private IngredientRepository ingredientRepository;
 	
 	@Test
 	void testBehavior() {
-		ingredientsRepository.assure();
-		inventoryIngredientsRepository.assure();
+		ingredientRepository.assure();
+		inventoryIngredientRepository.assure();
 		
 		int oldnum = inventoryEndpoint.getAllIngredients().getBody().size();
 		
@@ -52,17 +50,15 @@ class InventoryEndpointTest {
 		assertFalse(inventoryEndpoint.postIngredient(null).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());	
 
-		inventoryIngredientsRepository.drop();
-		ingredientsRepository.drop();
+		inventoryIngredientRepository.drop();
+		ingredientRepository.drop();
 
 	}
 	
 	@Test
 	void allGoesWrong() {
-		inventoryIngredientsRepository.drop();
-		inventoryIngredientsRepository.assure();
-		inventoryIngredientsRepository.assure();
-		ingredientsRepository.drop();
+		ingredientRepository.assure();
+		inventoryIngredientRepository.assure();
 
 		String ingredientID = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
@@ -77,8 +73,8 @@ class InventoryEndpointTest {
 		ingredientBody.clear();
 		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 
-		inventoryIngredientsRepository.drop();
-		ingredientsRepository.drop();
+		inventoryIngredientRepository.drop();
+		ingredientRepository.drop();
 
 	}
 }

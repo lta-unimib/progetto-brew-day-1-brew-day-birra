@@ -9,33 +9,36 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import unimib.ingsof.persistence.model.IngredientInstance;
 import unimib.ingsof.persistence.model.InventoryIngredient;
 
 @Repository
 public interface InventoryIngredientRepository extends CrudRepository<InventoryIngredient, String>{
+	// GET
+	@Query("SELECT new InventoryIngredient(I.ingredientID, quantity) FROM InventoryIngredient AS II LEFT JOIN Ingredient AS I ON I.ingredientID = II.ingredientID ")
+	ArrayList<InventoryIngredient> getAll();
+
+	// GET
+	@Query(value = "SELECT * FROM inventory_ingredient WHERE ingredientID=:ingredientID", nativeQuery = true)
+	InventoryIngredient getIngredient(@Param("ingredientID") String ingredientID);
 	
-	@Query("SELECT new IngredientInstance(name, quantity) FROM InventoryIngredient AS II LEFT JOIN Ingredient AS I ON I.ingredientID = II.ingredientID ")
-	ArrayList<IngredientInstance> getAllIngredients();
-	
+	// POST
 	@Modifying 
 	@Transactional
 	@Query("INSERT INTO InventoryIngredient (ingredientID, quantity) VALUES (:ingredientID, :quantity)")
 	void addIngredient(@Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
-	
+
+	// DELETE
 	@Modifying 	
 	@Transactional
 	@Query("DELETE FROM InventoryIngredient WHERE ingredientID=:ingredientID")
 	void deleteIngredient(@Param("ingredientID") String ingredientID);
-	
+
+	// PUT
 	@Modifying 
 	@Transactional
 	@Query(value = "UPDATE inventory_ingredient SET quantity = :quantity WHERE ingredientID = :ingredientID RETURNING *", nativeQuery = true)
 	ArrayList<InventoryIngredient> updateIngredient(@Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
-	
-	@Query("SELECT new IngredientInstance(name, quantity) FROM InventoryIngredient AS II LEFT JOIN Ingredient AS I ON II.ingredientID = I.ingredientID WHERE I.ingredientID=:ingredientID")
-	IngredientInstance getIngredientById(@Param("ingredientID") String ingredientID);
-	
+
 	@Modifying 
 	@Transactional
 	@Query(value = "CREATE TABLE IF NOT EXISTS inventory_ingredient (ingredientID TEXT NOT NULL PRIMARY KEY, quantity REAL NOT NULL, FOREIGN KEY (ingredientID) REFERENCES ingredient(ingredientID))", nativeQuery=true)

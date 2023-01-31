@@ -18,7 +18,7 @@ public class RecipeIngredientController {
 	private IngredientController ingredientController;
 	
 	public RecipeIngredientView getIngredient(String recipeID, String ingredientID) throws Exception {
-		RecipeIngredient recipeIngredient = recipeIngredientRepository.getRecipeIngredient(recipeID, ingredientID);
+		RecipeIngredient recipeIngredient = recipeIngredientRepository.getIngredient(recipeID, ingredientID);
 		Ingredient ingredient = ingredientController.getIngredient(ingredientID);
 		if (ingredient == null)
 			throw new Exception();
@@ -26,7 +26,7 @@ public class RecipeIngredientController {
 			throw new Exception();
 		
 		return new RecipeIngredientView(recipeIngredient.getRecipeID(),
-										recipeIngredient.getRecipeID(),
+										recipeIngredient.getIngredientID(),
 										ingredient.getName(),
 										recipeIngredient.getQuantity());
 	}
@@ -39,11 +39,11 @@ public class RecipeIngredientController {
 		if (quantity == null)
 			throw new Exception();
 		
-		RecipeIngredient recipeIngredient = recipeIngredientRepository.getRecipeIngredient(recipeID, ingredientID);
+		RecipeIngredient recipeIngredient = recipeIngredientRepository.getIngredient(recipeID, ingredientID);
 		if (recipeIngredient == null)
 			throw new Exception();
 			
-		recipeIngredientRepository.updateRecipeIngredient(recipeID, ingredientID, Float.valueOf(quantity));
+		recipeIngredientRepository.updateIngredient(recipeID, ingredientID, Float.valueOf(quantity));
 		return this.getIngredient(recipeID, ingredientID);
 	}
 	

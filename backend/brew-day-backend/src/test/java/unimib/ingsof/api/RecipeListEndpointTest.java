@@ -19,11 +19,11 @@ class RecipeListEndpointTest {
 	@Autowired
 	private RecipeListEndpoint recipeListEndpoint;
 	@Autowired
-	private RecipeRepository recipesRepository;
+	private RecipeRepository recipeRepository;
 	
 	@Test
 	void testBehavior() {
-		recipesRepository.assure();
+		recipeRepository.assure();
 		
 		int oldnum = recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size();
 		
@@ -35,24 +35,28 @@ class RecipeListEndpointTest {
 		assertFalse(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size());
 
-		recipesRepository.drop();
+		recipeRepository.drop();
 	}
 	
 	@Test
 	void testAlternative() {
-		recipesRepository.assure();
+		recipeRepository.assure();
+		
 		assertTrue(recipeListEndpoint.getRecipeIDs(Optional.of("name")).getStatusCode().is2xxSuccessful());
-		recipesRepository.drop();
+		
+		recipeRepository.drop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		recipesRepository.assure();
+		recipeRepository.assure();
+		
 		Map<String, String> recipeBody = null;
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is4xxClientError());
 		
 		recipeBody = new TreeMap<>();
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is4xxClientError());
-		recipesRepository.drop();
+		
+		recipeRepository.drop();
 	}
 }
