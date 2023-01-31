@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.logic.RecipeIngredientController;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 
@@ -40,6 +41,8 @@ public class RecipeIngredientEndpoint {
 		try {
 			RecipeIngredientView recipeIngredientView = this.recipeIngredientController.updateIngredient(recipeID, ingredientID, ingredientObject);
 			return new ResponseEntity<>(recipeIngredientView, HttpStatus.OK);
+		} catch(DoesntExistsException exception) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

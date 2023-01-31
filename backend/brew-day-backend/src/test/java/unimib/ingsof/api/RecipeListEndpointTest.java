@@ -29,6 +29,7 @@ class RecipeListEndpointTest {
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
 		recipeBody.put("name", "RecipeListControllerTest");
+		recipeBody.put("description", "RecipeListControllerTest");
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size());
 		

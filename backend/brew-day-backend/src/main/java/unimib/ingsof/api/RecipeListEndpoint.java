@@ -1,6 +1,6 @@
 package unimib.ingsof.api;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class RecipeListEndpoint {
 	private RecipeListController recipeListController;
 	
 	@GetMapping
-	public ResponseEntity<ArrayList<String>> getRecipeIDs(@RequestParam("name") Optional<String> filterByName) {
+	public ResponseEntity<List<String>> getRecipeIDs(@RequestParam("name") Optional<String> filterByName) {
 		return new ResponseEntity<>(recipeListController.getAllRecipeIDs(filterByName), HttpStatus.OK);
 	}
 	

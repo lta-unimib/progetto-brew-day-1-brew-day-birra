@@ -5,6 +5,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.WrongBodyException;
 import unimib.ingsof.persistence.model.Ingredient;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
@@ -17,13 +19,13 @@ public class RecipeIngredientController {
 	@Autowired
 	private IngredientController ingredientController;
 	
-	public RecipeIngredientView getIngredient(String recipeID, String ingredientID) throws Exception {
+	public RecipeIngredientView getIngredient(String recipeID, String ingredientID) throws DoesntExistsException {
 		RecipeIngredient recipeIngredient = recipeIngredientRepository.getIngredient(recipeID, ingredientID);
 		Ingredient ingredient = ingredientController.getIngredient(ingredientID);
 		if (ingredient == null)
-			throw new Exception();
+			throw new DoesntExistsException();
 		if (recipeIngredient == null)
-			throw new Exception();
+			throw new DoesntExistsException();
 		
 		return new RecipeIngredientView(recipeIngredient.getRecipeID(),
 										recipeIngredient.getIngredientID(),
@@ -31,17 +33,17 @@ public class RecipeIngredientController {
 										recipeIngredient.getQuantity());
 	}
 	
-	public RecipeIngredientView updateIngredient(String recipeID, String ingredientID, Map<String, String> ingredientObject) throws Exception {
+	public RecipeIngredientView updateIngredient(String recipeID, String ingredientID, Map<String, String> ingredientObject) throws WrongBodyException, DoesntExistsException, NumberFormatException {
 		if (ingredientObject == null)
-			throw new Exception();
+			throw new WrongBodyException();
 		String quantity = ingredientObject.get("quantity");
 		
 		if (quantity == null)
-			throw new Exception();
+			throw new WrongBodyException();
 		
 		RecipeIngredient recipeIngredient = recipeIngredientRepository.getIngredient(recipeID, ingredientID);
 		if (recipeIngredient == null)
-			throw new Exception();
+			throw new DoesntExistsException();
 			
 		recipeIngredientRepository.updateIngredient(recipeID, ingredientID, Float.valueOf(quantity));
 		return this.getIngredient(recipeID, ingredientID);

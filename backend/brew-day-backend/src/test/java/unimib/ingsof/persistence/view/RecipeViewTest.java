@@ -4,16 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class RecipeViewTest {
+class RecipeViewTest {
 	@Test
 	void testBehavior() {
-		RecipeView recipeView = new RecipeView("recipeID", "recipeName");
+		RecipeView recipeView = new RecipeView("recipeID", "recipeName", "recipeDescription");
 		recipeView = new RecipeView();
 		recipeView.setName("newRecipeName");
+		recipeView.setDescription("newRecipeDescription");
 		recipeView.setRecipeID("newRecipeID");
 		recipeView.setIngredients(null);
 		assertEquals("newRecipeID", recipeView.getRecipeID());
 		assertEquals("newRecipeName", recipeView.getName());
+		assertEquals("newRecipeDescription", recipeView.getDescription());
 		assertEquals(null, recipeView.getIngredients());
 	}
 }

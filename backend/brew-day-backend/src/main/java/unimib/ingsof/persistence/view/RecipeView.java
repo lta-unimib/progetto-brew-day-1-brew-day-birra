@@ -1,24 +1,27 @@
 package unimib.ingsof.persistence.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeView {
 	private String recipeID;
 	private String name;
-	private ArrayList<RecipeIngredientView> ingredients;
+	private String description;
+	private List<RecipeIngredientView> ingredients;
 	
 	public RecipeView() {
 		super();
 	}
 	
-	public RecipeView(String recipeID, String name) {
-		this(recipeID, name, new ArrayList<>());
+	public RecipeView(String recipeID, String name, String description) {
+		this(recipeID, name, description, new ArrayList<>());
 	}
 	
-	public RecipeView(String recipeID, String name, ArrayList<RecipeIngredientView> ingredients) {
+	public RecipeView(String recipeID, String name, String description, List<RecipeIngredientView> ingredients) {
 		super();
 		this.recipeID = recipeID;
 		this.name = name;
+		this.description = description;
 		this.ingredients = ingredients;
 	}
 	
@@ -30,9 +33,13 @@ public class RecipeView {
 		return this.name;
 	}
 	
-	public ArrayList<RecipeIngredientView> getIngredients() {
+	public String getDescription() {
+		return this.description;
+	}
+	
+	public List<RecipeIngredientView> getIngredients() {
 		return this.ingredients;
-	};
+	}
 	
 	public void setRecipeID(String recipeID) {
 		this.recipeID = recipeID;
@@ -42,7 +49,11 @@ public class RecipeView {
 		this.name = name;
 	}
 	
-	public void setIngredients(ArrayList<RecipeIngredientView> ingredients) {
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public void setIngredients(List<RecipeIngredientView> ingredients) {
 		this.ingredients = ingredients;
 	}
 }

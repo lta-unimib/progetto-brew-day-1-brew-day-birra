@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.logic.RecipeController;
 import unimib.ingsof.persistence.view.RecipeView;
 
@@ -40,6 +41,8 @@ public class RecipeEndpoint {
 		try {
 			RecipeView recipeView = this.recipeController.updateRecipe(recipeID, recipeObject);
 			return new ResponseEntity<>(recipeView, HttpStatus.OK);
+		} catch(DoesntExistsException exception) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

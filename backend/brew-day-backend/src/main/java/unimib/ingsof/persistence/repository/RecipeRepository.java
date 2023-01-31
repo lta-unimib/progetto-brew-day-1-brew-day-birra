@@ -27,9 +27,9 @@ public interface RecipeRepository extends CrudRepository<Recipe, String> {
     
     // POST
     @Modifying
-    @Query("INSERT INTO Recipe (recipeID, name) values (:recipeID, :name)")
+    @Query("INSERT INTO Recipe (recipeID, name, description) values (:recipeID, :name, :description)")
     @Transactional
-    void addRecipe(@Param("recipeID") String recipeID, @Param("name") String name);
+    void addRecipe(@Param("recipeID") String recipeID, @Param("name") String name, @Param("description") String description);
 
     // DELETE
     @Modifying
@@ -45,7 +45,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, String> {
 
     // ASSURE
     @Modifying
-    @Query(value = "create table if not exists recipe (recipeID TEXT primary key, name TEXT NOT NULL)", nativeQuery = true)
+    @Query(value = "create table if not exists recipe (recipeID TEXT primary key, name TEXT NOT NULL, description TEXT NOT NULL)", nativeQuery = true)
     @Transactional
 	void assure();
 

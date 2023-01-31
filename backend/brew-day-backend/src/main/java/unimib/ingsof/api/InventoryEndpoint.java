@@ -1,6 +1,6 @@
 package unimib.ingsof.api;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class InventoryEndpoint {
 	InventoryController inventoryController;
 
 	@GetMapping
-    public ResponseEntity<ArrayList<IngredientView>> getAllIngredients() {
-		ArrayList<IngredientView> result = inventoryController.getAll();
+    public ResponseEntity<List<IngredientView>> getAllIngredients() {
+		List<IngredientView> result = inventoryController.getAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
 	
