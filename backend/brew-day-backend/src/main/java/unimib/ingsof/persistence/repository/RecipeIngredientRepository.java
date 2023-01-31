@@ -19,8 +19,8 @@ public interface RecipeIngredientRepository extends CrudRepository<RecipeIngredi
     ArrayList<IngredientInstance> getAll(@Param("recipeID") String recipeID);
     
 	// Get
-	@Query("SELECT new IngredientInstance(name, quantity) FROM RecipeIngredient AS II LEFT JOIN Ingredient AS I ON II.ingredientID = I.ingredientID WHERE II.recipeID = :recipeID AND II.ingredientID = :ingredientID")
-	IngredientInstance getRecipeIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID);
+	@Query(value = "SELECT * FROM recipe_ingredient WHERE recipeID = :recipeID AND ingredientID = :ingredientID", nativeQuery = true)
+	RecipeIngredient getRecipeIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID);
 	
 	// POST
     @Modifying
@@ -32,13 +32,13 @@ public interface RecipeIngredientRepository extends CrudRepository<RecipeIngredi
     @Modifying
     @Transactional
     @Query(value = "UPDATE recipe_ingredient set quantity = :quantity WHERE recipeID = :recipeID AND ingredientID = :ingredientID RETURNING *", nativeQuery = true)
-    ArrayList<RecipeIngredient> updateRecipeIngredientQuantity(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
+    ArrayList<RecipeIngredient> updateRecipeIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID, @Param("quantity") float quantity);
     
     // DELETE
     @Modifying
     @Transactional
     @Query("DELETE FROM RecipeIngredient WHERE recipeID = :recipeID AND ingredientID = :ingredientID")
-    void removeRecipeIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID);
+    void deleteIngredient(@Param("recipeID") String recipeID, @Param("ingredientID") String ingredientID);
 
     // ASSURE
     @Modifying

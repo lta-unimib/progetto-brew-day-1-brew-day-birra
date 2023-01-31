@@ -25,7 +25,7 @@ public class RecipeEndpoint {
 	private RecipeController recipeController;
 	
 	@GetMapping
-	public ResponseEntity<Object> getRecipeByID(@PathVariable String recipeID) {
+	public ResponseEntity<RecipeView> getRecipeByID(@PathVariable String recipeID) {
 		try {
 			RecipeView recipe = this.recipeController.getRecipeByID(recipeID);
 			return new ResponseEntity<>(recipe, HttpStatus.OK);
@@ -35,13 +35,13 @@ public class RecipeEndpoint {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Object> updateRecipe(@PathVariable String recipeID,
+	public ResponseEntity<RecipeView> updateRecipe(@PathVariable String recipeID,
 												@RequestBody Map<String, String> recipeObject) {
 		try {
 			RecipeView recipeView = this.recipeController.updateRecipe(recipeID, recipeObject);
-			return new ResponseEntity<Object>(recipeView, HttpStatus.OK);
+			return new ResponseEntity<>(recipeView, HttpStatus.OK);
 		} catch(Exception exception) {
-			return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
