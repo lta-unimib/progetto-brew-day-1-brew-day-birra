@@ -11,7 +11,7 @@ import RecipeExecute from "../src/components/RecipeExecute";
 
 const testIngredient = [{ name: "name", quantity: "0" }, { name: "luppoli", quantity: "1"}];
 
-global.fetch = jest.fn().mockImplementation((url) =>
+global.fetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
     json: () => {},
   })
@@ -121,6 +121,19 @@ describe("RecipeDelete component", () => {
       />
     );
     expect(container.firstChild).toMatchSnapshot();
+  });
+
+  test("calls fetch when delete button is clicked", () => {
+    const props = { name: "Recipe 1", description: "This is a test recipe", recipeID: 1 };
+    const { getByText } = render(<RecipeDelete {...props} />);
+    fireEvent.click(getByText("Sei sicuro di voler rimuovere la ricetta?"));
+    expect(fetch).toHaveBeenCalledWith(`/api/recipes/${props.recipeID}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
   });
 });
 
