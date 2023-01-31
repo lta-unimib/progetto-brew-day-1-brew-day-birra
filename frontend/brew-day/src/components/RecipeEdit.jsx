@@ -11,7 +11,7 @@ class RecipeEdit extends Component{
     let quantity = event.target.value;
     this.setState({ingredients:     
       this.state.ingredients.map( item => {
-        if(item.name == id){
+        if(item.ingredientID == id){
           item.quantity=quantity;
         }
         return item;
@@ -36,12 +36,12 @@ class RecipeEdit extends Component{
 
   render(){
     const itemList = this.state.ingredients.map(item => {
-      return <tr key={item.name}>
+      return <tr key={item.ingredientID}>
           <td>{item.name}</td>
-          <td><input value={item.quantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setQuantity(item.name, event)}></input></td>
+          <td><input value={item.quantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setQuantity(item.ingredientID, event)}></input></td>
           <td>
-              <button onClick={() => this.editQuantity(item.name)}>V</button>
-              <button onClick={() => this.deleteIngredient(item.name)}>X</button>
+              <button onClick={() => this.editQuantity(item.ingredientID)}>V</button>
+              <button onClick={() => this.deleteIngredient(item.ingredientID)}>X</button>
             </td>
         </tr>
     });
@@ -101,7 +101,7 @@ class RecipeEdit extends Component{
   }
 
   editQuantity(id) {
-    let newQuantity = [...this.state.ingredients].filter(i => i.name == id)[0].quantity;
+    let newQuantity = [...this.state.ingredients].filter(i => i.ingredientID == id)[0].quantity;
     fetch(`/api/recipes/${this.state.recipeID}/${id}`, {
         method: 'PUT',
         headers: {
