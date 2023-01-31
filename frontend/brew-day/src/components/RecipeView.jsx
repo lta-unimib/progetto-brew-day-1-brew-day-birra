@@ -22,7 +22,7 @@ const RecipeView = (props) => {
     <div>
       <center>
         <h1> {props.name}</h1>
-        <p>In RecipeView devo cambiare questo testo con props.description tra graffe per avere la descrizione</p>
+        <p> {props.descriptions} </p>
         <table className="myTable">
           <thead>
             <tr>

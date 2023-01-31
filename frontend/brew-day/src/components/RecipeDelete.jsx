@@ -6,7 +6,7 @@ class RecipeDelete extends Component{
     super(props);
     this.state = {name: props.name,
                   description: props.description,
-                  id: props.name};
+                  id: props.recipeID};
     this.deleteRecipe = this.deleteRecipe.bind(this);
   }
 

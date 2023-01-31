@@ -7,12 +7,13 @@ import RecipeDelete from "../components/RecipeDelete";
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false, newRecipeName: null, newRecipeDescription: null};
+        this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false, newRecipeName: null, newRecipeDescription: null, filterName: null, recipesFiltered: []};
         this.handleView = this.handleView.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.getCurrentComponent = this.getCurrentComponent.bind(this);
         this.setShowModal = this.setShowModal.bind(this);
+        this.filterRecipe = this.filterRecipe.bind(this);
     }
 
     componentDidMount() {
@@ -20,7 +21,7 @@ export default class Ricette extends Component {
         .then(response => response.json())
         .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`api/recipes/${recipeID}`))))
         .then(responses => Promise.all(responses.map(response => response.json())))
-        .then(data => this.setState({recipes: data}));
+        .then(data => this.setState({recipes: data, recipesFiltered: data}));
     }
 
     handleView(item) {
@@ -45,7 +46,7 @@ export default class Ricette extends Component {
         case "edit":
           return <RecipeEdit recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         case "delete":
-          return <RecipeDelete name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+          return <RecipeDelete recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         //case "execute":
         //  return <RecipeExecute name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         default:
@@ -56,6 +57,11 @@ export default class Ricette extends Component {
     setNewRecipeName(event){
       let newRecipeName = event.target.value;
       this.setState({newRecipeName: newRecipeName});
+    }
+
+    setFilterName(event){
+      let filterName = event.target.value;
+      this.setState({filterName: filterName});
     }
   
     setNewRecipeDescription(event){
@@ -68,16 +74,16 @@ export default class Ricette extends Component {
     }
     
     render() {
-        const {recipes, isLoading} = this.state;
+        const {recipesFiltered: recipesFiltered, isLoading} = this.state;
         
         if (isLoading) {
             return <p>Caricamento...</p>;
         }
         
-        const itemList = recipes.map(item => {
+        const itemList = recipesFiltered.map(item => {
             return <tr key={item.recipeID}>
               <td>{item.name}</td>
-              <td>Qui ci andrà la descrizione della ricetta</td>
+              <td>{item.description}</td>
               <td>
                 <button onClick={() => this.handleView(item)}>Dettagli</button>
                 <button onClick={() => this.handleEdit(item)}>Modifica</button>
@@ -91,17 +97,22 @@ export default class Ricette extends Component {
                 <table className="myTable">
                     <thead>
                         <tr>
+                            <th width="30%">FILTRA PER NOME</th>
+                            <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
+                            <th width="10%"> <button onClick={() => this.filterRecipe()}>FILTRA</button></th>
+                        </tr>
+                        <tr>
                             <th width="30%">Nome</th>
-                            <th width="30%">Descrizione</th>
-                            <th width="30%">Azioni</th>
+                            <th width="50%">Descrizione</th>
+                            <th width="10%">Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
                         {itemList}
                         <tr>
-                          <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
-                          <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
-                          <button onClick={() => this.addRecipe()}>V</button>
+                          <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
+                          <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
+                          <td><button onClick={() => this.addRecipe()}>V</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -119,8 +130,16 @@ export default class Ricette extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: this.state.newRecipeName})
-        //body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
-    });
+        body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
+    })
+    }
+
+    filterRecipe() {
+      fetch(`/api/recipes?nameFilter=${this.state.filterName}`)
+        .then(response => response.json())
+        .then(recipesIDsFiltered => {
+          let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.name));
+          this.setState({recipesFiltered: recipeFiltered});
+        })
     }
 }
