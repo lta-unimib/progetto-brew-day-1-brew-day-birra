@@ -20,6 +20,26 @@ Hanno questo pattern le classi InventoryEndpoint, InventoryIngredientEndpoint, R
 
 # Design Patterns
 
-## Message Chain
+## Chain of Responsibility
 
-Avranno questo pattern i controlli degli input nei Controller.
+[Chain of Responsibility](https://refactoring.guru/design-patterns/chain-of-responsibility)
+
+i ValitationHandler e i Validator implementano questo pattern.
+
+## Template Method
+
+[Template Method](https://refactoring.guru/design-patterns/template-method)
+
+Gli IDGenerator applicano questo pattern.
+
+## Strategy
+
+[Strategy](https://refactoring.guru/design-patterns/strategy)
+
+Gli IDGenerator applicano questo pattern.
+
+## Facade
+
+[Facade](https://refactoring.guru/design-patterns/facade)
+
+IDGenerationFacade applica questo pattern.
