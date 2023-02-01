@@ -31,9 +31,9 @@ class BeerView extends Component {
           <button onClick={this.handleShowRicetta}>Visualizza ricetta</button>
           {showRicetta && (
             <RecipeView
-              name={recipe.name ? recipe.name : ""}
-              description="Descrizione"
-              ingredients={recipe.ingredients ? recipe.ingredients : []}
+              name={recipe.name}
+              description={recipe.description}
+              ingredients={recipe.ingredients}
             />
           )}
           <h4>Note:</h4>
