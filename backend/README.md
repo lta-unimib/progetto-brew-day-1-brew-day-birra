@@ -209,6 +209,7 @@ returns a json object like:
   "name": "name",
   "recipeID":"recipeID",
   "notes": [{
+  	"beerID":"beerID"
       	"noteID": "noteID",
 	"noteType": "noteType",
 	"description":"description"
