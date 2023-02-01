@@ -13,7 +13,7 @@ class Birre extends Component {
         {
           beerID: "id0",
           name: "Birra 0",
-          recipeID: "Ricetta 0",
+          recipeID: "Ricetta1",
           notes: [
             {
               beerID: "id0",
@@ -26,7 +26,7 @@ class Birre extends Component {
         {
           beerID: "id1",
           name: "Birra 1",
-          recipeID: "Ricetta 1",
+          recipeID: "ricetta1",
           notes: [
             {
               beerID: "id1",
@@ -45,7 +45,7 @@ class Birre extends Component {
         {
           beerID: "id2",
           name: "Birra 2",
-          recipeID: "Ricetta 2",
+          recipeID: "ricetta2",
           notes: [],
         },
       ],
