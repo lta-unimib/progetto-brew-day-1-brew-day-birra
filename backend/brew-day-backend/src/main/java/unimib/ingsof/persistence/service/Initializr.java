@@ -27,5 +27,4 @@ public class Initializr {
 		recipesRepo.assure();
 		recIngredientsRepo.assure();
 	}
-	
 }

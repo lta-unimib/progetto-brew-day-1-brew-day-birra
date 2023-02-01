@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.WrongBodyException;
+import unimib.ingsof.generation.id.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.Recipe;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
@@ -59,7 +60,7 @@ public class RecipeController {
 		this.recipeRepository.deleteRecipe(recipeID);
 	}
 	
-	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws WrongBodyException, NumberFormatException {
+	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws WrongBodyException, NumberFormatException, WrongIDGenerationInitialization {
 		if (ingredientObject == null)
 			throw new WrongBodyException();
 		

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.WrongBodyException;
+import unimib.ingsof.generation.id.IDGenerationFacade;
+import unimib.ingsof.generation.id.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.repository.RecipeRepository;
 
 @Service
@@ -25,14 +27,14 @@ public class RecipeListController {
 		return recipeRepository.getAllRecipeIDsByName(filterByName.get());
 	}
 	
-	public String addRecipe(Map<String, String> recipeObject) throws WrongBodyException {
+	public String addRecipe(Map<String, String> recipeObject) throws WrongBodyException, WrongIDGenerationInitialization {
 		if (recipeObject == null || recipeObject.get("name") == null)
             throw new WrongBodyException();
 		String description = "";
 		if (recipeObject.get("description") != null)
 			description = recipeObject.get("description");
 		String name = recipeObject.get("name");
-		String recipeID = name;
+		String recipeID = IDGenerationFacade.getInstance().generateRecipeID(recipeObject);
 		recipeRepository.addRecipe(recipeID, name, description);
 		return recipeID;
 	}
