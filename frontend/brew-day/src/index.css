@@ -179,12 +179,6 @@ textarea {
   text-align: center;
 }
 
-#EditBeerDescription {
-  width: 400px;
-  height: 100px;
-}
-
-#BeerEditH4 {
-  display: inline;
-  padding: 20px;
+#inputBeerEdit {
+  width: 300px;
 }

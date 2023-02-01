@@ -5,29 +5,47 @@ class BeerEdit extends Component {
     super(props);
     this.state = {
       notes: props.notes || [],
+      name: props.name || ""
     };
   }
+
+  handleInputChange = (event) => {
+    this.setState({
+      name: event.target.value
+    });
+  };
 
   render() {
     return (
       <div>
         <center>
-          <h4 id="BeerEditH4">Nome</h4>
-          <input type="text"></input>
+          <table>
+            <tr>
+              <th width="33%">
+                <p>Nome birra:</p>
+              </th>
+              <th width="33%">
+                <input id="inputBeerEdit" value={this.state.name} onChange={this.handleInputChange} />
+              </th>
+              <th width="33%">
+                <button>Conferma nome</button>
+              </th>
+            </tr>
+          </table>
           <h4>Note:</h4>
           <table className="myTable">
             <thead>
               <tr>
-                <th>Type</th>
-                <th>Description</th>
+                <th>Tipo</th>
+                <th>Descrizione</th>
               </tr>
             </thead>
             <tbody>
               {this.state.notes.map((note) => {
                 return (
                   <tr>
-                    <td>{note.noteType}</td>
-                    <td>{note.description}</td>
+                    <td><textarea value={note.noteType}></textarea></td>
+                    <td><textarea value={note.description}></textarea></td>
                   </tr>
                 );
               })}
