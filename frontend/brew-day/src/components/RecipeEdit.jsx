@@ -24,6 +24,11 @@ class RecipeEdit extends Component{
     this.setState({name: newNameRecipe})
   }
 
+  setDescription(event){
+    let newDescription = event.target.value;
+    this.setState({description: newDescription})
+  }
+
   setNewIngredientName(event){
     let newName = event.target.value;
     this.setState({newIngredientName: newName});
@@ -62,8 +67,8 @@ class RecipeEdit extends Component{
             <tbody> 
               <tr>
                   <td><p>Descrizione:</p></td>
-                  <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}}></textarea></td>
-                  <td><button onClick={() => this.handleEdit()}>V</button></td>    
+                  <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}} onChange={ (event) => this.setDescription(event)}></textarea></td>
+                  <td><button onClick={() => this.editDescription()}>V</button></td>    
               </tr>
             </tbody>
           </table>
@@ -120,6 +125,17 @@ class RecipeEdit extends Component{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({name: this.state.name})
+    });
+  }
+
+  editDescription() {
+    fetch(`/api/recipes/${this.state.recipeID}`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({description: this.state.description})
     });
   }
 

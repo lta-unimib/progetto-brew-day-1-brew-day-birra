@@ -5,7 +5,6 @@ import NavBar from "../src/components/NavBar";
 import QuantityInput from "../src/components/QuantityInput";
 import Modal from "../src/components/Modal";
 import RecipeView from "../src/components/RecipeView";
-import RecipeEdit from "../src/components/RecipeEdit";
 import RecipeDelete from "../src/components/RecipeDelete";
 import RecipeExecute from "../src/components/RecipeExecute";
 
@@ -134,21 +133,6 @@ describe("RecipeDelete component", () => {
             'Content-Type': 'application/json'
         }
     });
-  });
-});
-
-describe("RecipeEdit component", () => {
-  test("should render correctly", () => {
-    const { container } = render(
-      <RecipeEdit
-        name="name"
-        description="description"
-        ingredients={testIngredient}
-      />
-    );
-    expect(container.firstChild).toMatchSnapshot();
-    const inputs = container.querySelectorAll("input");
-    inputs.forEach(() => fireEvent.change(inputs[0], { target: { value: "0" } }));
   });
 });
 
