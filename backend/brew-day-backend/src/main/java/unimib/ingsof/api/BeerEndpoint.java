@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.logic.RecipeController;
-import unimib.ingsof.persistence.view.RecipeView;
+import unimib.ingsof.logic.BeerController;
+import unimib.ingsof.persistence.view.BeerView;
 
 @RestController
 @RequestMapping("/api/beer/{beerID}")
@@ -28,7 +28,7 @@ public class BeerEndpoint {
 	@GetMapping
 	public ResponseEntity<BeerView> getBeerByID(@PathVariable String beerID) {
 		try {
-			BeerView beer = this.beerController.getRecipeByID(beerID);
+			BeerView beer = this.beerController.getBeerByID(beerID);
 			return new ResponseEntity<>(beer, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,7 +36,7 @@ public class BeerEndpoint {
 	}
 	
 	@PutMapping
-	public ResponseEntity<BeerView> updateRecipe(@PathVariable String beerID,
+	public ResponseEntity<BeerView> updateBeer(@PathVariable String beerID,
 												@RequestBody Map<String, String> beerObject) {
 		try {
 			BeerView beerView = this.beerController.updateBeer(beerID, beerObject);
