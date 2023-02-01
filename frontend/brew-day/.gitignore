@@ -23,5 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /node_modules
-/src/tests/__snapshots__
 /.scannerwork
