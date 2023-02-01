@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import BeerView from "../components/BeerView";
+import BeerAddNote from "../components/BeerAddNote";
 import Modal from "../components/Modal";
 
 class Birre extends Component {
@@ -48,27 +49,17 @@ class Birre extends Component {
     };
   }
 
-  /*componentDidMount() {
-    fetch("/api/inventory")
-      .then((response) => response.json())
-      .then((data) => this.setState({ inventory: data, isLoading: false }, () => {
-        return <p>Caricamento...</p>
-      }));
-  }
-
-  handleDelete = (name) => {
-    fetch(`/api/inventory/${name}`, {
-      method: "DELETE"
-    }).then(() => {
-      this.setState({
-        inventory: this.state.inventory.filter(item => item.name !== name)
-      });
-    });
-  };*/
-
   handleView(item) {
     this.setState({
       currentAction: "view",
+      selectedBeer: item,
+      showModal: true,
+    });
+  }
+
+  handleAddNote(item) {
+    this.setState({
+      currentAction: "add",
       selectedBeer: item,
       showModal: true,
     });
@@ -89,6 +80,8 @@ class Birre extends Component {
     switch (currentAction) {
       case "view":
         return <BeerView name={selectedBeer.name} recipeID={selectedBeer.recipeID} notes={selectedBeer.notes}/>;
+      case "add":
+        return <BeerAddNote />;
       default:
         return null;
     }
@@ -104,6 +97,8 @@ class Birre extends Component {
           <td>{beer.name}</td>
           <td>
             <button onClick={() => this.handleView(beer)}>Dettagli</button>
+            <button onClick={() => this.handleAddNote(beer)}>Aggiungi nota</button>
+            <button onClick={() => this.handleDelete(beer)}>Elimina</button>
           </td>
         </tr>
       );
