@@ -3,16 +3,26 @@ import RecipeView from "./RecipeView";
 
 class BeerView extends Component {
   state = {
-    showRicetta: false
+    showRicetta: false,
+    recipe: {}
   };
 
-  handleShowRicetta = () => {
+  fetchRecipe = async () => {
+    const response = await fetch(
+      `/api/recipes/${this.props.recipeID}`
+    );
+    const recipe = await response.json();
+    this.setState({ recipe });
+  };
+
+  handleShowRicetta = async () => {
+    await this.fetchRecipe();
     this.setState({ showRicetta: true });
   };
 
   render() {
     const { name, notes } = this.props;
-    const { showRicetta } = this.state;
+    const { showRicetta, recipe } = this.state;
 
     return (
       <div>
@@ -20,7 +30,11 @@ class BeerView extends Component {
           <h1>{name}</h1>
           <button onClick={this.handleShowRicetta}>Visualizza ricetta</button>
           {showRicetta && (
-            <RecipeView name="Prova" description="Prova" ingredients={[]} />
+            <RecipeView
+              name={recipe.name ? recipe.name : ""}
+              description="Descrizione"
+              ingredients={recipe.ingredients ? recipe.ingredients : []}
+            />
           )}
           <h4>Note:</h4>
           {notes.map(note => (
@@ -33,5 +47,3 @@ class BeerView extends Component {
 }
 
 export default BeerView;
-
-//<h4>ID ricetta: {props.recipeID}</h4>
