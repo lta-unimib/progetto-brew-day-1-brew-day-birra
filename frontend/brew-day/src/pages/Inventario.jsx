@@ -24,6 +24,18 @@ class Inventario extends Component {
     });
   };
 
+  handleConfirmDelete = () => {
+    const { selectedBeer, beers } = this.state;
+    const updatedBeers = beers.filter(b => b.beerID !== selectedBeer.beerID);
+    const updatedBeerIDs = updatedBeers.map(b => b.beerID);
+    this.setState({
+      beers: updatedBeers,
+      beerIDs: updatedBeerIDs,
+      selectedBeer: null,
+      showModal: false,
+    });
+  };
+
   render() {
     const { inventory, isLoading } = this.state;
 

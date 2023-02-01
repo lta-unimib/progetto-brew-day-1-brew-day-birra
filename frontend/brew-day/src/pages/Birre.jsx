@@ -14,34 +14,39 @@ class Birre extends Component {
           beerID: "id0",
           name: "Birra 0",
           recipeID: "Ricetta 0",
-          notes: [{
-            beerID: "id0",
-            nodeID: "note0",
-            noteType: "",
-            description: "cold brewed"
-          }]
+          notes: [
+            {
+              beerID: "id0",
+              nodeID: "note0",
+              noteType: "",
+              description: "cold brewed",
+            },
+          ],
         },
         {
           beerID: "id1",
           name: "Birra 1",
           recipeID: "Ricetta 1",
-          notes: [{
-            beerID: "id1",
-            nodeID: "note1",
-            noteType: "",
-            description: "dented glass"
-          }, {
-            beerID: "id1",
-            nodeID: "note2",
-            noteType: "",
-            description: "not filtered"
-          }]
+          notes: [
+            {
+              beerID: "id1",
+              nodeID: "note1",
+              noteType: "",
+              description: "dented glass",
+            },
+            {
+              beerID: "id1",
+              nodeID: "note2",
+              noteType: "",
+              description: "not filtered",
+            },
+          ],
         },
         {
           beerID: "id2",
           name: "Birra 2",
           recipeID: "Ricetta 2",
-          notes: []
+          notes: [],
         },
       ],
       currentAction: "view",
@@ -78,26 +83,44 @@ class Birre extends Component {
     this.setState({ showModal: false });
   };
 
+  handleDeleteConfirm = () => {
+    this.setState((prevState) => {
+      const updatedBeers = prevState.beers.filter(
+        (beer) => beer.beerID !== prevState.selectedBeer.beerID
+      );
+      const updatedBeerIDs = prevState.beerIDs.filter(
+        (id) => id !== prevState.selectedBeer.beerID
+      );
+      return { beers: updatedBeers, beerIDs: updatedBeerIDs, showModal: false };
+    });
+  };
+
   getCurrentComponent() {
     let selectedBeer = this.state.selectedBeer;
     let currentAction = this.state.currentAction;
-  
+
     if (selectedBeer === null) {
       return null;
     }
-  
+
     switch (currentAction) {
       case "view":
-        return <BeerView name={selectedBeer.name} recipeID={selectedBeer.recipeID} notes={selectedBeer.notes}/>;
+        return (
+          <BeerView
+            name={selectedBeer.name}
+            recipeID={selectedBeer.recipeID}
+            notes={selectedBeer.notes}
+          />
+        );
       case "add":
         return <BeerAddNote />;
       case "delete":
-        return <BeerDelete />;
+        return <BeerDelete onConfirm={this.handleDeleteConfirm}/>;
       default:
         return null;
     }
-  }  
-
+  }
+  
   render() {
     const { beerIDs, beers } = this.state;
 
@@ -108,7 +131,9 @@ class Birre extends Component {
           <td>{beer.name}</td>
           <td>
             <button onClick={() => this.handleView(beer)}>Dettagli</button>
-            <button onClick={() => this.handleAddNote(beer)}>Aggiungi nota</button>
+            <button onClick={() => this.handleAddNote(beer)}>
+              Aggiungi nota
+            </button>
             <button onClick={() => this.handleDelete(beer)}>Elimina</button>
           </td>
         </tr>
