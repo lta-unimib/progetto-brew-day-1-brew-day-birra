@@ -2,7 +2,13 @@ import React from "react";
 
 const BeerView = (props) => {
   return (
-    <p>Birra</p>
+    <div>
+      <p>{props.name}</p>
+      <p>{props.recipeID}</p>
+      {props.notes.map((note) => (
+        <p key={note.id}>{note.description}</p>
+      ))}
+    </div>
   );
 };
 
