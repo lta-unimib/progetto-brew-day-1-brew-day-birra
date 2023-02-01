@@ -26,6 +26,12 @@ Hanno questo pattern le classi InventoryEndpoint, InventoryIngredientEndpoint, R
 
 i ValitationHandler e i Validator implementano questo pattern.
 
+## Singleton
+
+[Singleton](https://refactoring.guru/design-patterns/singleton)
+
+i Validator implementano questo pattern.
+
 ## Template Method
 
 [Template Method](https://refactoring.guru/design-patterns/template-method)
