@@ -46,6 +46,11 @@ class Birre extends Component {
     this.setState({currentAction:"view", selectedBeer:item, showModal:true})
   };
 
+  setShowModal = () => {
+    this.setState({ showModal: false });
+  };
+  
+
   render() {
     const { beerIDs, beers } = this.state;
 
