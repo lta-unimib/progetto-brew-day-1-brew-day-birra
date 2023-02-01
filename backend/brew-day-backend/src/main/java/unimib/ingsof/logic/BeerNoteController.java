@@ -9,26 +9,22 @@ import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.WrongBodyException;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
-import unimib.ingsof.persistence.view.BeerNoteView;
 
 @Service
 public class BeerNoteController {
 	@Autowired
 	private BeerNoteRepository beerNoteRepository;
 	
-	public BeerNoteView getNote(String beerID, String noteID) throws DoesntExistsException {
+	public BeerNote getNote(String beerID, String noteID) throws DoesntExistsException {
 		BeerNote beerNote = beerNoteRepository.getNote(beerID, noteID);
 		
 		if (beerNote == null)
 			throw new DoesntExistsException();
 		
-		return new BeerNoteView(beerNote.getBeerID(),
-										beerNote.getNoteID(),
-										beerNote.getNoteType(),
-										beerNote.getDescription());
+		return beerNote;
 	}
 	
-	public BeerNoteView updateNote(String beerID, String noteID, Map<String, String> noteObject) throws WrongBodyException, DoesntExistsException, NumberFormatException {
+	public BeerNote updateNote(String beerID, String noteID, Map<String, String> noteObject) throws WrongBodyException, DoesntExistsException, NumberFormatException {
 		if (noteObject == null)
 			throw new WrongBodyException();
 		

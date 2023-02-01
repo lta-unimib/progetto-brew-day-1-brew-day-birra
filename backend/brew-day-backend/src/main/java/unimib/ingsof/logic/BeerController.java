@@ -12,7 +12,6 @@ import unimib.ingsof.persistence.model.Beer;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
-import unimib.ingsof.persistence.view.BeerNoteView;
 import unimib.ingsof.persistence.view.BeerView;
 
 @Service
@@ -27,14 +26,8 @@ public class BeerController {
 		Beer beer = this.beerRepository.getBeer(beerID);
 		if (beer == null)
 			throw new DoesntExistsException();
-		ArrayList<BeerNoteView> result =  new ArrayList<>();
 		ArrayList<BeerNote> notes =  beerNoteRepository.getAll(beerID);
-		if(notes != null) {
-			for (BeerNote note : notes) {
-				result.add(new BeerNoteView(note.getBeerID(), note.getNoteID(), note.getNoteType(), note.getDescription()));
-			}
-		}
-		return new BeerView(beerID, beer.getName(), beer.getRecipeID(), result);
+		return new BeerView(beerID, beer.getName(), beer.getRecipeID(), notes);
 	}
 	
 	public BeerView updateBeer(String beerID, Map<String, String> beerObject) throws DoesntExistsException, WrongBodyException {

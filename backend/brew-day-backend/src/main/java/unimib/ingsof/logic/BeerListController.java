@@ -22,7 +22,7 @@ public class BeerListController {
 	public List<String> getAllBeerIDs(Optional<String> filterByName, Optional<String> filterByRecipeID) {
 		if (filterByName.isEmpty() && filterByRecipeID.isEmpty())
 			return this.getAllBeerIDs();
-		return beerRepository.getAllBeerIDsFiltered(filterByName.get(), filterByRecipeID.get());
+		return beerRepository.getAllBeerIDsFiltered(filterByName.orElse(""), filterByRecipeID.orElse(""));
 	}
 	
 	public String addBeer(Map<String, String> beerObject) throws WrongBodyException {

@@ -33,7 +33,7 @@ public class Beer {
 		return this.recipeID;
 	}
 	
-	public void setRecipeID(String beerID) {
+	public void setBeerID(String beerID) {
 		this.beerID = beerID;
 	}
 	
@@ -41,7 +41,7 @@ public class Beer {
 		this.name = name;
 	}
 	
-	public void setDescription(String recipeID) {
+	public void setRecipeID(String recipeID) {
 		this.recipeID = recipeID;
 	}
 }
