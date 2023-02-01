@@ -65,7 +65,9 @@ li a:hover {
   border: 5px;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 3px solid white;
   border-collapse: collapse;
 }
@@ -175,4 +177,14 @@ textarea {
 
 #recipeEditDiv {
   text-align: center;
+}
+
+#EditBeerDescription {
+  width: 400px;
+  height: 100px;
+}
+
+#BeerEditH4 {
+  display: inline;
+  padding: 20px;
 }

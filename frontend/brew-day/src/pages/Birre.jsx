@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BeerView from "../components/BeerView";
-import BeerAddNote from "../components/BeerAddNote";
+import BeerEdit from "../components/BeerEdit";
 import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
 
@@ -18,7 +18,7 @@ class Birre extends Component {
             {
               beerID: "id0",
               nodeID: "note0",
-              noteType: "",
+              noteType: "Generico",
               description: "cold brewed",
             },
           ],
@@ -31,13 +31,13 @@ class Birre extends Component {
             {
               beerID: "id1",
               nodeID: "note1",
-              noteType: "",
+              noteType: "Generico",
               description: "dented glass",
             },
             {
               beerID: "id1",
               nodeID: "note2",
-              noteType: "",
+              noteType: "Generico",
               description: "not filtered",
             },
           ],
@@ -63,9 +63,9 @@ class Birre extends Component {
     });
   }
 
-  handleAddNote(item) {
+  handleEdit(item) {
     this.setState({
-      currentAction: "add",
+      currentAction: "edit",
       selectedBeer: item,
       showModal: true,
     });
@@ -112,8 +112,8 @@ class Birre extends Component {
             notes={selectedBeer.notes}
           />
         );
-      case "add":
-        return <BeerAddNote />;
+      case "edit":
+        return <BeerEdit name={selectedBeer.name} notes={selectedBeer.notes}/>;
       case "delete":
         return <BeerDelete onConfirm={this.handleDeleteConfirm}/>;
       default:
@@ -131,8 +131,8 @@ class Birre extends Component {
           <td>{beer.name}</td>
           <td>
             <button onClick={() => this.handleView(beer)}>Dettagli</button>
-            <button onClick={() => this.handleAddNote(beer)}>
-              Aggiungi nota
+            <button onClick={() => this.handleEdit(beer)}>
+              Modifica
             </button>
             <button onClick={() => this.handleDelete(beer)}>Elimina</button>
           </td>
