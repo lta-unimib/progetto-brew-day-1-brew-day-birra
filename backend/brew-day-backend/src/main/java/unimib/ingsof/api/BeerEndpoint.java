@@ -58,7 +58,7 @@ public class BeerEndpoint {
 	public ResponseEntity<Object> postBeerNote(@PathVariable String beerID,
 														@RequestBody Map<String, String> noteObject) {
 		try {
-			String noteID = this.beerController.addNote(beerID, noteObject);
+			String noteID = this.beerController.addBeerNote(beerID, noteObject);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("noteID", noteID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);
