@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
-import unimib.ingsof.exceptions.WrongBodyException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.Recipe;
 import unimib.ingsof.persistence.model.RecipeIngredient;
@@ -17,6 +16,7 @@ import unimib.ingsof.persistence.repository.RecipeRepository;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
 import unimib.ingsof.validation.validators.IngredientInitializationValidator;
+import unimib.ingsof.validation.validators.RecipeUpdatingValidator;
 
 @Service
 public class RecipeController {
@@ -34,27 +34,27 @@ public class RecipeController {
 		
 		ArrayList<RecipeIngredientView> result =  new ArrayList<>();
 		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
-		if(ingredients != null) {
-			for (RecipeIngredient ingredient : ingredients) {
-				String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
-				result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
-			}
+		for (RecipeIngredient ingredient : ingredients) {
+			String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
+			result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
 		}
 		return new RecipeView(recipeID, recipe.getName(), recipe.getDescription(), result);
 	}
 	
-	public RecipeView updateRecipe(String recipeID, Map<String, String> recipeObject) throws DoesntExistsException, WrongBodyException {
+	public RecipeView updateRecipe(String recipeID, Map<String, String> recipeObject) throws ValidationException, DoesntExistsException {
 		Recipe recipe = this.recipeRepository.getRecipe(recipeID);
 		if (recipe == null)
 			throw new DoesntExistsException();
-		if (recipeObject == null)
-			throw new WrongBodyException();
-		
+		recipeObject = RecipeUpdatingValidator.getInstance().handle(recipeObject);
+
 		String newName = recipeObject.get("name");
-		if (newName == null)
-			throw new WrongBodyException();
+		String newDescription = recipeObject.get("description");
 		
-		this.recipeRepository.updateRecipe(recipeID, newName);
+		if (newName != null)
+			this.recipeRepository.updateRecipeName(recipeID, newName);
+		
+		if (newDescription != null)
+			this.recipeRepository.updateRecipeDescription(recipeID, newDescription);
 		return this.getRecipeByID(recipeID);
 	}
 	
@@ -65,7 +65,7 @@ public class RecipeController {
 	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization {
 		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
 		String name = ingredientObject.get("name");
-		float quantity = Float.valueOf(ingredientObject.get("quantity"));
+		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
 		
 		String ingredientID = this.ingredientController.addIngredient(name).getIngredientID();
 		this.recipeIngredientRepository.addIngredient(recipeID, ingredientID, quantity);

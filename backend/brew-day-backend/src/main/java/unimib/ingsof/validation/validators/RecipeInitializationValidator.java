@@ -2,7 +2,7 @@ package unimib.ingsof.validation.validators;
 
 import unimib.ingsof.validation.handlers.BaseValidationHandler;
 import unimib.ingsof.validation.handlers.BodyValidationHandler;
-import unimib.ingsof.validation.handlers.DefaulterDescriptionValidationHandler;
+import unimib.ingsof.validation.handlers.DescriptionDefaultingValidationHandler;
 import unimib.ingsof.validation.handlers.NameValidationHandler;
 
 public class RecipeInitializationValidator extends BaseValidationHandler {
@@ -15,9 +15,9 @@ public class RecipeInitializationValidator extends BaseValidationHandler {
 	}
 	
 	public RecipeInitializationValidator() {
-		BaseValidationHandler bodyHandler = new BodyValidationHandler(),
-						nameHandler = new NameValidationHandler(),
-						descriptionHandler = new DefaulterDescriptionValidationHandler();
+		BaseValidationHandler bodyHandler = new BodyValidationHandler();
+		BaseValidationHandler nameHandler = new NameValidationHandler();
+		BaseValidationHandler descriptionHandler = new DescriptionDefaultingValidationHandler();
 		nameHandler.setNext(descriptionHandler);
 		bodyHandler.setNext(nameHandler);
 		this.setNext(bodyHandler);

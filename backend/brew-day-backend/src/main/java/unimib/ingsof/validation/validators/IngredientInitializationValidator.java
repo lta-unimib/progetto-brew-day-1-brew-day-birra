@@ -15,9 +15,9 @@ public class IngredientInitializationValidator extends BaseValidationHandler {
 	}
 	
 	public IngredientInitializationValidator() {
-		BaseValidationHandler bodyHandler = new BodyValidationHandler(),
-						nameHandler = new NameValidationHandler(),
-						quantityHandler = new QuantityValidationHandler();
+		BaseValidationHandler bodyHandler = new BodyValidationHandler();
+		BaseValidationHandler nameHandler = new NameValidationHandler();
+		BaseValidationHandler quantityHandler = new QuantityValidationHandler();
 		nameHandler.setNext(quantityHandler);
 		bodyHandler.setNext(nameHandler);
 		this.setNext(bodyHandler);

@@ -24,11 +24,9 @@ public class InventoryController {
 	public List<IngredientView> getAll() {
 		ArrayList<InventoryIngredient> ingredients = inventoryIngredientRepository.getAll();
 		ArrayList<IngredientView> result =  new ArrayList<>();
-		if (ingredients != null) {
-			for (InventoryIngredient ingredient : ingredients) {
-				String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
-				result.add(new IngredientView(ingredient.getIngredientID(), name, ingredient.getQuantity()));
-			}
+		for (InventoryIngredient ingredient : ingredients) {
+			String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
+			result.add(new IngredientView(ingredient.getIngredientID(), name, ingredient.getQuantity()));
 		}
 		return result;
 	}
@@ -36,7 +34,7 @@ public class InventoryController {
 	public String addIngredient(Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization {
 		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
 		String name = ingredientObject.get("name");
-		float quantity = Float.valueOf(ingredientObject.get("quantity"));
+		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
 		
         String ingredientID = ingredientController.addIngredient(name).getIngredientID();
         inventoryIngredientRepository.addIngredient(ingredientID, quantity);
