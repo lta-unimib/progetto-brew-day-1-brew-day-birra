@@ -1,4 +1,4 @@
-package unimib.ingsof.generation.id;
+package unimib.ingsof.exceptions;
 
 public class WrongIDGenerationInitialization extends Exception {
 

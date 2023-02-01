@@ -7,14 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongBodyException;
-import unimib.ingsof.generation.id.WrongIDGenerationInitialization;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.Recipe;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeRepository;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
+import unimib.ingsof.validation.validators.IngredientInitializationValidator;
 
 @Service
 public class RecipeController {
@@ -60,18 +62,13 @@ public class RecipeController {
 		this.recipeRepository.deleteRecipe(recipeID);
 	}
 	
-	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws WrongBodyException, NumberFormatException, WrongIDGenerationInitialization {
-		if (ingredientObject == null)
-			throw new WrongBodyException();
-		
+	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization {
+		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
 		String name = ingredientObject.get("name");
-		String quantity = ingredientObject.get("quantity");
-		
-		if (name == null || quantity == null)
-			throw new WrongBodyException();
+		float quantity = Float.valueOf(ingredientObject.get("quantity"));
 		
 		String ingredientID = this.ingredientController.addIngredient(name).getIngredientID();
-		this.recipeIngredientRepository.addIngredient(recipeID, ingredientID, Float.valueOf(quantity));
+		this.recipeIngredientRepository.addIngredient(recipeID, ingredientID, quantity);
 		return ingredientID;
 	}
 }

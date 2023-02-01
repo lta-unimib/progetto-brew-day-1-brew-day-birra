@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
 
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
+
 class IDGenerationFacadeTest {
 	@Test
 	void testBehavior() {
