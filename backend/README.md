@@ -22,6 +22,7 @@
 | `/api/beer/` | `POST` | execute recipe and add beer to stock |
 | `/api/beer/:beerID` | `GET` | get stocked beer by ID |
 | `/api/beer/:beerID` | `DELETE` | delete stocked beer |
+| `/api/beer/:beerID` | `PUT` | update stocked beer details |
 | `/api/beer/:beerID` | `POST` | add beer note |
 | `/api/beer/:beerID/:noteID` | `GET` | get beer note by ID |
 | `/api/beer/:beerID/:noteID` | `PUT` | update beer note|
@@ -196,7 +197,7 @@ requires a json object like:
 }
 ```
 
-put in BeerID header the path of created resource
+put in beerID header the path of created resource
 
 ### GET /api/beer/:beerID
 
@@ -215,6 +216,30 @@ returns a json object like:
 }
 ```
 
+### PUT /api/beer/:beerID
+
+requires a json object like:
+
+```json
+{
+  "name": "new name"
+}
+```
+
+returns a json object like:
+
+```json
+{
+  "beerID":"beerID"
+  "name": "new name",
+  "recipeID":"recipeID",
+  "notes": [{
+      	"noteID": "noteID",
+	"noteType": "noteType",
+	"description":"description"
+  }]
+}
+```
 
 ### POST /api/beer/:beerID
 
@@ -227,7 +252,7 @@ requires a json object like:
 }
 ```
 
-put in NoteID header the path of created resource
+put in noteID header the path of created resource
 
 
 ### GET /api/beer/:beerID/:noteID
