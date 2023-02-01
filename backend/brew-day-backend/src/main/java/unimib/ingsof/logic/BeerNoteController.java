@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.WrongBodyException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
+import unimib.ingsof.validation.validators.BeerNoteUpdatingValidator;
 
 @Service
 public class BeerNoteController {
@@ -17,31 +18,24 @@ public class BeerNoteController {
 	
 	public BeerNote getNote(String beerID, String noteID) throws DoesntExistsException {
 		BeerNote beerNote = beerNoteRepository.getNote(beerID, noteID);
-		
 		if (beerNote == null)
 			throw new DoesntExistsException();
-		
 		return beerNote;
 	}
 	
-	public BeerNote updateNote(String beerID, String noteID, Map<String, String> noteObject) throws WrongBodyException, DoesntExistsException, NumberFormatException {
-		if (noteObject == null)
-			throw new WrongBodyException();
-		
-		String noteType = noteObject.get("noteType");
-		String description = noteObject.get("description");
-		
-		if (noteType == null)
-			noteType = "Generic";
-		
-		if (description == null)
-			noteType = "";
-		
+	public BeerNote updateNote(String beerID, String noteID, Map<String, String> noteObject) throws ValidationException, DoesntExistsException {
 		BeerNote beerNote = beerNoteRepository.getNote(beerID, noteID);
 		if (beerNote == null)
 			throw new DoesntExistsException();
-			
-		beerNoteRepository.updateNote(beerID, noteID, noteType, description);
+		
+		noteObject = BeerNoteUpdatingValidator.getInstance().handle(noteObject);
+		String noteType = noteObject.get("noteType");
+		String description = noteObject.get("description");
+		
+		if (noteType != null)
+			beerNoteRepository.updateNoteType(beerID, noteID, noteType);
+		if (description != null)
+			beerNoteRepository.updateNoteDescription(beerID, noteID, description);
 		return this.getNote(beerID, noteID);
 	}
 	

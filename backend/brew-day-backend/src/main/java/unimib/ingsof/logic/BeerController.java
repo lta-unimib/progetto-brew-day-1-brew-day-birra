@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.WrongBodyException;
+import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
+import unimib.ingsof.generation.id.IDGenerationFacade;
 import unimib.ingsof.persistence.model.Beer;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
 import unimib.ingsof.persistence.view.BeerView;
+import unimib.ingsof.validation.validators.BeerNoteInitializationValidator;
+import unimib.ingsof.validation.validators.BeerUpdatingValidator;
 
 @Service
 public class BeerController {
@@ -30,17 +34,13 @@ public class BeerController {
 		return new BeerView(beerID, beer.getName(), beer.getRecipeID(), notes);
 	}
 	
-	public BeerView updateBeer(String beerID, Map<String, String> beerObject) throws DoesntExistsException, WrongBodyException {
+	public BeerView updateBeer(String beerID, Map<String, String> beerObject) throws DoesntExistsException, ValidationException {
 		Beer beer = this.beerRepository.getBeer(beerID);
 		if (beer == null)
 			throw new DoesntExistsException();
-		if (beerObject == null)
-			throw new WrongBodyException();
+		beerObject = BeerUpdatingValidator.getInstance().handle(beerObject);
 		
 		String newName = beerObject.get("name");
-		if (newName == null)
-			throw new WrongBodyException();
-		
 		this.beerRepository.updateBeer(beerID, newName);
 		return this.getBeerByID(beerID);
 	}
@@ -49,20 +49,12 @@ public class BeerController {
 		this.beerRepository.deleteBeer(beerID);
 	}
 	
-	public String addBeerNote(String beerID, Map<String, String> noteObject) throws WrongBodyException, NumberFormatException {
-		if (noteObject == null)
-			throw new WrongBodyException();
-		
+	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization {
+		noteObject = BeerNoteInitializationValidator.getInstance().handle(noteObject);
 		String noteType = noteObject.get("noteType");
 		String description = noteObject.get("description");
 		
-		if (noteType == null)
-			noteType = "Generic";
-		
-		if (description == null)
-			noteType = "";
-		
-		String noteID = "booooooooooooooooooo";
+		String noteID = IDGenerationFacade.getInstance().generateNoteID(noteObject);
 		this.beerNoteRepository.addNote(beerID, noteID, noteType, description);
 		return noteID;
 	}
