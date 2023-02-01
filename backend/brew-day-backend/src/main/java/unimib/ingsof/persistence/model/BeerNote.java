@@ -1,7 +1,9 @@
 package unimib.ingsof.persistence.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+@Entity
 public class BeerNote {
 	
 	@Id
@@ -10,6 +12,10 @@ public class BeerNote {
 	private String noteType;
 	private String description;
 	
+	public BeerNote() {
+		super();
+	}
+
 	public BeerNote(String noteID, String beerID, String noteType, String description) {
 		super();
 		this.noteID = noteID;
