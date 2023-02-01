@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.WrongBodyException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Ingredient;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
+import unimib.ingsof.validation.validators.IngredientUpdatingValidator;
 
 @Service
 public class RecipeIngredientController {
@@ -33,19 +34,15 @@ public class RecipeIngredientController {
 										recipeIngredient.getQuantity());
 	}
 	
-	public RecipeIngredientView updateIngredient(String recipeID, String ingredientID, Map<String, String> ingredientObject) throws WrongBodyException, DoesntExistsException, NumberFormatException {
-		if (ingredientObject == null)
-			throw new WrongBodyException();
-		String quantity = ingredientObject.get("quantity");
-		
-		if (quantity == null)
-			throw new WrongBodyException();
+	public RecipeIngredientView updateIngredient(String recipeID, String ingredientID, Map<String, String> ingredientObject) throws ValidationException, DoesntExistsException {
+		ingredientObject = IngredientUpdatingValidator.getInstance().handle(ingredientObject);
+		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
 		
 		RecipeIngredient recipeIngredient = recipeIngredientRepository.getIngredient(recipeID, ingredientID);
 		if (recipeIngredient == null)
 			throw new DoesntExistsException();
 			
-		recipeIngredientRepository.updateIngredient(recipeID, ingredientID, Float.valueOf(quantity));
+		recipeIngredientRepository.updateIngredient(recipeID, ingredientID, quantity);
 		return this.getIngredient(recipeID, ingredientID);
 	}
 	

@@ -41,7 +41,13 @@ public interface RecipeRepository extends CrudRepository<Recipe, String> {
     @Modifying
     @Query(value = "UPDATE recipe SET name = :name WHERE recipeID = :recipeID RETURNING *", nativeQuery = true)
     @Transactional
-	ArrayList<Recipe> updateRecipe(@Param("recipeID") String recipeID, @Param("name") String name);
+	ArrayList<Recipe> updateRecipeName(@Param("recipeID") String recipeID, @Param("name") String name);
+
+    // PUT
+    @Modifying
+    @Query(value = "UPDATE recipe SET description = :description WHERE recipeID = :recipeID RETURNING *", nativeQuery = true)
+    @Transactional
+	ArrayList<Recipe> updateRecipeDescription(@Param("recipeID") String recipeID, @Param("description") String name);
 
     // ASSURE
     @Modifying

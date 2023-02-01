@@ -47,6 +47,13 @@ class RecipeEndpointTest {
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 
 		recipeBody.clear();
+		recipeBody.put("description", recipeName);
+		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+
+		recipeBody.put("name", recipeName);
+		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+
+		recipeBody.clear();
 		recipeBody.put("name", ingredientName);
 		recipeBody.put("quantity", "7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());

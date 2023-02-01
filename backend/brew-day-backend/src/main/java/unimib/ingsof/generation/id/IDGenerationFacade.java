@@ -3,6 +3,8 @@ package unimib.ingsof.generation.id;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
+
 public class IDGenerationFacade {
 	private static IDGenerationFacade instance;
 	private IDGenerator ingredientIDGenerator;
