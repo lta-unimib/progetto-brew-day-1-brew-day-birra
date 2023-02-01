@@ -9,18 +9,18 @@ public class BeerView {
 	private String beerID;
 	private String name; 
 	private String recipeID;
-	private List<BeerNote> result;
+	private List<BeerNote> notes;
 
 	public BeerView() {
 		super();
 	}
 
-	public BeerView(String beerID, String name, String recipeID, List<BeerNote> result) {
+	public BeerView(String beerID, String name, String recipeID, List<BeerNote> notes) {
 		super();
 		this.beerID = beerID;
 		this.name = name;
 		this.recipeID = recipeID;
-		this.result = result;
+		this.notes = notes;
 	}
 
 	public String getBeerID() {
@@ -47,14 +47,11 @@ public class BeerView {
 		this.recipeID = recipeID;
 	}
 
-	public List<BeerNote> getResult() {
-		return result;
+	public List<BeerNote> getNotes() {
+		return notes;
 	}
 
-	public void setResult(List<BeerNote> result) {
-		this.result = result;
+	public void setNotes(List<BeerNote> result) {
+		this.notes = result;
 	}
-	
-	
-
 }
