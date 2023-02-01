@@ -133,7 +133,7 @@ get a json object like:
 }, {
     "name": "nome2",
     "quantity": 2.0
-},...
+}
 ]
 ```
 
@@ -207,9 +207,8 @@ returns a json object like:
   "beerID":"beerID"
   "name": "name",
   "recipeID":"recipeID",
-  }]
   "notes": [{
-    "noteID": "noteID",
+      	"noteID": "noteID",
 	"noteType": "noteType",
 	"description":"description"
   }]
