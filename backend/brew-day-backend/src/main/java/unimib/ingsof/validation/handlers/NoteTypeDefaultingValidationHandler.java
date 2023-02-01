@@ -8,12 +8,15 @@ import unimib.ingsof.exceptions.WrongBodyException;
 public class NoteTypeDefaultingValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		if (object.get("noteType") == null)
-			object.put("noteType", "generic");
+		String noteType = object.get("noteType");
+		if (noteType == null)
+			noteType = "generic";
 		else {
-			if (! object.get("noteType").equals("taste"))
+			if (! noteType.equals("taste"))
 				throw new WrongBodyException();
 		}
+		
+		object.put("noteType", noteType);
 		return super.handle(object);
 	}
 }
