@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import BeerView from "../components/BeerView";
 import BeerAddNote from "../components/BeerAddNote";
+import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
 
 class Birre extends Component {
@@ -65,6 +66,14 @@ class Birre extends Component {
     });
   }
 
+  handleDelete(item) {
+    this.setState({
+      currentAction: "delete",
+      selectedBeer: item,
+      showModal: true,
+    });
+  }
+
   setShowModal = () => {
     this.setState({ showModal: false });
   };
@@ -82,6 +91,8 @@ class Birre extends Component {
         return <BeerView name={selectedBeer.name} recipeID={selectedBeer.recipeID} notes={selectedBeer.notes}/>;
       case "add":
         return <BeerAddNote />;
+      case "delete":
+        return <BeerDelete />;
       default:
         return null;
     }
