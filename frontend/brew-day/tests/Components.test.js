@@ -8,7 +8,7 @@ import RecipeView from "../src/components/RecipeView";
 import RecipeDelete from "../src/components/RecipeDelete";
 import RecipeExecute from "../src/components/RecipeExecute";
 
-const testIngredient = [{ name: "name", quantity: "0" }, { name: "luppoli", quantity: "1"}];
+const testIngredient = [{ name: "boh", quantity: "0" }, { name: "luppoli", quantity: "1"}];
 
 global.fetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
