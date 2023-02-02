@@ -90,6 +90,7 @@ class BeerEdit extends Component {
                     <td>
                       <textarea
                         className="descriptionBeerEdit"
+                        data-testid="description-textarea"
                         value={note.description}
                         onChange={(event) =>
                           this.handleDescriptionChange(event, index)

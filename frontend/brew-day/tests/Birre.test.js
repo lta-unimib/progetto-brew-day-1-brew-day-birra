@@ -70,4 +70,18 @@ describe('BeerEdit component', () => {
 
     expect(noteTypeTextarea.value).toBe("Taste");
   });
+
+  test("handles description change", () => {
+    const notes = [{ noteType: "", description: "" }];
+    const { getByText, getByTestId } = render(
+      <BeerEdit notes={notes} />
+    );
+
+    const descriptionTextarea = getByTestId("description-textarea");
+    fireEvent.change(descriptionTextarea, {
+      target: { value: "Dented glass" },
+    });
+
+    expect(descriptionTextarea.value).toBe("Dented glass");
+  });
 });
