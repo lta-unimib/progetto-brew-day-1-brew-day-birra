@@ -22,6 +22,8 @@ describe("RecipeEdit component", () => {
         );
         const inputs = container.querySelectorAll("input");
         fireEvent.change(inputs[0], { target: { value: "newName" } });
+        const textareas = container.querySelectorAll("textarea");
+        fireEvent.change(textareas[0], { target: { value: "newDescription" } });
         for (let i = 1; i < inputs.length; i+=2) {
             fireEvent.change(inputs[i], { target: { value: "newIngredientName" } });
             fireEvent.change(inputs[i+1], { target: { value: "17" } });

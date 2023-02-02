@@ -14,6 +14,8 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 )
 
+const lastElement = (arr) => arr[arr.length-1];
+
 describe("Birre component", () => {
   test("should render correctly", () => {
     const { container, getAllByText } = render(<Birre />);
@@ -38,6 +40,6 @@ describe("Birre component", () => {
   test("should render delete correctly", () => {
     const { container, getAllByText } = render(<Birre />);
     fireEvent.click(getAllByText("Elimina")[0]);
-    fireEvent.click(getAllByText("Elimina")[0]);
+    fireEvent.click(lastElement(getAllByText("Elimina")));
   });
 });
