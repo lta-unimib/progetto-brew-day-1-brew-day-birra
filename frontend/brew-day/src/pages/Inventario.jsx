@@ -40,6 +40,7 @@ class Inventario extends Component {
             <img
               className="shoppingImage"
               src={imagePath}
+              alt = ""
               onError={(e) => { e.target.onerror = null; e.target.src=defaultImage }}
             />
           </td>
