@@ -62,6 +62,21 @@ class BeerEdit extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ description: description, noteType: noteType }),
+    }).catch((error) => {
+      console.error(error);
+    });
+  };
+
+  handleEditNote = (note, index) => {
+    const { beerID } = this.props;
+    const { description, noteType } = note;
+  
+    fetch(`/api/beer/${beerID}/${note.noteID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ description, noteType }),
     })
       .catch((error) => {
         console.error(error);
@@ -146,7 +161,9 @@ class BeerEdit extends Component {
                       />
                     </td>
                     <td>
-                      <button>Modifica nota</button>
+                      <button onClick={() => this.handleEditNote(note, index)}>
+                        Modifica nota
+                      </button>
                     </td>
                     <td>
                       <button onClick={() => this.handleDeleteNote(index)}>
