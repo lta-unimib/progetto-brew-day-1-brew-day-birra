@@ -65,6 +65,10 @@ class Birre extends Component {
   };
 
   handleDeleteConfirm = () => {
+    const beerToDeleteID = this.state.selectedBeer.beerID;
+    fetch(`/api/beer/${beerToDeleteID}`, {
+      method: "DELETE"
+    });
     this.setState((prevState) => {
       const updatedBeers = prevState.beers.filter(
         (beer) => beer.beerID !== prevState.selectedBeer.beerID
@@ -96,7 +100,7 @@ class Birre extends Component {
       case "edit":
         return <BeerEdit beerID={selectedBeer.beerID} name={selectedBeer.name} notes={selectedBeer.notes}/>;
       case "delete":
-        return <BeerDelete onConfirm={this.handleDeleteConfirm}/>;
+        return <BeerDelete beerID={selectedBeer.beerID} onConfirm={this.handleDeleteConfirm}/>;
       default:
         return null;
     }
