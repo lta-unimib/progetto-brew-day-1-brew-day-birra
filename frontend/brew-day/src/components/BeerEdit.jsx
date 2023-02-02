@@ -21,6 +21,18 @@ class BeerEdit extends Component {
     });
   };
 
+  handleNoteTypeChange = (event, index) => {
+    const notes = [...this.state.notes];
+    notes[index].noteType = event.target.value;
+    this.setState({ notes });
+  };
+
+  handleDescriptionChange = (event, index) => {
+    const notes = [...this.state.notes];
+    notes[index].description = event.target.value;
+    this.setState({ notes });
+  };
+
   render() {
     return (
       <div>
@@ -38,7 +50,7 @@ class BeerEdit extends Component {
                 />
               </th>
               <th width="33%">
-                <button>Modifica Nome</button>
+                <button>Modifica nome</button>
               </th>
             </tr>
           </table>
@@ -50,30 +62,44 @@ class BeerEdit extends Component {
                 <th>Descrizione</th>
               </tr>
               <tr>
-                <th><textarea></textarea></th>
-                <th><textarea className="descriptionBeerEdit"></textarea></th>
-                <td><button>Aggiungi Nota</button></td>
+                <th>
+                  <textarea></textarea>
+                </th>
+                <th>
+                  <textarea className="descriptionBeerEdit"></textarea>
+                </th>
+                <td>
+                  <button>Aggiungi nota</button>
+                </td>
               </tr>
             </thead>
             <tbody>
               {this.state.notes.map((note, index) => {
                 return (
-                  <tr key={note.nodeID}>
+                  <tr key={index}>
                     <td>
-                      <textarea value={note.noteType}></textarea>
+                      <textarea
+                        value={note.noteType}
+                        onChange={(event) =>
+                          this.handleNoteTypeChange(event, index)
+                        }
+                      />
                     </td>
                     <td>
                       <textarea
                         className="descriptionBeerEdit"
                         value={note.description}
-                      ></textarea>
+                        onChange={(event) =>
+                          this.handleDescriptionChange(event, index)
+                        }
+                      />
                     </td>
                     <td>
-                      <button>Modifica Nota</button>
+                      <button>Modifica nota</button>
                     </td>
                     <td>
                       <button onClick={() => this.handleDeleteNote(index)}>
-                        Elimina Nota
+                        Elimina nota
                       </button>
                     </td>
                   </tr>
