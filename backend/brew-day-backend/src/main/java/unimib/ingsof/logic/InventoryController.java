@@ -7,10 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import unimib.ingsof.exceptions.WrongBodyException;
+import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.InventoryIngredient;
 import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 import unimib.ingsof.persistence.view.IngredientView;
+import unimib.ingsof.validation.validators.IngredientInitializationValidator;
 
 @Service
 public class InventoryController {
@@ -29,19 +31,13 @@ public class InventoryController {
 		return result;
 	}
 	
-	public String addIngredient(Map<String, String> ingredientObject) throws WrongBodyException, NumberFormatException {
-		if (ingredientObject == null)
-            throw new WrongBodyException();
-		
-        String name = ingredientObject.get("name");
-        String quantity = ingredientObject.get("quantity");
-		if (ingredientObject.get("name") == null)
-	            throw new WrongBodyException();
-		if (ingredientObject.get("quantity") == null)
-	            throw new WrongBodyException();
+	public String addIngredient(Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization {
+		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
+		String name = ingredientObject.get("name");
+		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
 		
         String ingredientID = ingredientController.addIngredient(name).getIngredientID();
-        inventoryIngredientRepository.addIngredient(ingredientID, Float.valueOf(quantity));
+        inventoryIngredientRepository.addIngredient(ingredientID, quantity);
         return ingredientID;
 	}
 }
