@@ -31,11 +31,11 @@ class InventoryIngredientEndpointTest {
 		ingredientRepository.assure();
 		inventoryIngredientRepository.assure();
 		
-		String ingredientID = "name";
+		String ingredientName = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		ingredientBody.put("name", ingredientID);
+		ingredientBody.put("name", ingredientName);
 		ingredientBody.put("quantity", "7");
-		inventoryEndpoint.postIngredient(ingredientBody);
+		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().getFirst("ingredientID");
 		
 		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientEndpoint.getIngredientByID(null).getStatusCode().is4xxClientError());
