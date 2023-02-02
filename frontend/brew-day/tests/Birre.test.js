@@ -46,16 +46,28 @@ describe("Birre component", () => {
 });
 
 describe('BeerEdit component', () => {
-  it('renders the name input with default value', () => {
+  test('renders the name input with default value', () => {
     const { getByTestId } = render(<BeerEdit />);
     const input = getByTestId('inputBeerEdit');
     expect(input.value).toBe('');
   });
 
-  it('updates the name in state when the input is changed', () => {
+  test('updates the name in state when the input is changed', () => {
     const { getByTestId } = render(<BeerEdit />);
     const input = getByTestId('inputBeerEdit');
     fireEvent.change(input, { target: { value: 'TestBeer' } });
     expect(input.value).toBe('TestBeer');
+  });
+
+  test("handles note type change", () => {
+    const notes = [{ noteType: "", description: "" }];
+    const { getByText, getByTestId } = render(
+      <BeerEdit notes={notes} />
+    );
+
+    const noteTypeTextarea = getByTestId("note-type-textarea");
+    fireEvent.change(noteTypeTextarea, { target: { value: "Taste" } });
+
+    expect(noteTypeTextarea.value).toBe("Taste");
   });
 });

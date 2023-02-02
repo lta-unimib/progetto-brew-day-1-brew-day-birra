@@ -81,6 +81,7 @@ class BeerEdit extends Component {
                     <td>
                       <textarea
                         value={note.noteType}
+                        data-testid="note-type-textarea"
                         onChange={(event) =>
                           this.handleNoteTypeChange(event, index)
                         }
