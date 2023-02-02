@@ -49,6 +49,11 @@ class BeerEdit extends Component {
                 <th>Tipo</th>
                 <th>Descrizione</th>
               </tr>
+              <tr>
+                <th><textarea></textarea></th>
+                <th><textarea className="descriptionBeerEdit"></textarea></th>
+                <td><button>Aggiungi nota</button></td>
+              </tr>
             </thead>
             <tbody>
               {this.state.notes.map((note, index) => {
@@ -59,7 +64,7 @@ class BeerEdit extends Component {
                     </td>
                     <td>
                       <textarea
-                        id="descriptionBeerEdit"
+                        className="descriptionBeerEdit"
                         value={note.description}
                       ></textarea>
                     </td>
