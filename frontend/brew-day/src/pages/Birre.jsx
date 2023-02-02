@@ -8,7 +8,7 @@ class Birre extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      beerIDs: ["id0", "id1", "id2"],
+      beerIDs: [],
       beers: [
         {
           beerID: "id0",
@@ -53,6 +53,26 @@ class Birre extends Component {
       selectedBeer: null,
       showModal: false,
     };
+  }
+
+  componentDidMount() {
+    fetch("/api/beer")
+      .then(response => response.json())
+      .then(data => {
+        const beerIDs = data;
+        const promises = [];
+        beerIDs.forEach(id => {
+          promises.push(fetch(`/api/beer/${id}`));
+        });
+        
+        Promise.all(promises).then(results => {
+          const beers = results.map(response => response.json());
+          Promise.all(beers).then(updatedBeers => {
+            this.setState({ beerIDs, beers: updatedBeers });
+          });
+        });
+      })
+      .catch(error => console.error(error));
   }
 
   handleView(item) {
