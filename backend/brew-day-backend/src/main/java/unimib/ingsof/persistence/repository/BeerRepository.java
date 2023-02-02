@@ -45,7 +45,7 @@ public interface BeerRepository extends CrudRepository<Beer, String> {
 
     // ASSURE
     @Modifying
-    @Query(value = "create table if not exists beer (beerID TEXT primary key, name TEXT NOT NULL, recipeID TEXT NOT NULL)", nativeQuery = true)
+    @Query(value = "create table if not exists beer (beerID TEXT primary key, name TEXT NOT NULL, recipeID TEXT NOT NULL, FOREIGN KEY (recipeID) REFERENCES recipe(recipeID) ON DELETE SET NULL)", nativeQuery = true)
     @Transactional
 	void assure();
 

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import unimib.ingsof.persistence.repository.BeerNoteRepository;
+import unimib.ingsof.persistence.repository.BeerRepository;
 import unimib.ingsof.persistence.repository.IngredientRepository;
 import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
@@ -19,6 +21,10 @@ public class Initializr {
 	private InventoryIngredientRepository invIngredientsRepo;
     @Autowired
 	private IngredientRepository ingredientsRepo;
+    @Autowired
+	private BeerRepository beerRepo;
+    @Autowired
+	private BeerNoteRepository beerNoteRepo;
 	
 	@PostConstruct 
 	public void init() {
@@ -26,5 +32,8 @@ public class Initializr {
 		invIngredientsRepo.assure();
 		recipesRepo.assure();
 		recIngredientsRepo.assure();
+		beerRepo.assure();
+		beerNoteRepo.assure();
+		
 	}
 }
