@@ -38,7 +38,7 @@ class BeerEdit extends Component {
                 />
               </th>
               <th width="33%">
-                <button>Modifica nome</button>
+                <button>Modifica Nome</button>
               </th>
             </tr>
           </table>
@@ -52,7 +52,7 @@ class BeerEdit extends Component {
               <tr>
                 <th><textarea></textarea></th>
                 <th><textarea className="descriptionBeerEdit"></textarea></th>
-                <td><button>Aggiungi nota</button></td>
+                <td><button>Aggiungi Nota</button></td>
               </tr>
             </thead>
             <tbody>
@@ -69,11 +69,11 @@ class BeerEdit extends Component {
                       ></textarea>
                     </td>
                     <td>
-                      <button>Modifica nota</button>
+                      <button>Modifica Nota</button>
                     </td>
                     <td>
                       <button onClick={() => this.handleDeleteNote(index)}>
-                        Elimina nota
+                        Elimina Nota
                       </button>
                     </td>
                   </tr>
