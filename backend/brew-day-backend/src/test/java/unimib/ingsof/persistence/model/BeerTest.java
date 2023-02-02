@@ -3,7 +3,7 @@ package unimib.ingsof.persistence.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class BeerTest {
+class BeerTest {
 	@Test
 	void testBehavior() {
 		Beer newBeer = new Beer();
