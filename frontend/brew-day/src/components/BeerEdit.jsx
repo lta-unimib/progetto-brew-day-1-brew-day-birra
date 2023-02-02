@@ -15,7 +15,10 @@ class BeerEdit extends Component {
     });
   };
 
-  handleDeleteNote = (index) => {
+  handleDeleteNote = (index, note) => {
+    fetch(`/api/beer/${note.beerID}/${note.noteID}`, {
+      method: "DELETE"
+    });
     this.setState({
       notes: this.state.notes.filter((note, i) => i !== index),
     });
@@ -166,7 +169,7 @@ class BeerEdit extends Component {
                       </button>
                     </td>
                     <td>
-                      <button onClick={() => this.handleDeleteNote(index)}>
+                      <button onClick={() => this.handleDeleteNote(index, note)}>
                         Elimina nota
                       </button>
                     </td>
