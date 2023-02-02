@@ -2,6 +2,7 @@ import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
+import BeerEdit from "../src/components/BeerEdit";
 
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
@@ -31,15 +32,30 @@ describe("Birre component", () => {
   test("should render edit correctly", () => {
     const { container, getAllByText } = render(<Birre />);
     fireEvent.click(getAllByText("Modifica")[0]);
-    fireEvent.click(getAllByText("Modifica Nome")[0]);
-    fireEvent.click(getAllByText("Aggiungi Nota")[0]);
-    fireEvent.click(getAllByText("Modifica Nota")[0]);
-    fireEvent.click(getAllByText("Elimina Nota")[0]);
+    fireEvent.click(getAllByText("Modifica nome")[0]);
+    fireEvent.click(getAllByText("Aggiungi nota")[0]);
+    fireEvent.click(getAllByText("Modifica nota")[0]);
+    fireEvent.click(getAllByText("Elimina nota")[0]);
   });
 
   test("should render delete correctly", () => {
     const { container, getAllByText } = render(<Birre />);
     fireEvent.click(getAllByText("Elimina")[0]);
     fireEvent.click(lastElement(getAllByText("Elimina")));
+  });
+});
+
+describe('BeerEdit component', () => {
+  it('renders the name input with default value', () => {
+    const { getByTestId } = render(<BeerEdit />);
+    const input = getByTestId('inputBeerEdit');
+    expect(input.value).toBe('');
+  });
+
+  it('updates the name in state when the input is changed', () => {
+    const { getByTestId } = render(<BeerEdit />);
+    const input = getByTestId('inputBeerEdit');
+    fireEvent.change(input, { target: { value: 'TestBeer' } });
+    expect(input.value).toBe('TestBeer');
   });
 });

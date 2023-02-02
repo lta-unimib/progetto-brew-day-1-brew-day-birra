@@ -45,6 +45,7 @@ class BeerEdit extends Component {
               <th width="33%">
                 <input
                   id="inputBeerEdit"
+                  data-testid="inputBeerEdit"
                   value={this.state.name}
                   onChange={this.handleInputChange}
                 />
