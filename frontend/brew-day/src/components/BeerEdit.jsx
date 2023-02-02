@@ -58,7 +58,7 @@ class BeerEdit extends Component {
             <tbody>
               {this.state.notes.map((note, index) => {
                 return (
-                  <tr key={index}>
+                  <tr key={note.nodeID}>
                     <td>
                       <textarea value={note.noteType}></textarea>
                     </td>
