@@ -5,13 +5,19 @@ class BeerEdit extends Component {
     super(props);
     this.state = {
       notes: props.notes || [],
-      name: props.name || ""
+      name: props.name || "",
     };
   }
 
   handleInputChange = (event) => {
     this.setState({
-      name: event.target.value
+      name: event.target.value,
+    });
+  };
+
+  handleDeleteNote = (index) => {
+    this.setState({
+      notes: this.state.notes.filter((note, i) => i !== index),
     });
   };
 
@@ -25,10 +31,14 @@ class BeerEdit extends Component {
                 <p>Nome birra:</p>
               </th>
               <th width="33%">
-                <input id="inputBeerEdit" value={this.state.name} onChange={this.handleInputChange} />
+                <input
+                  id="inputBeerEdit"
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                />
               </th>
               <th width="33%">
-                <button>Conferma nome</button>
+                <button>Modifica nome</button>
               </th>
             </tr>
           </table>
@@ -41,11 +51,26 @@ class BeerEdit extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.notes.map((note) => {
+              {this.state.notes.map((note, index) => {
                 return (
-                  <tr>
-                    <td><textarea value={note.noteType}></textarea></td>
-                    <td><textarea value={note.description}></textarea></td>
+                  <tr key={index}>
+                    <td>
+                      <textarea value={note.noteType}></textarea>
+                    </td>
+                    <td>
+                      <textarea
+                        id="descriptionBeerEdit"
+                        value={note.description}
+                      ></textarea>
+                    </td>
+                    <td>
+                      <button>Modifica nota</button>
+                    </td>
+                    <td>
+                      <button onClick={() => this.handleDeleteNote(index)}>
+                        Elimina nota
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
