@@ -36,7 +36,7 @@ class BeerEdit extends Component {
   handleNameChange = () => {
     const { beerID } = this.props;
     const { name } = this.state;
-  
+
     fetch(`/api/beer/${beerID}`, {
       method: "PUT",
       headers: {
@@ -51,7 +51,21 @@ class BeerEdit extends Component {
       .catch((error) => {
         console.error(error);
       });
-      console.log(this.props.beerID);
+  };
+
+  handleAddNote = (noteType, description) => {
+    const { beerID } = this.props;
+
+    fetch(`/api/beer/${beerID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ description: description, noteType: noteType }),
+    })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   render() {
@@ -85,13 +99,26 @@ class BeerEdit extends Component {
               </tr>
               <tr>
                 <th>
-                  <textarea></textarea>
+                  <textarea
+                    onChange={(event) => (this.noteType = event.target.value)}
+                  ></textarea>
                 </th>
                 <th>
-                  <textarea className="descriptionBeerEdit"></textarea>
+                  <textarea
+                    onChange={(event) =>
+                      (this.description = event.target.value)
+                    }
+                    className="descriptionBeerEdit"
+                  ></textarea>
                 </th>
                 <td>
-                  <button>Aggiungi nota</button>
+                  <button
+                    onClick={() =>
+                      this.handleAddNote(this.noteType, this.description)
+                    }
+                  >
+                    Aggiungi nota
+                  </button>
                 </td>
               </tr>
             </thead>
