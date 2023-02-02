@@ -69,6 +69,8 @@ class BeerEndpointTest {
 
 		beerNoteRepository.drop();
 		beerRepository.drop();
+		recipeRepository.drop();
+
 
 	}
 	
@@ -97,16 +99,17 @@ class BeerEndpointTest {
 		assertTrue(beerEndpoint.updateBeer(beerID, beerBody).getStatusCode().is4xxClientError());
 		
 		beerBody.put("name", beerName);
-		assertTrue(beerEndpoint.updateBeer(beerID, beerBody).getStatusCode().is4xxClientError());
-		
+		assertTrue(beerEndpoint.updateBeer("id", beerBody).getStatusCode().is4xxClientError());
+				
 		Map<String, String> noteBody = null;
 		assertTrue(beerEndpoint.postBeerNote(beerID, noteBody).getStatusCode().is4xxClientError());
 		
-		noteBody = new TreeMap<>();
-		assertTrue(beerEndpoint.postBeerNote(beerID, noteBody).getStatusCode().is4xxClientError());
-
+		noteBody = new TreeMap<String, String>();
 		noteBody.put("noteType", "tipo");
 		assertTrue(beerEndpoint.postBeerNote(beerID, noteBody).getStatusCode().is4xxClientError());
+		
+		assertTrue(beerEndpoint.postBeerNote("id", noteBody).getStatusCode().is4xxClientError());
+
 		
 		beerNoteRepository.drop();
 		beerRepository.drop();

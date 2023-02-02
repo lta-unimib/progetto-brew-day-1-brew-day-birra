@@ -30,7 +30,7 @@ public interface BeerNoteRepository extends CrudRepository<BeerNote, String> {
 	// PUT
     @Modifying
     @Transactional
-    @Query(value = "UPDATE beer_note set noteType = :noteType WHERE beerID = :beerID AND noteID = :noteID RETURNING *", nativeQuery = true)
+    @Query(value = "UPDATE beer_note set note_type = :noteType WHERE beerID = :beerID AND noteID = :noteID RETURNING *", nativeQuery = true)
     ArrayList<BeerNote> updateNoteType(@Param("beerID") String beerID, @Param("noteID") String noteID, @Param("noteType") String noteType);
 
 	// PUT

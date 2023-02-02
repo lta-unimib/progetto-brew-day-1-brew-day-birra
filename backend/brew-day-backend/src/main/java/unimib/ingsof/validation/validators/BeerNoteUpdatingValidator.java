@@ -2,6 +2,7 @@ package unimib.ingsof.validation.validators;
 
 import unimib.ingsof.validation.handlers.BaseValidationHandler;
 import unimib.ingsof.validation.handlers.BodyValidationHandler;
+import unimib.ingsof.validation.handlers.NoteTypeUpdatingValidationHandler;
 import unimib.ingsof.validation.handlers.BeerNoteUpdateValidationHandler;
 
 public class BeerNoteUpdatingValidator extends BaseValidationHandler {
@@ -16,7 +17,9 @@ public class BeerNoteUpdatingValidator extends BaseValidationHandler {
 	public BeerNoteUpdatingValidator() {
 		BaseValidationHandler bodyHandler = new BodyValidationHandler();
 		BaseValidationHandler updateContentHandler = new BeerNoteUpdateValidationHandler();
+		BaseValidationHandler noteTypeHandler = new NoteTypeUpdatingValidationHandler();
 		bodyHandler.setNext(updateContentHandler);
+		updateContentHandler.setNext(noteTypeHandler);
 		this.setNext(bodyHandler);
 	}
 }

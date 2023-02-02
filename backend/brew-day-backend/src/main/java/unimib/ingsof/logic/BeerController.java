@@ -49,8 +49,11 @@ public class BeerController {
 		this.beerRepository.deleteBeer(beerID);
 	}
 	
-	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization {
+	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
 
+		if(!beerRepository.getAllBeerIDs().contains(beerID))
+			throw new DoesntExistsException();
+			
 		noteObject = BeerNoteInitializationValidator.getInstance().handle(noteObject);
 		String noteType = noteObject.get("noteType");
 		String description = noteObject.get("description");
