@@ -9,46 +9,7 @@ class Birre extends Component {
     super(props);
     this.state = {
       beerIDs: [],
-      beers: [
-        {
-          beerID: "id0",
-          name: "Birra 0",
-          recipeID: "Ricetta1",
-          notes: [
-            {
-              beerID: "id0",
-              nodeID: "note0",
-              noteType: "Generico",
-              description: "cold brewed",
-            },
-          ],
-        },
-        {
-          beerID: "id1",
-          name: "Birra 1",
-          recipeID: "ricetta1",
-          notes: [
-            {
-              beerID: "id1",
-              nodeID: "note1",
-              noteType: "Generico",
-              description: "dented glass",
-            },
-            {
-              beerID: "id1",
-              nodeID: "note2",
-              noteType: "Generico",
-              description: "not filtered",
-            },
-          ],
-        },
-        {
-          beerID: "id2",
-          name: "Birra 2",
-          recipeID: "ricetta2",
-          notes: [],
-        },
-      ],
+      beers: [],
       currentAction: "view",
       selectedBeer: null,
       showModal: false,
@@ -64,7 +25,7 @@ class Birre extends Component {
         beerIDs.forEach(id => {
           promises.push(fetch(`/api/beer/${id}`));
         });
-        
+
         Promise.all(promises).then(results => {
           const beers = results.map(response => response.json());
           Promise.all(beers).then(updatedBeers => {
