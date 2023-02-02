@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.logic.BeerListController;
 
 @RestController
@@ -34,6 +36,8 @@ public class BeerListEndpoint {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("beerID", beerID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
+		} catch(DoesntExistsException exception) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

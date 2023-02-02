@@ -48,7 +48,7 @@ public interface BeerNoteRepository extends CrudRepository<BeerNote, String> {
     // ASSURE
     @Modifying
     @Transactional
-    @Query(value = "create table if not exists beer_note (noteID TEXT NOT NULL PRIMARY KEY, beerID TEXT NOT NULL, noteType TEXT NOT NULL, description TEXT NOT NULL, FOREIGN KEY (beerID) REFERENCES beer(beerID) ON DELETE CASCADE)", nativeQuery = true)
+    @Query(value = "create table if not exists beer_note (noteID TEXT NOT NULL PRIMARY KEY, beerID TEXT NOT NULL, note_type TEXT NOT NULL, description TEXT NOT NULL, FOREIGN KEY (beerID) REFERENCES beer(beerID) ON DELETE CASCADE)", nativeQuery = true)
 	void assure();
 
     // REBASE

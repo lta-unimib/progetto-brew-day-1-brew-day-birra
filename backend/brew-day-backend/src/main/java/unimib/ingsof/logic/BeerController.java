@@ -50,10 +50,10 @@ public class BeerController {
 	}
 	
 	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization {
+
 		noteObject = BeerNoteInitializationValidator.getInstance().handle(noteObject);
 		String noteType = noteObject.get("noteType");
 		String description = noteObject.get("description");
-		
 		String noteID = IDGenerationFacade.getInstance().generateNoteID(noteObject);
 		this.beerNoteRepository.addNote(beerID, noteID, noteType, description);
 		return noteID;

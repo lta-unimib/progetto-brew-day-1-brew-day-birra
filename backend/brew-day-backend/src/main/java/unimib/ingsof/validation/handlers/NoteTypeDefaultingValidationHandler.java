@@ -12,7 +12,7 @@ public class NoteTypeDefaultingValidationHandler extends BaseValidationHandler {
 		if (noteType == null)
 			noteType = "generic";
 		else {
-			if (! noteType.equals("taste"))
+			if (!(noteType.equals("taste")) && !(noteType.equals("generic")) )
 				throw new WrongBodyException();
 		}
 		
