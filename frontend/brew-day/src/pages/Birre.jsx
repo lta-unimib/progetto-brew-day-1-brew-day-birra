@@ -94,7 +94,7 @@ class Birre extends Component {
           />
         );
       case "edit":
-        return <BeerEdit name={selectedBeer.name} notes={selectedBeer.notes}/>;
+        return <BeerEdit beerID={selectedBeer.beerID} name={selectedBeer.name} notes={selectedBeer.notes}/>;
       case "delete":
         return <BeerDelete onConfirm={this.handleDeleteConfirm}/>;
       default:

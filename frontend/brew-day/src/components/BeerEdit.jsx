@@ -33,6 +33,27 @@ class BeerEdit extends Component {
     this.setState({ notes });
   };
 
+  handleNameChange = () => {
+    const { beerID } = this.props;
+    const { name } = this.state;
+  
+    fetch(`/api/beer/${beerID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      console.log(this.props.beerID);
+  };
+
   render() {
     return (
       <div>
@@ -51,7 +72,7 @@ class BeerEdit extends Component {
                 />
               </th>
               <th width="33%">
-                <button>Modifica nome</button>
+                <button onClick={this.handleNameChange}>Modifica nome</button>
               </th>
             </tr>
           </table>
