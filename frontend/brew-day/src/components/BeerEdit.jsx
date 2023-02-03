@@ -15,24 +15,27 @@ class BeerEdit extends Component {
     });
   };
 
-  handleDeleteNote = (index, note) => {
-    fetch(`/api/beer/${note.beerID}/${note.noteID}`, {
-      method: "DELETE"
+  handleDeleteNote = (note) => {
+    const { beerID, noteID } = note;
+    fetch(`/api/beer/${beerID}/${noteID}`, {
+      method: "DELETE",
     });
     this.setState({
-      notes: this.state.notes.filter((note, i) => i !== index),
+      notes: this.state.notes.filter((n) => n.noteID !== noteID),
     });
   };
 
-  handleNoteTypeChange = (event, index) => {
-    const notes = [...this.state.notes];
-    notes[index].noteType = event.target.value;
+  handleNoteTypeChange = (event, note) => {
+    const notes = this.state.notes;
+    const i = notes.findIndex(n => n.noteID === note.noteID);
+    notes[i].noteType = event.target.value;
     this.setState({ notes });
   };
 
-  handleDescriptionChange = (event, index) => {
-    const notes = [...this.state.notes];
-    notes[index].description = event.target.value;
+  handleDescriptionChange = (event, note) => {
+    const notes = this.state.notes;
+    const i = notes.findIndex(n => n.noteID === note.noteID);
+    notes[i].description = event.target.value;
     this.setState({ notes });
   };
 
@@ -70,20 +73,18 @@ class BeerEdit extends Component {
     });
   };
 
-  handleEditNote = (note, index) => {
-    const { beerID } = this.props;
-    const { description, noteType } = note;
-  
-    fetch(`/api/beer/${beerID}/${note.noteID}`, {
+  handleEditNote = (note) => {
+    const { beerID, description, noteType, noteID } = note;
+
+    fetch(`/api/beer/${beerID}/${noteID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ description, noteType }),
-    })
-      .catch((error) => {
-        console.error(error);
-      });
+    }).catch((error) => {
+      console.error(error);
+    });
   };
 
   render() {
@@ -141,15 +142,15 @@ class BeerEdit extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.notes.map((note, index) => {
+              {this.state.notes.map((note) => {
                 return (
-                  <tr key={index}>
+                  <tr key={note.noteID}>
                     <td>
                       <textarea
                         value={note.noteType}
                         data-testid="note-type-textarea"
                         onChange={(event) =>
-                          this.handleNoteTypeChange(event, index)
+                          this.handleNoteTypeChange(event, note)
                         }
                       />
                     </td>
@@ -159,17 +160,17 @@ class BeerEdit extends Component {
                         data-testid="description-textarea"
                         value={note.description}
                         onChange={(event) =>
-                          this.handleDescriptionChange(event, index)
+                          this.handleDescriptionChange(event, note)
                         }
                       />
                     </td>
                     <td>
-                      <button onClick={() => this.handleEditNote(note, index)}>
+                      <button onClick={() => this.handleEditNote(note)}>
                         Modifica nota
                       </button>
                     </td>
                     <td>
-                      <button onClick={() => this.handleDeleteNote(index, note)}>
+                      <button onClick={() => this.handleDeleteNote(note)}>
                         Elimina nota
                       </button>
                     </td>

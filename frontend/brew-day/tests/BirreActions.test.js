@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { existsSync, readFileSync, writeFileSync } from "fs";
+import { promisify } from 'util';
 
 const log = (string) => {
   if (!existsSync("./log.log")) writeFileSync("./log.log", "");
@@ -82,5 +83,16 @@ describe("Birre component", () => {
     fireEvent.click(deleteButton);
     await waitFor(() => screen.getByText("Sei sicuro di voler eliminare questa birra?"));
     expect(screen.getByText("Sei sicuro di voler eliminare questa birra?"));
+  });
+
+  test("deletes beer", async () => {
+    render(<Birre />);
+    await waitFor(() => screen.getAllByText("Elimina")[1]);
+    const deleteButton = screen.getAllByText("Elimina")[1];
+    fireEvent.click(deleteButton);
+    await waitFor(() => screen.getAllByText("Elimina")[2]);
+    const confirmDeleteButton = screen.getAllByText("Elimina")[2];
+    fireEvent.click(confirmDeleteButton);
+    expect(screen.queryByText("Beer 2")).toBeNull();
   });
 });
