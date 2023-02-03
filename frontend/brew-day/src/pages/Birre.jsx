@@ -21,10 +21,7 @@ class Birre extends Component {
       .then(response => response.json())
       .then(data => {
         const beerIDs = data;
-        const promises = [];
-        beerIDs.forEach(id => {
-          promises.push(fetch(`/api/beer/${id}`));
-        });
+        const promises = beerIDs.map(id => fetch(`/api/beer/${id}`));
 
         Promise.all(promises).then(results => {
           const beers = results.map(response => response.json());
