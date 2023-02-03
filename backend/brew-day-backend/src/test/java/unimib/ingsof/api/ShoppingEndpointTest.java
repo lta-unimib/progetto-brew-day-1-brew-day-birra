@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class ShoppingEndpointTest {
@@ -34,12 +35,12 @@ class ShoppingEndpointTest {
 		resetController.doAssure();
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", "ricetta");
+		recipeBody.put(Protocol.NAME_KEY, "ricetta");
 		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
 
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		ingredientBody.put("name", "ingrediente");
-		ingredientBody.put("quantity", "7");
+		ingredientBody.put(Protocol.NAME_KEY, "ingrediente");
+		ingredientBody.put(Protocol.QUANTITY_KEY, "7");
 		String ingredientID = recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getHeaders().getFirst("ingredientID");
 		inventoryEndpoint.postIngredient(ingredientBody);
 		
@@ -47,7 +48,7 @@ class ShoppingEndpointTest {
 		assertTrue(shoppingEndpoint.getShoppingList(recipeID).getBody().isEmpty());
 		
 		ingredientBody.clear();
-		ingredientBody.put("quantity", "5");
+		ingredientBody.put(Protocol.QUANTITY_KEY, "5");
 		inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 		
 		assertFalse(shoppingEndpoint.getShoppingList(recipeID).getBody().isEmpty());
@@ -63,8 +64,8 @@ class ShoppingEndpointTest {
 		List<Map<String, String>> ingredients = new ArrayList<>();
 		for (int i = 1; i < 11; i++) {
 			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put("name", String.format("ingredient#%d", i%2));
-			ingredientObject.put("quantity", Float.toString(i));
+			ingredientObject.put(Protocol.NAME_KEY, String.format("ingredient#%d", i%2));
+			ingredientObject.put(Protocol.QUANTITY_KEY, Float.toString(i));
 			ingredients.add(ingredientObject);
 		}
 		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is2xxSuccessful());
@@ -72,8 +73,8 @@ class ShoppingEndpointTest {
 		ingredients.clear();
 		for (int i = 0; i < 1; i++) {
 			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put("name", String.format("ingredient#%d", i));
-			ingredientObject.put("quantity", Float.toString(-10));
+			ingredientObject.put(Protocol.NAME_KEY, String.format("ingredient#%d", i));
+			ingredientObject.put(Protocol.QUANTITY_KEY, Float.toString(-10));
 			ingredients.add(ingredientObject);
 		}
 		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is4xxClientError());
