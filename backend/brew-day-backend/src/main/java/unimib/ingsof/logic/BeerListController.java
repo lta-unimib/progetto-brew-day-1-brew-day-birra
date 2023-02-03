@@ -25,7 +25,6 @@ public class BeerListController {
 	
 	ExecuteRecipeController executeRecipeController;
 	
-	
 	public List<String> getAllBeerIDs() {
 		return beerRepository.getAllBeerIDs();
 	}
