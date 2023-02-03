@@ -10,6 +10,7 @@ import unimib.ingsof.persistence.repository.IngredientRepository;
 import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.persistence.repository.SettingRepository;
 
 @Service
 public class Initializr {
@@ -25,15 +26,17 @@ public class Initializr {
 	private BeerRepository beerRepo;
     @Autowired
 	private BeerNoteRepository beerNoteRepo;
+    @Autowired
+    private SettingRepository settingRepository;
 	
 	@PostConstruct 
 	public void init() {
+		settingRepository.assure();
 		ingredientsRepo.assure();
 		invIngredientsRepo.assure();
 		recipesRepo.assure();
 		recIngredientsRepo.assure();
 		beerRepo.assure();
 		beerNoteRepo.assure();
-		
 	}
 }
