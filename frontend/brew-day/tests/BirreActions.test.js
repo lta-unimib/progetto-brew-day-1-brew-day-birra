@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import BeerEdit from "../src/components/BeerEdit";
+import BeerView from "../src/components/BeerView";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 
 const log = (string) => {
@@ -14,7 +15,7 @@ const log = (string) => {
 const testBeer = {
   beerID: "1",
   name: "Beer 1",
-  recipeID: "recipeID",
+  recipeID: "recipeID1",
   notes: [
     {
       beerID: "1",
@@ -32,7 +33,8 @@ const testBeer = {
 };
 
 global.fetch = jest.fn().mockImplementation((url) => {
-  if (url.endsWith("1")) {
+  //
+  if (url.endsWith("/beer/1")) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
@@ -49,7 +51,7 @@ global.fetch = jest.fn().mockImplementation((url) => {
           ],
         }),
     });
-  } else if (url.endsWith("2")) {
+  } else if (url.endsWith("/beer/2")) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
@@ -64,6 +66,16 @@ global.fetch = jest.fn().mockImplementation((url) => {
               description: "Description 2",
             },
           ],
+        }),
+    });
+  } else if (url.endsWith("/recipe/RecipeID1")) {
+    return Promise.resolve({
+      json: () =>
+        Promise.resolve({
+          recipeID: "RecipeID1",
+          name: "Recipe 1",
+          description: "",
+          ingredients: [],
         }),
     });
   } else
@@ -120,7 +132,11 @@ describe("Birre component", () => {
 
   test("deletes note", async () => {
     render(
-      <BeerEdit beerID={testBeer.beerID} name={testBeer.name} notes={testBeer.notes} />
+      <BeerEdit
+        beerID={testBeer.beerID}
+        name={testBeer.name}
+        notes={testBeer.notes}
+      />
     );
     await waitFor(() => screen.getAllByText("Elimina nota")[0]);
     const deleteButton = screen.getAllByText("Elimina nota")[0];
@@ -130,7 +146,11 @@ describe("Birre component", () => {
 
   test("deletes note", async () => {
     render(
-      <BeerEdit beerID={testBeer.beerID} name={testBeer.name} notes={testBeer.notes} />
+      <BeerEdit
+        beerID={testBeer.beerID}
+        name={testBeer.name}
+        notes={testBeer.notes}
+      />
     );
     await waitFor(() => screen.getAllByText("Elimina nota")[0]);
     const deleteButton = screen.getAllByText("Elimina nota")[0];
@@ -140,14 +160,22 @@ describe("Birre component", () => {
 
   test("add note", async () => {
     render(
-      <BeerEdit beerID={testBeer.beerID} name={testBeer.name} notes={testBeer.notes} />
+      <BeerEdit
+        beerID={testBeer.beerID}
+        name={testBeer.name}
+        notes={testBeer.notes}
+      />
     );
     await waitFor(() => screen.getAllByText("Aggiungi nota")[0]);
     const addButton = screen.getAllByText("Aggiungi nota")[0];
-    const descriptionTextArea = screen.getAllByTestId("description-textarea")[0];
+    const descriptionTextArea = screen.getAllByTestId(
+      "description-textarea"
+    )[0];
     const noteTypeTextArea = screen.getAllByTestId("note-type-textarea")[0];
-    fireEvent.change(descriptionTextArea, { target: { value: 'test description' }});
-    fireEvent.change(noteTypeTextArea, { target: { value: 'generic' }});
+    fireEvent.change(descriptionTextArea, {
+      target: { value: "test description" },
+    });
+    fireEvent.change(noteTypeTextArea, { target: { value: "generic" } });
     fireEvent.click(addButton);
     render(<Birre />);
     await waitFor(() => screen.getAllByText("Modifica")[0]);
@@ -155,5 +183,19 @@ describe("Birre component", () => {
     fireEvent.click(editButton);
     await waitFor(() => screen.getByText("test description"));
     expect(screen.getByText("test description"));
+  });
+
+  test("view recipe from 'Dettagli'", async () => {
+    render(
+      <BeerView
+        beerID={testBeer.beerID}
+        name={testBeer.name}
+        notes={testBeer.notes}
+      />
+    );
+    await waitFor(() => screen.getAllByText("Visualizza ricetta")[0]);
+    const viewRecipeButton = screen.getAllByText("Visualizza ricetta")[0];
+    fireEvent.click(viewRecipeButton);
+    expect(screen.queryByText("Recipe 1"));
   });
 });
