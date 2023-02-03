@@ -27,8 +27,8 @@ public class ShoppingController {
 	@Autowired
 	IngredientController ingredientController;
 	
-	private final String nameKey = "name";
-	private final String quantityKey = "quantity";
+	private final static String nameKey = "name";
+	private final static String quantityKey = "quantity";
 	
 	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
 		ArrayList<IngredientView> result = new ArrayList<>();
