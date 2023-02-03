@@ -38,8 +38,6 @@ public class SettingListEndpoint {
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(ValidationException|AlreadyExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} catch(Exception exception) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

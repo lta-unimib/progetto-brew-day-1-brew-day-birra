@@ -2,14 +2,19 @@ package unimib.ingsof.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.view.IngredientView;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
+import unimib.ingsof.validation.validators.IngredientInitializationValidator;
 
 @Service
 public class ShoppingController {
@@ -17,6 +22,10 @@ public class ShoppingController {
 	RecipeController recipeController;
 	@Autowired
 	InventoryIngredientController inventoryIngredientController;
+	@Autowired
+	InventoryController inventoryController;
+	@Autowired
+	IngredientController ingredientController;
 	
 	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
 		ArrayList<IngredientView> result = new ArrayList<>();
@@ -33,4 +42,31 @@ public class ShoppingController {
 		return result;
 	}
 	
+	public void postShoppingList(List<Map<String, String>> ingredients) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
+		List<IngredientView> updateList = new ArrayList<>();
+		for (Map<String, String> ingredientObject : ingredients) {
+			ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
+			String ingredientName = ingredientObject.get("name");
+			String ingredientID = ingredientController.addIngredient(ingredientName).getIngredientID();
+			
+			IngredientView inventoryIngredient;
+			try {
+				inventoryIngredient = inventoryIngredientController.getIngredient(ingredientID);
+			} catch(DoesntExistsException exception) {
+				Map<String, String> newIngredientObject = new TreeMap<>();
+				newIngredientObject.put("name", ingredientName);
+				newIngredientObject.put("quantity", "0");
+				inventoryIngredient = new IngredientView(inventoryController.addIngredient(newIngredientObject), ingredientName, 0);
+			}
+			
+			inventoryIngredient.setQuantity(inventoryIngredient.getQuantity() + Float.parseFloat(ingredientObject.get("quantity")));
+			updateList.add(inventoryIngredient);
+		}
+		
+		for (IngredientView ingredient : updateList) {
+			Map<String, String> newIngredientObject = new TreeMap<>();
+			newIngredientObject.put("quantity", Float.toString(ingredient.getQuantity()));
+			inventoryIngredientController.updateIngredient(ingredient.getIngredientID(), newIngredientObject);
+		}
+	}
 }
