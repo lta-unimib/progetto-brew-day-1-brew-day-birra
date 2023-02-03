@@ -16,15 +16,13 @@ import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeRepository;
 
 @SpringBootTest
-public class ShoppinEndpointTest {
+class ShoppingEndpointTest {
 	@Autowired
 	private RecipeListEndpoint recipeListEndpoint;
 	@Autowired
 	private RecipeRepository recipeRepository;
 	@Autowired
 	private RecipeEndpoint recipeEndpoint;
-	@Autowired
-	private RecipeIngredientEndpoint recipeIngredientEndpoint;
 	@Autowired
 	private RecipeIngredientRepository recipeIngredientRepository;
 	@Autowired

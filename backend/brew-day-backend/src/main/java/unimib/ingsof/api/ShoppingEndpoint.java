@@ -24,7 +24,7 @@ public class ShoppingEndpoint {
 
 	@GetMapping
     public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID) {
-		List<IngredientView> result = new ArrayList<IngredientView>();
+		List<IngredientView> result = new ArrayList<>();
 		try {
 			result = shoppingController.getShoppingList(recipeID);
 		} catch (DoesntExistsException e) {

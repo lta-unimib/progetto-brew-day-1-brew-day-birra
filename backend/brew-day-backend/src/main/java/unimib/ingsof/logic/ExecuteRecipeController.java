@@ -1,6 +1,7 @@
 package unimib.ingsof.logic;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,12 +28,12 @@ public class ExecuteRecipeController {
 			throw new NotEnoughIngredientsException();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
 		Float multiplier = (float) 1;				
-		ArrayList<RecipeIngredientView> recipeIngredients = (ArrayList<RecipeIngredientView>) recipe.getIngredients();
+		List<RecipeIngredientView> recipeIngredients = recipe.getIngredients();
 		for (RecipeIngredientView recipeIngredient : recipeIngredients) {
 			String ingredientID = recipeIngredient.getIngredientID();
 			Float inventoryIngredientQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
 			Float recipeIngredientQuantity =  multiplier * recipeIngredient.getQuantity();
-			Map<String, String> ingredientObject = new TreeMap<String, String>();
+			Map<String, String> ingredientObject = new TreeMap<>();
 			ingredientObject.put("quantity",  Float.toString(inventoryIngredientQuantity-recipeIngredientQuantity));				
 			inventoryIngredientController.updateIngredient(ingredientID, ingredientObject);
 		}		
