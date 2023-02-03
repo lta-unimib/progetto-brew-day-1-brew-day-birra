@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.NotEnoughIngredientsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.generation.id.IDGenerationFacade;
@@ -21,7 +22,8 @@ public class BeerListController {
 	private BeerRepository beerRepository;
 	@Autowired
 	private RecipeRepository recipeRepository;
-	
+	@Autowired
+	ExecuteRecipeController executeRecipeController;
 	
 	public List<String> getAllBeerIDs() {
 		return beerRepository.getAllBeerIDs();
@@ -33,16 +35,14 @@ public class BeerListController {
 		return beerRepository.getAllBeerIDsFiltered(filterByName.orElse(""), filterByRecipeID.orElse(""));
 	}
 	
-	public String addBeer(Map<String, String> beerObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
+	public String addBeer(Map<String, String> beerObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
 		String name = beerObject.get("name");
 		String recipeID = beerObject.get("recipeID");
 		String beerID = IDGenerationFacade.getInstance().generateBeerID(beerObject);
-		
 		if(!recipeRepository.getAllRecipeIDs().contains(recipeID)) 
 			throw new DoesntExistsException();
-		
-		
+		executeRecipeController.execute(recipeID);
 		beerRepository.addBeer(beerID, name, recipeID);
 		return beerID;
 	}
