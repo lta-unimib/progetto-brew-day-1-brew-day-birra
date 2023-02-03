@@ -18,7 +18,7 @@ public class ShoppingController {
 	@Autowired
 	InventoryIngredientController inventoryIngredientController;
 	
-	public ArrayList<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
+	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
 		List<RecipeIngredientView> recipeIngredients = recipe.getIngredients();			
