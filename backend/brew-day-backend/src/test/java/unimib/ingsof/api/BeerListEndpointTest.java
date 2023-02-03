@@ -41,6 +41,7 @@ class BeerListEndpointTest {
 		inventoryEndpoint.postIngredient(ingredientBody);	
 		Map<String, String> beerBody = new TreeMap<String, String>();
 		beerBody.put("name", "BeerListControllerTest");
+		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
 		beerBody.put("recipeID", recipeID);
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, beerListEndpoint.getBeerIDs(Optional.empty(), Optional.empty()).getBody().size());

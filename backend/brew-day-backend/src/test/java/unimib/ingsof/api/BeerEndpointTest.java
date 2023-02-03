@@ -28,7 +28,6 @@ class BeerEndpointTest {
 		resetController.doAssure();
 		
 		String beerName = "BeerTest";
-		String noteType = "generic";
 		String description = "Descrizione";
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
@@ -50,7 +49,6 @@ class BeerEndpointTest {
 		assertTrue(beerEndpoint.updateBeer(beerID, beerBody).getStatusCode().is2xxSuccessful());
 
 		beerBody.clear();
-		beerBody.put("noteType", noteType);
 		beerBody.put("description", description);
 		assertTrue(beerEndpoint.postBeerNote(beerID, beerBody).getStatusCode().is2xxSuccessful());
 		
