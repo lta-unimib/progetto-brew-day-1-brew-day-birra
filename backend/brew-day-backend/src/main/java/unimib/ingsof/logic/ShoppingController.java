@@ -27,6 +27,9 @@ public class ShoppingController {
 	@Autowired
 	IngredientController ingredientController;
 	
+	private final String nameKey = "name";
+	private final String quantityKey = "name";
+	
 	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
@@ -46,7 +49,7 @@ public class ShoppingController {
 		List<IngredientView> updateList = new ArrayList<>();
 		for (Map<String, String> ingredientObject : ingredients) {
 			ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
-			String ingredientName = ingredientObject.get("name");
+			String ingredientName = ingredientObject.get(nameKey);
 			String ingredientID = ingredientController.addIngredient(ingredientName).getIngredientID();
 			
 			IngredientView inventoryIngredient;
@@ -54,18 +57,18 @@ public class ShoppingController {
 				inventoryIngredient = inventoryIngredientController.getIngredient(ingredientID);
 			} catch(DoesntExistsException exception) {
 				Map<String, String> newIngredientObject = new TreeMap<>();
-				newIngredientObject.put("name", ingredientName);
-				newIngredientObject.put("quantity", "0");
+				newIngredientObject.put(nameKey, ingredientName);
+				newIngredientObject.put(quantityKey, "0");
 				inventoryIngredient = new IngredientView(inventoryController.addIngredient(newIngredientObject), ingredientName, 0);
 			}
 			
-			inventoryIngredient.setQuantity(inventoryIngredient.getQuantity() + Float.parseFloat(ingredientObject.get("quantity")));
+			inventoryIngredient.setQuantity(inventoryIngredient.getQuantity() + Float.parseFloat(ingredientObject.get(quantityKey)));
 			updateList.add(inventoryIngredient);
 		}
 		
 		for (IngredientView ingredient : updateList) {
 			Map<String, String> newIngredientObject = new TreeMap<>();
-			newIngredientObject.put("quantity", Float.toString(ingredient.getQuantity()));
+			newIngredientObject.put(quantityKey, Float.toString(ingredient.getQuantity()));
 			inventoryIngredientController.updateIngredient(ingredient.getIngredientID(), newIngredientObject);
 		}
 	}
