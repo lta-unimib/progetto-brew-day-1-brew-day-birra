@@ -14,9 +14,6 @@ import unimib.ingsof.persistence.view.RecipeView;
 @Service
 public class ShoppingController {
 	@Autowired
-	InventoryController invCon;
-
-	@Autowired
 	RecipeController recipeController;
 	@Autowired
 	InventoryIngredientController inventoryIngredientController;
@@ -27,7 +24,6 @@ public class ShoppingController {
 		List<RecipeIngredientView> recipeIngredients = recipe.getIngredients();			
 		Float multiplier = (float) 1;
 		for (RecipeIngredientView recipeIngredient : recipeIngredients) {
-			System.out.println("quiiii " + invCon.getAll());
 			String ingredientID = recipeIngredient.getIngredientID();
 			Float inventoryIngredientQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
 			Float recipeIngredientQuantity =  multiplier * recipeIngredient.getQuantity();

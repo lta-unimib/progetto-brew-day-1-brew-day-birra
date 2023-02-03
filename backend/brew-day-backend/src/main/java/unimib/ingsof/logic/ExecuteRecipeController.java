@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
@@ -14,9 +15,11 @@ import unimib.ingsof.persistence.view.RecipeView;
 
 @Service
 public class ExecuteRecipeController {
-	
+	@Autowired
 	RecipeController recipeController;
+	@Autowired
 	InventoryIngredientController inventoryIngredientController;
+	@Autowired
 	ShoppingController shoppingController;
 		
 	public void execute(String recipeID) throws NotEnoughIngredientsException, DoesntExistsException, ValidationException   {

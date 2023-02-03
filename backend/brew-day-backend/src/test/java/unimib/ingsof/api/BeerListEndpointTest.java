@@ -64,10 +64,14 @@ class BeerListEndpointTest {
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, beerListEndpoint.getBeerIDs(Optional.empty(), Optional.empty()).getBody().size());
 		
+		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
+		
 		recipeIngredientRepository.drop();
 		inventoryIngredientRepository.drop();
 		beerRepository.drop();
 		recipeRepository.drop();
+		ingredientRepository.drop();
+
 	}
 	
 	@Test
@@ -81,8 +85,11 @@ class BeerListEndpointTest {
 	
 	@Test
 	void allGoesWrong() {
+		ingredientRepository.assure();
 		recipeRepository.assure();
 		beerRepository.assure();
+		recipeIngredientRepository.assure();
+		inventoryIngredientRepository.assure();
 		
 		Map<String, String> beerBody = null;
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
@@ -95,7 +102,10 @@ class BeerListEndpointTest {
 		beerBody.put("recipeID", "id");
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
 		
+		recipeIngredientRepository.drop();
+		inventoryIngredientRepository.drop();
 		beerRepository.drop();
 		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 }

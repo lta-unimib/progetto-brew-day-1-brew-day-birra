@@ -22,7 +22,7 @@ public class BeerListController {
 	private BeerRepository beerRepository;
 	@Autowired
 	private RecipeRepository recipeRepository;
-	
+	@Autowired
 	ExecuteRecipeController executeRecipeController;
 	
 	public List<String> getAllBeerIDs() {
