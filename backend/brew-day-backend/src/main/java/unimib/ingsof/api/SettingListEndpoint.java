@@ -2,6 +2,7 @@ package unimib.ingsof.api;
 
 import java.util.Map;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.SettingListController;
+import unimib.ingsof.persistence.model.Setting;
 
 @RestController
 @RequestMapping("/api/settings")
@@ -23,7 +25,7 @@ public class SettingListEndpoint {
 	private SettingListController settingListController;
 	
 	@GetMapping
-	public ResponseEntity<Object> getSettings() {
+	public ResponseEntity<List<Setting>> getSettings() {
 		return new ResponseEntity<>(settingListController.getSettings(), HttpStatus.OK);
 	}
 

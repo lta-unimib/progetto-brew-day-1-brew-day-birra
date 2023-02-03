@@ -33,7 +33,7 @@ public class ResetController {
 		this.doAssure();
 	}
 	
-	private void doDrop() {
+	public void doDrop() {
 		beerNoteRepository.drop();
 		beerRepository.drop();
 		recipeIngredientRepository.drop();
@@ -43,7 +43,7 @@ public class ResetController {
 		settingRepository.drop();
 	}
 	
-	private void doAssure() {
+	public void doAssure() {
 		settingRepository.assure();
 		ingredientRepository.assure();
 		inventoryIngredientRepository.assure();
