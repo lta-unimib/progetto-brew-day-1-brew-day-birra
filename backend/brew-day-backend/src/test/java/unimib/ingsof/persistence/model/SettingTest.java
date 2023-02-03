@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class SettingTest {
+class SettingTest {
 	@Test
 	void testBehavior() {
 		Setting recipe = new Setting("settingID", "settingValue");
