@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.persistence.repository.IngredientRepository;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.logic.ResetController;
 
 
 @SpringBootTest
@@ -22,14 +21,11 @@ class InventoryIngredientEndpointTest {
 	@Autowired
 	private InventoryIngredientEndpoint ingredientEndpoint;
 	@Autowired
-	private IngredientRepository ingredientRepository;
-	@Autowired
-	private InventoryIngredientRepository inventoryIngredientRepository;
+	ResetController resetController;
 
 	@Test
 	void testBehavior() {
-		ingredientRepository.assure();
-		inventoryIngredientRepository.assure();
+		resetController.doAssure();
 		
 		String ingredientName = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
@@ -62,7 +58,6 @@ class InventoryIngredientEndpointTest {
 		assertTrue(ingredientEndpoint.deleteIngredient(ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is4xxClientError());
 		
-		inventoryIngredientRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 	}
 }

@@ -18,7 +18,7 @@ public class IngredientController {
 	@Autowired
 	private IngredientRepository ingredientRepository;
 	
-	public Ingredient getIngredientByName(String name){
+	Ingredient getIngredientByName(String name) {
 		return ingredientRepository.getIngredientByName(name);
 	}
 

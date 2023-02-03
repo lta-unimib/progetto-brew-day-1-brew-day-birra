@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.persistence.repository.BeerRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.logic.ResetController;
 
 @SpringBootTest
 class BeerListEndpointTest {
@@ -21,45 +20,47 @@ class BeerListEndpointTest {
 	@Autowired
 	private RecipeListEndpoint recipeListEndpoint;
 	@Autowired
-	private RecipeRepository recipeRepository;
+	private InventoryEndpoint inventoryEndpoint;
 	@Autowired
-	private BeerRepository beerRepository;	
+	private RecipeEndpoint recipeEndpoint;
+	@Autowired
+	ResetController resetController;
 	
 	@Test
 	void testBehavior() {
-		recipeRepository.assure();
-		beerRepository.assure();
-		
+		resetController.doAssure();
 		int oldnum = beerListEndpoint.getBeerIDs(Optional.empty(), Optional.empty()).getBody().size();
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
 		recipeBody.put("name", "ricetta");
 		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
-		
-		
+		Map<String, String> ingredientBody = new TreeMap<String, String>();
+		ingredientBody.put("name", "ingrediente");
+		ingredientBody.put("quantity", "7");
+		recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody);
+		inventoryEndpoint.postIngredient(ingredientBody);	
 		Map<String, String> beerBody = new TreeMap<String, String>();
 		beerBody.put("name", "BeerListControllerTest");
+		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
 		beerBody.put("recipeID", recipeID);
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, beerListEndpoint.getBeerIDs(Optional.empty(), Optional.empty()).getBody().size());
 		
-		beerRepository.drop();
-		recipeRepository.drop();
+		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
+		resetController.doDrop();
+
 	}
 	
 	@Test
 	void testAlternative() {
-		recipeRepository.assure();
-		beerRepository.assure();
+		resetController.doAssure();
 		assertTrue(beerListEndpoint.getBeerIDs(Optional.of("name"), Optional.of("recipeID")).getStatusCode().is2xxSuccessful());
-		beerRepository.drop();
-		recipeRepository.drop();
+		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		recipeRepository.assure();
-		beerRepository.assure();
+		resetController.doAssure();
 		
 		Map<String, String> beerBody = null;
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
@@ -72,7 +73,6 @@ class BeerListEndpointTest {
 		beerBody.put("recipeID", "id");
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
 		
-		beerRepository.drop();
-		recipeRepository.drop();
+		resetController.doDrop();
 	}
 }

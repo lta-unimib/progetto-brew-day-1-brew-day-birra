@@ -9,9 +9,8 @@ import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import unimib.ingsof.persistence.repository.IngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+
+import unimib.ingsof.logic.ResetController;
 
 @SpringBootTest
 class RecipeEndpointTest {
@@ -20,18 +19,12 @@ class RecipeEndpointTest {
 	@Autowired
 	private RecipeEndpoint recipeEndpoint;
 	@Autowired
-	private RecipeRepository recipeRepository;
-	@Autowired
-	private RecipeIngredientRepository recipeIngredientRepository;
-	@Autowired
-	private IngredientRepository ingredientRepository;
+	ResetController resetController;
 	
 
 	@Test
 	void testBehavior() {
-		ingredientRepository.assure();
-		recipeRepository.assure();
-		recipeIngredientRepository.assure();
+		resetController.doAssure();
 		
 		String recipeName = "RecipeControllerTest";
 		String ingredientName = recipeName;
@@ -64,17 +57,12 @@ class RecipeEndpointTest {
 		assertTrue(recipeEndpoint.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is4xxClientError());
 
-		recipeIngredientRepository.drop();
-		recipeRepository.drop();
-		ingredientRepository.drop();
-
+		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientRepository.assure();
-		recipeRepository.assure();
-		recipeIngredientRepository.assure();
+		resetController.doAssure();
 
 		String recipeName = "name";
 		Map<String, String> recipeBody = new TreeMap<String, String>();
@@ -111,8 +99,6 @@ class RecipeEndpointTest {
 		ingredientBody.put("name", "name");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
-		recipeIngredientRepository.drop();
-		recipeRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 	}
 }

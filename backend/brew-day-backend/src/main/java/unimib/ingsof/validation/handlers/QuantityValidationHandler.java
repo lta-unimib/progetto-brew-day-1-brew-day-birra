@@ -10,11 +10,17 @@ public class QuantityValidationHandler extends BaseValidationHandler {
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
 		if (object.get("quantity") == null)
 			throw new WrongQuantityException();
+		
+		Float number;
 		try {
-			Float.parseFloat(object.get("quantity"));
+			number = Float.parseFloat(object.get("quantity"));
 		} catch(NumberFormatException exception) {
 			throw new WrongQuantityException();
 		}
+		
+		if (number < 0)
+			throw new WrongQuantityException();
+		
 		return super.handle(object);
 	}
 }

@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.persistence.repository.BeerNoteRepository;
-import unimib.ingsof.persistence.repository.BeerRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.logic.ResetController;
 
 @SpringBootTest
 class BeerNoteEndpointTest {
@@ -25,17 +23,11 @@ class BeerNoteEndpointTest {
 	@Autowired
 	private BeerNoteEndpoint beerNoteEndpoint;
 	@Autowired
-	private RecipeRepository recipeRepository;
-	@Autowired
-	private BeerNoteRepository beerNoteRepository;
-	@Autowired
-	private BeerRepository beerRepository;
+	ResetController resetController;
 
 	@Test
 	void testBehavior() {
-		recipeRepository.assure();
-		beerRepository.assure();
-		beerNoteRepository.assure();
+		resetController.doAssure();
 		
 		String beerName = "BeerTest";
 		String noteType = "generic";
@@ -50,8 +42,6 @@ class BeerNoteEndpointTest {
 		beerBody.put("recipeID", recipeID);
 		
 		String beerID = beerListEndpoint.postBeer(beerBody).getHeaders().getFirst("beerID");
-		
-		//assertTrue(beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getStatusCode().is4xxClientError());
 		
 		Map<String, String> noteBody = new TreeMap<String, String>();
 		noteBody.put("noteType", noteType);
@@ -70,16 +60,13 @@ class BeerNoteEndpointTest {
 		assertTrue(beerNoteEndpoint.deleteBeerNote(beerID, noteID).getStatusCode().is2xxSuccessful());
 		assertTrue(beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getStatusCode().is4xxClientError());
 
-		beerNoteRepository.drop();
-		beerRepository.drop();
-		recipeRepository.drop();
+		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		recipeRepository.assure();
-		beerRepository.assure();
-		beerNoteRepository.assure();
+		resetController.doAssure();
+		
 		String beerName = "BeerTest";
 		String noteType = "generic";
 		String description = "Descrizione";
@@ -109,8 +96,6 @@ class BeerNoteEndpointTest {
 		noteBody.put("noteType", "tipo");
 		assertTrue(beerNoteEndpoint.updateBeerNote(beerID, noteID, noteBody).getStatusCode().is4xxClientError());
 		
-		beerNoteRepository.drop();
-		beerRepository.drop();
-		recipeRepository.drop();
+		resetController.doDrop();
 	}
 }

@@ -8,9 +8,8 @@ import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import unimib.ingsof.persistence.repository.BeerNoteRepository;
-import unimib.ingsof.persistence.repository.BeerRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+
+import unimib.ingsof.logic.ResetController;
 
 @SpringBootTest
 class BeerEndpointTest {
@@ -21,22 +20,14 @@ class BeerEndpointTest {
 	@Autowired
 	private BeerEndpoint beerEndpoint;
 	@Autowired
-	private BeerRepository beerRepository;
-	@Autowired
-	private BeerNoteRepository beerNoteRepository;
-	@Autowired
-	private RecipeRepository recipeRepository;
+	ResetController resetController;
 	
 
 	@Test
 	void testBehavior() {
-		
-		recipeRepository.assure();
-		beerRepository.assure();
-		beerNoteRepository.assure();
+		resetController.doAssure();
 		
 		String beerName = "BeerTest";
-		String noteType = "generic";
 		String description = "Descrizione";
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
@@ -58,7 +49,6 @@ class BeerEndpointTest {
 		assertTrue(beerEndpoint.updateBeer(beerID, beerBody).getStatusCode().is2xxSuccessful());
 
 		beerBody.clear();
-		beerBody.put("noteType", noteType);
 		beerBody.put("description", description);
 		assertTrue(beerEndpoint.postBeerNote(beerID, beerBody).getStatusCode().is2xxSuccessful());
 		
@@ -66,19 +56,13 @@ class BeerEndpointTest {
 
 		assertTrue(beerEndpoint.deleteBeer(beerID).getStatusCode().is2xxSuccessful());
 		assertTrue(beerEndpoint.getBeerByID(beerID).getStatusCode().is4xxClientError());
-
-		beerNoteRepository.drop();
-		beerRepository.drop();
-		recipeRepository.drop();
-
-
+		
+		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		recipeRepository.assure();
-		beerRepository.assure();
-		beerNoteRepository.assure();
+		resetController.doAssure();
 
 		Map<String, String> recipeBody = new TreeMap<String, String>();
 		recipeBody.put("name", "ricetta");
@@ -110,9 +94,6 @@ class BeerEndpointTest {
 		
 		assertTrue(beerEndpoint.postBeerNote("id", noteBody).getStatusCode().is4xxClientError());
 
-		
-		beerNoteRepository.drop();
-		beerRepository.drop();
-		recipeRepository.drop();
+		resetController.doDrop();
 	}
 }
