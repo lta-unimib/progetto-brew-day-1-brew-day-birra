@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.persistence.repository.IngredientRepository;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.logic.ResetController;
 
 
 @SpringBootTest
@@ -22,14 +21,11 @@ class InventoryEndpointTest {
 	@Autowired
 	private InventoryIngredientEndpoint inventoryIngredientEndpoint;
 	@Autowired
-	private InventoryIngredientRepository inventoryIngredientRepository;
-	@Autowired
-	private IngredientRepository ingredientRepository;
+	ResetController resetController;
 	
 	@Test
 	void testBehavior() {
-		ingredientRepository.assure();
-		inventoryIngredientRepository.assure();
+		resetController.doAssure();
 		
 		int oldnum = inventoryEndpoint.getAllIngredients().getBody().size();
 		
@@ -50,15 +46,13 @@ class InventoryEndpointTest {
 		assertFalse(inventoryEndpoint.postIngredient(null).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());	
 
-		inventoryIngredientRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientRepository.assure();
-		inventoryIngredientRepository.assure();
+		resetController.doAssure();
 
 		String ingredientID = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
@@ -73,8 +67,6 @@ class InventoryEndpointTest {
 		ingredientBody.clear();
 		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 
-		inventoryIngredientRepository.drop();
-		ingredientRepository.drop();
-
+		resetController.doDrop();
 	}
 }

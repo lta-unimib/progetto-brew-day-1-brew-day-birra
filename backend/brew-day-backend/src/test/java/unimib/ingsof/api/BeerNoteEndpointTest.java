@@ -10,12 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.persistence.repository.BeerNoteRepository;
-import unimib.ingsof.persistence.repository.BeerRepository;
-import unimib.ingsof.persistence.repository.IngredientRepository;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.logic.ResetController;
 
 @SpringBootTest
 class BeerNoteEndpointTest {
@@ -28,27 +23,11 @@ class BeerNoteEndpointTest {
 	@Autowired
 	private BeerNoteEndpoint beerNoteEndpoint;
 	@Autowired
-	private RecipeRepository recipeRepository;
-	@Autowired
-	private BeerNoteRepository beerNoteRepository;
-	@Autowired
-	private BeerRepository beerRepository;
-	@Autowired
-	private RecipeIngredientRepository recipeIngredientRepository;
-	@Autowired
-	private InventoryIngredientRepository inventoryIngredientRepository;
-	@Autowired
-	private IngredientRepository ingredientRepository;	
+	ResetController resetController;
 
 	@Test
 	void testBehavior() {
-		ingredientRepository.assure();
-		recipeRepository.assure();
-		beerRepository.assure();
-		recipeIngredientRepository.assure();
-		inventoryIngredientRepository.assure();
-		beerRepository.assure();
-		beerNoteRepository.assure();
+		resetController.doAssure();
 		
 		String beerName = "BeerTest";
 		String noteType = "generic";
@@ -81,23 +60,12 @@ class BeerNoteEndpointTest {
 		assertTrue(beerNoteEndpoint.deleteBeerNote(beerID, noteID).getStatusCode().is2xxSuccessful());
 		assertTrue(beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getStatusCode().is4xxClientError());
 
-		beerNoteRepository.drop();
-		beerRepository.drop();
-		recipeRepository.drop();		
-		inventoryIngredientRepository.drop();
-		recipeRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientRepository.assure();
-		recipeRepository.assure();
-		beerRepository.assure();
-		recipeIngredientRepository.assure();
-		inventoryIngredientRepository.assure();
-		beerRepository.assure();
-		beerNoteRepository.assure();
+		resetController.doAssure();
 		
 		String beerName = "BeerTest";
 		String noteType = "generic";
@@ -128,11 +96,6 @@ class BeerNoteEndpointTest {
 		noteBody.put("noteType", "tipo");
 		assertTrue(beerNoteEndpoint.updateBeerNote(beerID, noteID, noteBody).getStatusCode().is4xxClientError());
 		
-		beerNoteRepository.drop();
-		beerRepository.drop();
-		recipeRepository.drop();		
-		inventoryIngredientRepository.drop();
-		recipeRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 	}
 }

@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.persistence.repository.IngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.logic.ResetController;
 
 @SpringBootTest
 class RecipeIngredientEndpointTest {
@@ -23,17 +21,11 @@ class RecipeIngredientEndpointTest {
 	@Autowired
 	private RecipeIngredientEndpoint recipeIngredientEndpoint;
 	@Autowired
-	private RecipeRepository recipeRepository;
-	@Autowired
-	private RecipeIngredientRepository recipeIngredientRepository;
-	@Autowired
-	private IngredientRepository ingredientRepository;
+	ResetController resetController;
 
 	@Test
 	void testBehavior() {
-		ingredientRepository.assure();
-		recipeRepository.assure();
-		recipeIngredientRepository.assure();
+		resetController.doAssure();
 		
 		String recipeName = "RecipeIngredientControllerTest";
 		String ingredientID = recipeName;
@@ -58,16 +50,12 @@ class RecipeIngredientEndpointTest {
 		assertTrue(recipeIngredientEndpoint.deleteRecipeIngredient(recipeID, ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeIngredientEndpoint.getRecipeIngredientByID(recipeID, ingredientID).getStatusCode().is4xxClientError());
 
-		recipeIngredientRepository.drop();
-		recipeRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		ingredientRepository.assure();
-		recipeRepository.assure();
-		recipeIngredientRepository.assure();
+		resetController.doAssure();
 		
 		String recipeName = "RecipeIngredientControllerTest";
 		String ingredientID = recipeName;
@@ -88,8 +76,6 @@ class RecipeIngredientEndpointTest {
 		ingredientBody.put("quantity", "17");
 		assertTrue(recipeIngredientEndpoint.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 		
-		recipeIngredientRepository.drop();
-		recipeRepository.drop();
-		ingredientRepository.drop();
+		resetController.doDrop();
 	}
 }
