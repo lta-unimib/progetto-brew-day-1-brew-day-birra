@@ -64,7 +64,6 @@ public class ShoppinEndpointTest {
 		
 		assertFalse(shoppingEndpoint.getShoppingList(recipeID).getBody().isEmpty());
 
-		
 		assertTrue(shoppingEndpoint.getShoppingList("id").getStatusCode().is4xxClientError());
 
 		recipeIngredientRepository.drop();

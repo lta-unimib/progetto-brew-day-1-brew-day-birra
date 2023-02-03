@@ -14,6 +14,6 @@ public class SeedHashingGenerator extends IDGenerator {
 	@Override
 	protected String compute(String seed) {
 		byte[] hash = digest.digest(seed.getBytes());
-		return Base64.getEncoder().encodeToString(hash);
+		return Base64.getEncoder().encodeToString(hash).replace("/", "-");
 	}
 }

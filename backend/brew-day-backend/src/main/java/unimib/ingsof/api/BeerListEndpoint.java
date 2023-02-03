@@ -37,6 +37,7 @@ public class BeerListEndpoint {
 			headers.add("beerID", beerID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
+			System.out.println(exception);
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
