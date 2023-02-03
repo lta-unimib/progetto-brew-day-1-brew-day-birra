@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
+import unimib.ingsof.persistence.repository.IngredientRepository;
+import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeRepository;
 
 @SpringBootTest
@@ -26,12 +29,22 @@ class BeerEndpointTest {
 	private BeerNoteRepository beerNoteRepository;
 	@Autowired
 	private RecipeRepository recipeRepository;
+	@Autowired
+	private RecipeIngredientRepository recipeIngredientRepository;
+	@Autowired
+	private InventoryIngredientRepository inventoryIngredientRepository;
+	@Autowired
+	private IngredientRepository ingredientRepository;	
 	
 
 	@Test
 	void testBehavior() {
 		
+		ingredientRepository.assure();
 		recipeRepository.assure();
+		beerRepository.assure();
+		recipeIngredientRepository.assure();
+		inventoryIngredientRepository.assure();
 		beerRepository.assure();
 		beerNoteRepository.assure();
 		
@@ -69,14 +82,21 @@ class BeerEndpointTest {
 
 		beerNoteRepository.drop();
 		beerRepository.drop();
+		recipeRepository.drop();		
+		inventoryIngredientRepository.drop();
 		recipeRepository.drop();
+		ingredientRepository.drop();
 
 
 	}
 	
 	@Test
 	void allGoesWrong() {
+		ingredientRepository.assure();
 		recipeRepository.assure();
+		beerRepository.assure();
+		recipeIngredientRepository.assure();
+		inventoryIngredientRepository.assure();
 		beerRepository.assure();
 		beerNoteRepository.assure();
 
@@ -113,6 +133,9 @@ class BeerEndpointTest {
 		
 		beerNoteRepository.drop();
 		beerRepository.drop();
+		recipeRepository.drop();		
+		inventoryIngredientRepository.drop();
 		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 }

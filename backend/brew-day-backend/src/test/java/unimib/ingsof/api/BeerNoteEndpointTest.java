@@ -91,9 +91,14 @@ class BeerNoteEndpointTest {
 	
 	@Test
 	void allGoesWrong() {
+		ingredientRepository.assure();
 		recipeRepository.assure();
 		beerRepository.assure();
+		recipeIngredientRepository.assure();
+		inventoryIngredientRepository.assure();
+		beerRepository.assure();
 		beerNoteRepository.assure();
+		
 		String beerName = "BeerTest";
 		String noteType = "generic";
 		String description = "Descrizione";
@@ -125,6 +130,9 @@ class BeerNoteEndpointTest {
 		
 		beerNoteRepository.drop();
 		beerRepository.drop();
+		recipeRepository.drop();		
+		inventoryIngredientRepository.drop();
 		recipeRepository.drop();
+		ingredientRepository.drop();
 	}
 }
