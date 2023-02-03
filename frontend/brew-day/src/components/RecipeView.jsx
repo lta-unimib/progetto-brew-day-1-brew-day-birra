@@ -10,7 +10,11 @@ const RecipeView = (props) => {
           <img
             className="shoppingImage"
             src={imagePath}                 
-            onError={(e) => { e.target.onerror = null; e.target.src=defaultImage }}
+            alt = ""
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src=defaultImage
+            }}
           />
         </td>
         <td>{item.name}</td>

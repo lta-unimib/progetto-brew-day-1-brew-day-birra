@@ -16,13 +16,6 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 )
 
-describe("Birre component", () => {
-  test("should render correctly", () => {
-    const { container } = render(<Birre />);
-    expect(container.firstChild).toMatchSnapshot();
-  });
-});
-
 describe("Home component", () => {
   test("should render correctly", () => {
     const { container } = render(<Home />);

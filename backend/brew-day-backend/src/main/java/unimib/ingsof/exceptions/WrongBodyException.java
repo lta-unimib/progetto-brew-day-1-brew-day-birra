@@ -1,6 +1,6 @@
 package unimib.ingsof.exceptions;
 
-public class WrongBodyException extends Exception {
+public class WrongBodyException extends ValidationException {
 
 	/**
 	 * 

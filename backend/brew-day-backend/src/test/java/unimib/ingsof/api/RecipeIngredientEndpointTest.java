@@ -35,18 +35,18 @@ class RecipeIngredientEndpointTest {
 		recipeRepository.assure();
 		recipeIngredientRepository.assure();
 		
-		String recipeID = "RecipeIngredientControllerTest";
-		String ingredientID = recipeID;
+		String recipeName = "RecipeIngredientControllerTest";
+		String ingredientID = recipeName;
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", recipeID);
-		recipeListEndpoint.postRecipe(recipeBody);
+		recipeBody.put("name", recipeName);
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
 
 		assertTrue(recipeIngredientEndpoint.getRecipeIngredientByID(recipeID, ingredientID).getStatusCode().is4xxClientError());
 		
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
 		ingredientBody.put("name", ingredientID);
 		ingredientBody.put("quantity", "7");
-		recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody);
+		ingredientID = recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getHeaders().getFirst("ingredientID");
 		
 		assertTrue(recipeIngredientEndpoint.getRecipeIngredientByID(recipeID, ingredientID).getStatusCode().is2xxSuccessful());
 		
@@ -69,12 +69,12 @@ class RecipeIngredientEndpointTest {
 		recipeRepository.assure();
 		recipeIngredientRepository.assure();
 		
-		String recipeID = "RecipeIngredientControllerTest";
-		String ingredientID = recipeID;
+		String recipeName = "RecipeIngredientControllerTest";
+		String ingredientID = recipeName;
 		
 		Map<String, String> recipeBody = new TreeMap<>();
-		recipeBody.put("name", recipeID);
-		recipeListEndpoint.postRecipe(recipeBody);
+		recipeBody.put("name", recipeName);
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
 		
 		Map<String, String> ingredientBody = null;
 		assertTrue(recipeIngredientEndpoint.updateRecipeIngredient(recipeID, ingredientID, ingredientBody).getStatusCode().is4xxClientError());
