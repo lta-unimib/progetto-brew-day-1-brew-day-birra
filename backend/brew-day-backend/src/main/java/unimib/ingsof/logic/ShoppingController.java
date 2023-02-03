@@ -2,6 +2,7 @@ package unimib.ingsof.logic;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
@@ -12,7 +13,9 @@ import unimib.ingsof.persistence.view.RecipeView;
 @Service
 public class ShoppingController {
 
+	@Autowired
 	RecipeController recipeController;
+	@Autowired
 	InventoryIngredientController inventoryIngredientController;
 	
 	public ArrayList<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
