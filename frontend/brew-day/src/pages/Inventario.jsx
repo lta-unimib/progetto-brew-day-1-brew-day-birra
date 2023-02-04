@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { Button, ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import IngredientDelete from "../components/IngredientDelete";
+import Modal from "../components/Modal";
 
 class Inventario extends Component {
   constructor(props) {
     super(props);
-    this.state = { inventory: [], isLoading: true};
+    this.state = { inventory: [], isLoading: true, showModal: false, ingredientID: null };
   }
 
   componentDidMount() {
@@ -16,12 +18,25 @@ class Inventario extends Component {
       }));
   }
 
-  handleDelete = (name) => {
-    fetch(`/api/inventory/${name}`, {
+  setShowModal = () => {
+    this.setState({ showModal: false });
+  };
+
+  handleDelete(ingredientID) {
+    this.setState({
+      showModal: true,
+      ingredientID
+    });
+  }
+
+  handleDeleteConfirm = () => {
+    const { ingredientID } = this.state;
+    fetch(`/api/inventory/${ingredientID}`, {
       method: "DELETE"
     }).then(() => {
       this.setState({
-        inventory: this.state.inventory.filter(item => item.name !== name)
+        inventory: this.state.inventory.filter(item => item.ingredientID !== ingredientID),
+        showModal: false
       });
     });
   };
@@ -37,7 +52,7 @@ class Inventario extends Component {
       let imagePath = `../../icons/inventory-icons/${item.name}.png`;
       let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
       return (
-        <tr key={item.name}>
+        <tr key={item.ingredientID}>
           <td>
             <img
               className="shoppingImage"
@@ -51,7 +66,7 @@ class Inventario extends Component {
           <td>
             <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
                     variant="contained" color="primary" 
-                    onClick={() => this.handleDelete(item.name)}>
+                    onClick={() => this.handleDelete(item.ingredientID)}>
               Elimina ingrediente
             </Button>
           </td>
@@ -73,6 +88,12 @@ class Inventario extends Component {
             </thead>
             <tbody>{itemList}</tbody>
           </table>
+          <Modal
+            showModal={this.state.showModal}
+            setShowModal={this.setShowModal}
+          >
+            <IngredientDelete onConfirm={this.handleDeleteConfirm}/>
+          </Modal>
         </div>
       </ThemeProvider>
     );
