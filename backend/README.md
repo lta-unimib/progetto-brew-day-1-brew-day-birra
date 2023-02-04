@@ -1,5 +1,7 @@
 # Java Backend
 
+Per informazioni "aggiornate" fare riferimento al file in formato openAPI in `backend/brew-day-backend/src/main/resources/openapi.yaml`
+
 ## API
 
 | endpoint | method | description |
