@@ -33,6 +33,9 @@ describe("Inventario component", () => {
     await waitFor(() => screen.getAllByText("Elimina ingrediente"));
     const deleteButton = screen.getAllByText("Elimina ingrediente")[0];
     fireEvent.click(deleteButton);
+    await waitFor(() => screen.getAllByText("Elimina"));
+    const confirmDeleteButton = screen.getAllByText("Elimina")[0];
+    fireEvent.click(confirmDeleteButton);
     await waitFor(() => {
       expect(screen.queryByText("ingredient1")).not.toBeInTheDocument();
     });
