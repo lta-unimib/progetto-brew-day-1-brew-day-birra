@@ -7,15 +7,22 @@ import Modal from "../components/Modal";
 class Inventario extends Component {
   constructor(props) {
     super(props);
-    this.state = { inventory: [], isLoading: true, showModal: false, ingredientID: null };
+    this.state = {
+      inventory: [],
+      isLoading: true,
+      showModal: false,
+      ingredientID: null,
+    };
   }
 
   componentDidMount() {
     fetch("/api/inventory")
       .then((response) => response.json())
-      .then((data) => this.setState({ inventory: data, isLoading: false }, () => {
-        return <p>Caricamento...</p>
-      }));
+      .then((data) =>
+        this.setState({ inventory: data, isLoading: false }, () => {
+          return <p>Caricamento...</p>;
+        })
+      );
   }
 
   setShowModal = () => {
@@ -25,18 +32,20 @@ class Inventario extends Component {
   handleDelete(ingredientID) {
     this.setState({
       showModal: true,
-      ingredientID
+      ingredientID,
     });
   }
 
   handleDeleteConfirm = () => {
     const { ingredientID } = this.state;
     fetch(`/api/inventory/${ingredientID}`, {
-      method: "DELETE"
+      method: "DELETE",
     }).then(() => {
       this.setState({
-        inventory: this.state.inventory.filter(item => item.ingredientID !== ingredientID),
-        showModal: false
+        inventory: this.state.inventory.filter(
+          (item) => item.ingredientID !== ingredientID
+        ),
+        showModal: false,
       });
     });
   };
@@ -49,24 +58,27 @@ class Inventario extends Component {
     }
 
     const itemList = inventory.map((item) => {
-      let imagePath = `../../icons/inventory-icons/${item.name}.png`;
-      let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
       return (
         <tr key={item.ingredientID}>
           <td>
             <img
               className="shoppingImage"
-              src={imagePath}
-              alt = ""
-              onError={(e) => { e.target.onerror = null; e.target.src=defaultImage }}
+              src={`../../icons/inventory-icons/${item.name}.png`}
+              alt={item.name}
+              onError={(e) => {
+                e.target.src = "../../icons/inventory-icons/sconosciuto.png";
+              }}
             />
           </td>
           <td>{item.name}</td>
           <td>{item.quantity}</td>
           <td>
-            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                    variant="contained" color="primary" 
-                    onClick={() => this.handleDelete(item.ingredientID)}>
+            <Button
+              style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }}
+              variant="contained"
+              color="primary"
+              onClick={() => this.handleDelete(item.ingredientID)}
+            >
               Elimina ingrediente
             </Button>
           </td>
@@ -92,7 +104,7 @@ class Inventario extends Component {
             showModal={this.state.showModal}
             setShowModal={this.setShowModal}
           >
-            <IngredientDelete onConfirm={this.handleDeleteConfirm}/>
+            <IngredientDelete onConfirm={this.handleDeleteConfirm} />
           </Modal>
         </div>
       </ThemeProvider>
