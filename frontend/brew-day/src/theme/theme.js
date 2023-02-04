@@ -6,6 +6,11 @@ const theme = createTheme({
       main: '#FFC107',
       contrastText: "#fff",
     },
+    typography: {
+      button: {
+        textTransform: 'none',
+      },
+    },
   },
 });
 
