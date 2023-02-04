@@ -1,8 +1,10 @@
 import React from "react";
 import QuantityInput from "../components/QuantityInput";
+import { Button } from '@mui/material';
 
 const Spesa = () => {
     return (
+      <center>
         <div>
           <table className="myTable">
             <tr>
@@ -41,9 +43,14 @@ const Spesa = () => {
               <td><QuantityInput /></td>
             </tr>
           </table>
-          <button id="shoppingBuyButton">Compra</button>
+          <Button id="shoppingBuyButton" variant="contained" color="primary">
+            Compra
+          </Button>
         </div>
+      </center>
     );
 }
 
 export default Spesa;
+
+//<button id="shoppingBuyButton">Compra</button>
