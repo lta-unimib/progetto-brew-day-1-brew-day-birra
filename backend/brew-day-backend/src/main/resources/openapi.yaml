@@ -1,0 +1,184 @@
+openapi: 3.0.3
+info:
+  title: Swagger BrewDay - OpenAPI 3.0
+  description: API of Backend
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: localhost:8080/
+tags:
+  - name: recipes
+    description: Operations about recipes
+paths:
+  /recipes:
+    get:
+      tags:
+        - recipes
+      summary: Get all recipe IDs
+      parameters:
+        - name: name
+          in: query
+          description: filter by name
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: filter by name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeIDList'
+    post:
+      tags:
+        - recipes
+      summary: Add a new recipe to the collection
+      requestBody:
+        $ref: '#/components/requestBodies/Recipe'
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            recipeID:
+              schema:
+                type: string
+                example: "recipeID"
+        '400':
+          description: Bad Request
+  /recipes/{recipeId}:
+    get:
+      tags:
+        - recipes
+      summary: Find recipe by ID
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Recipe not found
+    put:
+      tags:
+        - recipes
+      summary: Update recipe by ID
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Recipe'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          description: Recipe not found
+        '400':
+          description: Bad Request
+    delete:
+      tags:
+        - recipes
+      summary: Delete recipe by ID
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Recipe not found
+components:
+  schemas:
+    RecipeIDList:
+      type: array
+      items:
+          type: string
+          example: "recipeID"
+    Recipe:
+      type: object
+      properties:
+        recipeID:
+          type: string
+          example: "recipeID"
+        name:
+          type: string
+          example: "recipeName"
+        description:
+          type: string
+          example: "recipeDescription"
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    Ingredient:
+      type: object
+      properties:
+        name:
+          type: integer
+          example: "ingredientName"
+        quantity:
+          type: integer
+          format: int64
+          example: 2
+  requestBodies:
+    RecipeIDList:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+                type: string
+                example: "recipeID"
+    Recipe:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "recipeName"
+              description:
+                type: string
+                example: "recipeDescription"
+    Ingredient:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: integer
+                example: "ingredientName"
+              quantity:
+                type: integer
+                format: int64
+                example: 2
