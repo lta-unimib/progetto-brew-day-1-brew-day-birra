@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Button, ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
 
 class Inventario extends Component {
   constructor(props) {
@@ -47,28 +49,32 @@ class Inventario extends Component {
           <td>{item.name}</td>
           <td>{item.quantity}</td>
           <td>
-            <button onClick={() => this.handleDelete(item.name)}>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary" 
+                    onClick={() => this.handleDelete(item.name)}>
               Elimina ingrediente
-            </button>
+            </Button>
           </td>
         </tr>
       );
     });
 
     return (
-      <div>
-        <table className="myTable">
-          <thead>
-            <tr>
-              <th width="25%">Immagine</th>
-              <th width="25%">Nome</th>
-              <th width="25%">Quantità</th>
-              <th width="25%">Azioni</th>
-            </tr>
-          </thead>
-          <tbody>{itemList}</tbody>
-        </table>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div>
+          <table className="myTable">
+            <thead>
+              <tr>
+                <th width="25%">Immagine</th>
+                <th width="25%">Nome</th>
+                <th width="25%">Quantità</th>
+                <th width="25%">Azioni</th>
+              </tr>
+            </thead>
+            <tbody>{itemList}</tbody>
+          </table>
+        </div>
+      </ThemeProvider>
     );
   }
 }
