@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Button, ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
 
 class RecipeEdit extends Component{
 
@@ -45,53 +47,65 @@ class RecipeEdit extends Component{
           <td>{item.name}</td>
           <td><input value={item.quantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setQuantity(item.ingredientID, event)}></input></td>
           <td>
-              <button onClick={() => this.editQuantity(item.ingredientID)}>V</button>
-              <button onClick={() => this.deleteIngredient(item.ingredientID)}>X</button>
+              <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                      variant="contained" color="primary" 
+                      onClick={() => this.editQuantity(item.ingredientID)}>V</Button>
+              <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                      variant="contained" color="primary" 
+                      onClick={() => this.deleteIngredient(item.ingredientID)}>X</Button>
             </td>
         </tr>
     });
   
     return (
-      <div>
-        <center>
-        <table className="myTable">
-            <tbody> 
-              <tr>
-                <td> <p>Nome Ricetta:</p> </td>
-                <td><input id="nameTextArea" value={this.state.name} style={{width: "80%"}} onChange={ (event) => this.setName(event)}></input></td>
-                <td><button onClick={() => this.editName()}>V</button></td>        
-              </tr>
-            </tbody>
-          </table>
+      <ThemeProvider theme={theme}>
+        <div>
+          <center>
           <table className="myTable">
-            <tbody> 
-              <tr>
-                  <td><p>Descrizione:</p></td>
-                  <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}} onChange={ (event) => this.setDescription(event)}></textarea></td>
-                  <td><button onClick={() => this.editDescription()}>V</button></td>    
-              </tr>
-            </tbody>
-          </table>
-          
-          <table className="myTable">
-            <thead>
-              <tr>
-                <th width="30%">Nome</th>
-                <th width="30%">Quantità</th>
-                <th width="30%">Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {itemList}
-              <tr>
-                <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
-                <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
-                <button onClick={() => this.addIngredient()}>V</button>
-              </tr>
-            </tbody>
-          </table>
-        </center>
-      </div>
+              <tbody> 
+                <tr>
+                  <td> <p>Nome Ricetta:</p> </td>
+                  <td><input id="nameTextArea" value={this.state.name} style={{width: "80%"}} onChange={ (event) => this.setName(event)}></input></td>
+                  <td><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                              variant="contained" color="primary" 
+                              onClick={() => this.editName()}>V</Button></td>        
+                </tr>
+              </tbody>
+            </table>
+            <table className="myTable">
+              <tbody> 
+                <tr>
+                    <td><p>Descrizione:</p></td>
+                    <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}} onChange={ (event) => this.setDescription(event)}></textarea></td>
+                    <td><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                                variant="contained" color="primary" 
+                                onClick={() => this.editDescription()}>V</Button></td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <table className="myTable">
+              <thead>
+                <tr>
+                  <th width="30%">Nome</th>
+                  <th width="30%">Quantità</th>
+                  <th width="30%">Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                {itemList}
+                <tr>
+                  <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
+                  <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
+                  <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                          variant="contained" color="primary" 
+                          onClick={() => this.addIngredient()}>V</Button>
+                </tr>
+              </tbody>
+            </table>
+          </center>
+        </div>
+      </ThemeProvider>
     );
   }
 
