@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
+import { Button, ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
 
 class BeerView extends Component {
   state = {
@@ -25,10 +27,13 @@ class BeerView extends Component {
     const { showRicetta, recipe } = this.state;
 
     return (
+      <ThemeProvider theme={theme}>
       <div>
         <center>
           <h1>{name}</h1>
-          <button onClick={this.handleShowRicetta}>Visualizza ricetta</button>
+          <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                  variant="contained" color="primary" 
+                  onClick={this.handleShowRicetta}>Visualizza ricetta</Button>
           {showRicetta && (
             <RecipeView
               name={recipe.name}
@@ -42,6 +47,7 @@ class BeerView extends Component {
           ))}
         </center>
       </div>
+      </ThemeProvider>
     );
   }
 }

@@ -125,9 +125,15 @@ class Birre extends Component {
         <tr key={item}>
           <td>{beer.name}</td>
           <td>
-            <Button className="MUIButton" style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleView(beer)}>Dettagli</Button>
-            <Button className="MUIButton" style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleEdit(beer)}>Modifica</Button>
-            <Button className="MUIButton" style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleDelete(beer)}>Elimina</Button>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary" 
+                    onClick={() => this.handleView(beer)}>Dettagli</Button>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary" 
+                    onClick={() => this.handleEdit(beer)}>Modifica</Button>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary" 
+                    onClick={() => this.handleDelete(beer)}>Elimina</Button>
           </td>
         </tr>
       );
