@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class ShoppingEndpointTest {
 		assertTrue(shoppingEndpoint.getShoppingList(recipeID, null).getStatusCode().is2xxSuccessful());
 		
 		Map<String, String> requestBody = new TreeMap<>();
-		assertTrue(shoppingEndpoint.getShoppingList(recipeID, requestBody).getBody().isEmpty());
+		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(requestBody)).getBody().isEmpty());
 		
 		ingredientBody.clear();
 		ingredientBody.put(Protocol.QUANTITY_KEY, "5");

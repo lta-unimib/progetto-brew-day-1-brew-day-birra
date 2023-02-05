@@ -3,6 +3,7 @@ package unimib.ingsof.api;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,12 @@ public class ShoppingEndpoint {
 	ShoppingController shoppingController;
 
 	@GetMapping
-    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) {
 		List<IngredientView> result = new ArrayList<>();
 		try {
-			result = shoppingController.getShoppingList(recipeID, requestBody);
+			if (requestBody == null)
+				requestBody = Optional.empty();
+			result = shoppingController.getShoppingList(recipeID, requestBody.orElse(null));
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
