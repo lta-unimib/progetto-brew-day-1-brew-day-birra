@@ -25,13 +25,12 @@ public class SettingController {
 
 	public Setting updateSetting(String settingID, Map<String, String> settingObject) throws ValidationException, DoesntExistsException {
 		settingObject = SettingUpdatingValidator.getInstance().handle(settingObject);
-		Setting setting = settingRepository.getSetting(settingID);
-		if (setting == null)
-			throw new DoesntExistsException();
+		Setting setting = this.getSetting(settingID);
 		
 		String value = settingObject.get("value");
 		settingRepository.updateSetting(settingID, value);
-		return new Setting(settingID, value);
+		setting.setValue(value);
+		return setting;
 	}
 
 	public void deleteSetting(String settingID) {

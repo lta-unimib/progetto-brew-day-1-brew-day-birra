@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.generation.id.IDGenerationFacade;
@@ -36,7 +37,10 @@ public class IngredientController {
 		return this.getIngredientByName(name);
 	}
 
-	public Ingredient getIngredient(String ingredientID) {
-		return ingredientRepository.getIngredient(ingredientID);
+	public Ingredient getIngredient(String ingredientID) throws DoesntExistsException {
+		Ingredient ingredient = ingredientRepository.getIngredient(ingredientID);
+		if (ingredient == null)
+			throw new DoesntExistsException();
+		return ingredient;
 	}
 }

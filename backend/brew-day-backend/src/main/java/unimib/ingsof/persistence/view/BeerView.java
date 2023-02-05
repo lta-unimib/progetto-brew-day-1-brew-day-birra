@@ -4,11 +4,7 @@ import java.util.List;
 
 import unimib.ingsof.persistence.model.BeerNote;
 
-public class BeerView {
-	
-	private String beerID;
-	private String name; 
-	private String recipeID;
+public class BeerView extends BeerDetailsView {
 	private List<BeerNote> notes;
 
 	public BeerView() {
@@ -16,35 +12,8 @@ public class BeerView {
 	}
 
 	public BeerView(String beerID, String name, String recipeID, List<BeerNote> notes) {
-		super();
-		this.beerID = beerID;
-		this.name = name;
-		this.recipeID = recipeID;
+		super(beerID, name, recipeID);
 		this.notes = notes;
-	}
-
-	public String getBeerID() {
-		return beerID;
-	}
-
-	public void setBeerID(String beerID) {
-		this.beerID = beerID;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getRecipeID() {
-		return recipeID;
-	}
-
-	public void setRecipeID(String recipeID) {
-		this.recipeID = recipeID;
 	}
 
 	public List<BeerNote> getNotes() {

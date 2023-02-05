@@ -28,15 +28,28 @@ public class ShoppingController {
 	@Autowired
 	IngredientController ingredientController;
 	
-	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException{
+	public IngredientView probeInventoryIngredient(String ingredientID, String ingredientName) throws ValidationException, WrongIDGenerationInitialization {
+		try {
+			return inventoryIngredientController.getIngredient(ingredientID);
+		} catch(DoesntExistsException exception) {
+			Map<String, String> newIngredientObject = new TreeMap<>();
+			newIngredientObject.put(Protocol.NAME_KEY, ingredientName);
+			newIngredientObject.put(Protocol.QUANTITY_KEY, "0");
+			return new IngredientView(inventoryController.addIngredient(newIngredientObject), ingredientName, 0);
+		}
+	}
+
+	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
+		return getShoppingList(recipeID, 1);
+	}
+	
+	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
-		List<RecipeIngredientView> recipeIngredients = recipe.getIngredients();			
-		Float multiplier = (float) 1;
-		for (RecipeIngredientView recipeIngredient : recipeIngredients) {
+		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {
 			String ingredientID = recipeIngredient.getIngredientID();
-			Float inventoryIngredientQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
-			Float recipeIngredientQuantity =  multiplier * recipeIngredient.getQuantity();
+			float inventoryIngredientQuantity = this.probeInventoryIngredient(ingredientID, recipeIngredient.getName()).getQuantity();
+			float recipeIngredientQuantity =  multiplier * recipeIngredient.getQuantity();
 			if (recipeIngredientQuantity > inventoryIngredientQuantity)
 				result.add(new IngredientView(ingredientID, recipeIngredient.getName(), recipeIngredientQuantity - inventoryIngredientQuantity));
 		}
@@ -50,16 +63,7 @@ public class ShoppingController {
 			String ingredientName = ingredientObject.get(Protocol.NAME_KEY);
 			String ingredientID = ingredientController.addIngredient(ingredientName).getIngredientID();
 			
-			IngredientView inventoryIngredient;
-			try {
-				inventoryIngredient = inventoryIngredientController.getIngredient(ingredientID);
-			} catch(DoesntExistsException exception) {
-				Map<String, String> newIngredientObject = new TreeMap<>();
-				newIngredientObject.put(Protocol.NAME_KEY, ingredientName);
-				newIngredientObject.put(Protocol.QUANTITY_KEY, "0");
-				inventoryIngredient = new IngredientView(inventoryController.addIngredient(newIngredientObject), ingredientName, 0);
-			}
-			
+			IngredientView inventoryIngredient = this.probeInventoryIngredient(ingredientID, ingredientName);
 			inventoryIngredient.setQuantity(inventoryIngredient.getQuantity() + Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY)));
 			updateList.add(inventoryIngredient);
 		}

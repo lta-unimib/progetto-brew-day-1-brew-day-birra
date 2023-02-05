@@ -24,19 +24,22 @@ public class BeerNoteController {
 	}
 	
 	public BeerNote updateNote(String beerID, String noteID, Map<String, String> noteObject) throws ValidationException, DoesntExistsException {
-		BeerNote beerNote = beerNoteRepository.getNote(beerID, noteID);
-		if (beerNote == null)
-			throw new DoesntExistsException();
-		
 		noteObject = BeerNoteUpdatingValidator.getInstance().handle(noteObject);
 		String noteType = noteObject.get("noteType");
 		String description = noteObject.get("description");
+		BeerNote beerNote = this.getNote(beerID, noteID);
 		
-		if (noteType != null)
+		if (noteType != null) {
 			beerNoteRepository.updateNoteType(beerID, noteID, noteType);
-		if (description != null)
+			beerNote.setNoteType(noteType);
+		}
+		
+		if (description != null) {
 			beerNoteRepository.updateNoteDescription(beerID, noteID, description);
-		return this.getNote(beerID, noteID);
+			beerNote.setDescription(description);
+		}
+		
+		return beerNote;
 	}
 	
 	public void deleteNote(String beerID, String noteID) {

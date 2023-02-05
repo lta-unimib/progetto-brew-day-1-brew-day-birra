@@ -14,6 +14,7 @@ import unimib.ingsof.persistence.model.Beer;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
+import unimib.ingsof.persistence.view.BeerDetailsView;
 import unimib.ingsof.persistence.view.BeerView;
 import unimib.ingsof.validation.validators.BeerNoteInitializationValidator;
 import unimib.ingsof.validation.validators.BeerUpdatingValidator;
@@ -24,25 +25,30 @@ public class BeerController {
 	private BeerRepository beerRepository;
 	@Autowired
 	private BeerNoteRepository beerNoteRepository;
-
+	@Autowired
+	private BeerNoteController  beerNoteController;
 
 	public BeerView getBeerByID(String beerID) throws DoesntExistsException {
-		Beer beer = this.beerRepository.getBeer(beerID);
-		if (beer == null)
-			throw new DoesntExistsException();
+		BeerDetailsView beer = this.getBeerDetailsByID(beerID);
 		ArrayList<BeerNote> notes =  beerNoteRepository.getAll(beerID);
 		return new BeerView(beerID, beer.getName(), beer.getRecipeID(), notes);
 	}
-	
-	public BeerView updateBeer(String beerID, Map<String, String> beerObject) throws DoesntExistsException, ValidationException {
+
+	public BeerDetailsView getBeerDetailsByID(String beerID) throws DoesntExistsException {
 		Beer beer = this.beerRepository.getBeer(beerID);
 		if (beer == null)
 			throw new DoesntExistsException();
+		return new BeerDetailsView(beerID, beer.getName(), beer.getRecipeID());
+	}
+	
+	public BeerView updateBeer(String beerID, Map<String, String> beerObject) throws DoesntExistsException, ValidationException {
 		beerObject = BeerUpdatingValidator.getInstance().handle(beerObject);
+		BeerView beer = this.getBeerByID(beerID);
 		
 		String newName = beerObject.get("name");
 		this.beerRepository.updateBeer(beerID, newName);
-		return this.getBeerByID(beerID);
+		beer.setName(newName);
+		return beer;
 	}
 	
 	public void deleteBeer(String beerID) {
@@ -50,14 +56,21 @@ public class BeerController {
 	}
 	
 	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
-
-		if(!beerRepository.getAllBeerIDs().contains(beerID))
-			throw new DoesntExistsException();
-			
+		this.getBeerDetailsByID(beerID);
 		noteObject = BeerNoteInitializationValidator.getInstance().handle(noteObject);
 		String noteType = noteObject.get("noteType");
 		String description = noteObject.get("description");
-		String noteID = IDGenerationFacade.getInstance().generateNoteID(noteObject);
+
+		String noteID = "";
+		while(true) {
+			try {
+				noteID = IDGenerationFacade.getInstance().generateBeerID(noteObject);
+				beerNoteController.getNote(beerID, noteID);
+			} catch(DoesntExistsException exception) {
+				break;
+			}
+		}
+		
 		this.beerNoteRepository.addNote(beerID, noteID, noteType, description);
 		return noteID;
 	}

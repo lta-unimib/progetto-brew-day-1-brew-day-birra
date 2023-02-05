@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class RecipeViewTest {
 	@Test
 	void testBehavior() {
-		RecipeView recipeView = new RecipeView("recipeID", "recipeName", "recipeDescription");
+		RecipeView recipeView = new RecipeView("recipeID", "recipeName", "recipeDescription", null);
 		recipeView = new RecipeView();
 		recipeView.setName("newRecipeName");
 		recipeView.setDescription("newRecipeDescription");

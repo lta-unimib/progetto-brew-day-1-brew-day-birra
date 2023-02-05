@@ -23,9 +23,7 @@ public class InventoryIngredientController {
 	public IngredientView getIngredient(String ingredientID) throws DoesntExistsException {
 		InventoryIngredient inventoryIngredient = inventoryIngredientRepository.getIngredient(ingredientID);
 		Ingredient ingredient = ingredientController.getIngredient(ingredientID);
-		if (ingredient == null)
-			throw new DoesntExistsException();
-		if (inventoryIngredient == null)
+		if (ingredient == null || inventoryIngredient == null)
 			throw new DoesntExistsException();
 		
 		return new IngredientView(inventoryIngredient.getIngredientID(),
@@ -37,12 +35,10 @@ public class InventoryIngredientController {
 		ingredientObject = IngredientUpdatingValidator.getInstance().handle(ingredientObject);
 		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
 		
-		InventoryIngredient inventoryIngredient = inventoryIngredientRepository.getIngredient(ingredientID);
-		if (inventoryIngredient == null)
-			throw new DoesntExistsException();
-			
+		IngredientView ingredient = this.getIngredient(ingredientID);
 		inventoryIngredientRepository.updateIngredient(ingredientID, quantity);
-		return this.getIngredient(ingredientID);
+		ingredient.setQuantity(quantity);
+		return ingredient;
 	}
 
 	public void deleteIngredient(String ingredientID) {

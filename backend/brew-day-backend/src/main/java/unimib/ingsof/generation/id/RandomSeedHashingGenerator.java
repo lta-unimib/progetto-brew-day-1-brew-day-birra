@@ -3,10 +3,10 @@ package unimib.ingsof.generation.id;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-public class SeedHashingGenerator extends IDGenerator {
+public class RandomSeedHashingGenerator extends RandomGenerator {
 	private MessageDigest digest;
 	
-	public SeedHashingGenerator(MessageDigest digest) {
+	public RandomSeedHashingGenerator(MessageDigest digest) {
 		super();
 		this.digest = digest;
 	}

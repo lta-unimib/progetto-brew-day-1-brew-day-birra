@@ -14,10 +14,6 @@ import unimib.ingsof.persistence.model.Recipe;
 @Repository
 public interface RecipeRepository extends CrudRepository<Recipe, String> {
     // GET
-    @Query("SELECT recipeID FROM Recipe")
-    ArrayList<String> getAllRecipeIDs();
-    
-    // GET
     @Query("SELECT recipeID FROM Recipe WHERE name like %:name%")
     ArrayList<String> getAllRecipeIDsByName(@Param("name") String name);
     

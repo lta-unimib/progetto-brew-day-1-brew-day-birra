@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.InventoryIngredient;
@@ -21,7 +22,7 @@ public class InventoryController {
 	@Autowired
 	private IngredientController ingredientController;
 
-	public List<IngredientView> getAll() {
+	public List<IngredientView> getAll() throws DoesntExistsException {
 		ArrayList<InventoryIngredient> ingredients = inventoryIngredientRepository.getAll();
 		ArrayList<IngredientView> result =  new ArrayList<>();
 		for (InventoryIngredient ingredient : ingredients) {
