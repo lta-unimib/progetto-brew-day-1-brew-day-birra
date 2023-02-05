@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
+import { Button, ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
 
 class RecipeExecute extends Component{
 
@@ -48,7 +50,8 @@ class RecipeExecute extends Component{
                           <tr>
                             <td>Nome Nuova Birra: </td>
                             <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewBeerName(event)}></input></td>
-                            <td><button onClick={() => this.addBeer()}>Crea Birra</button></td>
+                            <td><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary"
+                                        onClick={() => this.addBeer()}>Crea birra</Button></td>
                           </tr>
                       </tbody>
                   </table>
@@ -72,10 +75,12 @@ class RecipeExecute extends Component{
       }
 
       return (
-        <div>
-          <RecipeView name={this.state.name} description={this.state.description} ingredients={this.state.ingredients}/>
-          {action()}
-        </div>
+        <ThemeProvider theme={theme}>
+          <div>
+            <RecipeView name={this.state.name} description={this.state.description} ingredients={this.state.ingredients}/>
+            {action()}
+          </div>
+        </ThemeProvider>
       );
     }
 
