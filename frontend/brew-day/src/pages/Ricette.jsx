@@ -98,10 +98,10 @@ export default class Ricette extends Component {
               <td>{item.name}</td>
               <td>{item.description}</td>
               <td>
-                <MButton text="Dettagli" onClick={() => this.handleView(item)}></MButton>
-                <MButton text="Esegui" onClick={() => this.handleExecute(item)}></MButton>
-                <MButton text="Modifica" onClick={() => this.handleEdit(item)}></MButton>
-                <MButton text="Elimina" onClick={() => this.handleDelete(item)}></MButton>
+                <MButton text="Dettagli" onClick={() => this.handleView(item)} />
+                <MButton text="Esegui" onClick={() => this.handleExecute(item)} />
+                <MButton text="Modifica" onClick={() => this.handleEdit(item)} />
+                <MButton text="Elimina" onClick={() => this.handleDelete(item)} />
               </td>
             </tr>
         });
@@ -114,8 +114,8 @@ export default class Ricette extends Component {
                         <tr>
                             <th width="30%">FILTRA PER NOME</th>
                             <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-                            <th width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()}></MButton>
-                                            <MButton text="Togli" onClick={() => this.removeFilter()}></MButton>
+                            <th width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()} />
+                                            <MButton text="Togli" onClick={() => this.removeFilter()} />
                             </th>
                         </tr>
                         <tr>
@@ -129,7 +129,7 @@ export default class Ricette extends Component {
                         <tr>
                           <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
                           <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
-                          <td><MButton text="Aggiungi" onClick={() => this.addRecipe()}/></td>
+                          <td><MButton text="Aggiungi" onClick={() => this.addRecipe()} /></td>
                         </tr>
                     </tbody>
                 </table>
