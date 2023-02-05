@@ -6,6 +6,7 @@ import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
 import { Button, ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 export default class Ricette extends Component {
     constructor(props) {
@@ -140,9 +141,7 @@ export default class Ricette extends Component {
                         <tr>
                           <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
                           <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
-                          <td><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.addRecipe()}>
-                                Aggiungi
-                              </Button></td>
+                          <td><MButton text="Aggiungi" onClick={() => this.addRecipe()}/></td>
                         </tr>
                     </tbody>
                 </table>
