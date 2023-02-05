@@ -13,6 +13,7 @@ import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.generation.id.IDGenerationFacade;
 import unimib.ingsof.persistence.repository.BeerRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.BeerInitializationValidator;
 
 @Service
@@ -23,8 +24,6 @@ public class BeerListController {
 	private RecipeController recipeController;
 	@Autowired
 	ExecuteRecipeController executeRecipeController;
-	@Autowired
-	private BeerController beerController;
 	
 	public List<String> getAllBeerIDs(Optional<String> filterByName, Optional<String> filterByRecipeID) {
 		return beerRepository.getAllBeerIDs(filterByName.orElse(""), filterByRecipeID.orElse(""));
@@ -32,19 +31,20 @@ public class BeerListController {
 	
 	public String addBeer(Map<String, String> beerObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
-		String name = beerObject.get("name");
-		String recipeID = beerObject.get("recipeID");
+		String name = beerObject.get(Protocol.NAME_KEY);
+		String recipeID = beerObject.get(Protocol.RECIPE_ID_KEY);
+		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_KEY));
 		recipeController.getRecipeByID(recipeID);
 		
-		executeRecipeController.execute(recipeID);
+		executeRecipeController.execute(recipeID, quantity);
 
 		String beerID = "";
-		try {
+		while(true) {
 			beerID = IDGenerationFacade.getInstance().generateBeerID(beerObject);
-			beerController.getBeerDetailsByID(beerID);
-		} catch(DoesntExistsException exception) {
-			
+			if (!beerRepository.getAllBeerIDs("", "").contains(beerID))
+				break;
 		}
+		
 		beerRepository.addBeer(beerID, name, recipeID);
 		return beerID;
 	}

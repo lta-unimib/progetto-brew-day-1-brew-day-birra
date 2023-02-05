@@ -43,7 +43,6 @@ public class BeerListEndpoint {
 		} catch(ValidationException|NotEnoughIngredientsException exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} catch(Exception exception) {
-			System.out.println(exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -10,6 +10,7 @@ import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Ingredient;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.validation.validators.IngredientUpdatingValidator;
 
@@ -34,7 +35,7 @@ public class RecipeIngredientController {
 	
 	public RecipeIngredientView updateIngredient(String recipeID, String ingredientID, Map<String, String> ingredientObject) throws ValidationException, DoesntExistsException {
 		ingredientObject = IngredientUpdatingValidator.getInstance().handle(ingredientObject);
-		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
+		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY));
 		
 		RecipeIngredientView ingredient = this.getIngredient(recipeID, ingredientID);
 		recipeIngredientRepository.updateIngredient(recipeID, ingredientID, quantity);

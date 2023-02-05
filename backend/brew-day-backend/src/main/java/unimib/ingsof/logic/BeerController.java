@@ -14,6 +14,7 @@ import unimib.ingsof.persistence.model.Beer;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.BeerDetailsView;
 import unimib.ingsof.persistence.view.BeerView;
 import unimib.ingsof.validation.validators.BeerNoteInitializationValidator;
@@ -25,8 +26,6 @@ public class BeerController {
 	private BeerRepository beerRepository;
 	@Autowired
 	private BeerNoteRepository beerNoteRepository;
-	@Autowired
-	private BeerNoteController  beerNoteController;
 
 	public BeerView getBeerByID(String beerID) throws DoesntExistsException {
 		BeerDetailsView beer = this.getBeerDetailsByID(beerID);
@@ -45,7 +44,7 @@ public class BeerController {
 		beerObject = BeerUpdatingValidator.getInstance().handle(beerObject);
 		BeerView beer = this.getBeerByID(beerID);
 		
-		String newName = beerObject.get("name");
+		String newName = beerObject.get(Protocol.NAME_KEY);
 		this.beerRepository.updateBeer(beerID, newName);
 		beer.setName(newName);
 		return beer;
@@ -58,17 +57,14 @@ public class BeerController {
 	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
 		this.getBeerDetailsByID(beerID);
 		noteObject = BeerNoteInitializationValidator.getInstance().handle(noteObject);
-		String noteType = noteObject.get("noteType");
-		String description = noteObject.get("description");
+		String noteType = noteObject.get(Protocol.NOTETYPE_KEY);
+		String description = noteObject.get(Protocol.DESCRIPTION_KEY);
 
 		String noteID = "";
 		while(true) {
-			try {
-				noteID = IDGenerationFacade.getInstance().generateBeerID(noteObject);
-				beerNoteController.getNote(beerID, noteID);
-			} catch(DoesntExistsException exception) {
+			noteID = IDGenerationFacade.getInstance().generateBeerID(noteObject);
+			if (beerNoteRepository.getNote(beerID, noteID) == null)
 				break;
-			}
 		}
 		
 		this.beerNoteRepository.addNote(beerID, noteID, noteType, description);

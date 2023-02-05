@@ -26,10 +26,10 @@ public class ShoppingEndpoint {
 	ShoppingController shoppingController;
 
 	@GetMapping
-    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID) {
+    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Map<String, String> requestBody) {
 		List<IngredientView> result = new ArrayList<>();
 		try {
-			result = shoppingController.getShoppingList(recipeID);
+			result = shoppingController.getShoppingList(recipeID, requestBody);
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
@@ -43,8 +43,6 @@ public class ShoppingEndpoint {
 		try {
 			shoppingController.postShoppingList(ingredients);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (DoesntExistsException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (ValidationException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {

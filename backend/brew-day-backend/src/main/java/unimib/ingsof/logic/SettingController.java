@@ -9,6 +9,7 @@ import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Setting;
 import unimib.ingsof.persistence.repository.SettingRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.SettingUpdatingValidator;
 
 @Service
@@ -27,7 +28,7 @@ public class SettingController {
 		settingObject = SettingUpdatingValidator.getInstance().handle(settingObject);
 		Setting setting = this.getSetting(settingID);
 		
-		String value = settingObject.get("value");
+		String value = settingObject.get(Protocol.VALUE_KEY);
 		settingRepository.updateSetting(settingID, value);
 		setting.setValue(value);
 		return setting;

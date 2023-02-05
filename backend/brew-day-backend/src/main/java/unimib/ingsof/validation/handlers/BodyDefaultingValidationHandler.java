@@ -1,16 +1,15 @@
 package unimib.ingsof.validation.handlers;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import unimib.ingsof.exceptions.ValidationException;
-import unimib.ingsof.exceptions.WrongValueException;
-import unimib.ingsof.persistence.service.Protocol;
 
-public class ValueValidationHandler extends BaseValidationHandler {
+public class BodyDefaultingValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		if (object.get(Protocol.VALUE_KEY) == null)
-			throw new WrongValueException();
+		if (object == null)
+			object = new TreeMap<>();
 		return super.handle(object);
 	}
 }

@@ -13,7 +13,7 @@ import unimib.ingsof.persistence.model.Recipe;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.repository.RecipeRepository;
-import unimib.ingsof.persistence.view.RecipeDetailsView;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
 import unimib.ingsof.validation.validators.IngredientInitializationValidator;
@@ -29,7 +29,7 @@ public class RecipeController {
 	IngredientController ingredientController;
 
 	public RecipeView getRecipeByID(String recipeID) throws DoesntExistsException {
-		RecipeDetailsView recipe = this.getRecipeDetailsByID(recipeID);
+		Recipe recipe = this.getRecipeDetailsByID(recipeID);
 		
 		ArrayList<RecipeIngredientView> result =  new ArrayList<>();
 		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
@@ -40,19 +40,19 @@ public class RecipeController {
 		return new RecipeView(recipeID, recipe.getName(), recipe.getDescription(), result);
 	}
 
-	public RecipeDetailsView getRecipeDetailsByID(String recipeID) throws DoesntExistsException {
+	public Recipe getRecipeDetailsByID(String recipeID) throws DoesntExistsException {
 		Recipe recipe = this.recipeRepository.getRecipe(recipeID);
 		if (recipe == null)
 			throw new DoesntExistsException();
-		return new RecipeDetailsView(recipeID, recipe.getName(), recipe.getDescription());
+		return new Recipe(recipeID, recipe.getName(), recipe.getDescription());
 	}
 	
 	public RecipeView updateRecipe(String recipeID, Map<String, String> recipeObject) throws ValidationException, DoesntExistsException {
 		recipeObject = RecipeUpdatingValidator.getInstance().handle(recipeObject);
 		this.getRecipeDetailsByID(recipeID);
 
-		String newName = recipeObject.get("name");
-		String newDescription = recipeObject.get("description");
+		String newName = recipeObject.get(Protocol.NAME_KEY);
+		String newDescription = recipeObject.get(Protocol.DESCRIPTION_KEY);
 		
 		if (newName != null)
 			this.recipeRepository.updateRecipeName(recipeID, newName);
@@ -68,8 +68,8 @@ public class RecipeController {
 	
 	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
 		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
-		String name = ingredientObject.get("name");
-		float quantity = Float.parseFloat(ingredientObject.get("quantity"));
+		String name = ingredientObject.get(Protocol.NAME_KEY);
+		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY));
 		
 		String ingredientID = this.ingredientController.addIngredient(name).getIngredientID();
 		this.getRecipeDetailsByID(recipeID);

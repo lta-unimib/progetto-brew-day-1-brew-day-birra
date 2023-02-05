@@ -2,7 +2,9 @@ package unimib.ingsof.persistence.view;
 
 import java.util.List;
 
-public class RecipeView extends RecipeDetailsView {
+import unimib.ingsof.persistence.model.Recipe;
+
+public class RecipeView extends Recipe {
 	private List<RecipeIngredientView> ingredients;
 	
 	public RecipeView() {

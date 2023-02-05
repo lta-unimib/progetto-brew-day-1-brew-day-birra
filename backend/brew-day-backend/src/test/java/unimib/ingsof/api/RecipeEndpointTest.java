@@ -1,6 +1,5 @@
 package unimib.ingsof.api;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
@@ -50,7 +49,10 @@ class RecipeEndpointTest {
 		recipeBody.put("name", ingredientName);
 		recipeBody.put("quantity", "7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
-		assertFalse(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		recipeBody.put("quantity", "-7");
+		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient("id", recipeBody).getStatusCode().is4xxClientError());
 		
 		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
 

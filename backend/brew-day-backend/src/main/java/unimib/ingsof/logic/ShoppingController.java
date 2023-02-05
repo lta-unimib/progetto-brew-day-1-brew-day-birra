@@ -16,6 +16,7 @@ import unimib.ingsof.persistence.view.IngredientView;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
 import unimib.ingsof.validation.validators.IngredientInitializationValidator;
+import unimib.ingsof.validation.validators.ShoppingListCreationValidator;
 
 @Service
 public class ShoppingController {
@@ -38,11 +39,13 @@ public class ShoppingController {
 			return new IngredientView(inventoryController.addIngredient(newIngredientObject), ingredientName, 0);
 		}
 	}
-
-	public List<IngredientView> getShoppingList(String recipeID) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
-		return getShoppingList(recipeID, 1);
-	}
 	
+	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
+		requestBody = ShoppingListCreationValidator.getInstance().handle(requestBody);
+		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_KEY));
+		return this.getShoppingList(recipeID, multiplier);
+	}
+
 	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
