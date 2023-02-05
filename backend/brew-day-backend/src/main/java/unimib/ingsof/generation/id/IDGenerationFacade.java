@@ -25,10 +25,10 @@ public class IDGenerationFacade {
 	
 	private static IDGenerationFacade newInstance() throws NoSuchAlgorithmException {
 		return new IDGenerationFacade(
-				new SeedSHA256HashingGenerator(),
-				new SeedSHA256HashingGenerator(),
-				new SeedSHA256HashingGenerator(),
-				new SeedSHA256HashingGenerator()
+				new RandomSeedSHA256HashingGenerator(),
+				new RandomSeedSHA256HashingGenerator(),
+				new RandomSeedSHA256HashingGenerator(),
+				new RandomSeedSHA256HashingGenerator()
 		);
 	}
 

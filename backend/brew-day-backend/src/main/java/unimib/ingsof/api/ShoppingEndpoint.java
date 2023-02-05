@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ShoppingController;
 import unimib.ingsof.persistence.view.IngredientView;
 
@@ -25,12 +26,14 @@ public class ShoppingEndpoint {
 	ShoppingController shoppingController;
 
 	@GetMapping
-    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID) {
+    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Map<String, String> requestBody) {
 		List<IngredientView> result = new ArrayList<>();
 		try {
-			result = shoppingController.getShoppingList(recipeID);
+			result = shoppingController.getShoppingList(recipeID, requestBody);
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -40,8 +43,10 @@ public class ShoppingEndpoint {
 		try {
 			shoppingController.postShoppingList(ingredients);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (ValidationException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 }

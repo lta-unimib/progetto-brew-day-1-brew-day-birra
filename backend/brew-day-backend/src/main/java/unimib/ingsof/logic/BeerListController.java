@@ -13,7 +13,7 @@ import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.generation.id.IDGenerationFacade;
 import unimib.ingsof.persistence.repository.BeerRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.BeerInitializationValidator;
 
 @Service
@@ -21,41 +21,30 @@ public class BeerListController {
 	@Autowired
 	private BeerRepository beerRepository;
 	@Autowired
-	private RecipeRepository recipeRepository;
+	private RecipeController recipeController;
 	@Autowired
 	ExecuteRecipeController executeRecipeController;
 	
-	public List<String> getAllBeerIDs() {
-		return beerRepository.getAllBeerIDs();
-	}
-	
 	public List<String> getAllBeerIDs(Optional<String> filterByName, Optional<String> filterByRecipeID) {
-		if (filterByRecipeID.isEmpty())
-			if(filterByName.isEmpty()) {
-				return getAllBeerIDs();
-			} else {
-				return beerRepository.getAllBeerIDsFilteredByName(filterByName.get());
-			}
-		else {
-			System.out.println(filterByRecipeID.get());
-			
-			if(filterByName.isEmpty()) {
-				return beerRepository.getAllBeerIDsFilteredByRecipeID(filterByRecipeID.get());
-			} else {
-				
-				return beerRepository.getAllBeerIDsFilteredByAll(filterByName.get(), filterByRecipeID.get());
-			}
-		}
+		return beerRepository.getAllBeerIDs(filterByName.orElse(""), filterByRecipeID.orElse(""));
 	}
 	
 	public String addBeer(Map<String, String> beerObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
-		String name = beerObject.get("name");
-		String recipeID = beerObject.get("recipeID");
-		String beerID = IDGenerationFacade.getInstance().generateBeerID(beerObject);
-		if(!recipeRepository.getAllRecipeIDs().contains(recipeID)) 
-			throw new DoesntExistsException();
-		executeRecipeController.execute(recipeID);
+		String name = beerObject.get(Protocol.NAME_KEY);
+		String recipeID = beerObject.get(Protocol.RECIPE_ID_KEY);
+		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_KEY));
+		recipeController.getRecipeByID(recipeID);
+		
+		executeRecipeController.execute(recipeID, quantity);
+
+		String beerID = "";
+		while(true) {
+			beerID = IDGenerationFacade.getInstance().generateBeerID(beerObject);
+			if (!beerRepository.getAllBeerIDs("", "").contains(beerID))
+				break;
+		}
+		
 		beerRepository.addBeer(beerID, name, recipeID);
 		return beerID;
 	}

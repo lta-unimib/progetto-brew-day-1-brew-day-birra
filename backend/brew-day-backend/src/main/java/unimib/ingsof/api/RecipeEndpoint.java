@@ -62,6 +62,8 @@ public class RecipeEndpoint {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("ingredientID", ingredientID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+		} catch(DoesntExistsException exception) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

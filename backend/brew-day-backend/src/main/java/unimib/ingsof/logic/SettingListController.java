@@ -10,6 +10,7 @@ import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Setting;
 import unimib.ingsof.persistence.repository.SettingRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.SettingInitializationValidator;
 
 @Service
@@ -23,8 +24,8 @@ public class SettingListController {
 	
 	public String addSetting(Map<String, String> settingObject) throws ValidationException, AlreadyExistsException {
 		settingObject = SettingInitializationValidator.getInstance().handle(settingObject);
-		String settingID = settingObject.get("settingID");
-		String value = settingObject.get("value");
+		String settingID = settingObject.get(Protocol.SETTING_ID_KEY);
+		String value = settingObject.get(Protocol.VALUE_KEY);
 		
 		Setting setting = settingRepository.getSetting(settingID);
 		if (setting != null)
