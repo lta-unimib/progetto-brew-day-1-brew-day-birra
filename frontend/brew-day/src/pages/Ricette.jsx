@@ -4,7 +4,7 @@ import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from '../components/MButton';
 
@@ -98,18 +98,10 @@ export default class Ricette extends Component {
               <td>{item.name}</td>
               <td>{item.description}</td>
               <td>
-                <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleView(item)}>
-                  Dettagli
-                </Button>
-                <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleExecute(item)}>
-                  Esegui
-                </Button>
-                <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleEdit(item)}>
-                  Modifica
-                </Button>
-                <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.handleDelete(item)}>
-                  Elimina
-                </Button>
+                <MButton text="Dettagli" onClick={() => this.handleView(item)}></MButton>
+                <MButton text="Esegui" onClick={() => this.handleExecute(item)}></MButton>
+                <MButton text="Modifica" onClick={() => this.handleEdit(item)}></MButton>
+                <MButton text="Elimina" onClick={() => this.handleDelete(item)}></MButton>
               </td>
             </tr>
         });
@@ -122,12 +114,8 @@ export default class Ricette extends Component {
                         <tr>
                             <th width="30%">FILTRA PER NOME</th>
                             <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-                            <th width="20%"><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.filterRecipe()}>
-                                              Filtra
-                                            </Button>
-                                            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} variant="contained" color="primary" onClick={() => this.removeFilter()}>
-                                              Togli
-                                            </Button>
+                            <th width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()}></MButton>
+                                            <MButton text="Togli" onClick={() => this.removeFilter()}></MButton>
                             </th>
                         </tr>
                         <tr>

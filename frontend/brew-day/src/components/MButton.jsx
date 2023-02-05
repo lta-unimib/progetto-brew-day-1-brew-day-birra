@@ -8,7 +8,7 @@ class MButton extends Component {
   render() {
     return (
       <Button
-        style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }}
+        style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }}
         variant="contained"
         color="primary"
         onClick={this.props.onClick}
