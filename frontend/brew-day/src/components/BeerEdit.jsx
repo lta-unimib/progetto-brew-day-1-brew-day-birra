@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class BeerEdit extends Component {
   constructor(props) {
@@ -108,14 +109,7 @@ class BeerEdit extends Component {
                   />
                 </th>
                 <th width="33%">
-                  <Button
-                    style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }}
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleNameChange}
-                  >
-                    Modifica nome
-                  </Button>
+                  <MButton text="Modifica nome" onClick={this.handleNameChange} />
                 </th>
               </tr>
             </table>
@@ -141,20 +135,7 @@ class BeerEdit extends Component {
                     ></textarea>
                   </th>
                   <td>
-                    <Button
-                      style={{
-                        marginRight: 10,
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                      variant="contained"
-                      color="primary"
-                      onClick={() =>
-                        this.handleAddNote(this.noteType, this.description)
-                      }
-                    >
-                      Aggiungi nota
-                    </Button>
+                    <MButton text="Aggiungi nota" onClick={() => this.handleAddNote(this.noteType, this.description)} />
                   </td>
                 </tr>
               </thead>
@@ -182,32 +163,10 @@ class BeerEdit extends Component {
                         />
                       </td>
                       <td>
-                        <Button
-                          style={{
-                            marginRight: 10,
-                            marginTop: 10,
-                            marginBottom: 10,
-                          }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => this.handleEditNote(note)}
-                        >
-                          Modifica nota
-                        </Button>
+                        <MButton text="Modifica nota" onClick={() => this.handleEditNote(note)} />
                       </td>
                       <td>
-                        <Button
-                          style={{
-                            marginRight: 10,
-                            marginTop: 10,
-                            marginBottom: 10,
-                          }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => this.handleDeleteNote(note)}
-                        >
-                          Elimina nota
-                        </Button>
+                        <MButton text="Elimina nota" onClick={() => this.handleDeleteNote(note)} />
                       </td>
                     </tr>
                   );
