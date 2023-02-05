@@ -168,8 +168,10 @@ class Birre extends Component {
             <tr>
               <th width="30%">FILTRA PER NOME</th>
               <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-              <th width="20%"><button onClick={() => this.filterBeer()}>FILTRA</button>
-                              <button onClick={() => this.removeFilter()}>TOGLI</button>
+              <th width="20%"><Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
+                                      variant="contained" color="primary" onClick={() => this.filterBeer()}>Filtra</Button>
+                              <Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
+                                      variant="contained" color="primary" onClick={() => this.removeFilter()}>Togli</Button>
               </th>
             </tr>
             <tr>
@@ -183,8 +185,10 @@ class Birre extends Component {
                 
                 
                 </select></th>
-              <th width="20%"> <button onClick={() => this.filterBeer()}>FILTRA</button>
-                              <button onClick={() => this.removeFilter()}>TOGLI</button>
+              <th width="20%"><Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
+                                      variant="contained" color="primary" onClick={() => this.filterBeer()}>Filtra</Button>
+                              <Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
+                                      variant="contained" color="primary" onClick={() => this.removeFilter()}>Togli</Button>
               </th>
             </tr>
               <tr>
