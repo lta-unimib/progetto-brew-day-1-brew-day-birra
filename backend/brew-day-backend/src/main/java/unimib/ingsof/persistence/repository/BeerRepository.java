@@ -18,8 +18,16 @@ public interface BeerRepository extends CrudRepository<Beer, String> {
     ArrayList<String> getAllBeerIDs();
     
     // GET
-    @Query("SELECT beerID FROM Beer WHERE name like %:name% OR recipeID = :recipeID")
-    ArrayList<String> getAllBeerIDsFiltered(@Param("name") String name, @Param("recipeID") String recipeID);
+    @Query("SELECT beerID FROM Beer WHERE name like %:name% AND recipeID = :recipeID")
+    ArrayList<String> getAllBeerIDsFilteredByAll(@Param("name") String name, @Param("recipeID") String recipeID);
+
+    // GET
+    @Query("SELECT beerID FROM Beer WHERE name like %:name%")
+    ArrayList<String> getAllBeerIDsFilteredByName(@Param("name") String name);
+    
+    // GET
+    @Query("SELECT beerID FROM Beer WHERE recipeID = :recipeID")
+    ArrayList<String> getAllBeerIDsFilteredByRecipeID(@Param("recipeID") String recipeID);
     
     // GET
     @Query(value = "SELECT * FROM beer WHERE beerID = :beerID", nativeQuery = true)

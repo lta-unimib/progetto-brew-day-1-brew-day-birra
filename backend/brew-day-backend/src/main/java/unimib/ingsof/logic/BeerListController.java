@@ -30,9 +30,22 @@ public class BeerListController {
 	}
 	
 	public List<String> getAllBeerIDs(Optional<String> filterByName, Optional<String> filterByRecipeID) {
-		if (filterByName.isEmpty() && filterByRecipeID.isEmpty())
-			return this.getAllBeerIDs();
-		return beerRepository.getAllBeerIDsFiltered(filterByName.orElse(""), filterByRecipeID.orElse(""));
+		if (filterByRecipeID.isEmpty())
+			if(filterByName.isEmpty()) {
+				return getAllBeerIDs();
+			} else {
+				return beerRepository.getAllBeerIDsFilteredByName(filterByName.get());
+			}
+		else {
+			System.out.println(filterByRecipeID.get());
+			
+			if(filterByName.isEmpty()) {
+				return beerRepository.getAllBeerIDsFilteredByRecipeID(filterByRecipeID.get());
+			} else {
+				
+				return beerRepository.getAllBeerIDsFilteredByAll(filterByName.get(), filterByRecipeID.get());
+			}
+		}
 	}
 	
 	public String addBeer(Map<String, String> beerObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException, NotEnoughIngredientsException {

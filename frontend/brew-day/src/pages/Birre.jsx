@@ -15,6 +15,10 @@ class Birre extends Component {
       currentAction: "view",
       selectedBeer: null,
       showModal: false,
+      filterRecipe: "",
+      filterName: "", 
+      beersIDsFiltered: [],
+      recipes: []
     };
   }
 
@@ -23,12 +27,19 @@ class Birre extends Component {
       .then((response) => response.json())
       .then((data) => {
         const beerIDs = data;
-        const promises = beerIDs.map((id) => fetch(`/api/beer/${id}`));
-
-        Promise.all(promises).then((results) => {
-          const beers = results.map((response) => response.json());
-          Promise.all(beers).then((updatedBeers) => {
-            this.setState({ beerIDs, beers: updatedBeers });
+        const beersIDsFiltered = data;
+        const promises = beerIDs.map(id => fetch(`/api/beer/${id}`));
+        Promise.all(promises).then(results => {
+          const beers = results.map(response => response.json());
+          Promise.all(beers)
+          .then(updatedBeers => {
+            this.setState({ beerIDs, beers: updatedBeers, beersIDsFiltered});
+            return updatedBeers.map(beer => beer.recipeID).filter((value, index, self) => self.indexOf(value) === index);
+          })
+          .then(updatedBeers => {
+            Promise.all(updatedBeers.map(beer => fetch(`/api/recipes/${beer}`))) 
+            .then(responses => Promise.all(responses.map(response => response.json())))
+            .then(data => this.setState({recipes: data}))
           });
         });
       })
@@ -68,7 +79,7 @@ class Birre extends Component {
     fetch(`/api/beer/${beerToDeleteID}`, {
       method: "DELETE",
     });
-    this.setState((prevState) => {
+    /*this.setState((prevState) => {
       const updatedBeers = prevState.beers.filter(
         (beer) => beer.beerID !== prevState.selectedBeer.beerID
       );
@@ -76,7 +87,7 @@ class Birre extends Component {
         (id) => id !== prevState.selectedBeer.beerID
       );
       return { beers: updatedBeers, beerIDs: updatedBeerIDs, showModal: false };
-    });
+    });*/
   };
 
   getCurrentComponent() {
@@ -116,10 +127,20 @@ class Birre extends Component {
     }
   }
 
-  render() {
-    const { beerIDs, beers } = this.state;
+  setFilterName(event){
+    let filterName = event.target.value;
+    this.setState({filterName: filterName});
+  }
 
-    const itemList = beerIDs.map((item) => {
+  setFilterRecipe(event){
+    let filterRecipe = event.target.value;
+    this.setState({filterRecipe: filterRecipe});
+  }
+  
+  render() {
+    const {beersIDsFiltered, beers } = this.state;
+
+    const itemList = beersIDsFiltered.map((item) => {
       const beer = beers.find((b) => b.beerID === item);
       return (
         <tr key={item}>
@@ -132,7 +153,7 @@ class Birre extends Component {
                     variant="contained" color="primary" 
                     onClick={() => this.handleEdit(beer)}>Modifica</Button>
             <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                    variant="contained" color="primary" 
+                    variant="contained" color="primary"
                     onClick={() => this.handleDelete(beer)}>Elimina</Button>
           </td>
         </tr>
@@ -144,6 +165,28 @@ class Birre extends Component {
         <div>
           <table className="myTable">
             <thead>
+            <tr>
+              <th width="30%">FILTRA PER NOME</th>
+              <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
+              <th width="20%"><button onClick={() => this.filterBeer()}>FILTRA</button>
+                              <button onClick={() => this.removeFilter()}>TOGLI</button>
+              </th>
+            </tr>
+            <tr>
+              <th width="30%">FILTRA PER RICETTA</th>
+              <th width="50%"><select options={this.state.recipesName} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterRecipe(event)}>
+                
+                {this.state.recipes.map((recipe) => (
+                  <option value={recipe.recipeID} key={recipe.recipeID}>{recipe.name}</option>
+                  ))
+                }
+                
+                
+                </select></th>
+              <th width="20%"> <button onClick={() => this.filterBeer()}>FILTRA</button>
+                              <button onClick={() => this.removeFilter()}>TOGLI</button>
+              </th>
+            </tr>
               <tr>
                 <th width="50%">Nome</th>
                 <th width="50%">Azioni</th>
@@ -161,5 +204,33 @@ class Birre extends Component {
       </ThemeProvider>
     );
   }
+
+  filterBeer() {
+    let url = "";
+    if (this.state.filterName === ""){
+      if (this.state.filterRecipe === ""){
+        url = `/api/beer`;
+      } else {
+        url = `/api/beer?recipeID=${this.state.filterRecipe}`;
+      }
+    } else {
+      if (this.state.filterRecipe === ""){
+        url = `/api/beer?name=${this.state.filterName}`;
+      } else {
+        url = `/api/beer?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
+      }
+    }
+
+    fetch(url)
+      .then(response => response.json())
+      .then(beersIDsFiltered => {
+        this.setState({beersIDsFiltered: beersIDsFiltered});
+      })
+  }
+
+  removeFilter(){
+    this.setState({beersIDsFiltered: this.state.beerIDs, filterName:"", filterRecipe:""})
+  }
+
 }
 export default Birre;

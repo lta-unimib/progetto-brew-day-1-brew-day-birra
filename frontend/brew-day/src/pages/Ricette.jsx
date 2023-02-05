@@ -3,6 +3,7 @@ import Modal from "../components/Modal";
 import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
+import RecipeExecute from "../components/RecipeExecute";
 import { Button, ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 
@@ -22,48 +23,31 @@ export default class Ricette extends Component {
     this.handleView = this.handleView.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleExecute = this.handleExecute.bind(this);
     this.getCurrentComponent = this.getCurrentComponent.bind(this);
     this.setShowModal = this.setShowModal.bind(this);
     this.filterRecipe = this.filterRecipe.bind(this);
   }
-
+  
   componentDidMount() {
-    fetch("/api/recipes")
-      .then((response) => response.json())
-      .then((recipeIDs) =>
-        Promise.all(
-          recipeIDs.map((recipeID) => fetch(`api/recipes/${recipeID}`))
-        )
-      )
-      .then((responses) =>
-        Promise.all(responses.map((response) => response.json()))
-      )
-      .then((data) => this.setState({ recipes: data, recipesFiltered: data }));
+        fetch("/api/recipes")
+        .then(response => response.json())
+        .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`api/recipes/${recipeID}`))))
+        .then(responses => Promise.all(responses.map(response => response.json())))
+        .then(data => this.setState({recipes: data, recipesFiltered: data}));
   }
-
-  handleView(item) {
-    this.setState({
-      currentAction: "view",
-      selectedRecipe: item,
-      showModal: true,
-    });
-  }
-
+  
   handleEdit(item) {
-    this.setState({
-      currentAction: "edit",
-      selectedRecipe: item,
-      showModal: true,
-    });
-  }
+    this.setState({currentAction:"edit", selectedRecipe:item, showModal:true})
+  };    
 
   handleDelete(item) {
-    this.setState({
-      currentAction: "delete",
-      selectedRecipe: item,
-      showModal: true,
-    });
-  }
+    this.setState({currentAction:"delete", selectedRecipe:item, showModal:true})
+  };
+
+  handleExecute(item) {
+    this.setState({currentAction:"execute", selectedRecipe:item, showModal:true})
+  };
 
   getCurrentComponent() {
     let selectedRecipe = this.state.selectedRecipe;
