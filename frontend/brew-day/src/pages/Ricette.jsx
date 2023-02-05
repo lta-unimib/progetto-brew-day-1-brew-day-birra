@@ -3,6 +3,7 @@ import Modal from "../components/Modal";
 import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
+import RecipeExecute from "../components/RecipeExecute";
 
 export default class Ricette extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ export default class Ricette extends Component {
         this.handleView = this.handleView.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleExecute = this.handleExecute.bind(this);
         this.getCurrentComponent = this.getCurrentComponent.bind(this);
         this.setShowModal = this.setShowModal.bind(this);
         this.filterRecipe = this.filterRecipe.bind(this);
@@ -36,6 +38,10 @@ export default class Ricette extends Component {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true})
     };
 
+    handleExecute(item) {
+      this.setState({currentAction:"execute", selectedRecipe:item, showModal:true})
+    };
+
     getCurrentComponent(){
       let selectedRecipe = this.state.selectedRecipe;
       let currentAction = this.state.currentAction;
@@ -47,8 +53,8 @@ export default class Ricette extends Component {
           return <RecipeEdit recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         case "delete":
           return <RecipeDelete recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
-        //case "execute":
-        //  return <RecipeExecute name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+        case "execute":
+          return <RecipeExecute recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         default:
           return null;
       }
@@ -90,6 +96,7 @@ export default class Ricette extends Component {
               <td>{item.description}</td>
               <td>
                 <button onClick={() => this.handleView(item)}>Dettagli</button>
+                <button onClick={() => this.handleExecute(item)}>Esegui</button>
                 <button onClick={() => this.handleEdit(item)}>Modifica</button>
                 <button onClick={() => this.handleDelete(item)}>Elimina</button>
               </td>
