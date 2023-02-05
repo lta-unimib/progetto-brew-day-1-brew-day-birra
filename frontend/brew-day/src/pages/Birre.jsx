@@ -3,6 +3,8 @@ import BeerView from "../components/BeerView";
 import BeerEdit from "../components/BeerEdit";
 import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
+import { Button, ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
 
 class Birre extends Component {
   constructor(props) {
@@ -22,8 +24,8 @@ class Birre extends Component {
 
   componentDidMount() {
     fetch("/api/beer")
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         const beerIDs = data;
         const beersIDsFiltered = data;
         const promises = beerIDs.map(id => fetch(`/api/beer/${id}`));
@@ -41,6 +43,7 @@ class Birre extends Component {
           });
         });
       })
+      .catch((error) => console.error(error));
   }
 
   handleView(item) {
@@ -74,7 +77,7 @@ class Birre extends Component {
   handleDeleteConfirm = () => {
     const beerToDeleteID = this.state.selectedBeer.beerID;
     fetch(`/api/beer/${beerToDeleteID}`, {
-      method: "DELETE"
+      method: "DELETE",
     });
     /*this.setState((prevState) => {
       const updatedBeers = prevState.beers.filter(
@@ -105,9 +108,20 @@ class Birre extends Component {
           />
         );
       case "edit":
-        return <BeerEdit beerID={selectedBeer.beerID} name={selectedBeer.name} notes={selectedBeer.notes}/>;
+        return (
+          <BeerEdit
+            beerID={selectedBeer.beerID}
+            name={selectedBeer.name}
+            notes={selectedBeer.notes}
+          />
+        );
       case "delete":
-        return <BeerDelete beerID={selectedBeer.beerID} onConfirm={this.handleDeleteConfirm}/>;
+        return (
+          <BeerDelete
+            beerID={selectedBeer.beerID}
+            onConfirm={this.handleDeleteConfirm}
+          />
+        );
       default:
         return null;
     }
@@ -132,24 +146,29 @@ class Birre extends Component {
         <tr key={item}>
           <td>{beer.name}</td>
           <td>
-            <button onClick={() => this.handleView(beer)}>Dettagli</button>
-            <button onClick={() => this.handleEdit(beer)}>
-              Modifica
-            </button>
-            <button onClick={() => this.handleDelete(beer)}>Elimina</button>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary" 
+                    onClick={() => this.handleView(beer)}>Dettagli</Button>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary" 
+                    onClick={() => this.handleEdit(beer)}>Modifica</Button>
+            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
+                    variant="contained" color="primary"
+                    onClick={() => this.handleDelete(beer)}>Elimina</Button>
           </td>
         </tr>
       );
     });
 
     return (
-      <div>
-        <table className="myTable">
-          <thead>
+      <ThemeProvider theme={theme}>
+        <div>
+          <table className="myTable">
+            <thead>
             <tr>
               <th width="30%">FILTRA PER NOME</th>
               <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-              <th width="20%"> <button onClick={() => this.filterBeer()}>FILTRA</button>
+              <th width="20%"><button onClick={() => this.filterBeer()}>FILTRA</button>
                               <button onClick={() => this.removeFilter()}>TOGLI</button>
               </th>
             </tr>
@@ -168,17 +187,21 @@ class Birre extends Component {
                               <button onClick={() => this.removeFilter()}>TOGLI</button>
               </th>
             </tr>
-            <tr>
-              <th width="50%">Nome</th>
-              <th width="50%">Azioni</th>
-            </tr>
-          </thead>
-          <tbody>{itemList}</tbody>
-        </table>
-        <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
-          {this.getCurrentComponent()}
-        </Modal>
-      </div>
+              <tr>
+                <th width="50%">Nome</th>
+                <th width="50%">Azioni</th>
+              </tr>
+            </thead>
+            <tbody>{itemList}</tbody>
+          </table>
+          <Modal
+            showModal={this.state.showModal}
+            setShowModal={this.setShowModal}
+          >
+            {this.getCurrentComponent()}
+          </Modal>
+        </div>
+      </ThemeProvider>
     );
   }
 

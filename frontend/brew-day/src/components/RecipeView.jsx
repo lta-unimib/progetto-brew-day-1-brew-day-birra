@@ -1,25 +1,23 @@
 import React from "react";
 
 const RecipeView = (props) => {
-
-  const itemList = props.ingredients.map(item => {
-    let imagePath = `../../icons/inventory-icons/${item.name}.png`;
-    let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
-    return <tr key={item.name}>
+  const itemList = props.ingredients.map((item) => {
+    return (
+      <tr key={item.name}>
         <td>
           <img
             className="shoppingImage"
-            src={imagePath}                 
-            alt = ""
+            src={`../../icons/inventory-icons/${item.name}.png`}
+            alt={item.name}
             onError={(e) => {
-              e.target.onerror = null;
-              e.target.src=defaultImage
+              e.target.src = "../../icons/inventory-icons/sconosciuto.png";
             }}
           />
         </td>
         <td>{item.name}</td>
         <td>{item.quantity}</td>
       </tr>
+    );
   });
 
   return (
@@ -35,9 +33,7 @@ const RecipeView = (props) => {
               <th width="25%">Quantità</th>
             </tr>
           </thead>
-          <tbody>
-            {itemList}
-          </tbody>
+          <tbody>{itemList}</tbody>
         </table>
       </center>
     </div>

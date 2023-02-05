@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import NavBar from "../src/components/NavBar";
 import QuantityInput from "../src/components/QuantityInput";
 import Modal from "../src/components/Modal";
@@ -8,13 +8,16 @@ import RecipeView from "../src/components/RecipeView";
 import RecipeDelete from "../src/components/RecipeDelete";
 import RecipeExecute from "../src/components/RecipeExecute";
 
-const testIngredient = [{ name: "boh", quantity: "0" }, { name: "luppoli", quantity: "1"}];
+const testIngredient = [
+  { name: "boh", quantity: "0" },
+  { name: "luppoli", quantity: "1" },
+];
 
 global.fetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
     json: () => {},
   })
-)
+);
 
 describe("NavBar component", () => {
   test("should render correctly", () => {
@@ -123,15 +126,19 @@ describe("RecipeDelete component", () => {
   });
 
   test("calls fetch when delete button is clicked", () => {
-    const props = { name: "Recipe 1", description: "This is a test recipe", recipeID: 1 };
+    const props = {
+      name: "Recipe 1",
+      description: "This is a test recipe",
+      recipeID: 1,
+    };
     const { getByText } = render(<RecipeDelete {...props} />);
     fireEvent.click(getByText("Sei sicuro di voler rimuovere la ricetta?"));
     expect(fetch).toHaveBeenCalledWith(`/api/recipes/${props.recipeID}`, {
-        method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     });
   });
 });
@@ -159,6 +166,23 @@ describe("RecipeView component", () => {
       />
     );
     expect(container.firstChild).toMatchSnapshot();
+  });
+  test("sets the default image if the requested image is not found", async () => {
+    render(
+      <RecipeView
+        name="name"
+        description="description"
+        ingredients={testIngredient}
+      />
+    );
+
+    const img = await screen.findByAltText("boh");
+    expect(img.getAttribute("src")).toContain("boh.png");
+
+    fireEvent.error(img);
+
+    const _img = await screen.findByAltText("boh");
+    expect(_img.getAttribute("src")).toContain("sconosciuto.png");
   });
 });
 
@@ -203,4 +227,3 @@ describe("Modal component", () => {
     expect(setShowModal).toHaveBeenCalledWith(false);
   });
 });
-

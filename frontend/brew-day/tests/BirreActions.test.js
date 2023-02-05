@@ -3,14 +3,6 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import BeerEdit from "../src/components/BeerEdit";
 import BeerView from "../src/components/BeerView";
-import { existsSync, readFileSync, writeFileSync } from "fs";
-
-const log = (string) => {
-  if (!existsSync("./log.log")) writeFileSync("./log.log", "");
-  let text = readFileSync("./log.log").toString();
-  text += "\n" + string;
-  writeFileSync("./log.log", text);
-};
 
 const testBeer = {
   beerID: "1",
@@ -197,5 +189,29 @@ describe("Birre component", () => {
     const viewRecipeButton = screen.getAllByText("Visualizza ricetta")[0];
     fireEvent.click(viewRecipeButton);
     expect(screen.queryByText("Recipe 1"));
+  });
+
+  test("edit note", async () => {
+    render(
+      <BeerEdit
+        beerID={testBeer.beerID}
+        name={testBeer.name}
+        notes={testBeer.notes}
+      />
+    );
+    const descriptionTextArea = screen.getAllByTestId(
+      "description-textarea"
+    )[0];
+    fireEvent.change(descriptionTextArea, {
+      target: { value: "edited description" },
+    });
+    const editNote = screen.getAllByText("Modifica nota")[0];
+    fireEvent.click(editNote);
+    render(<Birre />);
+    await waitFor(() => screen.getAllByText("Modifica")[0]);
+    const editButton = screen.getAllByText("Modifica")[0];
+    fireEvent.click(editButton);
+    await waitFor(() => screen.getByText("edited description"));
+    expect(screen.getByText("edited description"));
   });
 });
