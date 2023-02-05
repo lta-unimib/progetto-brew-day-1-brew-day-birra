@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 import IngredientDelete from "../components/IngredientDelete";
 import Modal from "../components/Modal";
 
@@ -73,14 +74,7 @@ class Inventario extends Component {
           <td>{item.name}</td>
           <td>{item.quantity}</td>
           <td>
-            <Button
-              style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }}
-              variant="contained"
-              color="primary"
-              onClick={() => this.handleDelete(item.ingredientID)}
-            >
-              Elimina ingrediente
-            </Button>
+            <MButton text="Elimina ingrediente" onClick={() => this.handleDelete(item.ingredientID)} />
           </td>
         </tr>
       );
