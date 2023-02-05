@@ -3,8 +3,9 @@ import BeerView from "../components/BeerView";
 import BeerEdit from "../components/BeerEdit";
 import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class Birre extends Component {
   constructor(props) {
@@ -146,15 +147,9 @@ class Birre extends Component {
         <tr key={item}>
           <td>{beer.name}</td>
           <td>
-            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                    variant="contained" color="primary" 
-                    onClick={() => this.handleView(beer)}>Dettagli</Button>
-            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                    variant="contained" color="primary" 
-                    onClick={() => this.handleEdit(beer)}>Modifica</Button>
-            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                    variant="contained" color="primary"
-                    onClick={() => this.handleDelete(beer)}>Elimina</Button>
+            <MButton text="Dettagli" onClick={() => this.handleView(beer)} />
+            <MButton text="Modifica" onClick={() => this.handleEdit(beer)} />
+            <MButton text="Elimina" onClick={() => this.handleDelete(beer)} />
           </td>
         </tr>
       );
@@ -168,10 +163,9 @@ class Birre extends Component {
             <tr>
               <th width="30%">FILTRA PER NOME</th>
               <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-              <th width="20%"><Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
-                                      variant="contained" color="primary" onClick={() => this.filterBeer()}>Filtra</Button>
-                              <Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
-                                      variant="contained" color="primary" onClick={() => this.removeFilter()}>Togli</Button>
+              <th width="20%">
+                <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                <MButton text="Togli" onClick={() => this.removeFilter()} />
               </th>
             </tr>
             <tr>
@@ -185,10 +179,9 @@ class Birre extends Component {
                 
                 
                 </select></th>
-              <th width="20%"><Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
-                                      variant="contained" color="primary" onClick={() => this.filterBeer()}>Filtra</Button>
-                              <Button style={{ marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 10 }} 
-                                      variant="contained" color="primary" onClick={() => this.removeFilter()}>Togli</Button>
+              <th width="20%">
+                <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                <MButton text="Togli" onClick={() => this.removeFilter()} />
               </th>
             </tr>
               <tr>
