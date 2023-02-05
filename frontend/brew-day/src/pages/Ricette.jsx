@@ -35,6 +35,10 @@ export default class Ricette extends Component {
         .then(responses => Promise.all(responses.map(response => response.json())))
         .then(data => this.setState({recipes: data, recipesFiltered: data}));
   }
+
+  handleView(item) {
+    this.setState({currentAction: "view", selectedRecipe: item, showModal: true});
+  };
   
   handleEdit(item) {
     this.setState({currentAction:"edit", selectedRecipe:item, showModal:true})
