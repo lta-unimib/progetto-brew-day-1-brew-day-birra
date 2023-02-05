@@ -25,7 +25,6 @@ const testBeer = {
 };
 
 global.fetch = jest.fn().mockImplementation((url) => {
-  //
   if (url.endsWith("/beer/1")) {
     return Promise.resolve({
       json: () =>
