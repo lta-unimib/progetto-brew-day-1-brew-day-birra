@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 const IngredientDelete = (props) => {
   return (
@@ -8,9 +9,7 @@ const IngredientDelete = (props) => {
     <div>
       <center>
         <h4>Sei sicuro di voler eliminare questo ingrediente?</h4>
-        <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                variant="contained" color="primary" 
-                onClick={props.onConfirm}>Elimina</Button>
+        <MButton text="Elimina" onClick={props.onConfirm} />
       </center>
     </div>
     </ThemeProvider>
