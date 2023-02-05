@@ -68,8 +68,8 @@ describe("Ricette component", () => {
 
   test("rendes the addition of recipe", async () => {
     render(<Ricette />);
-    await waitFor(() => screen.getAllByText("V"));
-    const addButton = screen.getAllByText("V")[0];
+    await waitFor(() => screen.getAllByText("Aggiungi"));
+    const addButton = screen.getAllByText("Aggiungi")[0];
     fireEvent.click(addButton);
   });
 
