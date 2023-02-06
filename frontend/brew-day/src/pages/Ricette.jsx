@@ -19,14 +19,19 @@ export default class Ricette extends Component {
         this.getCurrentComponent = this.getCurrentComponent.bind(this);
         this.setShowModal = this.setShowModal.bind(this);
         this.filterRecipe = this.filterRecipe.bind(this);
+        this.triggerReload = this.triggerReload.bind(this);
     }
 
-    componentDidMount() {
+    triggerReload() {
         fetch("/api/recipes")
         .then(response => response.json())
         .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`api/recipes/${recipeID}`))))
         .then(responses => Promise.all(responses.map(response => response.json())))
         .then(data => this.setState({recipes: data, recipesFiltered: data}));
+    }
+
+    componentDidMount() {
+      this.triggerReload();
     }
 
     handleView(item) {
@@ -45,6 +50,9 @@ export default class Ricette extends Component {
       this.setState({currentAction:"execute", selectedRecipe:item, showModal:true})
     };
 
+    closeModal = () => this.setShowModal(false);
+    closeModalAndReload = () => {this.closeModal(); this.triggerReload()};
+
     getCurrentComponent(){
       let selectedRecipe = this.state.selectedRecipe;
       let currentAction = this.state.currentAction;
@@ -53,11 +61,11 @@ export default class Ricette extends Component {
         case "view":
           return <RecipeView name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
         case "edit":
-          return <RecipeEdit recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+          return <RecipeEdit recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
         case "delete":
-          return <RecipeDelete recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+          return <RecipeDelete recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} onConfirm={this.closeModalAndReload}/>;
         case "execute":
-          return <RecipeExecute recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+          return <RecipeExecute recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} onConfirm={this.closeModal}/>;
         default:
           return null;
       }

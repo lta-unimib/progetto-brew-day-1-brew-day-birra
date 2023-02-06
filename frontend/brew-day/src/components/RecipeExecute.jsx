@@ -8,7 +8,7 @@ class RecipeExecute extends Component{
 
     constructor(props) {
       super(props);
-      this.state = {missingIngredients:[], newBeerName:null, newBeerQuantity: 0, ...props};
+      this.state = {missingIngredients:[], newBeerName:"new Beer", newBeerQuantity: 0, ...props};
     }
 
     componentDidMount() {
@@ -99,7 +99,8 @@ class RecipeExecute extends Component{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({name: this.state.newBeerName, recipeID: this.state.recipeID, quantity: this.state.newBeerQuantity})
-    })
+      })
+      this.props.onConfirm();
     }
 
 }

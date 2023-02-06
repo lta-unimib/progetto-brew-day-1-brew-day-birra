@@ -35,6 +35,7 @@ class RecipeDelete extends Component{
             'Content-Type': 'application/json'
         }
     });
+    this.props.onConfirm();
 }
 
 }
