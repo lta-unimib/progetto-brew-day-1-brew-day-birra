@@ -69,7 +69,7 @@ class RecipeExecute extends Component{
                             <td><input value={this.state.newBeerName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewBeerName(event)}></input></td>
                             <td><input value={this.state.newBeerQuantity} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewBeerQuantity(event)}></input></td>
                             <td>
-                              <MButton text="Crea birra" onClick={() => this.addBeer()} />
+                              <MButton text="Crea" onClick={() => this.addBeer()} />
                             </td>
                           </tr>
                       </tbody>
