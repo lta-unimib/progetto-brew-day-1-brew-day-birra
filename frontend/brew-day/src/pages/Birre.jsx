@@ -102,9 +102,7 @@ class Birre extends Component {
       case "view":
         return (
           <BeerView
-            name={selectedBeer.name}
-            recipeID={selectedBeer.recipeID}
-            notes={selectedBeer.notes}
+            beerID={selectedBeer.beerID}
           />
         );
       case "edit":

@@ -9,16 +9,17 @@ class RecipeExecute extends Component{
     constructor(props) {
       super(props);
       this.state = {missingIngredients:[], newBeerName:"new Beer", newBeerQuantity: 0,
-      name: "", description: "", ingredients: []};
+                    name: "", description: "", ingredients: []};
       this.triggerReload = this.triggerReload.bind(this);
     }
 
     triggerReload() {
-        fetch(`/api/recipes/${this.props.recipeID}`)
+        const recipeID = this.props.recipeID;
+        fetch(`/api/recipes/${recipeID}`)
         .then(response => response.json())
         .then(data => this.setState({...data}))
         .then(() => {
-          fetch(`/api/shopping/${this.props.recipeID}`)
+          fetch(`/api/shopping/${recipeID}`)
           .then(response => response.json())
           .then(data => this.setState({missingIngredients: data}));
         });
