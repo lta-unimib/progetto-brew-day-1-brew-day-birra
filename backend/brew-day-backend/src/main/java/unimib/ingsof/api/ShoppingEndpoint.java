@@ -30,8 +30,6 @@ public class ShoppingEndpoint {
     public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) {
 		List<IngredientView> result = new ArrayList<>();
 		try {
-			if (requestBody == null)
-				requestBody = Optional.empty();
 			result = shoppingController.getShoppingList(recipeID, requestBody.orElse(null));
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
