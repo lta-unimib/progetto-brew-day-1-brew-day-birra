@@ -120,6 +120,7 @@ describe("RecipeDelete component", () => {
         name="name"
         description="description"
         ingredients={testIngredient}
+        onConfirm={() => {}}
       />
     );
     expect(container.firstChild).toMatchSnapshot();
@@ -130,6 +131,7 @@ describe("RecipeDelete component", () => {
       name: "Recipe 1",
       description: "This is a test recipe",
       recipeID: 1,
+      onConfirm: () => {}
     };
     const { getByText } = render(<RecipeDelete {...props} />);
     fireEvent.click(getByText("Sei sicuro di voler rimuovere la ricetta?"));
@@ -150,6 +152,7 @@ describe("RecipeExecute component", () => {
         name="name"
         description="description"
         ingredients={testIngredient}
+        onConfirm={() => {}}
       />
     );
     expect(container.firstChild).toMatchSnapshot();

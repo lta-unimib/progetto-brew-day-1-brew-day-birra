@@ -18,6 +18,7 @@ describe("RecipeEdit component", () => {
             name="name"
             description="description"
             ingredients={testIngredient}
+            onConfirm={() => {}}
             />
         );
         const inputs = container.querySelectorAll("input");
