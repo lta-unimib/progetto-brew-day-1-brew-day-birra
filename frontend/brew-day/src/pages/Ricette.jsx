@@ -87,7 +87,7 @@ export default class Ricette extends Component {
     }
 
     render() {
-        const {recipesFiltered: recipesFiltered, isLoading} = this.state;
+        const {recipesFiltered, isLoading} = this.state;
         
         if (isLoading) {
             return <p>Caricamento...</p>;

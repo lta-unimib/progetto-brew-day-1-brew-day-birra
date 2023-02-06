@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import Home from "../src/pages/Home";
 import Spesa from "../src/pages/Spesa";
@@ -11,7 +11,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
     json: () => {
         if (url == "/api/recipes")
           return Promise.resolve(["id"]);
-        return Promise.resolve({recipeID: "id", name: "id", ingredients: []});
+        return Promise.resolve({recipeID: "id", name: "id", description: "desc", ingredients: []});
     },
   })
 )
@@ -48,8 +48,7 @@ describe("Ricette component", () => {
     await waitFor(() => screen.getAllByText("Dettagli"));
     const viewButton = screen.getAllByText("Dettagli")[0];
     fireEvent.click(viewButton);
-    const modal = container.querySelector(".modal");
-    fireEvent.click(modal);
+    expect(screen.getAllByText("desc")).toHaveLength(2);
   });
 
   test("rendes the edit of recipe", async () => {

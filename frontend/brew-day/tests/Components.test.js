@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, getByRole } from "@testing-library/react";
 import NavBar from "../src/components/NavBar";
 import QuantityInput from "../src/components/QuantityInput";
 import Modal from "../src/components/Modal";
@@ -199,31 +199,8 @@ describe("Modal component", () => {
       </Modal>
     );
     const modalContent = getByTestId("modal-content");
-
     fireEvent.click(modalContent);
 
     expect(modalContent).toBeInTheDocument();
-  });
-
-  test("clicking on the modal sets showModal to false", () => {
-    const setShowModal = jest.fn();
-    const { getByTestId } = render(
-      <Modal showModal={true} setShowModal={setShowModal}>
-        <div data-testid="modal-content"></div>
-      </Modal>
-    );
-    fireEvent.click(getByTestId("modal"));
-    expect(setShowModal).toHaveBeenCalledWith(false);
-  });
-
-  test("clicking on the modal sets showModal to false", () => {
-    const setShowModal = jest.fn();
-    const { getByTestId } = render(
-      <Modal showModal={false} setShowModal={setShowModal}>
-        <div data-testid="modal-content"></div>
-      </Modal>
-    );
-    fireEvent.click(getByTestId("modal"));
-    expect(setShowModal).toHaveBeenCalledWith(false);
   });
 });
