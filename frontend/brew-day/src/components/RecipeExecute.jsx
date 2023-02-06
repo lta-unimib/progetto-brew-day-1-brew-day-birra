@@ -8,7 +8,7 @@ class RecipeExecute extends Component{
 
     constructor(props) {
       super(props);
-      this.state = {missingIngredients:[], newBeerName:null, ...props};
+      this.state = {missingIngredients:[], newBeerName:null, newBeerQuantity: 0, ...props};
     }
 
     componentDidMount() {
@@ -17,9 +17,13 @@ class RecipeExecute extends Component{
       .then(data => this.setState({missingIngredients: data}));
     }
 
-    setNewBeerName(event){
+    setNewBeerName(event) {
       let newBeerName = event.target.value;
       this.setState({newBeerName: newBeerName});
+    }
+
+    setNewBeerQuantity(event) {
+      this.setState({newBeerQuantity: event.target.value});
     }
 
     render(){
@@ -50,7 +54,8 @@ class RecipeExecute extends Component{
                       <tbody>
                           <tr>
                             <td>Nome Nuova Birra: </td>
-                            <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewBeerName(event)}></input></td>
+                            <td><input value={this.state.newBeerName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewBeerName(event)}></input></td>
+                            <td><input value={this.state.newBeerQuantity} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewBeerQuantity(event)}></input></td>
                             <td>
                               <MButton text="Crea birra" onClick={() => this.addBeer()} />
                             </td>
@@ -93,7 +98,7 @@ class RecipeExecute extends Component{
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: this.state.newBeerName, recipeID: this.state.recipeID})
+        body: JSON.stringify({name: this.state.newBeerName, recipeID: this.state.recipeID, quantity: this.state.newBeerQuantity})
     })
     }
 
