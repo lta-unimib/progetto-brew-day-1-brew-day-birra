@@ -7,11 +7,11 @@ import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
 
-class SeedSHA256HashingGeneratorTest {
+class RandomSeedSHA512HashingGeneratorTest {
 	@Test
 	void testBehavior() {
 		try {
-			IDGenerator generator = new SeedSHA256HashingGenerator();
+			IDGenerator generator = new RandomSeedSHA512HashingGenerator();
 			generator.generateID(new TreeMap<>());
 		} catch (NoSuchAlgorithmException e) {
 			fail();

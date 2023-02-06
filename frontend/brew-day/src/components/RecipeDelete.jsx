@@ -1,22 +1,38 @@
 import React, { Component }  from "react";
+import { ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class RecipeDelete extends Component{
-
   constructor(props) {
     super(props);
-    this.state = {name: props.name,
-                  description: props.description,
-                  id: props.recipeID};
+    this.state = {name: "", description: "", ingredients: []};
     this.deleteRecipe = this.deleteRecipe.bind(this);
+      this.triggerReload = this.triggerReload.bind(this);
+  }
+
+  triggerReload() {
+      fetch(`/api/recipes/${this.props.recipeID}`)
+      .then(response => response.json())
+      .then(data => this.setState({...data}));
+  }
+
+  componentDidMount() {
+    this.triggerReload();
   }
 
   render(){
     return (
-      <div>
-        <h1>{this.state.name}</h1>
-        <p>{this.state.description}</p>
-        <button className="recipeButton" onClick={() => this.deleteRecipe(this.state.id)}>Sei sicuro di voler rimuovere la ricetta?</button>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div>
+          <center>
+            <h1>{this.state.name}</h1>
+            <p>{this.state.description}</p>
+            <p>Sei sicuro di voler rimuovere la ricetta?</p>
+            <MButton text="Conferma" onClick={() => this.deleteRecipe(this.state.recipeID)} />
+          </center>
+        </div>
+      </ThemeProvider>
     );
   }
 
@@ -28,6 +44,7 @@ class RecipeDelete extends Component{
             'Content-Type': 'application/json'
         }
     });
+    this.props.onConfirm();
 }
 
 }

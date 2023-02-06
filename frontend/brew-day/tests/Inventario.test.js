@@ -33,6 +33,9 @@ describe("Inventario component", () => {
     await waitFor(() => screen.getAllByText("Elimina ingrediente"));
     const deleteButton = screen.getAllByText("Elimina ingrediente")[0];
     fireEvent.click(deleteButton);
+    await waitFor(() => screen.getAllByText("Elimina"));
+    const confirmDeleteButton = screen.getAllByText("Elimina")[0];
+    fireEvent.click(confirmDeleteButton);
     await waitFor(() => {
       expect(screen.queryByText("ingredient1")).not.toBeInTheDocument();
     });
@@ -46,10 +49,13 @@ describe("Inventario component", () => {
 
   test("sets the default image if the requested image is not found", async () => {
     render(<Inventario />);
-    await waitFor(() => screen.getByText("ingredient1"));
-    setTimeout(() => {
-      expect(screen.queryAllByRole("img")[0].getAttribute("src")).toBe("../../icons/inventory-icons/sconosciuto.png");
-      done()
-    }, 200);
+
+    const img = await screen.findByAltText('ingredient1');
+    expect(img.getAttribute('src')).toContain('ingredient1.png');
+
+    fireEvent.error(img);
+
+    const _img = await screen.findByAltText('ingredient1');
+    expect(_img.getAttribute('src')).toContain('sconosciuto.png');
   });
 });

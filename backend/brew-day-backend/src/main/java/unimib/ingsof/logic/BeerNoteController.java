@@ -9,6 +9,7 @@ import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.BeerNote;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.BeerNoteUpdatingValidator;
 
 @Service
@@ -24,19 +25,22 @@ public class BeerNoteController {
 	}
 	
 	public BeerNote updateNote(String beerID, String noteID, Map<String, String> noteObject) throws ValidationException, DoesntExistsException {
-		BeerNote beerNote = beerNoteRepository.getNote(beerID, noteID);
-		if (beerNote == null)
-			throw new DoesntExistsException();
-		
 		noteObject = BeerNoteUpdatingValidator.getInstance().handle(noteObject);
-		String noteType = noteObject.get("noteType");
-		String description = noteObject.get("description");
+		String noteType = noteObject.get(Protocol.NOTETYPE_KEY);
+		String description = noteObject.get(Protocol.DESCRIPTION_KEY);
+		BeerNote beerNote = this.getNote(beerID, noteID);
 		
-		if (noteType != null)
+		if (noteType != null) {
 			beerNoteRepository.updateNoteType(beerID, noteID, noteType);
-		if (description != null)
+			beerNote.setNoteType(noteType);
+		}
+		
+		if (description != null) {
 			beerNoteRepository.updateNoteDescription(beerID, noteID, description);
-		return this.getNote(beerID, noteID);
+			beerNote.setDescription(description);
+		}
+		
+		return beerNote;
 	}
 	
 	public void deleteNote(String beerID, String noteID) {

@@ -14,12 +14,8 @@ import unimib.ingsof.persistence.model.Beer;
 @Repository
 public interface BeerRepository extends CrudRepository<Beer, String> {
     // GET
-    @Query("SELECT beerID FROM Beer")
-    ArrayList<String> getAllBeerIDs();
-    
-    // GET
-    @Query("SELECT beerID FROM Beer WHERE name like %:name% OR recipeID = :recipeID")
-    ArrayList<String> getAllBeerIDsFiltered(@Param("name") String name, @Param("recipeID") String recipeID);
+    @Query("SELECT beerID FROM Beer WHERE name like %:name% AND recipeID like %:recipeID%")
+    ArrayList<String> getAllBeerIDs(@Param("name") String name, @Param("recipeID") String recipeID);
     
     // GET
     @Query(value = "SELECT * FROM beer WHERE beerID = :beerID", nativeQuery = true)

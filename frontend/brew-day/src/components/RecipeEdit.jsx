@@ -1,10 +1,25 @@
 import React, { Component } from "react";
+import { ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class RecipeEdit extends Component{
 
   constructor(props) {
     super(props);
-    this.state = {newIngredientName: null, newIngredientQuantity: null, ...props};
+    this.state = {newIngredientName: "", newIngredientQuantity: "",
+                  name: "", description: "", ingredients: []};
+    this.triggerReload = this.triggerReload.bind(this);
+  }
+
+  triggerReload() {
+      fetch(`/api/recipes/${this.props.recipeID}`)
+      .then(response => response.json())
+      .then(data => this.setState({newIngredientName: "", newIngredientQuantity: "", ...data}));
+  }
+
+  componentDidMount() {
+    this.triggerReload();
   }
 
   setQuantity(id, event){
@@ -45,53 +60,59 @@ class RecipeEdit extends Component{
           <td>{item.name}</td>
           <td><input value={item.quantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setQuantity(item.ingredientID, event)}></input></td>
           <td>
-              <button onClick={() => this.editQuantity(item.ingredientID)}>V</button>
-              <button onClick={() => this.deleteIngredient(item.ingredientID)}>X</button>
-            </td>
+            <MButton text="V" onClick={() => this.editQuantity(item.ingredientID)} />
+            <MButton text="X" onClick={() => this.deleteIngredient(item.ingredientID)} />
+          </td>
         </tr>
     });
   
     return (
-      <div>
-        <center>
-        <table className="myTable">
-            <tbody> 
-              <tr>
-                <td> <p>Nome Ricetta:</p> </td>
-                <td><input id="nameTextArea" value={this.state.name} style={{width: "80%"}} onChange={ (event) => this.setName(event)}></input></td>
-                <td><button onClick={() => this.editName()}>V</button></td>        
-              </tr>
-            </tbody>
-          </table>
+      <ThemeProvider theme={theme}>
+        <div>
+          <center>
           <table className="myTable">
-            <tbody> 
-              <tr>
-                  <td><p>Descrizione:</p></td>
-                  <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}} onChange={ (event) => this.setDescription(event)}></textarea></td>
-                  <td><button onClick={() => this.editDescription()}>V</button></td>    
-              </tr>
-            </tbody>
-          </table>
-          
-          <table className="myTable">
-            <thead>
-              <tr>
-                <th width="30%">Nome</th>
-                <th width="30%">Quantità</th>
-                <th width="30%">Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {itemList}
-              <tr>
-                <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
-                <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
-                <button onClick={() => this.addIngredient()}>V</button>
-              </tr>
-            </tbody>
-          </table>
-        </center>
-      </div>
+              <tbody> 
+                <tr>
+                  <td> <p>Nome Ricetta:</p> </td>
+                  <td><input id="nameTextArea" value={this.state.name} style={{width: "80%"}} onChange={ (event) => this.setName(event)}></input></td>
+                  <td>
+                    <MButton text="V" onClick={() => this.editName()} />
+                  </td>        
+                </tr>
+              </tbody>
+            </table>
+            <table className="myTable">
+              <tbody> 
+                <tr>
+                    <td><p>Descrizione:</p></td>
+                    <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}} onChange={ (event) => this.setDescription(event)}></textarea></td>
+                    <td>
+                      <MButton text="V" onClick={() => this.editDescription()} />
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <table className="myTable">
+              <thead>
+                <tr>
+                  <th width="30%">Nome</th>
+                  <th width="30%">Quantità</th>
+                  <th width="30%">Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                {itemList}
+                <tr>
+                  <td><input value={this.state.newIngredientName} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
+                  <td><input value={this.state.newIngredientQuantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
+                  <td><MButton text="V" onClick={() => this.addIngredient()}/></td>
+                </tr>
+              </tbody>
+            </table>
+          </center>
+        </div>
+      </ThemeProvider>
     );
   }
 
@@ -102,6 +123,9 @@ class RecipeEdit extends Component{
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
+    })
+    .then(() => {
+      this.triggerReload();
     });
   }
 
@@ -114,6 +138,9 @@ class RecipeEdit extends Component{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({quantity: newQuantity})
+    })
+    .then(() => {
+      this.triggerReload();
     });
   }
 
@@ -125,6 +152,10 @@ class RecipeEdit extends Component{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({name: this.state.name})
+    })
+    .then(() => {
+      this.props.onConfirm();
+      this.triggerReload();
     });
   }
 
@@ -136,6 +167,10 @@ class RecipeEdit extends Component{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({description: this.state.description})
+    })
+    .then(() => {
+      this.props.onConfirm();
+      this.triggerReload();
     });
   }
 
@@ -147,9 +182,11 @@ class RecipeEdit extends Component{
           'Content-Type': 'application/json'
       },
       body: JSON.stringify({name: this.state.newIngredientName, quantity: this.state.newIngredientQuantity})
-  });
+    })
+    .then(() => {
+      this.triggerReload();
+    });
   }
-
 }
 
 

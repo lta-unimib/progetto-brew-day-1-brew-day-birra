@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import org.junit.jupiter.api.Test;
@@ -34,26 +35,28 @@ class ShoppingEndpointTest {
 	void testBehaviorGet() {
 		resetController.doAssure();
 		
-		Map<String, String> recipeBody = new TreeMap<String, String>();
+		Map<String, String> recipeBody = new TreeMap<>();
 		recipeBody.put(Protocol.NAME_KEY, "ricetta");
 		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
 
-		Map<String, String> ingredientBody = new TreeMap<String, String>();
+		Map<String, String> ingredientBody = new TreeMap<>();
 		ingredientBody.put(Protocol.NAME_KEY, "ingrediente");
 		ingredientBody.put(Protocol.QUANTITY_KEY, "7");
 		String ingredientID = recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getHeaders().getFirst("ingredientID");
 		inventoryEndpoint.postIngredient(ingredientBody);
 		
-		assertTrue(shoppingEndpoint.getShoppingList(recipeID).getStatusCode().is2xxSuccessful());
-		assertTrue(shoppingEndpoint.getShoppingList(recipeID).getBody().isEmpty());
+		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getStatusCode().is2xxSuccessful());
+		
+		Map<String, String> requestBody = new TreeMap<>();
+		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(requestBody)).getBody().isEmpty());
 		
 		ingredientBody.clear();
 		ingredientBody.put(Protocol.QUANTITY_KEY, "5");
 		inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 		
-		assertFalse(shoppingEndpoint.getShoppingList(recipeID).getBody().isEmpty());
+		assertFalse(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getBody().isEmpty());
 
-		assertTrue(shoppingEndpoint.getShoppingList("id").getStatusCode().is4xxClientError());
+		assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 
 		resetController.doDrop();
 	}

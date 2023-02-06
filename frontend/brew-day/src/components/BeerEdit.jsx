@@ -1,12 +1,27 @@
 import React, { Component } from "react";
+import { ThemeProvider } from "@mui/material";
+import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class BeerEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: props.notes || [],
-      name: props.name || "",
+      notes: [], name: "",
+      noteType: "", description: ""
     };
+  }
+
+  triggerReload = () => {
+    fetch(`/api/beer/${this.props.beerID}`)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({...data, noteType: "", description: ""});
+    })
+  }
+
+  componentDidMount() {
+    this.triggerReload();
   }
 
   handleInputChange = (event) => {
@@ -19,22 +34,20 @@ class BeerEdit extends Component {
     const { beerID, noteID } = note;
     fetch(`/api/beer/${beerID}/${noteID}`, {
       method: "DELETE",
-    });
-    this.setState({
-      notes: this.state.notes.filter((n) => n.noteID !== noteID),
-    });
+    })
+    .then(() => this.triggerReload());
   };
 
   handleNoteTypeChange = (event, note) => {
     const notes = this.state.notes;
-    const i = notes.findIndex(n => n.noteID === note.noteID);
+    const i = notes.findIndex((n) => n.noteID === note.noteID);
     notes[i].noteType = event.target.value;
     this.setState({ notes });
   };
 
   handleDescriptionChange = (event, note) => {
     const notes = this.state.notes;
-    const i = notes.findIndex(n => n.noteID === note.noteID);
+    const i = notes.findIndex((n) => n.noteID === note.noteID);
     notes[i].description = event.target.value;
     this.setState({ notes });
   };
@@ -50,13 +63,8 @@ class BeerEdit extends Component {
       },
       body: JSON.stringify({ name }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then(() => this.triggerReload())
+    .then(() => this.props.onConfirm())
   };
 
   handleAddNote = (noteType, description) => {
@@ -68,9 +76,8 @@ class BeerEdit extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ description: description, noteType: noteType }),
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+    .then(() => this.triggerReload());
   };
 
   handleEditNote = (note) => {
@@ -82,105 +89,98 @@ class BeerEdit extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ description, noteType }),
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+    .then(() => this.triggerReload());
   };
 
   render() {
     return (
-      <div>
-        <center>
-          <table>
-            <tr>
-              <th width="33%">
-                <p>Nome birra:</p>
-              </th>
-              <th width="33%">
-                <input
-                  id="inputBeerEdit"
-                  data-testid="inputBeerEdit"
-                  value={this.state.name}
-                  onChange={this.handleInputChange}
-                />
-              </th>
-              <th width="33%">
-                <button onClick={this.handleNameChange}>Modifica nome</button>
-              </th>
-            </tr>
-          </table>
-          <h4>Note:</h4>
-          <table className="myTable">
-            <thead>
+      <ThemeProvider theme={theme}>
+        <div>
+          <center>
+            <table>
               <tr>
-                <th>Tipo</th>
-                <th>Descrizione</th>
-              </tr>
-              <tr>
-                <th>
-                  <textarea
-                    onChange={(event) => (this.noteType = event.target.value)}
-                  ></textarea>
+                <th width="33%">
+                  <p>Nome birra:</p>
                 </th>
-                <th>
-                  <textarea
-                    onChange={(event) =>
-                      (this.description = event.target.value)
-                    }
-                    className="descriptionBeerEdit"
-                  ></textarea>
+                <th width="33%">
+                  <input
+                    id="inputBeerEdit"
+                    data-testid="inputBeerEdit"
+                    value={this.state.name}
+                    onChange={this.handleInputChange}
+                  />
                 </th>
-                <td>
-                  <button
-                    onClick={() =>
-                      this.handleAddNote(this.noteType, this.description)
-                    }
-                  >
-                    Aggiungi nota
-                  </button>
-                </td>
+                <th width="33%">
+                  <MButton text="Modifica nome" onClick={this.handleNameChange} />
+                </th>
               </tr>
-            </thead>
-            <tbody>
-              {this.state.notes.map((note) => {
-                return (
-                  <tr key={note.noteID}>
-                    <td>
-                      <textarea
-                        value={note.noteType}
-                        data-testid="note-type-textarea"
-                        onChange={(event) =>
-                          this.handleNoteTypeChange(event, note)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        className="descriptionBeerEdit"
-                        data-testid="description-textarea"
-                        value={note.description}
-                        onChange={(event) =>
-                          this.handleDescriptionChange(event, note)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <button onClick={() => this.handleEditNote(note)}>
-                        Modifica nota
-                      </button>
-                    </td>
-                    <td>
-                      <button onClick={() => this.handleDeleteNote(note)}>
-                        Elimina nota
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </center>
-      </div>
+            </table>
+            <h4>Note:</h4>
+            <table className="myTable">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Descrizione</th>
+                </tr>
+                <tr>
+                  <th>
+                    <textarea value={this.state.noteType}
+                      data-testid="note-type-textarea"
+                      onChange={(event) => this.setState({noteType: event.target.value})}
+                    ></textarea>
+                  </th>
+                  <th>
+                    <textarea value={this.state.description}
+                      data-testid="description-textarea"
+                      onChange={(event) =>
+                        this.setState({description: event.target.value})
+                      }
+                      className="descriptionBeerEdit"
+                    ></textarea>
+                  </th>
+                  <td>
+                    <MButton text="Aggiungi nota" onClick={() => this.handleAddNote(this.state.noteType, this.state.description)} />
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.notes.map((note) => {
+                  return (
+                    <tr key={note.noteID}>
+                      <td>
+                        <textarea
+                          value={note.noteType}
+                          data-testid="note-type-textarea"
+                          onChange={(event) =>
+                            this.handleNoteTypeChange(event, note)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <textarea
+                          className="descriptionBeerEdit"
+                          data-testid="description-textarea"
+                          value={note.description}
+                          onChange={(event) =>
+                            this.handleDescriptionChange(event, note)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <MButton text="Modifica nota" onClick={() => this.handleEditNote(note)} />
+                      </td>
+                      <td>
+                        <MButton text="Elimina nota" onClick={() => this.handleDeleteNote(note)} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </center>
+        </div>
+      </ThemeProvider>
     );
   }
 }

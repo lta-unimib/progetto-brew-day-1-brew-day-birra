@@ -4,17 +4,18 @@ import java.util.Map;
 
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongQuantityException;
+import unimib.ingsof.persistence.service.Protocol;
 
 public class QuantityValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		if (object.get("quantity") == null)
+		if (object.get(Protocol.QUANTITY_KEY) == null)
 			throw new WrongQuantityException();
 		
 		Float number;
 		try {
-			number = Float.parseFloat(object.get("quantity"));
-		} catch(NumberFormatException exception) {
+			number = Float.parseFloat(object.get(Protocol.QUANTITY_KEY));
+		} catch(Exception exception) {
 			throw new WrongQuantityException();
 		}
 		

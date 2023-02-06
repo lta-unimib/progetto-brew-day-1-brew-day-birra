@@ -24,8 +24,13 @@ public class InventoryEndpoint {
 
 	@GetMapping
     public ResponseEntity<List<IngredientView>> getAllIngredients() {
-		List<IngredientView> result = inventoryController.getAll();
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		List<IngredientView> result;
+		try {
+			result = inventoryController.getAll();
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch(Exception exception) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 	
 	@PostMapping 

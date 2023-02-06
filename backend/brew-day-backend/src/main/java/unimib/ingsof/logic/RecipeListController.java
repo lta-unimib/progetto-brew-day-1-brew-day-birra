@@ -11,6 +11,7 @@ import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.generation.id.IDGenerationFacade;
 import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.RecipeInitializationValidator;
 
 @Service
@@ -18,21 +19,22 @@ public class RecipeListController {
 	@Autowired
 	private RecipeRepository recipeRepository;
 	
-	public List<String> getAllRecipeIDs() {
-		return recipeRepository.getAllRecipeIDs();
-	}
-	
 	public List<String> getAllRecipeIDs(Optional<String> filterByName) {
-		if (filterByName.isEmpty())
-			return this.getAllRecipeIDs();
-		return recipeRepository.getAllRecipeIDsByName(filterByName.get());
+		return recipeRepository.getAllRecipeIDsByName(filterByName.orElse(""));
 	}
 	
 	public String addRecipe(Map<String, String> recipeObject) throws ValidationException, WrongIDGenerationInitialization {
 		recipeObject = RecipeInitializationValidator.getInstance().handle(recipeObject);
-		String name = recipeObject.get("name");
-		String description = recipeObject.get("description");
-		String recipeID = IDGenerationFacade.getInstance().generateRecipeID(recipeObject);
+		String name = recipeObject.get(Protocol.NAME_KEY);
+		String description = recipeObject.get(Protocol.DESCRIPTION_KEY);
+		
+		String recipeID = "";
+		while(true) {
+			recipeID = IDGenerationFacade.getInstance().generateRecipeID(recipeObject);
+			if (!recipeRepository.getAllRecipeIDsByName("").contains(recipeID))
+				break;
+		}
+		
 		recipeRepository.addRecipe(recipeID, name, description);
 		return recipeID;
 	}
