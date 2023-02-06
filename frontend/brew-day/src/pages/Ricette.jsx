@@ -87,7 +87,7 @@ export default class Ricette extends Component {
     }
 
     setShowModal(flag) {
-      if (flag == false)
+      if (!flag)
         this.setState({currentAction:""})
       this.setState({showModal:flag})
     }
