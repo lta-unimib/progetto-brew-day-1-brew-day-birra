@@ -126,11 +126,13 @@ class BeerEdit extends Component {
                 <tr>
                   <th>
                     <textarea value={this.state.noteType}
+                      data-testid="note-type-textarea"
                       onChange={(event) => this.setState({noteType: event.target.value})}
                     ></textarea>
                   </th>
                   <th>
                     <textarea value={this.state.description}
+                      data-testid="description-textarea"
                       onChange={(event) =>
                         this.setState({description: event.target.value})
                       }

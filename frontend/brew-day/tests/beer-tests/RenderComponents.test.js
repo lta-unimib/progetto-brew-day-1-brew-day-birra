@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  screen,
-  act,
-  waitFor,
-  fireEvent,
-} from "@testing-library/react";
+import { render, screen, act, waitFor, fireEvent } from "@testing-library/react";
 import Birre from "../../src/pages/Birre";
 
 global.fetch = jest.fn().mockImplementation((url) => {
@@ -48,7 +42,7 @@ test("renders 'Birre' page", async () => {
   expect(screen.getByText("Beer 1"));
 });
 
-test("renders beer details", async () => {
+test("renders BeerView", async () => {
   render(<Birre />);
   await waitFor(() => screen.getAllByText("Dettagli")[0]);
   const detailsButton = screen.getAllByText("Dettagli")[0];
@@ -57,7 +51,7 @@ test("renders beer details", async () => {
   expect(screen.getByText("• Beer 1's description"));
 });
 
-test("renders beer edit", async () => {
+test("renders BeerEdit", async () => {
   render(<Birre />);
   await waitFor(() => screen.getAllByText("Modifica")[0]);
   const editButton = screen.getAllByText("Modifica")[0];
@@ -66,13 +60,11 @@ test("renders beer edit", async () => {
   expect(screen.getByText("Beer 1's description"));
 });
 
-test("renders beer delete", async () => {
-    render(<Birre />);
-    await waitFor(() => screen.getAllByText("Elimina")[0]);
-    const deleteButton = screen.getAllByText("Elimina")[0];
-    fireEvent.click(deleteButton);
-    await waitFor(() =>
-      screen.getByText("Sei sicuro di voler eliminare questa birra?")
-    );
-    expect(screen.getByText("Sei sicuro di voler eliminare questa birra?"));
-  });
+test("renders BeerDelete", async () => {
+  render(<Birre />);
+  await waitFor(() => screen.getAllByText("Elimina")[0]);
+  const deleteButton = screen.getAllByText("Elimina")[0];
+  fireEvent.click(deleteButton);
+  await waitFor(() => screen.getByText("Sei sicuro di voler eliminare questa birra?"));
+  expect(screen.getByText("Sei sicuro di voler eliminare questa birra?"));
+});

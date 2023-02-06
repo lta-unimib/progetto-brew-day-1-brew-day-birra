@@ -44,13 +44,11 @@ class BeerView extends Component {
         <center>
           <h1>{name}</h1>
           <MButton text="Visualizza ricetta" onClick={this.handleShowRicetta} />
-          {showRicetta && (
-            <RecipeView
+          {showRicetta ?
+          (<RecipeView
               name={recipe.name}
               description={recipe.description}
-              ingredients={recipe.ingredients}
-            />
-          )}
+              ingredients={recipe.ingredients}/>) : null}
           <h4>Note:</h4>
           {notes.map(note => (
             <p key={note.id}>• {note.description}</p>
