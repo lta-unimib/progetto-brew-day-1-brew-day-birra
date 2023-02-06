@@ -66,11 +66,22 @@ global.fetch = jest.fn().mockImplementation((url) => {
   }
 });
 
-test("renders beer edit", async () => {
-    render(<Ricette />);
-    await waitFor(() => screen.getAllByText("Esegui")[0]);
-    const editButton = screen.getAllByText("Esegui")[0];
-    fireEvent.click(editButton);
-    await waitFor(() => screen.getByText("Ingredienti Mancanti"));
-    expect(screen.getByText("Ingredienti Mancanti"));
-  });
+describe("RecipeExecute component", () => {
+    test("renders missing ingredients when executing", async () => {
+        render(<Ricette />);
+        await waitFor(() => screen.getAllByText("Esegui")[0]);
+        const editButton = screen.getAllByText("Esegui")[0];
+        fireEvent.click(editButton);
+        await waitFor(() => screen.getByText("Ingredienti Mancanti"));
+        expect(screen.getByText("Ingredienti Mancanti"));
+    });
+    
+    test("does not render missing ingredients when they are not missing", async () => {
+        render(<Ricette />);
+        await waitFor(() => screen.getAllByText("Esegui")[1]);
+        const editButton = screen.getAllByText("Esegui")[1];
+        fireEvent.click(editButton);
+        await waitFor(() => screen.getByText("Crea birra"));
+        expect(screen.getByText("Crea birra"));
+    });
+});
