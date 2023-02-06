@@ -27,7 +27,7 @@ export default class Ricette extends Component {
         .then(response => response.json())
         .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`api/recipes/${recipeID}`))))
         .then(responses => Promise.all(responses.map(response => response.json())))
-        .then(data => this.setState({recipes: data, recipesFiltered: data}));
+        .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}));
     }
 
     componentDidMount() {
@@ -59,13 +59,13 @@ export default class Ricette extends Component {
       if (!selectedRecipe) return <div>Caricamento...</div>;
       switch (currentAction) {
         case "view":
-          return <RecipeView name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} />;
+          return <RecipeView recipeID={selectedRecipe.recipeID}/>;
         case "edit":
           return <RecipeEdit recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
         case "delete":
-          return <RecipeDelete recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} onConfirm={this.closeModalAndReload}/>;
+          return <RecipeDelete recipeID={selectedRecipe.recipeID} onConfirm={this.closeModalAndReload}/>;
         case "execute":
-          return <RecipeExecute recipeID={selectedRecipe.recipeID} name={selectedRecipe.name} description={selectedRecipe.description} ingredients={selectedRecipe.ingredients} onConfirm={this.closeModal}/>;
+          return <RecipeExecute recipeID={selectedRecipe.recipeID} onConfirm={this.closeModal}/>;
         default:
           return null;
       }
@@ -135,8 +135,8 @@ export default class Ricette extends Component {
                     <tbody>
                         {itemList}
                         <tr>
-                          <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
-                          <td><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
+                          <td><input value={this.state.newRecipeName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
+                          <td><input value={this.state.newRecipeDescription} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
                           <td><MButton text="Aggiungi" onClick={() => this.addRecipe()} /></td>
                         </tr>
                     </tbody>
@@ -157,7 +157,8 @@ export default class Ricette extends Component {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
-    })
+      })
+      .then(() => this.triggerReload());
     }
 
     filterRecipe() {

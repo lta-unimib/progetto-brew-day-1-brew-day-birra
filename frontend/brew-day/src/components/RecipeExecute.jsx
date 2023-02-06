@@ -8,13 +8,25 @@ class RecipeExecute extends Component{
 
     constructor(props) {
       super(props);
-      this.state = {missingIngredients:[], newBeerName:"new Beer", newBeerQuantity: 0, ...props};
+      this.state = {missingIngredients:[], newBeerName:"new Beer", newBeerQuantity: 0,
+                    name: "", description: "", ingredients: []};
+      this.triggerReload = this.triggerReload.bind(this);
     }
 
+    triggerReload() {
+        const recipeID = this.props.recipeID;
+        fetch(`/api/recipes/${recipeID}`)
+        .then(response => response.json())
+        .then(data => this.setState({...data}))
+        .then(() => {
+          fetch(`/api/shopping/${recipeID}`)
+          .then(response => response.json())
+          .then(data => this.setState({missingIngredients: data}));
+        });
+     }
+
     componentDidMount() {
-      fetch(`/api/shopping/${this.state.recipeID}`)
-      .then(response => response.json())
-      .then(data => this.setState({missingIngredients: data}));
+      this.triggerReload();
     }
 
     setNewBeerName(event) {

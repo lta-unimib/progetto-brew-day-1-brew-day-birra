@@ -23,7 +23,7 @@ class Birre extends Component {
     };
   }
 
-  componentDidMount() {
+  triggerReload = () => {
     fetch("/api/beer")
       .then((response) => response.json())
       .then((data) => {
@@ -45,6 +45,10 @@ class Birre extends Component {
         });
       })
       .catch((error) => console.error(error));
+  }
+
+  componentDidMount() {
+    this.triggerReload();
   }
 
   handleView(item) {
@@ -79,13 +83,11 @@ class Birre extends Component {
     const beerToDeleteID = this.state.selectedBeer.beerID;
     fetch(`/api/beer/${beerToDeleteID}`, {
       method: "DELETE",
-    });
-    this.setState((prevState) => {
-      const updatedBeers = prevState.beers.filter((beer) => beer.beerID !== prevState.selectedBeer.beerID);
-      const updatedBeerIDs = prevState.beerIDs.filter((id) => id !== prevState.selectedBeer.beerID);
-      const updatedBeerIDsFiltered = prevState.beerIDsFiltered.filter((id) => id !== prevState.selectedBeer.beerID);
-      return { beers: updatedBeers, beerIDs: updatedBeerIDs, beerIDsFiltered : updatedBeerIDsFiltered, showModal: false, selectedBeer: null };
-    });
+    })
+    .then(() => {
+      this.triggerReload();
+      this.setShowModal(false);
+    })
   };
 
   getCurrentComponent() {
@@ -100,17 +102,14 @@ class Birre extends Component {
       case "view":
         return (
           <BeerView
-            name={selectedBeer.name}
-            recipeID={selectedBeer.recipeID}
-            notes={selectedBeer.notes}
+            beerID={selectedBeer.beerID}
           />
         );
       case "edit":
         return (
           <BeerEdit
             beerID={selectedBeer.beerID}
-            name={selectedBeer.name}
-            notes={selectedBeer.notes}
+            onConfirm={this.triggerReload}
           />
         );
       case "delete":

@@ -7,12 +7,24 @@ import MButton from '../components/MButton';
 class BeerView extends Component {
   state = {
     showRicetta: false,
-    recipe: {}
+    recipe: {},
+    name: "",
+    notes: []
   };
+
+  triggerReload = () => {
+    fetch(`/api/beer/${this.props.beerID}`)
+    .then(response => response.json())
+    .then(data => this.setState({...data}));
+  }
+
+  componentDidMount() {
+    this.triggerReload();
+  }
 
   fetchRecipe = async () => {
     const response = await fetch(
-      `/api/recipes/${this.props.recipeID}`
+      `/api/recipes/${this.state.recipeID}`
     );
     const recipe = await response.json();
     this.setState({ recipe });
@@ -24,8 +36,7 @@ class BeerView extends Component {
   };
 
   render() {
-    const { name, notes } = this.props;
-    const { showRicetta, recipe } = this.state;
+    const { showRicetta, recipe, name, notes } = this.state;
 
     return (
       <ThemeProvider theme={theme}>
