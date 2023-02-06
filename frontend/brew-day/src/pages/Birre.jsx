@@ -18,7 +18,7 @@ class Birre extends Component {
       showModal: false,
       filterRecipe: "",
       filterName: "", 
-      beersIDsFiltered: [],
+      beerIDsFiltered: [],
       recipes: []
     };
   }
@@ -28,13 +28,13 @@ class Birre extends Component {
       .then((response) => response.json())
       .then((data) => {
         const beerIDs = data;
-        const beersIDsFiltered = data;
+        const beerIDsFiltered = data;
         const promises = beerIDs.map(id => fetch(`/api/beer/${id}`));
         Promise.all(promises).then(results => {
           const beers = results.map(response => response.json());
           Promise.all(beers)
           .then(updatedBeers => {
-            this.setState({ beerIDs, beers: updatedBeers, beersIDsFiltered});
+            this.setState({ beerIDs, beers: updatedBeers, beerIDsFiltered});
             return updatedBeers.map(beer => beer.recipeID).filter((value, index, self) => self.indexOf(value) === index);
           })
           .then(updatedBeers => {
@@ -80,15 +80,12 @@ class Birre extends Component {
     fetch(`/api/beer/${beerToDeleteID}`, {
       method: "DELETE",
     });
-    /*this.setState((prevState) => {
-      const updatedBeers = prevState.beers.filter(
-        (beer) => beer.beerID !== prevState.selectedBeer.beerID
-      );
-      const updatedBeerIDs = prevState.beerIDs.filter(
-        (id) => id !== prevState.selectedBeer.beerID
-      );
-      return { beers: updatedBeers, beerIDs: updatedBeerIDs, showModal: false };
-    });*/
+    this.setState((prevState) => {
+      const updatedBeers = prevState.beers.filter((beer) => beer.beerID !== prevState.selectedBeer.beerID);
+      const updatedBeerIDs = prevState.beerIDs.filter((id) => id !== prevState.selectedBeer.beerID);
+      const updatedBeerIDsFiltered = prevState.beerIDsFiltered.filter((id) => id !== prevState.selectedBeer.beerID);
+      return { beers: updatedBeers, beerIDs: updatedBeerIDs, beerIDsFiltered : updatedBeerIDsFiltered, showModal: false, selectedBeer: null };
+    });
   };
 
   getCurrentComponent() {
@@ -139,9 +136,9 @@ class Birre extends Component {
   }
   
   render() {
-    const {beersIDsFiltered, beers } = this.state;
+    const {beerIDsFiltered, beers } = this.state;
 
-    const itemList = beersIDsFiltered.map((item) => {
+    const itemList = beerIDsFiltered.map((item) => {
       const beer = beers.find((b) => b.beerID === item);
       return (
         <tr key={item}>
@@ -220,13 +217,13 @@ class Birre extends Component {
 
     fetch(url)
       .then(response => response.json())
-      .then(beersIDsFiltered => {
-        this.setState({beersIDsFiltered: beersIDsFiltered});
+      .then(beerIDsFiltered => {
+        this.setState({beerIDsFiltered: beerIDsFiltered});
       })
   }
 
   removeFilter(){
-    this.setState({beersIDsFiltered: this.state.beerIDs, filterName:"", filterRecipe:""})
+    this.setState({beerIDsFiltered: this.state.beerIDs, filterName:"", filterRecipe:""})
   }
 
 }
