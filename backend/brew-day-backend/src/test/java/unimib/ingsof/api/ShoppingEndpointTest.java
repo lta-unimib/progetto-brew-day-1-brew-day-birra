@@ -45,7 +45,7 @@ class ShoppingEndpointTest {
 		String ingredientID = recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getHeaders().getFirst("ingredientID");
 		inventoryEndpoint.postIngredient(ingredientBody);
 		
-		assertTrue(shoppingEndpoint.getShoppingList(recipeID, null).getStatusCode().is2xxSuccessful());
+		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getStatusCode().is2xxSuccessful());
 		
 		Map<String, String> requestBody = new TreeMap<>();
 		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(requestBody)).getBody().isEmpty());
@@ -54,9 +54,9 @@ class ShoppingEndpointTest {
 		ingredientBody.put(Protocol.QUANTITY_KEY, "5");
 		inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 		
-		assertFalse(shoppingEndpoint.getShoppingList(recipeID, null).getBody().isEmpty());
+		assertFalse(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getBody().isEmpty());
 
-		assertTrue(shoppingEndpoint.getShoppingList("id", null).getStatusCode().is4xxClientError());
+		assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 
 		resetController.doDrop();
 	}

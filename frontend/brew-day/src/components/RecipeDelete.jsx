@@ -28,7 +28,8 @@ class RecipeDelete extends Component{
           <center>
             <h1>{this.state.name}</h1>
             <p>{this.state.description}</p>
-            <MButton text="Sei sicuro di voler rimuovere la ricetta?" onClick={() => this.deleteRecipe(this.state.recipeID)} />
+            <p>Sei sicuro di voler rimuovere la ricetta?</p>
+            <MButton text="Conferma" onClick={() => this.deleteRecipe(this.state.recipeID)} />
           </center>
         </div>
       </ThemeProvider>

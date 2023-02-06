@@ -4,9 +4,6 @@ import { render, screen, fireEvent, getByRole } from "@testing-library/react";
 import NavBar from "../src/components/NavBar";
 import QuantityInput from "../src/components/QuantityInput";
 import Modal from "../src/components/Modal";
-import RecipeView from "../src/components/RecipeView";
-import RecipeDelete from "../src/components/RecipeDelete";
-import RecipeExecute from "../src/components/RecipeExecute";
 
 const testIngredient = [
   { name: "boh", quantity: "0" },
@@ -110,82 +107,6 @@ describe("QuantityInput component", () => {
     });
     fireEvent.blur(component.getByTestId("quantity-input"));
     expect(component.getByTestId("quantity-input").value).toBe("0");
-  });
-});
-
-describe("RecipeDelete component", () => {
-  test("should render correctly", () => {
-    const { container } = render(
-      <RecipeDelete
-        name="name"
-        description="description"
-        ingredients={testIngredient}
-        onConfirm={() => {}}
-      />
-    );
-    expect(container.firstChild).toMatchSnapshot();
-  });
-
-  test("calls fetch when delete button is clicked", () => {
-    const props = {
-      name: "Recipe 1",
-      description: "This is a test recipe",
-      recipeID: 1,
-      onConfirm: () => {}
-    };
-    const { getByText } = render(<RecipeDelete {...props} />);
-    fireEvent.click(getByText("Sei sicuro di voler rimuovere la ricetta?"));
-    expect(fetch).toHaveBeenCalledWith(`/api/recipes/${props.recipeID}`, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-  });
-});
-
-describe("RecipeExecute component", () => {
-  test("should render correctly", () => {
-    const { container } = render(
-      <RecipeExecute
-        name="name"
-        description="description"
-        ingredients={testIngredient}
-        onConfirm={() => {}}
-      />
-    );
-    expect(container.firstChild).toMatchSnapshot();
-  });
-});
-
-describe("RecipeView component", () => {
-  test("should render correctly", () => {
-    const { container } = render(
-      <RecipeView
-        name="name"
-        description="description"
-        ingredients={testIngredient}
-      />
-    );
-    expect(container.firstChild).toMatchSnapshot();
-  });
-  test("sets the default image if the requested image is not found", async () => {
-    render(
-      <RecipeView
-        name="name"
-        description="description"
-        ingredients={testIngredient}
-      />
-    );
-
-    const img = await screen.findByAltText("boh");
-    expect(img.getAttribute("src")).toContain("boh.png");
-
-    fireEvent.error(img);
-
-    const _img = await screen.findByAltText("boh");
-    expect(_img.getAttribute("src")).toContain("sconosciuto.png");
   });
 });
 

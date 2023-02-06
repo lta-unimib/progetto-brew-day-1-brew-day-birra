@@ -11,7 +11,7 @@ import MButton from '../components/MButton';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "view", selectedRecipe: null, showModal:false, newRecipeName: null, newRecipeDescription: null, filterName: null, recipesFiltered: []};
+        this.state = {recipes: [], currentAction: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
         this.handleView = this.handleView.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -25,7 +25,7 @@ export default class Ricette extends Component {
     triggerReload() {
         fetch("/api/recipes")
         .then(response => response.json())
-        .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`api/recipes/${recipeID}`))))
+        .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
         .then(responses => Promise.all(responses.map(response => response.json())))
         .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}));
     }
@@ -67,7 +67,7 @@ export default class Ricette extends Component {
         case "execute":
           return <RecipeExecute recipeID={selectedRecipe.recipeID} onConfirm={this.closeModal}/>;
         default:
-          return null;
+          return <div></div>;
       }
     }
 
@@ -86,7 +86,9 @@ export default class Ricette extends Component {
       this.setState({newRecipeDescription: newRecipeDescription});
     }
 
-    setShowModal(flag){
+    setShowModal(flag) {
+      if (!flag)
+        this.setState({currentAction:""})
       this.setState({showModal:flag})
     }
     
@@ -121,7 +123,7 @@ export default class Ricette extends Component {
                     <thead>
                         <tr>
                             <th width="30%">FILTRA PER NOME</th>
-                            <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
+                            <th width="50%"><input value={this.state.filterName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
                             <th width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()} />
                                             <MButton text="Togli" onClick={() => this.removeFilter()} />
                             </th>
