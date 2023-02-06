@@ -65,3 +65,14 @@ test("renders beer edit", async () => {
   await waitFor(() => screen.getByText("Beer 1's description"));
   expect(screen.getByText("Beer 1's description"));
 });
+
+test("renders beer delete", async () => {
+    render(<Birre />);
+    await waitFor(() => screen.getAllByText("Elimina")[0]);
+    const deleteButton = screen.getAllByText("Elimina")[0];
+    fireEvent.click(deleteButton);
+    await waitFor(() =>
+      screen.getByText("Sei sicuro di voler eliminare questa birra?")
+    );
+    expect(screen.getByText("Sei sicuro di voler eliminare questa birra?"));
+  });
