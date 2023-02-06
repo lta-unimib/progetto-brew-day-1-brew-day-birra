@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor, fireEvent } from "@testing-library/react";
 import Birre from "../../src/pages/Birre";
 
 global.fetch = jest.fn().mockImplementation((url) => {
@@ -38,7 +38,16 @@ global.fetch = jest.fn().mockImplementation((url) => {
   }
 });
 
-test("Renders all the beers inside the Birre page", async () => {
+test("renders 'Birre' page", async () => {
   await act(() => {render(<Birre />);});
   expect(screen.getByText("Beer 1"));
 });
+
+test("renders beer details", async () => {
+    render(<Birre />);
+    await waitFor(() => screen.getAllByText("Dettagli")[0]);
+    const detailsButton = screen.getAllByText("Dettagli")[0];
+    fireEvent.click(detailsButton);
+    await waitFor(() => screen.getByText("• Beer 1's description"));
+    expect(screen.getByText("• Beer 1's description"));
+  });
