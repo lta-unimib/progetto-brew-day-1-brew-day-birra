@@ -1,7 +1,8 @@
 import React from "react";
 import QuantityInput from "../components/QuantityInput";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 const Spesa = () => {
   return (
@@ -86,9 +87,7 @@ const Spesa = () => {
             </td>
           </tr>
         </table>
-        <Button id="shoppingBuyButton" variant="contained" color="primary">
-          Compra
-        </Button>
+        <MButton text="Compra" id="shoppingBuyButton"/>
       </div>
     </ThemeProvider>
   );
