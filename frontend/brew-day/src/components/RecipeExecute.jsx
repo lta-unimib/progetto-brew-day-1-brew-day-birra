@@ -91,7 +91,7 @@ class RecipeExecute extends Component {
                     ></input>
                   </td>
                   <td>
-                    <MButton text="Crea birra" onClick={() => this.addBeer()} />
+                    <MButton text="Crea" onClick={() => this.addBeer()} />
                   </td>
                 </tr>
               </tbody>
