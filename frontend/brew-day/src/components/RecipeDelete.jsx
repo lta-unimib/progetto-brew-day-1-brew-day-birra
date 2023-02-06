@@ -1,6 +1,7 @@
 import React, { Component }  from "react";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class RecipeDelete extends Component{
 
@@ -19,10 +20,7 @@ class RecipeDelete extends Component{
           <center>
             <h1>{this.state.name}</h1>
             <p>{this.state.description}</p>
-            <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                    variant="contained" color="primary" 
-                    className="recipeButton" 
-                    onClick={() => this.deleteRecipe(this.state.id)}>Sei sicuro di voler rimuovere la ricetta?</Button>
+            <MButton text="Sei sicuro di voler rimuovere la ricetta?" onClick={() => this.deleteRecipe(this.state.id)} />
           </center>
         </div>
       </ThemeProvider>

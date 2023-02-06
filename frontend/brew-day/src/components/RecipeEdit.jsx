@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Button, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import MButton from '../components/MButton';
 
 class RecipeEdit extends Component{
 
@@ -47,13 +48,9 @@ class RecipeEdit extends Component{
           <td>{item.name}</td>
           <td><input value={item.quantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setQuantity(item.ingredientID, event)}></input></td>
           <td>
-              <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                      variant="contained" color="primary" 
-                      onClick={() => this.editQuantity(item.ingredientID)}>V</Button>
-              <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                      variant="contained" color="primary" 
-                      onClick={() => this.deleteIngredient(item.ingredientID)}>X</Button>
-            </td>
+            <MButton text="V" onClick={() => this.editQuantity(item.ingredientID)} />
+            <MButton text="X" onClick={() => this.deleteIngredient(item.ingredientID)} />
+          </td>
         </tr>
     });
   
@@ -66,9 +63,9 @@ class RecipeEdit extends Component{
                 <tr>
                   <td> <p>Nome Ricetta:</p> </td>
                   <td><input id="nameTextArea" value={this.state.name} style={{width: "80%"}} onChange={ (event) => this.setName(event)}></input></td>
-                  <td><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                              variant="contained" color="primary" 
-                              onClick={() => this.editName()}>V</Button></td>        
+                  <td>
+                    <MButton text="V" onClick={() => this.editName()} />
+                  </td>        
                 </tr>
               </tbody>
             </table>
@@ -77,9 +74,9 @@ class RecipeEdit extends Component{
                 <tr>
                     <td><p>Descrizione:</p></td>
                     <td><textarea id="descriptionTextArea" value={this.state.description} style={{width: "80%"}} onChange={ (event) => this.setDescription(event)}></textarea></td>
-                    <td><Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                                variant="contained" color="primary" 
-                                onClick={() => this.editDescription()}>V</Button></td>
+                    <td>
+                      <MButton text="V" onClick={() => this.editDescription()} />
+                    </td>
                 </tr>
               </tbody>
             </table>
@@ -97,9 +94,7 @@ class RecipeEdit extends Component{
                 <tr>
                   <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
                   <td><input value={null} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
-                  <Button style={{ marginRight: 10, marginTop: 10, marginBottom: 10 }} 
-                          variant="contained" color="primary" 
-                          onClick={() => this.addIngredient()}>V</Button>
+                  <MButton text="V" onClick={() => this.addIngredient()} />
                 </tr>
               </tbody>
             </table>

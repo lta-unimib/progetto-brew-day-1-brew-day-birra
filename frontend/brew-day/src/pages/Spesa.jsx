@@ -87,7 +87,7 @@ const Spesa = () => {
             </td>
           </tr>
         </table>
-        <MButton text="Compra" id="shoppingBuyButton"/>
+        <MButton text="Compra" id="shoppingBuyButton" />
       </div>
     </ThemeProvider>
   );
