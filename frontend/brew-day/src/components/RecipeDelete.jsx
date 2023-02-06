@@ -4,13 +4,21 @@ import theme from "../theme/theme";
 import MButton from '../components/MButton';
 
 class RecipeDelete extends Component{
-
   constructor(props) {
     super(props);
-    this.state = {name: props.name,
-                  description: props.description,
-                  id: props.recipeID};
+    this.state = {name: "", description: "", ingredients: []};
     this.deleteRecipe = this.deleteRecipe.bind(this);
+      this.triggerReload = this.triggerReload.bind(this);
+  }
+
+  triggerReload() {
+      fetch(`/api/recipes/${this.props.recipeID}`)
+      .then(response => response.json())
+      .then(data => this.setState({...data}));
+  }
+
+  componentDidMount() {
+    this.triggerReload();
   }
 
   render(){
@@ -20,7 +28,7 @@ class RecipeDelete extends Component{
           <center>
             <h1>{this.state.name}</h1>
             <p>{this.state.description}</p>
-            <MButton text="Sei sicuro di voler rimuovere la ricetta?" onClick={() => this.deleteRecipe(this.state.id)} />
+            <MButton text="Sei sicuro di voler rimuovere la ricetta?" onClick={() => this.deleteRecipe(this.state.recipeID)} />
           </center>
         </div>
       </ThemeProvider>

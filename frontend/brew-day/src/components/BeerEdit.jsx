@@ -7,9 +7,21 @@ class BeerEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: props.notes || [],
-      name: props.name || "",
+      notes: [], name: "",
+      noteType: "", description: ""
     };
+  }
+
+  triggerReload = () => {
+    fetch(`/api/beer/${this.props.beerID}`)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({...data, noteType: "", description: ""});
+    })
+  }
+
+  componentDidMount() {
+    this.triggerReload();
   }
 
   handleInputChange = (event) => {
@@ -22,10 +34,8 @@ class BeerEdit extends Component {
     const { beerID, noteID } = note;
     fetch(`/api/beer/${beerID}/${noteID}`, {
       method: "DELETE",
-    });
-    this.setState({
-      notes: this.state.notes.filter((n) => n.noteID !== noteID),
-    });
+    })
+    .then(() => this.triggerReload());
   };
 
   handleNoteTypeChange = (event, note) => {
@@ -53,13 +63,8 @@ class BeerEdit extends Component {
       },
       body: JSON.stringify({ name }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .then(() => this.triggerReload())
+    .then(() => this.props.onConfirm())
   };
 
   handleAddNote = (noteType, description) => {
@@ -71,9 +76,8 @@ class BeerEdit extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ description: description, noteType: noteType }),
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+    .then(() => this.triggerReload());
   };
 
   handleEditNote = (note) => {
@@ -85,9 +89,8 @@ class BeerEdit extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ description, noteType }),
-    }).catch((error) => {
-      console.error(error);
-    });
+    })
+    .then(() => this.triggerReload());
   };
 
   render() {
@@ -122,20 +125,20 @@ class BeerEdit extends Component {
                 </tr>
                 <tr>
                   <th>
-                    <textarea
-                      onChange={(event) => (this.noteType = event.target.value)}
+                    <textarea value={this.state.noteType}
+                      onChange={(event) => this.setState({noteType: event.target.value})}
                     ></textarea>
                   </th>
                   <th>
-                    <textarea
+                    <textarea value={this.state.description}
                       onChange={(event) =>
-                        (this.description = event.target.value)
+                        this.setState({description: event.target.value})
                       }
                       className="descriptionBeerEdit"
                     ></textarea>
                   </th>
                   <td>
-                    <MButton text="Aggiungi nota" onClick={() => this.handleAddNote(this.noteType, this.description)} />
+                    <MButton text="Aggiungi nota" onClick={() => this.handleAddNote(this.state.noteType, this.state.description)} />
                   </td>
                 </tr>
               </thead>
