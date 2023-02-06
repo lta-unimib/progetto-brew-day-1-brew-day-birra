@@ -29,6 +29,9 @@ Per informazioni "aggiornate" fare riferimento al file in formato openAPI in `ba
 | `/api/beer/:beerID/:noteID` | `GET` | get beer note by ID |
 | `/api/beer/:beerID/:noteID` | `PUT` | update beer note|
 | `/api/beer/:beerID/:noteID` | `DELETE` | delete beer note |
+| `/api/shopping` | `POST` | update a list of inventory ingredient |
+| `/api/shopping/:recipeID` | `GET` | get a shopping list of inventory ingredient |
+| `/api/advice` | `GET` | get an advice on which recipe to execute |
 
 ### GET /api/recipes?name=name
 
@@ -48,7 +51,7 @@ requires a json object like:
 }
 ```
 
-put in Location header the path of created resource
+put in RecipeID header the path of created resource
 
 ### GET /api/recipes/:recipeID
 
@@ -57,6 +60,7 @@ returns a json object like:
 ```json
 {
   "name": "name",
+  "recipeID": "recipeID",
   "ingredients": [{
     "name": "name",
     "quantity": "17.0"
@@ -79,6 +83,7 @@ returns a json object like:
 ```json
 {
   "name": "new name",
+  "recipeID": "recipeID",
   "ingredients": [{
     "name": "name",
     "quantity": "17.0"
@@ -102,6 +107,8 @@ requires a json object like:
 ```json
 {
   "name": "name",
+  "recipeID": "recipeID",
+  "ingredientID": "ingredientID",
   "quantity": "17.0"
 }
 ```
@@ -121,6 +128,8 @@ returns a json object like:
 ```json
 {
   "name": "name",
+  "recipeID": "recipeID",
+  "ingredientID": "ingredientID",
   "quantity": "17.0"
 }
 ```
@@ -131,9 +140,11 @@ get a json object like:
 
 ```json
 [{
+	"ingredientID": "ingredientID1",
     "name": "nome1",
     "quantity": 17.0
 }, {
+    "ingredientID": "ingredientID2",
     "name": "nome2",
     "quantity": 2.0
 }
@@ -157,6 +168,7 @@ get a json object like:
 
 ```json
 {
+ 	"ingredientID": "ingredientID",
     "name": "nome1",
     "quantity": 17.0
 }
@@ -288,5 +300,46 @@ returns a json object like:
   "noteID": "noteID",
   "noteType": "noteType",
   "description": "description"
+}
+```
+
+### POST/api/shopping
+
+requires a json object like:
+
+```json
+[{
+    "name": "nome1",
+    "quantity": 17.0
+}, {
+    "name": "nome2",
+    "quantity": 2.0
+}]
+```
+
+### GET /api/shopping/:recipeID
+
+get a json object like:
+
+```json
+[{
+	"ingredientID": "ingredientID1",
+    "name": "nome1",
+    "quantity": 17.0
+}, {
+	"ingredientID": "ingredientID2",
+    "name": "nome2",
+    "quantity": 2.0
+}]
+```
+
+### GET /api/advice
+
+returns a json object like:
+
+```json
+{
+	"recipeID": "recipeID",
+	"quantity": "quantity"
 }
 ```
