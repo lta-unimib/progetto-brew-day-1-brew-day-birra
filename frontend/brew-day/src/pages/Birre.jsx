@@ -5,7 +5,7 @@ import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
-import MButton from '../components/MButton';
+import MButton from "../components/MButton";
 
 class Birre extends Component {
   constructor(props) {
@@ -17,9 +17,9 @@ class Birre extends Component {
       selectedBeer: null,
       showModal: false,
       filterRecipe: "",
-      filterName: "", 
+      filterName: "",
       beerIDsFiltered: [],
-      recipes: []
+      recipes: [],
     };
   }
 
@@ -29,23 +29,35 @@ class Birre extends Component {
       .then((data) => {
         const beerIDs = data;
         const beerIDsFiltered = data;
-        const promises = beerIDs.map(id => fetch(`/api/beer/${id}`));
-        Promise.all(promises).then(results => {
-          const beers = results.map(response => response.json());
+        const promises = beerIDs.map((id) => fetch(`/api/beer/${id}`));
+        Promise.all(promises).then((results) => {
+          const beers = results.map((response) => response.json());
           Promise.all(beers)
-          .then(updatedBeers => {
-            this.setState({ beerIDs, beers: updatedBeers, beerIDsFiltered});
-            return updatedBeers.map(beer => beer.recipeID).filter((value, index, self) => self.indexOf(value) === index);
-          })
-          .then(updatedBeers => {
-            Promise.all(updatedBeers.map(beer => fetch(`/api/recipes/${beer}`))) 
-            .then(responses => Promise.all(responses.map(response => response.json())))
-            .then(data => this.setState({recipes: data}))
-          });
+            .then((updatedBeers) => {
+              this.setState({
+                beerIDs,
+                beers: updatedBeers,
+                beerIDsFiltered,
+              });
+              return updatedBeers
+                .map((beer) => beer.recipeID)
+                .filter((value, index, self) => self.indexOf(value) === index);
+            })
+            .then((updatedBeers) => {
+              Promise.all(
+                updatedBeers.map((beer) => fetch(`/api/recipes/${beer}`))
+              )
+                .then((responses) =>
+                  Promise.all(responses.map((response) => response.json()))
+                )
+                .then((data) => {
+                  this.setState({ recipes: data });
+                });
+            });
         });
       })
       .catch((error) => console.error(error));
-  }
+  };
 
   componentDidMount() {
     this.triggerReload();
@@ -75,16 +87,15 @@ class Birre extends Component {
     });
   }
 
-  setShowModal = () => {
-    this.setState({ showModal: false });
+  setShowModal = (flag) => {
+    this.setState({ showModal: flag });
   };
 
-  handleDeleteConfirm = () => {
+  handleDeleteConfirm =  () => {
     const beerToDeleteID = this.state.selectedBeer.beerID;
-    fetch(`/api/beer/${beerToDeleteID}`, {
+     fetch(`/api/beer/${beerToDeleteID}`, {
       method: "DELETE",
-    })
-    .then(() => {
+    }).then(() => {
       this.triggerReload();
       this.setShowModal(false);
     })
@@ -100,11 +111,7 @@ class Birre extends Component {
 
     switch (currentAction) {
       case "view":
-        return (
-          <BeerView
-            beerID={selectedBeer.beerID}
-          />
-        );
+        return <BeerView beerID={selectedBeer.beerID} />;
       case "edit":
         return (
           <BeerEdit
@@ -124,18 +131,18 @@ class Birre extends Component {
     }
   }
 
-  setFilterName(event){
+  setFilterName(event) {
     let filterName = event.target.value;
-    this.setState({filterName: filterName});
+    this.setState({ filterName: filterName });
   }
 
-  setFilterRecipe(event){
+  setFilterRecipe(event) {
     let filterRecipe = event.target.value;
-    this.setState({filterRecipe: filterRecipe});
+    this.setState({ filterRecipe: filterRecipe });
   }
-  
+
   render() {
-    const {beerIDsFiltered, beers } = this.state;
+    const { beerIDsFiltered, beers } = this.state;
 
     const itemList = beerIDsFiltered.map((item) => {
       const beer = beers.find((b) => b.beerID === item);
@@ -156,30 +163,41 @@ class Birre extends Component {
         <div>
           <table className="myTable">
             <thead>
-            <tr>
-              <th width="30%">FILTRA PER NOME</th>
-              <th width="50%"><input value={null} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-              <th width="20%">
-                <MButton text="Filtra" onClick={() => this.filterBeer()} />
-                <MButton text="Togli" onClick={() => this.removeFilter()} />
-              </th>
-            </tr>
-            <tr>
-              <th width="30%">FILTRA PER RICETTA</th>
-              <th width="50%"><select options={this.state.recipesName} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterRecipe(event)}>
-                
-                {this.state.recipes.map((recipe) => (
-                  <option value={recipe.recipeID} key={recipe.recipeID}>{recipe.name}</option>
-                  ))
-                }
-                
-                
-                </select></th>
-              <th width="20%">
-                <MButton text="Filtra" onClick={() => this.filterBeer()} />
-                <MButton text="Togli" onClick={() => this.removeFilter()} />
-              </th>
-            </tr>
+              <tr>
+                <th width="30%">FILTRA PER NOME</th>
+                <th width="50%">
+                  <input
+                    value={null}
+                    type="text"
+                    style={{ width: "90%", textAlign: "center" }}
+                    onChange={(event) => this.setFilterName(event)}
+                  ></input>
+                </th>
+                <th width="20%">
+                  <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                  <MButton text="Togli" onClick={() => this.removeFilter()} />
+                </th>
+              </tr>
+              <tr>
+                <th width="30%">FILTRA PER RICETTA</th>
+                <th width="50%">
+                  <select
+                    options={this.state.recipesName}
+                    style={{ width: "90%", textAlign: "center" }}
+                    onChange={(event) => this.setFilterRecipe(event)}
+                  >
+                    {this.state.recipes.map((recipe) => (
+                      <option value={recipe.recipeID} key={recipe.recipeID}>
+                        {recipe.name}
+                      </option>
+                    ))}
+                  </select>
+                </th>
+                <th width="20%">
+                  <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                  <MButton text="Togli" onClick={() => this.removeFilter()} />
+                </th>
+              </tr>
               <tr>
                 <th width="50%">Nome</th>
                 <th width="50%">Azioni</th>
@@ -200,14 +218,14 @@ class Birre extends Component {
 
   filterBeer() {
     let url = "";
-    if (this.state.filterName === ""){
-      if (this.state.filterRecipe === ""){
+    if (this.state.filterName === "") {
+      if (this.state.filterRecipe === "") {
         url = `/api/beer`;
       } else {
         url = `/api/beer?recipeID=${this.state.filterRecipe}`;
       }
     } else {
-      if (this.state.filterRecipe === ""){
+      if (this.state.filterRecipe === "") {
         url = `/api/beer?name=${this.state.filterName}`;
       } else {
         url = `/api/beer?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
@@ -215,15 +233,18 @@ class Birre extends Component {
     }
 
     fetch(url)
-      .then(response => response.json())
-      .then(beerIDsFiltered => {
-        this.setState({beerIDsFiltered: beerIDsFiltered});
-      })
+      .then((response) => response.json())
+      .then((beerIDsFiltered) => {
+        this.setState({ beerIDsFiltered: beerIDsFiltered });
+      });
   }
 
-  removeFilter(){
-    this.setState({beerIDsFiltered: this.state.beerIDs, filterName:"", filterRecipe:""})
+  removeFilter() {
+    this.setState({
+      beerIDsFiltered: this.state.beerIDs,
+      filterName: "",
+      filterRecipe: "",
+    });
   }
-
 }
 export default Birre;
