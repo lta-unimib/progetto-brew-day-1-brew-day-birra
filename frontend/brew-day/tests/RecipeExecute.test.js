@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
+import Birre from "../src/pages/Birre";
 
 global.fetch = jest.fn().mockImplementation((url) => {
   if (url.endsWith("/recipes")) {
@@ -61,8 +62,11 @@ global.fetch = jest.fn().mockImplementation((url) => {
         json: () =>
         Promise.resolve([]),
       });
-  } else {
-
+  } else if (url.endsWith("/api/beer")) {
+    return Promise.resolve({
+        json: () =>
+        Promise.resolve([]),
+      });
   }
 });
 
@@ -76,12 +80,16 @@ describe("RecipeExecute component", () => {
         expect(screen.getByText("Ingredienti Mancanti"));
     });
     
-    test("does not render missing ingredients when they are not missing", async () => {
+    test("executes beer when ingredients are not missing", async () => {
         render(<Ricette />);
         await waitFor(() => screen.getAllByText("Esegui")[1]);
         const editButton = screen.getAllByText("Esegui")[1];
         fireEvent.click(editButton);
         await waitFor(() => screen.getByText("Crea birra"));
-        expect(screen.getByText("Crea birra"));
+        const executeButton = screen.getAllByText("Crea birra")[0];
+        fireEvent.click(executeButton);
+        render(<Birre />);
+        await waitFor(() => screen.getByText("new Beer"));
+        expect(screen.getByText("new Beer"));
     });
 });
