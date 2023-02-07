@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.service.Protocol;
@@ -56,7 +57,7 @@ public class ShoppingController {
 		try {
 			equipment = Float.parseFloat(settingController.getEquipment());
 		} catch (Exception e) {
-			throw new Exception();
+			throw new InternalServerException();
 		}
 		if (multiplier > equipment)
 			throw new InsufficientEquipmentException();
