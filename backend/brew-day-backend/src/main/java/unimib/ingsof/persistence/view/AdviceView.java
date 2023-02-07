@@ -1,15 +1,15 @@
 package unimib.ingsof.persistence.view;
 
-public class adviceView {
+public class AdviceView {
 
 	private String recipeID;
 	private float quantity;
 	
-	public adviceView() {
+	public AdviceView() {
 		super();
 	}
 
-	public adviceView(String recipeID, float quantity) {
+	public AdviceView(String recipeID, float quantity) {
 		super();
 		this.recipeID = recipeID;
 		this.quantity = quantity;
