@@ -56,7 +56,7 @@ class AdviceEndpointTest {
 		assertEquals(2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);
 		
 		recipeBody.clear();
-		recipeBody.put(Protocol.NAME_KEY, "ricetta_2");
+		recipeBody.put(Protocol.NAME_KEY, "ricetta_3");
 		String recipeID_3 = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
 		
 		ingredientBody.clear();
@@ -87,7 +87,25 @@ class AdviceEndpointTest {
 		recipeEndpoint.postRecipeIngredient(recipeID_3, ingredientBody);
 		
 		assertEquals(recipeID_2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getRecipeID());
-		assertEquals(2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);		
+		assertEquals(2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);	
+		
+		recipeBody.clear();
+		recipeBody.put(Protocol.NAME_KEY, "ricetta_2");
+		String recipeID_4 = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		
+		ingredientBody.clear();
+		ingredientBody.put(Protocol.NAME_KEY, "ingrediente_4");
+		ingredientBody.put(Protocol.QUANTITY_KEY, "1");
+		recipeEndpoint.postRecipeIngredient(recipeID_4, ingredientBody);
+		
+		ingredientBody.clear();
+		ingredientBody.put(Protocol.NAME_KEY, "ingrediente_4");
+		ingredientBody.put(Protocol.QUANTITY_KEY, "100");
+		inventoryEndpoint.postIngredient(ingredientBody);
+	
+		assertEquals(recipeID_4, recipeAdviseEndpoint.getRecipeAdvice().getBody().getRecipeID());
+		assertEquals(30, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);
+		
 		
 		resetController.doDrop();
 	}
