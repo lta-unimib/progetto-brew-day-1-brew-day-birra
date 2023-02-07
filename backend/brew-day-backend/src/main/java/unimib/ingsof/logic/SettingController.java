@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Setting;
@@ -42,12 +43,12 @@ public class SettingController {
 		settingRepository.deleteSetting(settingID);
 	}
 	
-	public String getEquipment() throws Exception {
+	public String getEquipment() throws ValidationException, AlreadyExistsException, DoesntExistsException   {
 		Setting setting;
 		try {
 			setting = getSetting(Protocol.EQUIPMENT_SETTING_ID);
 		} catch (DoesntExistsException e) {
-			Map<String, String> settingObject = new TreeMap<>();;
+			Map<String, String> settingObject = new TreeMap<>();
 			settingObject.put(Protocol.SETTING_ID_KEY, Protocol.EQUIPMENT_SETTING_ID);
 			settingObject.put(Protocol.VALUE_KEY, Protocol.DEFAULT_EQUIPMENT);
 			settingListController.addSetting(settingObject);
