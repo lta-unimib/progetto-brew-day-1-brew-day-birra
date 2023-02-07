@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ShoppingController;
 import unimib.ingsof.persistence.view.IngredientView;
@@ -33,6 +34,8 @@ public class ShoppingEndpoint {
 			result = shoppingController.getShoppingList(recipeID, requestBody.orElse(null));
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (InsufficientEquipmentException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

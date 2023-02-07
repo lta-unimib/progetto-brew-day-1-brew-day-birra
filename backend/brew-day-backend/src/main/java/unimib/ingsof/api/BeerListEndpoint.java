@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
 import unimib.ingsof.exceptions.NotEnoughIngredientsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.BeerListController;
@@ -40,7 +41,7 @@ public class BeerListEndpoint {
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch(ValidationException|NotEnoughIngredientsException exception) {
+		} catch(ValidationException|NotEnoughIngredientsException|InsufficientEquipmentException exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

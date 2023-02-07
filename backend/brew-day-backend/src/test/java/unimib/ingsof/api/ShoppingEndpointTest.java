@@ -58,6 +58,10 @@ class ShoppingEndpointTest {
 
 		assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 
+		Map<String, String> shoppingBody = new TreeMap<>();
+		shoppingBody.put(Protocol.QUANTITY_KEY, "1000");
+		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(shoppingBody)).getStatusCode().is4xxClientError());
+		
 		resetController.doDrop();
 	}
 	

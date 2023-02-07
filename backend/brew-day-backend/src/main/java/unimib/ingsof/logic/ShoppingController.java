@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.service.Protocol;
@@ -28,6 +30,8 @@ public class ShoppingController {
 	InventoryController inventoryController;
 	@Autowired
 	IngredientController ingredientController;
+	@Autowired
+	private SettingController settingController;
 	
 	public IngredientView probeInventoryIngredient(String ingredientID, String ingredientName) throws ValidationException, WrongIDGenerationInitialization {
 		try {
@@ -40,15 +44,23 @@ public class ShoppingController {
 		}
 	}
 	
-	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization {
 		requestBody = ShoppingListCreationValidator.getInstance().handle(requestBody);
 		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_KEY));
 		return this.getShoppingList(recipeID, multiplier);
 	}
 
-	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
+		float equipment = 0;
+		try {
+			equipment = Float.parseFloat(settingController.getEquipment());
+		} catch (Exception e) {
+			throw new InternalServerException();
+		}
+		if (multiplier > equipment)
+			throw new InsufficientEquipmentException();
 		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {
 			String ingredientID = recipeIngredient.getIngredientID();
 			float inventoryIngredientQuantity = this.probeInventoryIngredient(ingredientID, recipeIngredient.getName()).getQuantity();
