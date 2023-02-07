@@ -24,7 +24,7 @@ public class AdviceController {
 	@Autowired
 	private SettingController settingController;
 	
-	public AdviceView getAdvice() throws Exception {
+	public AdviceView getAdvice() throws DoesntExistsException, InternalServerException {
 		List<String> recipeIDs = recipeListController.getAllRecipeIDs(java.util.Optional.empty());
 		if (recipeIDs.isEmpty())
 			throw new DoesntExistsException();
