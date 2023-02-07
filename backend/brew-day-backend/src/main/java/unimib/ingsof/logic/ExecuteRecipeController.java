@@ -6,7 +6,12 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.NotEnoughIngredientsException;
+import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
@@ -20,7 +25,7 @@ public class ExecuteRecipeController {
 	@Autowired
 	ShoppingController shoppingController;
 
-	public void execute(String recipeID, float multiplier) throws Exception {
+	public void execute(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
 		if (!shoppingController.getShoppingList(recipeID, multiplier).isEmpty()) 
 			throw new NotEnoughIngredientsException();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
