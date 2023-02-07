@@ -16,18 +16,22 @@ class Inventario extends Component {
     };
   }
 
-  componentDidMount() {
+  triggerReload = () => {
     fetch("/api/inventory")
-      .then((response) => response.json())
-      .then((data) =>
-        this.setState({ inventory: data, isLoading: false }, () => {
-          return <p>Caricamento...</p>;
-        })
-      );
+    .then((response) => response.json())
+    .then((data) =>
+      this.setState({ inventory: data, isLoading: false }, () => {
+        return <p>Caricamento...</p>;
+      })
+    );
   }
 
-  setShowModal = () => {
-    this.setState({ showModal: false });
+  componentDidMount() {
+    this.triggerReload();
+  }
+
+  setShowModal = (value) => {
+    this.setState({ showModal: value });
   };
 
   handleDelete(ingredientID) {
@@ -42,12 +46,8 @@ class Inventario extends Component {
     fetch(`/api/inventory/${ingredientID}`, {
       method: "DELETE",
     }).then(() => {
-      this.setState({
-        inventory: this.state.inventory.filter(
-          (item) => item.ingredientID !== ingredientID
-        ),
-        showModal: false,
-      });
+      this.setState({showModal: false,});
+      this.triggerReload();
     });
   };
 
@@ -74,7 +74,7 @@ class Inventario extends Component {
           <td>{item.name}</td>
           <td>{item.quantity}</td>
           <td>
-            <MButton text="Elimina ingrediente" onClick={() => this.handleDelete(item.ingredientID)} />
+            <MButton text="Elimina" onClick={() => this.handleDelete(item.ingredientID)} />
           </td>
         </tr>
       );
@@ -98,7 +98,7 @@ class Inventario extends Component {
             showModal={this.state.showModal}
             setShowModal={this.setShowModal}
           >
-            <IngredientDelete onConfirm={this.handleDeleteConfirm} />
+            {this.state.showModal && <IngredientDelete onConfirm={this.handleDeleteConfirm}/>}
           </Modal>
         </div>
       </ThemeProvider>
