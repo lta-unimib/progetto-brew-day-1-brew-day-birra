@@ -7,7 +7,7 @@ import MButton from '../components/MButton';
 class BeerView extends Component {
   state = {
     showRicetta: false,
-    recipe: {},
+    recipeID: null,
     name: "",
     notes: []
   };
@@ -22,36 +22,33 @@ class BeerView extends Component {
     this.triggerReload();
   }
 
-  fetchRecipe = async () => {
-    const response = await fetch(
-      `/api/recipes/${this.state.recipeID}`
-    );
-    const recipe = await response.json();
-    this.setState({ recipe });
-  };
-
   handleShowRicetta = async () => {
-    await this.fetchRecipe();
     this.setState({ showRicetta: true });
   };
 
   render() {
-    const { showRicetta, recipe, name, notes } = this.state;
+    const { showRicetta, recipeID, name, notes } = this.state;
+
+    const recipeView = (
+      <div>
+        {(recipeID !== null) ? (
+          <div>
+            <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>
+            {showRicetta ? (<RecipeView recipeID={recipeID}/>) : null}
+          </div>
+        ) : null}
+      </div>
+    );
 
     return (
       <ThemeProvider theme={theme}>
       <div>
         <center>
           <h1>{name}</h1>
-          <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta} />
-          {showRicetta ?
-          (<RecipeView
-              name={recipe.name}
-              description={recipe.description}
-              ingredients={recipe.ingredients}/>) : null}
+          {recipeView}
           <h4>Note:</h4>
           {notes.map(note => (
-            <p key={note.id}>• {note.description}</p>
+            <p key={note.noteID}>• {note.description}</p>
           ))}
         </center>
       </div>
