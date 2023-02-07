@@ -7,8 +7,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InsufficientEquipmentException;
 import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.NotEnoughIngredientsException;
+import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.generation.id.IDGenerationFacade;
 import unimib.ingsof.persistence.repository.BeerRepository;
 import unimib.ingsof.persistence.service.Protocol;
@@ -29,7 +33,7 @@ public class BeerListController {
 		return beerRepository.getAllBeerIDs(filterByName.orElse(""), filterByRecipeID.orElse(""));
 	}
 	
-	public String addBeer(Map<String, String> beerObject) throws Exception {
+	public String addBeer(Map<String, String> beerObject) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
 		String name = beerObject.get(Protocol.NAME_KEY);
 		String recipeID = beerObject.get(Protocol.RECIPE_ID_KEY);
