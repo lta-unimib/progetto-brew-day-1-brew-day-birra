@@ -112,7 +112,7 @@ class BeerEdit extends Component {
                   />
                 </th>
                 <th width="33%">
-                  <MButton text="Modifica nome" onClick={this.handleNameChange} />
+                  <MButton text="V" onClick={this.handleNameChange} />
                 </th>
               </tr>
             </table>
@@ -140,7 +140,7 @@ class BeerEdit extends Component {
                     ></textarea>
                   </th>
                   <td>
-                    <MButton text="Aggiungi nota" onClick={() => this.handleAddNote(this.state.noteType, this.state.description)} />
+                    <MButton text="V" onClick={() => this.handleAddNote(this.state.noteType, this.state.description)} />
                   </td>
                 </tr>
               </thead>
@@ -168,10 +168,10 @@ class BeerEdit extends Component {
                         />
                       </td>
                       <td>
-                        <MButton text="Modifica nota" onClick={() => this.handleEditNote(note)} />
+                        <MButton text="V" onClick={() => this.handleEditNote(note)} />
                       </td>
                       <td>
-                        <MButton text="Elimina nota" onClick={() => this.handleDeleteNote(note)} />
+                        <MButton text="X" onClick={() => this.handleDeleteNote(note)} />
                       </td>
                     </tr>
                   );
