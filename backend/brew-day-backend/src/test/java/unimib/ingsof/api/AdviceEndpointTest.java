@@ -14,7 +14,7 @@ import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
-class AdviseEndpointTest {
+class AdviceEndpointTest {
 	@Autowired
 	private RecipeListEndpoint recipeListEndpoint;
 	@Autowired
@@ -22,7 +22,7 @@ class AdviseEndpointTest {
 	@Autowired
 	private InventoryEndpoint inventoryEndpoint;	
 	@Autowired
-	private AdviseEndpoint recipeAdviseEndpoint;
+	private AdviceEndpoint recipeAdviseEndpoint;
 	@Autowired
 	ResetController resetController;
 	
@@ -51,7 +51,7 @@ class AdviseEndpointTest {
 		ingredientBody.put(Protocol.NAME_KEY, "ingrediente");
 		ingredientBody.put(Protocol.QUANTITY_KEY, "4");
 		recipeEndpoint.postRecipeIngredient(recipeID_2, ingredientBody);
-		
+	
 		assertEquals(recipeID_2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getRecipeID());
 		assertEquals(2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);
 		
@@ -69,9 +69,25 @@ class AdviseEndpointTest {
 		ingredientBody.put(Protocol.QUANTITY_KEY, "1");
 		recipeEndpoint.postRecipeIngredient(recipeID_3, ingredientBody);
 		
+		ingredientBody.clear();
+		ingredientBody.put(Protocol.NAME_KEY, "ingrediente_2");
+		ingredientBody.put(Protocol.QUANTITY_KEY, "8");
+		inventoryEndpoint.postIngredient(ingredientBody);
+
 		assertEquals(recipeID_3, recipeAdviseEndpoint.getRecipeAdvice().getBody().getRecipeID());
-		assertEquals(4, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);
+		assertEquals(8, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);
 		
+		recipeBody.clear();
+		recipeBody.put(Protocol.NAME_KEY, "ricetta_2");
+		recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		
+		ingredientBody.clear();
+		ingredientBody.put(Protocol.NAME_KEY, "ingrediente_3");
+		ingredientBody.put(Protocol.QUANTITY_KEY, "1");
+		recipeEndpoint.postRecipeIngredient(recipeID_3, ingredientBody);
+		
+		assertEquals(recipeID_2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getRecipeID());
+		assertEquals(2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);		
 		
 		resetController.doDrop();
 	}
