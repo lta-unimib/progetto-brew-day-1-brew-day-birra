@@ -26,35 +26,49 @@ public class AdviceController {
 		if (recipeIDs.isEmpty())
 			throw new DoesntExistsException();
 		AdviceView advice = new AdviceView();
-		float maxQuantity = 0;
+		float maxQuantitySum = 0;
 		for (String recipeID : recipeIDs) {
 			List<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
 			List<Float> ingredientsQuantity = new ArrayList<>();
-			float ratio = -1;
-			float quantityTotal = 0;
-			try {
-				for (RecipeIngredient recipeIngredient : ingredients) {
-					String ingredientID = recipeIngredient.getIngredientID();
-					ingredientsQuantity.add(recipeIngredient.getQuantity());
-					float invIngQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
-					float ratioIngredient = invIngQuantity/recipeIngredient.getQuantity();
-					if (ratioIngredient < ratio || ratio < 0)
-						ratio = ratioIngredient;
-				}
-				for (float ingredientQuantity : ingredientsQuantity) {
-					quantityTotal += ingredientQuantity*ratio;
-				}
-			}catch(DoesntExistsException e) {
-				continue;
+			float literProduced = -1;
+			float quantitySum = 0;
+			for (RecipeIngredient recipeIngredient : ingredients) {
+				ingredientsQuantity.add(recipeIngredient.getQuantity());
+				literProduced = ratioCalculator(recipeIngredient, literProduced);
+			}				
+			quantitySum = ingredientQuantitySum(ingredientsQuantity, literProduced);
+			if(quantitySum > maxQuantitySum ||
+					(Float.compare(quantitySum, maxQuantitySum) == 0 && advice.getQuantity() < literProduced)) {
+				maxQuantitySum = quantitySum;
+				advice.setQuantity(literProduced);
+				advice.setRecipeID(recipeID);	
 			}
-			if(quantityTotal > maxQuantity ||
-					(Float.compare(quantityTotal, maxQuantity) == 0 && advice.getQuantity() < ratio)) {
-				maxQuantity = quantityTotal;
-				advice.setQuantity(ratio);
-				advice.setRecipeID(recipeID);			
-			}
-				
 		}
 		return advice;
 	}
+	
+	private float ingredientQuantitySum(List<Float> ingredientsQuantity, float ratio) {
+		float quantitySum = 0;
+		for (float ingredientQuantity : ingredientsQuantity) {
+			quantitySum += ingredientQuantity*ratio;
+		}
+		return quantitySum;
+	}
+	
+	private float ratioCalculator(RecipeIngredient recipeIngredient, float maxLiterProduced) {
+		String ingredientID = recipeIngredient.getIngredientID();
+		float invIngQuantity;
+		try {
+			invIngQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
+		} catch (DoesntExistsException e) {
+			return 0;
+		}
+		float ratioIngredient = invIngQuantity/recipeIngredient.getQuantity();
+		if (ratioIngredient < maxLiterProduced || maxLiterProduced < 0)
+			maxLiterProduced = ratioIngredient;
+		return maxLiterProduced;
+		
+	}
+	
+	
 }
