@@ -8,6 +8,8 @@ public class Protocol {
 	public static final String VALUE_KEY = "value";
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String NOTETYPE_KEY = "noteType";
+	public static final String DEFAULT_EQUIPMENT = "30";
+	public static final String EQUIPMENT_SETTING_ID = "equipment";
 	
 	private Protocol() {
 	    throw new IllegalStateException("Utility class");
