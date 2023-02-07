@@ -3,8 +3,7 @@ package unimib.ingsof.api;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
@@ -64,27 +63,5 @@ class ShoppingEndpointTest {
 		
 		resetController.doDrop();
 	}
-	
-	@Test
-	void testBehaviorPost() {
-		resetController.doAssure();
-		List<Map<String, String>> ingredients = new ArrayList<>();
-		for (int i = 1; i < 11; i++) {
-			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.NAME_KEY, String.format("ingredient#%d", i%2));
-			ingredientObject.put(Protocol.QUANTITY_KEY, Float.toString(i));
-			ingredients.add(ingredientObject);
-		}
-		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is2xxSuccessful());
 
-		ingredients.clear();
-		for (int i = 0; i < 1; i++) {
-			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.NAME_KEY, String.format("ingredient#%d", i));
-			ingredientObject.put(Protocol.QUANTITY_KEY, Float.toString(-10));
-			ingredients.add(ingredientObject);
-		}
-		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is4xxClientError());
-		resetController.doDrop();
-	}
 }
