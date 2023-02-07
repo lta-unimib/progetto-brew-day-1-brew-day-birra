@@ -93,7 +93,7 @@ export default class Ricette extends Component {
     }
     
     removeFilter(){
-      this.setState({recipesFiltered: this.state.recipes})
+      this.setState({recipesFiltered: this.state.recipes, filterName: ""})
     }
 
     render() {

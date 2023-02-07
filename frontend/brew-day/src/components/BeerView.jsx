@@ -15,7 +15,11 @@ class BeerView extends Component {
   triggerReload = () => {
     fetch(`/api/beer/${this.props.beerID}`)
     .then(response => response.json())
-    .then(data => this.setState({...data}));
+    .then(data => {
+      console.log(data);
+      this.setState({...data});
+      console.log(this.state);
+    });
   }
 
   componentDidMount() {
