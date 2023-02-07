@@ -86,6 +86,9 @@ class AdviceEndpointTest {
 		ingredientBody.put(Protocol.QUANTITY_KEY, "1");
 		recipeEndpoint.postRecipeIngredient(recipeID_3, ingredientBody);
 		
+		assertEquals(recipeID_2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getRecipeID());
+		assertEquals(2, recipeAdviseEndpoint.getRecipeAdvice().getBody().getQuantity(), 0.1);		
+		
 		resetController.doDrop();
 	}
 	
