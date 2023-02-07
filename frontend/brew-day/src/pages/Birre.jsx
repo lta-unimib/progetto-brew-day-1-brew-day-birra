@@ -186,6 +186,7 @@ class Birre extends Component {
                     style={{ width: "90%", textAlign: "center" }}
                     onChange={(event) => this.setFilterRecipe(event)}
                   >
+                    <option value="" key=""></option>
                     {this.state.recipes.map((recipe) => (
                       <option value={recipe.recipeID} key={recipe.recipeID}>
                         {recipe.name}
