@@ -12,7 +12,7 @@ class QuantityInput extends React.Component {
   handleValue(event) {
     const string = event.target.value;
 
-    if (string == '.') this.setState({ value: '0.'});
+    if (string === '.') this.setState({ value: '0.'});
     else if (string.endsWith('.') && !this.comma) this.setState({ value: string });
     else if (string.startsWith('0') && string.endsWith('00') && !string.includes('.')) this.setState({ value: '0' });
     else if (/\d$/.test(string)) {
