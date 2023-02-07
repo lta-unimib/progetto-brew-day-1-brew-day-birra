@@ -43,7 +43,7 @@ class BeerView extends Component {
       <div>
         <center>
           <h1>{name}</h1>
-          <MButton text="Visualizza ricetta" onClick={this.handleShowRicetta} />
+          <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta} />
           {showRicetta ?
           (<RecipeView
               name={recipe.name}

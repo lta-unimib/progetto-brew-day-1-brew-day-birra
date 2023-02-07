@@ -41,7 +41,7 @@ class Birre extends Component {
               });
               return updatedBeers
                 .map((beer) => beer.recipeID)
-                .filter((value, index, self) => self.indexOf(value) === index);
+                .filter((value, index, self) => (self.indexOf(value) === index) && value !== null);
             })
             .then((updatedBeers) => {
               Promise.all(
