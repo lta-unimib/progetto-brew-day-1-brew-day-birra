@@ -50,6 +50,8 @@ class RecipeEndpointTest {
 		recipeBody.put("quantity", "7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is4xxClientError());
+		assertTrue(recipeEndpoint.postRecipeIngredient("recipeID", recipeBody).getStatusCode().is4xxClientError());
+
 		recipeBody.put("quantity", "-7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is4xxClientError());
 		assertTrue(recipeEndpoint.postRecipeIngredient("id", recipeBody).getStatusCode().is4xxClientError());
@@ -65,7 +67,7 @@ class RecipeEndpointTest {
 	@Test
 	void allGoesWrong() {
 		resetController.doAssure();
-
+		
 		String recipeName = "name";
 		Map<String, String> recipeBody = new TreeMap<String, String>();
 		recipeBody.put("name", recipeName);

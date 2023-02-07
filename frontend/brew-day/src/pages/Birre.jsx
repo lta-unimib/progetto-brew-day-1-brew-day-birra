@@ -41,7 +41,7 @@ class Birre extends Component {
               });
               return updatedBeers
                 .map((beer) => beer.recipeID)
-                .filter((value, index, self) => self.indexOf(value) === index);
+                .filter((value, index, self) => (self.indexOf(value) === index) && value !== null);
             })
             .then((updatedBeers) => {
               Promise.all(
@@ -167,7 +167,7 @@ class Birre extends Component {
                 <th width="30%">FILTRA PER NOME</th>
                 <th width="50%">
                   <input
-                    value={null}
+                    value={this.state.filterName}
                     type="text"
                     style={{ width: "90%", textAlign: "center" }}
                     onChange={(event) => this.setFilterName(event)}
@@ -186,6 +186,7 @@ class Birre extends Component {
                     style={{ width: "90%", textAlign: "center" }}
                     onChange={(event) => this.setFilterRecipe(event)}
                   >
+                    <option value="" key=""></option>
                     {this.state.recipes.map((recipe) => (
                       <option value={recipe.recipeID} key={recipe.recipeID}>
                         {recipe.name}

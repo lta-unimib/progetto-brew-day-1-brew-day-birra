@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { Button } from "@mui/material";
 
 class MButton extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const button = (
       <Button

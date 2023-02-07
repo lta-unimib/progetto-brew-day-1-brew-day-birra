@@ -9,83 +9,93 @@ const Spesa = () => {
     <ThemeProvider theme={theme}>
       <div>
         <table className="myTable">
-          <tr>
-            <th>Foto prodotto</th>
-            <th>Nome - Descrizione</th>
-            <th>Quantità</th>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="shoppingImage"
-                src="../../icons/inventory-icons/acqua.png"
-              />
-            </td>
-            <td>Acqua</td>
-            <td>
-              <QuantityInput />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="shoppingImage"
-                src="../../icons/inventory-icons/additivi.png"
-              />
-            </td>
-            <td>Additivi</td>
-            <td>
-              <QuantityInput />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="shoppingImage"
-                src="../../icons/inventory-icons/lievito.png"
-              />
-            </td>
-            <td>Lievito</td>
-            <td>
-              <QuantityInput />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="shoppingImage"
-                src="../../icons/inventory-icons/luppoli.png"
-              />
-            </td>
-            <td>Luppoli</td>
-            <td>
-              <QuantityInput />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="shoppingImage"
-                src="../../icons/inventory-icons/malto.png"
-              />
-            </td>
-            <td>Malto</td>
-            <td>
-              <QuantityInput />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="shoppingImage"
-                src="../../icons/inventory-icons/zuccheri.png"
-              />
-            </td>
-            <td>Zuccheri</td>
-            <td>
-              <QuantityInput />
-            </td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Foto prodotto</th>
+              <th>Nome - Descrizione</th>
+              <th>Quantità</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img
+                  className="shoppingImage"
+                  src="../../icons/inventory-icons/acqua.png"
+                  alt=""
+                />
+              </td>
+              <td>Acqua</td>
+              <td>
+                <QuantityInput />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  className="shoppingImage"
+                  src="../../icons/inventory-icons/additivi.png"
+                  alt=""
+                />
+              </td>
+              <td>Additivi</td>
+              <td>
+                <QuantityInput />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  className="shoppingImage"
+                  src="../../icons/inventory-icons/lievito.png"
+                  alt=""
+                />
+              </td>
+              <td>Lievito</td>
+              <td>
+                <QuantityInput />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  className="shoppingImage"
+                  src="../../icons/inventory-icons/luppoli.png"
+                  alt=""
+                />
+              </td>
+              <td>Luppoli</td>
+              <td>
+                <QuantityInput />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  className="shoppingImage"
+                  src="../../icons/inventory-icons/malto.png"
+                  alt=""
+                />
+              </td>
+              <td>Malto</td>
+              <td>
+                <QuantityInput />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  className="shoppingImage"
+                  src="../../icons/inventory-icons/zuccheri.png"
+                  alt=""
+                />
+              </td>
+              <td>Zuccheri</td>
+              <td>
+                <QuantityInput />
+              </td>
+            </tr>
+          </tbody>
         </table>
         <MButton text="Compra" id="shoppingBuyButton" />
       </div>

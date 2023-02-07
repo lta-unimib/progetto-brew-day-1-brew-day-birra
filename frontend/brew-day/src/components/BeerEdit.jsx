@@ -99,22 +99,24 @@ class BeerEdit extends Component {
         <div>
           <center>
             <table>
-              <tr>
-                <th width="33%">
-                  <p>Nome birra:</p>
-                </th>
-                <th width="33%">
-                  <input
-                    id="inputBeerEdit"
-                    data-testid="inputBeerEdit"
-                    value={this.state.name}
-                    onChange={this.handleInputChange}
-                  />
-                </th>
-                <th width="33%">
-                  <MButton text="Modifica nome" onClick={this.handleNameChange} />
-                </th>
-              </tr>
+              <tbody>
+                <tr>
+                  <th width="33%">
+                    <p>Nome birra:</p>
+                  </th>
+                  <th width="33%">
+                    <input
+                      id="inputBeerEdit"
+                      data-testid="inputBeerEdit"
+                      value={this.state.name}
+                      onChange={this.handleInputChange}
+                    />
+                  </th>
+                  <th width="33%">
+                    <MButton text="V" onClick={this.handleNameChange} />
+                  </th>
+                </tr>
+              </tbody>
             </table>
             <h4>Note:</h4>
             <table className="myTable">
@@ -140,7 +142,7 @@ class BeerEdit extends Component {
                     ></textarea>
                   </th>
                   <td>
-                    <MButton text="Aggiungi nota" onClick={() => this.handleAddNote(this.state.noteType, this.state.description)} />
+                    <MButton text="V" onClick={() => this.handleAddNote(this.state.noteType, this.state.description)} />
                   </td>
                 </tr>
               </thead>
@@ -168,10 +170,10 @@ class BeerEdit extends Component {
                         />
                       </td>
                       <td>
-                        <MButton text="Modifica nota" onClick={() => this.handleEditNote(note)} />
+                        <MButton text="V" onClick={() => this.handleEditNote(note)} />
                       </td>
                       <td>
-                        <MButton text="Elimina nota" onClick={() => this.handleDeleteNote(note)} />
+                        <MButton text="X" onClick={() => this.handleDeleteNote(note)} />
                       </td>
                     </tr>
                   );
