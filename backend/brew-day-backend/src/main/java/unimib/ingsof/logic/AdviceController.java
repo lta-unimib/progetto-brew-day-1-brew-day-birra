@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.view.AdviceView;
@@ -31,7 +32,7 @@ public class AdviceController {
 		try {
 			equipment = Float.parseFloat(settingController.getEquipment());
 		} catch (Exception e) {
-			throw new Exception();
+			throw new InternalServerException();
 		}
 		AdviceView advice = new AdviceView();
 		float maxQuantitySum = 0;
