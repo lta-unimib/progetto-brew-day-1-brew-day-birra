@@ -19,11 +19,11 @@ class Inventario extends Component {
   triggerReload = () => {
     fetch("/api/inventory")
     .then((response) => response.json())
-    .then((data) =>
+    .then((data) => {
       this.setState({ inventory: data, isLoading: false }, () => {
         return <p>Caricamento...</p>;
-      })
-    );
+      });
+    });
   }
 
   componentDidMount() {

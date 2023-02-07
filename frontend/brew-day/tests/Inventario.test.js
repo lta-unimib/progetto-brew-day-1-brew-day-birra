@@ -5,8 +5,8 @@ import Inventario from "../src/pages/Inventario";
 import { act } from "react-test-renderer";
 
 var ingredients = [
-  { name: "ingredient1", quantity: 2.0 },
-  { name: "luppoli", quantity: 3.0 },
+  { name: "ingredient1", quantity: 2.0, ingredientID: "ingredient1" },
+  { name: "luppoli", quantity: 3.0, ingredientID: "luppoli" },
 ]
 
 global.fetch = jest.fn().mockImplementation(() =>
@@ -30,7 +30,7 @@ describe("Inventario component", () => {
   });
 
   test("sets the default image if the requested image is not found", async () => {
-    render(<Inventario />);
+    await act(() => render(<Inventario />));
 
     const img = await screen.findByAltText('ingredient1');
     expect(img.getAttribute('src')).toContain('ingredient1.png');
