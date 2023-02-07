@@ -3,7 +3,7 @@ package unimib.ingsof.persistence.view;
 public class AdviceView {
 
 	private String recipeID;
-	private float quantity;
+	private float quantity = 0;
 	
 	public AdviceView() {
 		super();
