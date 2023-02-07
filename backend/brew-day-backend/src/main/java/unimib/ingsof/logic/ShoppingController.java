@@ -44,7 +44,7 @@ public class ShoppingController {
 		}
 	}
 	
-	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws Exception {
+	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization {
 		requestBody = ShoppingListCreationValidator.getInstance().handle(requestBody);
 		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_KEY));
 		return this.getShoppingList(recipeID, multiplier);
