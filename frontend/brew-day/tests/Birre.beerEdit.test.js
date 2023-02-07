@@ -46,7 +46,7 @@ var recipes = {
   )
 
 describe('Birre.jsx can correctly edit recipe', () => {
-    test('open recipe edit', async () => {
+    test('open beer edit', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         expect(screen.getAllByRole("textbox").length).toBeGreaterThanOrEqual(5);
@@ -54,7 +54,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
-    test('open recipe edit and set name', async () => {
+    test('open beer edit and set name', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newName"}})});
@@ -62,7 +62,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
-    test('open recipe edit and update a note', async () => {
+    test('open beer edit and update a note', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "newNoteType"}})});
@@ -71,7 +71,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
-    test('open recipe edit and add a note', async () => {
+    test('open beer edit and add a note', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[3], {target: {value: "newNoteType"}})});
@@ -80,7 +80,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
-    test('open recipe edit and delete a note', async () => {
+    test('open beer edit and delete a note', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("X")[0])});
