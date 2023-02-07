@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.generation.id.IDGenerationFacade;
 import unimib.ingsof.persistence.repository.BeerRepository;
 import unimib.ingsof.persistence.service.Protocol;
@@ -38,7 +39,7 @@ public class BeerListController {
 		try {
 			equipment = Float.parseFloat(settingController.getEquipment());
 		} catch (Exception e) {
-			throw new Exception();
+			throw new InternalServerException();
 		}
 		if (quantity > equipment)
 			throw new InsufficientEquipmentException();
