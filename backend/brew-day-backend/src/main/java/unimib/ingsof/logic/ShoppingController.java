@@ -50,7 +50,7 @@ public class ShoppingController {
 		return this.getShoppingList(recipeID, multiplier);
 	}
 
-	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws Exception {
+	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
 		float equipment = 0;
