@@ -14,7 +14,7 @@ import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
-class AdviseEndpointTest {
+class AdviceEndpointTest {
 	@Autowired
 	private RecipeListEndpoint recipeListEndpoint;
 	@Autowired
@@ -22,7 +22,7 @@ class AdviseEndpointTest {
 	@Autowired
 	private InventoryEndpoint inventoryEndpoint;	
 	@Autowired
-	private AdviseEndpoint recipeAdviseEndpoint;
+	private AdviceEndpoint recipeAdviseEndpoint;
 	@Autowired
 	ResetController resetController;
 	
