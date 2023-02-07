@@ -47,6 +47,21 @@ class BeerListEndpointTest {
 		assertEquals(oldnum + 1, beerListEndpoint.getBeerIDs(Optional.empty(), Optional.empty()).getBody().size());
 		
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
+		
+		recipeBody.clear();
+		recipeBody.put("name", "ricetta2");
+		String recipeID2 = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		ingredientBody.clear();
+		ingredientBody.put("name", "ingrediente2");
+		ingredientBody.put("quantity", "1");
+		recipeEndpoint.postRecipeIngredient(recipeID2, ingredientBody);
+		ingredientBody.clear();
+		ingredientBody.put("name", "ingrediente2");
+		ingredientBody.put("quantity", "50");
+		beerBody.put("quantity", "50");
+		inventoryEndpoint.postIngredient(ingredientBody);	
+		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
+		
 		resetController.doDrop();
 
 	}
