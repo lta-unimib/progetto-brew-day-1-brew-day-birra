@@ -167,7 +167,7 @@ export default class Ricette extends Component {
       fetch(`/api/recipes?name=${this.state.filterName}`)
         .then(response => response.json())
         .then(recipesIDsFiltered => {
-          let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.name));
+          let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.recipeID));
           this.setState({recipesFiltered: recipeFiltered});
         })
     }

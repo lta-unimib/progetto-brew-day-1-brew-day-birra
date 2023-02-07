@@ -22,6 +22,7 @@ const Spesa = () => {
                 <img
                   className="shoppingImage"
                   src="../../icons/inventory-icons/acqua.png"
+                  alt=""
                 />
               </td>
               <td>Acqua</td>
@@ -34,6 +35,7 @@ const Spesa = () => {
                 <img
                   className="shoppingImage"
                   src="../../icons/inventory-icons/additivi.png"
+                  alt=""
                 />
               </td>
               <td>Additivi</td>
@@ -46,6 +48,7 @@ const Spesa = () => {
                 <img
                   className="shoppingImage"
                   src="../../icons/inventory-icons/lievito.png"
+                  alt=""
                 />
               </td>
               <td>Lievito</td>
@@ -58,6 +61,7 @@ const Spesa = () => {
                 <img
                   className="shoppingImage"
                   src="../../icons/inventory-icons/luppoli.png"
+                  alt=""
                 />
               </td>
               <td>Luppoli</td>
@@ -70,6 +74,7 @@ const Spesa = () => {
                 <img
                   className="shoppingImage"
                   src="../../icons/inventory-icons/malto.png"
+                  alt=""
                 />
               </td>
               <td>Malto</td>
@@ -82,6 +87,7 @@ const Spesa = () => {
                 <img
                   className="shoppingImage"
                   src="../../icons/inventory-icons/zuccheri.png"
+                  alt=""
                 />
               </td>
               <td>Zuccheri</td>
