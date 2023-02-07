@@ -99,22 +99,24 @@ class BeerEdit extends Component {
         <div>
           <center>
             <table>
-              <tr>
-                <th width="33%">
-                  <p>Nome birra:</p>
-                </th>
-                <th width="33%">
-                  <input
-                    id="inputBeerEdit"
-                    data-testid="inputBeerEdit"
-                    value={this.state.name}
-                    onChange={this.handleInputChange}
-                  />
-                </th>
-                <th width="33%">
-                  <MButton text="V" onClick={this.handleNameChange} />
-                </th>
-              </tr>
+              <tbody>
+                <tr>
+                  <th width="33%">
+                    <p>Nome birra:</p>
+                  </th>
+                  <th width="33%">
+                    <input
+                      id="inputBeerEdit"
+                      data-testid="inputBeerEdit"
+                      value={this.state.name}
+                      onChange={this.handleInputChange}
+                    />
+                  </th>
+                  <th width="33%">
+                    <MButton text="V" onClick={this.handleNameChange} />
+                  </th>
+                </tr>
+              </tbody>
             </table>
             <h4>Note:</h4>
             <table className="myTable">

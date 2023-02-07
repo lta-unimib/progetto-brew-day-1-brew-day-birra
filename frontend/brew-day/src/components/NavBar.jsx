@@ -13,7 +13,7 @@ const NavBar = () => {
                 <ul id="navBar">
                     <li>
                         <Link to="/">
-                            <img id="logo-image" src="../icons/logo2.png"/>
+                            <img alt="navlogo" id="logo-image" src="../icons/logo2.png"/>
                             <span id="logo-text">Brew Day!</span>
                         </Link>
                     </li>
