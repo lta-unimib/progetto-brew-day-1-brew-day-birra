@@ -33,7 +33,7 @@ public class SettingController {
 		settingObject = SettingUpdatingValidator.getInstance().handle(settingObject);
 		Setting setting = this.getSetting(settingID);
 		
-		String value = settingObject.get(Protocol.VALUE_KEY);
+		String value = settingObject.get(Protocol.VALUE_BODY_KEY);
 		settingRepository.updateSetting(settingID, value);
 		setting.setValue(value);
 		return setting;
@@ -49,8 +49,8 @@ public class SettingController {
 			setting = getSetting(Protocol.EQUIPMENT_SETTING_ID);
 		} catch (DoesntExistsException e) {
 			Map<String, String> settingObject = new TreeMap<>();
-			settingObject.put(Protocol.SETTING_ID_KEY, Protocol.EQUIPMENT_SETTING_ID);
-			settingObject.put(Protocol.VALUE_KEY, Protocol.DEFAULT_EQUIPMENT);
+			settingObject.put(Protocol.SETTING_ID_BODY_KEY, Protocol.EQUIPMENT_SETTING_ID);
+			settingObject.put(Protocol.VALUE_BODY_KEY, Protocol.DEFAULT_EQUIPMENT);
 			settingListController.addSetting(settingObject);
 			setting = getSetting(Protocol.EQUIPMENT_SETTING_ID);
 		}	
