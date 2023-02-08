@@ -20,6 +20,7 @@ import unimib.ingsof.exceptions.InsufficientEquipmentException;
 import unimib.ingsof.exceptions.NotEnoughIngredientsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.BeerListController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @RestController
 @RequestMapping("/api/beer")
@@ -37,7 +38,7 @@ public class BeerListEndpoint {
 		try {
 			String beerID = beerListController.addBeer(beerObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("beerID", beerID);
+			headers.add(Protocol.BEER_ID_HEADER_KEY, beerID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
