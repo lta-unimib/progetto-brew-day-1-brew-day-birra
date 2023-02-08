@@ -47,7 +47,7 @@ class Spesa extends Component {
     }
   }
   handleDeleteIngredient(index) {
-    this.added -= 1;
+    this.state.added -= 1;
     this.setState({
       ingredients: this.state.ingredients.filter((p, i) => i !== index),
     });
