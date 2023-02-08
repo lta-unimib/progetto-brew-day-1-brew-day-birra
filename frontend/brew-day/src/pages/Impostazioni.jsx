@@ -15,8 +15,6 @@ export default class Impostazioni extends Component {
     triggerReload() {
         fetch("/api/settings")
         .then(response => response.json())
-        .then(settingIDs => Promise.all(settingIDs.map(settingID => fetch(`/api/settings/${settingID}`))))
-        .then(responses => Promise.all(responses.map(response => response.json())))
         .then(data => this.setState({settings: data, newEquipment: data.filter(i => i.settingID === "equipment")[0].value}));
     }
 
