@@ -35,7 +35,7 @@ public class RecipeIngredientController {
 	
 	public RecipeIngredientView updateIngredient(String recipeID, String ingredientID, Map<String, String> ingredientObject) throws ValidationException, DoesntExistsException {
 		ingredientObject = IngredientUpdatingValidator.getInstance().handle(ingredientObject);
-		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY));
+		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_BODY_KEY));
 		
 		RecipeIngredientView ingredient = this.getIngredient(recipeID, ingredientID);
 		recipeIngredientRepository.updateIngredient(recipeID, ingredientID, quantity);
