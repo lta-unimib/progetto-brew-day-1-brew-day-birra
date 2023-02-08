@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.logic.BeerController;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.BeerView;
 
 @RestController
@@ -60,7 +61,7 @@ public class BeerEndpoint {
 		try {
 			String noteID = this.beerController.addBeerNote(beerID, noteObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("noteID", noteID);
+			headers.add(Protocol.NOTE_ID_HEADER_KEY, noteID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
