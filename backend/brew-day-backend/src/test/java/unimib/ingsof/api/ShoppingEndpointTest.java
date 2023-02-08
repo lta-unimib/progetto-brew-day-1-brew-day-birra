@@ -35,13 +35,13 @@ class ShoppingEndpointTest {
 		resetController.doAssure();
 		
 		Map<String, String> recipeBody = new TreeMap<>();
-		recipeBody.put(Protocol.NAME_KEY, "ricetta");
-		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		recipeBody.put(Protocol.NAME_BODY_KEY, "ricetta");
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst(Protocol.RECIPE_ID_HEADER_KEY);
 
 		Map<String, String> ingredientBody = new TreeMap<>();
-		ingredientBody.put(Protocol.NAME_KEY, "ingrediente");
-		ingredientBody.put(Protocol.QUANTITY_KEY, "7");
-		String ingredientID = recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getHeaders().getFirst("ingredientID");
+		ingredientBody.put(Protocol.NAME_BODY_KEY, "ingrediente");
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
+		String ingredientID = recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getHeaders().getFirst(Protocol.INGREDIENT_ID_HEADER_KEY);
 		inventoryEndpoint.postIngredient(ingredientBody);
 		
 		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getStatusCode().is2xxSuccessful());
@@ -50,7 +50,7 @@ class ShoppingEndpointTest {
 		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(requestBody)).getBody().isEmpty());
 		
 		ingredientBody.clear();
-		ingredientBody.put(Protocol.QUANTITY_KEY, "5");
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "5");
 		inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 		
 		assertFalse(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getBody().isEmpty());
@@ -58,7 +58,7 @@ class ShoppingEndpointTest {
 		assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 
 		Map<String, String> shoppingBody = new TreeMap<>();
-		shoppingBody.put(Protocol.QUANTITY_KEY, "1000");
+		shoppingBody.put(Protocol.QUANTITY_BODY_KEY, "1000");
 		assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(shoppingBody)).getStatusCode().is4xxClientError());
 		
 		resetController.doDrop();
