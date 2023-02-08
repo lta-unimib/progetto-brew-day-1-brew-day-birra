@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class RecipeEndpointTest {
@@ -29,30 +30,30 @@ class RecipeEndpointTest {
 		String ingredientName = recipeName;
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", recipeName);
-		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		recipeBody.put(Protocol.NAME_BODY_KEY, recipeName);
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst(Protocol.RECIPE_ID_HEADER_KEY);
 		
 		assertTrue(recipeEndpoint.getRecipeByID(recipeID).getStatusCode().is2xxSuccessful());
 		
 		recipeBody.clear();
-		recipeBody.put("name", recipeName);
+		recipeBody.put(Protocol.NAME_BODY_KEY, recipeName);
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 
 		recipeBody.clear();
 		recipeBody.put("description", recipeName);
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 
-		recipeBody.put("name", recipeName);
+		recipeBody.put(Protocol.NAME_BODY_KEY, recipeName);
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 
 		recipeBody.clear();
-		recipeBody.put("name", ingredientName);
-		recipeBody.put("quantity", "7");
+		recipeBody.put(Protocol.NAME_BODY_KEY, ingredientName);
+		recipeBody.put(Protocol.QUANTITY_BODY_KEY, "7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is2xxSuccessful());
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is4xxClientError());
 		assertTrue(recipeEndpoint.postRecipeIngredient("recipeID", recipeBody).getStatusCode().is4xxClientError());
 
-		recipeBody.put("quantity", "-7");
+		recipeBody.put(Protocol.QUANTITY_BODY_KEY, "-7");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, recipeBody).getStatusCode().is4xxClientError());
 		assertTrue(recipeEndpoint.postRecipeIngredient("id", recipeBody).getStatusCode().is4xxClientError());
 		
@@ -70,8 +71,8 @@ class RecipeEndpointTest {
 		
 		String recipeName = "name";
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", recipeName);
-		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		recipeBody.put(Protocol.NAME_BODY_KEY, recipeName);
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst(Protocol.RECIPE_ID_HEADER_KEY);
 				
 		recipeBody = null;
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
@@ -81,7 +82,7 @@ class RecipeEndpointTest {
 
 		assertTrue(recipeEndpoint.deleteRecipe(recipeID).getStatusCode().is2xxSuccessful());
 		
-		recipeBody.put("name", recipeName);
+		recipeBody.put(Protocol.NAME_BODY_KEY, recipeName);
 		assertTrue(recipeEndpoint.updateRecipe(recipeID, recipeBody).getStatusCode().is4xxClientError());
 
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
@@ -93,14 +94,14 @@ class RecipeEndpointTest {
 		ingredientBody = new TreeMap<>();
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
-		ingredientBody.put("name", "name");
+		ingredientBody.put(Protocol.NAME_BODY_KEY, "name");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.clear();
-		ingredientBody.put("quantity", "quantity");
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "quantity");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 		
-		ingredientBody.put("name", "name");
+		ingredientBody.put(Protocol.NAME_BODY_KEY, "name");
 		assertTrue(recipeEndpoint.postRecipeIngredient(recipeID, ingredientBody).getStatusCode().is4xxClientError());
 
 		resetController.doDrop();
