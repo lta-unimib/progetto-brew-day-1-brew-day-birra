@@ -7,6 +7,7 @@ class Spesa extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      added: 0,
       ingredients: [
         {
           ingredientName: "",
@@ -19,31 +20,51 @@ class Spesa extends Component {
   }
 
   handleSubmit() {
-    fetch("api/shopping/test", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        this.state.ingredients.map(
-          ({ ingredientName, ingredientQuantity }) => ({
-            name: ingredientName,
-            quantity: ingredientQuantity,
-          })
-        )
-      ),
-    }).then(() =>
-      this.setState({
-        ingredients: [{ ingredientName: "", ingredientQuantity: "" }],
-      })
-    );
+    const _ingredients = [];
+    for (const ingredient of this.state.ingredients) {
+      const { ingredientName, ingredientQuantity } = ingredient;
+      if (
+        ingredientName &&
+        ingredientQuantity &&
+        this.state.ingredients.indexOf(ingredient) < this.state.added
+      ) {
+        _ingredients.push({
+          name: ingredientName,
+          quantity: ingredientQuantity,
+        });
+      }
+    }
+    if (_ingredients.length !== 0) {
+      fetch("api/shopping/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(_ingredients),
+      }).then(() => {
+        this.setState({
+          ingredients: [{ ingredientName: "", ingredientQuantity: "" }],
+        });
+      });
+    }
+  }
+  handleDeleteIngredient(index) {
+    this.added -= 1;
+    this.setState({
+      ingredients: this.state.ingredients.filter((p, i) => i !== index),
+    });
   }
 
   handleAddIngredient() {
-    this.setState({
-      ingredients: [
-        ...this.state.ingredients,
-        { ingredientName: "", ingredientQuantity: "" },
-      ],
-    });
+    const { ingredientName: newIngName, ingredientQuantity: newIngQuantity } =
+      this.state.ingredients[this.state.ingredients.length - 1];
+    const ingredients = this.state.ingredients;
+    ingredients[ingredients.length - 1] = {
+      ingredientName: newIngName,
+      ingredientQuantity: newIngQuantity,
+    };
+    if (newIngName !== '' && newIngQuantity !== '') {
+      ingredients.push({ ingredientName: "", ingredientQuantity: "" });
+      this.setState({ ingredients });
+    }
   }
 
   handleIngredientChange(field, index, value) {
@@ -53,6 +74,7 @@ class Spesa extends Component {
   }
 
   render() {
+    this.state.added = 0;
     return (
       <ThemeProvider theme={theme}>
         <table className="myTable">
@@ -60,44 +82,61 @@ class Spesa extends Component {
             <tr>
               <th>Nome ingrediente</th>
               <th>Quantità</th>
+              <th>Azione</th>
             </tr>
           </thead>
           <tbody>
-            {this.state.ingredients.map((ingredient, index) => (
-              <tr key={index}>
-                <td>
-                  <input
-                    type="text"
-                    value={ingredient.ingredientName}
-                    onChange={(e) =>
-                      this.handleIngredientChange(
-                        "ingredientName",
-                        index,
-                        e.target.value
-                      )
-                    }
+            {this.state.ingredients.map((ingredient, index) => {
+              let firstColumn = (
+                <input
+                  type="text"
+                  value={ingredient.ingredientName}
+                  onChange={(e) =>
+                    this.handleIngredientChange(
+                      "ingredientName",
+                      index,
+                      e.target.value
+                    )
+                  }
+                />
+              );
+              let button = (
+                <MButton text="Aggiungi" onClick={this.handleAddIngredient} />
+              );
+              if (index !== this.state.ingredients.length - 1) {
+                this.state.added += 1;
+                button = (
+                  <MButton
+                    text="Elimina"
+                    onClick={() => this.handleDeleteIngredient(index)}
                   />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    value={ingredient.ingredientQuantity}
-                    onChange={(e) =>
-                      this.handleIngredientChange(
-                        "ingredientQuantity",
-                        index,
-                        e.target.value
-                      )
-                    }
-                  />
-                </td>
-              </tr>
-            ))}
+                );
+                firstColumn = <p>{ingredient.ingredientName}</p>;
+              }
+              return (
+                <tr key={index}>
+                  <td>{firstColumn}</td>
+                  <td>
+                    <input
+                      type="text"
+                      value={ingredient.ingredientQuantity}
+                      onChange={(e) =>
+                        this.handleIngredientChange(
+                          "ingredientQuantity",
+                          index,
+                          e.target.value
+                        )
+                      }
+                    />
+                  </td>
+                  <td>{button}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div id="shoppingButtonContainer">
-          <MButton text="Altro ingrediente" onClick={this.handleAddIngredient} />
-          <MButton text="Aggiungi" onClick={this.handleSubmit} />
+          <MButton text="Compra" onClick={this.handleSubmit} />
         </div>
       </ThemeProvider>
     );
