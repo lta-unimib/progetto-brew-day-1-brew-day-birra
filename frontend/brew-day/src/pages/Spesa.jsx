@@ -137,7 +137,7 @@ class Spesa extends Component {
           </tbody>
         </table>
         <div id="shoppingButtonContainer">
-          <MButton text="Compra" onClick={this.handleSubmit} />
+          <MButton text="Conferma" onClick={this.handleSubmit} />
         </div>
       </ThemeProvider>
     );
