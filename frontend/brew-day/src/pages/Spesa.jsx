@@ -57,14 +57,27 @@ class Spesa extends Component {
     const { ingredientName: newIngName, ingredientQuantity: newIngQuantity } =
       this.state.ingredients[this.state.ingredients.length - 1];
     const ingredients = this.state.ingredients;
-    ingredients[ingredients.length - 1] = {
-      ingredientName: newIngName,
-      ingredientQuantity: newIngQuantity,
-    };
-    if (newIngName !== '' && newIngQuantity !== '') {
-      ingredients.push({ ingredientName: "", ingredientQuantity: "" });
-      this.setState({ ingredients });
+    const isAlreadyAdded = ingredients.find(
+      (ingredient) => ingredient.ingredientName === newIngName
+    );
+    console.log(isAlreadyAdded);
+    if (
+      isAlreadyAdded &&
+      ingredients.indexOf(isAlreadyAdded) !== ingredients.length - 1
+    ) {
+      const previouslyAddedIngedient = ingredients[ingredients.indexOf(isAlreadyAdded)];
+      previouslyAddedIngedient.ingredientQuantity = (parseFloat(previouslyAddedIngedient.ingredientQuantity) + parseFloat(newIngQuantity)).toString();
+      ingredients[ingredients.length - 1] = { ingredientName: '', ingredientQuantity: '' };
+    } else {
+      ingredients[ingredients.length - 1] = {
+        ingredientName: newIngName,
+        ingredientQuantity: newIngQuantity,
+      };
+      if (newIngName !== "" && newIngQuantity !== "") {
+        ingredients.push({ ingredientName: "", ingredientQuantity: "" });
+      }
     }
+    this.setState({ ingredients });
   }
 
   handleIngredientChange(field, index, value) {
@@ -116,7 +129,13 @@ class Spesa extends Component {
                 firstColumn = <p>{ingredient.ingredientName}</p>;
               }
               return (
-                <tr key={(this.state.ingredients.length - 1) === index ? 'default' : ingredient.ingredientName}>
+                <tr
+                  key={
+                    this.state.ingredients.length - 1 === index
+                      ? "default"
+                      : ingredient.ingredientName
+                  }
+                >
                   <td>{firstColumn}</td>
                   <td>
                     <input
