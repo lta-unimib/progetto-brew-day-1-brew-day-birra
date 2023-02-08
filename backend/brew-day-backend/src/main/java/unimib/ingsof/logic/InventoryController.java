@@ -35,8 +35,8 @@ public class InventoryController {
 	
 	public String addIngredient(Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization {
 		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
-		String name = ingredientObject.get(Protocol.NAME_KEY);
-		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY));
+		String name = ingredientObject.get(Protocol.NAME_BODY_KEY);
+		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_BODY_KEY));
 		
         String ingredientID = ingredientController.addIngredient(name).getIngredientID();
         inventoryIngredientRepository.addIngredient(ingredientID, quantity);
