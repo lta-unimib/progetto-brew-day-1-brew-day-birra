@@ -34,7 +34,7 @@ public class ExecuteRecipeController {
 			float inventoryIngredientQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
 			float recipeIngredientQuantity =  multiplier * recipeIngredient.getQuantity();
 			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.QUANTITY_KEY,  Float.toString(inventoryIngredientQuantity-recipeIngredientQuantity));				
+			ingredientObject.put(Protocol.QUANTITY_BODY_KEY,  Float.toString(inventoryIngredientQuantity-recipeIngredientQuantity));				
 			inventoryIngredientController.updateIngredient(ingredientID, ingredientObject);
 		}		
 	}
