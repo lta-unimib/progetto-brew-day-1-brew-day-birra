@@ -124,10 +124,12 @@ class RecipeExecute extends Component {
         <div>
           {Object.keys(this.state.name).length === 0 ? null : (
             <RecipeView
+              color={this.props.color}
               name={this.state.name}
               description={this.state.description}
               ingredients={this.state.ingredients}
-              recipeID={this.state.recipeID} />
+              recipeID={this.state.recipeID}
+            />
           )}
           {action()}
         </div>
