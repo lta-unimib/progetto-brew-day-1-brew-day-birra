@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class BeerNoteEndpointTest {
@@ -34,25 +35,25 @@ class BeerNoteEndpointTest {
 		String description = "Descrizione";
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", "ricetta");
-		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		recipeBody.put(Protocol.NAME_BODY_KEY, "ricetta");
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst(Protocol.RECIPE_ID_HEADER_KEY);
 		
 		Map<String, String> beerBody = new TreeMap<String, String>();
-		beerBody.put("name", beerName);
-		beerBody.put("recipeID", recipeID);
+		beerBody.put(Protocol.NAME_BODY_KEY, beerName);
+		beerBody.put(Protocol.RECIPE_ID_BODY_KEY, recipeID);
 		
-		String beerID = beerListEndpoint.postBeer(beerBody).getHeaders().getFirst("beerID");
+		String beerID = beerListEndpoint.postBeer(beerBody).getHeaders().getFirst(Protocol.BEER_ID_HEADER_KEY);
 		
 		Map<String, String> noteBody = new TreeMap<String, String>();
-		noteBody.put("noteType", noteType);
-		noteBody.put("description", description);
-		String noteID = beerEndpoint.postBeerNote(beerID, noteBody).getHeaders().getFirst("noteID");
+		noteBody.put(Protocol.NOTETYPE_BODY_KEY	, noteType);
+		noteBody.put(Protocol.DESCRIPTION_BODY_KEY, description);
+		String noteID = beerEndpoint.postBeerNote(beerID, noteBody).getHeaders().getFirst(Protocol.NOTE_ID_HEADER_KEY);
 		
 		assertTrue(beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getStatusCode().is2xxSuccessful());
 		
 		noteBody.clear();
-		noteBody.put("noteType", "taste");
-		noteBody.put("description", "newDescription");
+		noteBody.put(Protocol.NOTETYPE_BODY_KEY	, "taste");
+		noteBody.put(Protocol.DESCRIPTION_BODY_KEY, "newDescription");
 		assertTrue(beerNoteEndpoint.updateBeerNote(beerID, noteID, noteBody).getStatusCode().is2xxSuccessful());
 		assertEquals("taste", beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getBody().getNoteType());
 		assertEquals("newDescription", beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getBody().getDescription());
@@ -72,18 +73,18 @@ class BeerNoteEndpointTest {
 		String description = "Descrizione";
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", "ricetta");
-		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst("recipeID");
+		recipeBody.put(Protocol.NAME_BODY_KEY, "ricetta");
+		String recipeID = recipeListEndpoint.postRecipe(recipeBody).getHeaders().getFirst(Protocol.RECIPE_ID_HEADER_KEY);
 		
 		Map<String, String> beerBody = new TreeMap<String, String>();
-		beerBody.put("name", beerName);
-		beerBody.put("recipeID", recipeID);
-		String beerID = beerListEndpoint.postBeer(beerBody).getHeaders().getFirst("beerID");
+		beerBody.put(Protocol.NAME_BODY_KEY, beerName);
+		beerBody.put(Protocol.RECIPE_ID_BODY_KEY, recipeID);
+		String beerID = beerListEndpoint.postBeer(beerBody).getHeaders().getFirst(Protocol.BEER_ID_HEADER_KEY);
 		
 		Map<String, String> noteBody = new TreeMap<String, String>();
-		noteBody.put("noteType", noteType);
-		noteBody.put("description", description);
-		String noteID = beerEndpoint.postBeerNote(beerID, noteBody).getHeaders().getFirst("noteID");
+		noteBody.put(Protocol.NOTETYPE_BODY_KEY, noteType);
+		noteBody.put(Protocol.DESCRIPTION_BODY_KEY, description);
+		String noteID = beerEndpoint.postBeerNote(beerID, noteBody).getHeaders().getFirst(Protocol.NOTE_ID_HEADER_KEY);
 		
 		assertTrue(beerNoteEndpoint.updateBeerNote("id", noteID, noteBody).getStatusCode().is4xxClientError());
 
@@ -93,7 +94,7 @@ class BeerNoteEndpointTest {
 		noteBody = new TreeMap<>();
 		assertTrue(beerNoteEndpoint.updateBeerNote(beerID, noteID, noteBody).getStatusCode().is4xxClientError());
 		
-		noteBody.put("noteType", "tipo");
+		noteBody.put(Protocol.NOTETYPE_BODY_KEY	, "tipo");
 		assertTrue(beerNoteEndpoint.updateBeerNote(beerID, noteID, noteBody).getStatusCode().is4xxClientError());
 		
 		resetController.doDrop();
