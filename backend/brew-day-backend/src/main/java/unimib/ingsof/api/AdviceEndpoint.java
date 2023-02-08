@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.AdviceController;
 import unimib.ingsof.persistence.view.AdviceView;
 
@@ -19,14 +20,12 @@ public class AdviceEndpoint {
 	private AdviceController adviceController;
 
 	@GetMapping
-	public ResponseEntity<AdviceView> getRecipeAdvice() {
+	public ResponseEntity<AdviceView> getRecipeAdvice() throws InternalServerException {
 		try {
 			AdviceView recipe = this.adviceController.getAdvice();
 			return new ResponseEntity<>(recipe, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND );
-		} catch(Exception exception) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

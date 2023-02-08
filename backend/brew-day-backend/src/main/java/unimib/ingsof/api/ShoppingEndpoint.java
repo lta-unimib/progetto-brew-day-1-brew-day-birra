@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.ShoppingController;
 import unimib.ingsof.persistence.view.IngredientView;
 
@@ -26,7 +29,7 @@ public class ShoppingEndpoint {
 	ShoppingController shoppingController;
 
 	@GetMapping
-    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) {
+    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) throws ValidationException, InternalServerException, WrongIDGenerationInitialization {
 		List<IngredientView> result = new ArrayList<>();
 		try {
 			result = shoppingController.getShoppingList(recipeID, requestBody.orElse(null));
@@ -34,10 +37,7 @@ public class ShoppingEndpoint {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (InsufficientEquipmentException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }

@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Inventario from "../pages/Inventario";
 import Ricette from "../pages/Ricette";
 import Spesa from "../pages/Spesa";
+import Impostazioni from "../pages/Impostazioni";
 
 const NavBar = () => {
     return (
@@ -29,6 +30,9 @@ const NavBar = () => {
                     <li>
                         <Link to="/spesa">Spesa</Link>
                     </li>
+                    <li>
+                        <Link to="/impostazioni">Impostazioni</Link>
+                    </li>
                 </ul>
             </div>
 
@@ -37,7 +41,8 @@ const NavBar = () => {
                 <Route path="/ricette" element={<Ricette />}/>
                 <Route path="/birre" element={<Birre />}/>
                 <Route path="/inventario" element={<Inventario />}/>
-                <Route path="/spesa" element={<Spesa />}/>
+                <Route path="/spesa" element={<Spesa />}/>                
+                <Route path="/impostazioni" element={<Impostazioni />}/>
             </Routes>
         </Router>
     );

@@ -1,6 +1,7 @@
 package unimib.ingsof.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
@@ -10,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -26,7 +30,11 @@ class RecipeIngredientEndpointTest {
 
 	@Test
 	void testBehavior() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
+			fail();
+		}
 		
 		String recipeName = "RecipeIngredientControllerTest";
 		String ingredientID = recipeName;
@@ -56,7 +64,11 @@ class RecipeIngredientEndpointTest {
 	
 	@Test
 	void allGoesWrong() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
+			fail();
+		}
 		
 		String recipeName = "RecipeIngredientControllerTest";
 		String ingredientID = recipeName;
