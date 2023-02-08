@@ -2,7 +2,7 @@ package unimib.ingsof.api;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.fail;
 
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -32,7 +33,11 @@ class ShoppingEndpointTest {
 	
 	@Test
 	void testBehaviorGet() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		
 		Map<String, String> recipeBody = new TreeMap<>();
 		recipeBody.put(Protocol.NAME_BODY_KEY, "ricetta");

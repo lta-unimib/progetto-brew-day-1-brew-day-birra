@@ -1,6 +1,7 @@
 package unimib.ingsof.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -23,7 +25,11 @@ class DoShoppingEndpointTest {
 	
 	@Test
 	void testBehaviorPost() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		List<Map<String, String>> ingredients = new ArrayList<>();
 		for (int i = 1; i < 11; i++) {
 			Map<String, String> ingredientObject = new TreeMap<>();

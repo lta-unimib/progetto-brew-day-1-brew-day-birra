@@ -3,6 +3,7 @@ package unimib.ingsof.logic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
 import unimib.ingsof.persistence.repository.IngredientRepository;
@@ -27,8 +28,10 @@ public class ResetController {
 	private BeerNoteRepository beerNoteRepository;
     @Autowired
     private SettingRepository settingRepository;
+    @Autowired
+    private SettingController settingController;
 
-	public void doReset() {
+	public void doReset() throws InternalServerException {
 		this.doDrop();
 		this.doAssure();
 	}
@@ -43,7 +46,7 @@ public class ResetController {
 		settingRepository.drop();
 	}
 	
-	public void doAssure() {
+	public void doAssure() throws InternalServerException {
 		settingRepository.assure();
 		ingredientRepository.assure();
 		inventoryIngredientRepository.assure();
@@ -51,6 +54,11 @@ public class ResetController {
 		recipeIngredientRepository.assure();
 		beerRepository.assure();
 		beerNoteRepository.assure();
+		try {
+			settingController.getEquipment();
+		} catch (Exception e) {
+			throw new InternalServerException();
+		}
 	}
 
 }

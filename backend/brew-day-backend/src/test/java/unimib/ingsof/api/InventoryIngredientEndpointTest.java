@@ -1,6 +1,7 @@
 package unimib.ingsof.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -26,7 +28,11 @@ class InventoryIngredientEndpointTest {
 
 	@Test
 	void testBehavior() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		
 		String ingredientName = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();

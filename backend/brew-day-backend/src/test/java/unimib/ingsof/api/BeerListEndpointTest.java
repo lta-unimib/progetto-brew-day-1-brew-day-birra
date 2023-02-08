@@ -1,6 +1,7 @@
 package unimib.ingsof.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -29,7 +31,11 @@ class BeerListEndpointTest {
 	
 	@Test
 	void testBehavior() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		int oldnum = beerListEndpoint.getBeerIDs(Optional.empty(), Optional.empty()).getBody().size();
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
@@ -69,14 +75,22 @@ class BeerListEndpointTest {
 	
 	@Test
 	void testAlternative() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		assertTrue(beerListEndpoint.getBeerIDs(Optional.of("name"), Optional.of("recipeID")).getStatusCode().is2xxSuccessful());
 		resetController.doDrop();
 	}
 	
 	@Test
 	void allGoesWrong() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		
 		Map<String, String> beerBody = null;
 		assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());

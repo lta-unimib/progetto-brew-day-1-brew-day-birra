@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 
 @RestController
@@ -17,7 +18,11 @@ public class ResetEndpoint {
 	
 	@PostMapping
 	public ResponseEntity<Object> doReset() {
-		resetController.doReset();
+		try {
+			resetController.doReset();
+		} catch (InternalServerException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

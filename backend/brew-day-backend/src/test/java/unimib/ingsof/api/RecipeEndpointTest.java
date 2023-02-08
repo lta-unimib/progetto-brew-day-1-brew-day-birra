@@ -1,6 +1,7 @@
 package unimib.ingsof.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -24,7 +26,11 @@ class RecipeEndpointTest {
 
 	@Test
 	void testBehavior() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		
 		String recipeName = "RecipeControllerTest";
 		String ingredientName = recipeName;
@@ -67,7 +73,11 @@ class RecipeEndpointTest {
 	
 	@Test
 	void allGoesWrong() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (InternalServerException e) {
+			fail();
+		}
 		
 		String recipeName = "name";
 		Map<String, String> recipeBody = new TreeMap<String, String>();
