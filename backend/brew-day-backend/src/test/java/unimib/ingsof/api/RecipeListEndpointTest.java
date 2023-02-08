@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class RecipeListEndpointTest {
@@ -27,8 +28,8 @@ class RecipeListEndpointTest {
 		int oldnum = recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size();
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", "RecipeListControllerTest");
-		recipeBody.put("description", "RecipeListControllerTest");
+		recipeBody.put(Protocol.NAME_BODY_KEY, "RecipeListControllerTest");
+		recipeBody.put(Protocol.DESCRIPTION_BODY_KEY, "RecipeListControllerTest");
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size());
 		
