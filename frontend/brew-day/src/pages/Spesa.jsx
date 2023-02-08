@@ -89,6 +89,7 @@ class Spesa extends Component {
             {this.state.ingredients.map((ingredient, index) => {
               let firstColumn = (
                 <input
+                  id="shoppingInputName"
                   type="text"
                   value={ingredient.ingredientName}
                   onChange={(e) =>
