@@ -25,9 +25,9 @@ public class IngredientController {
 	}
 
 	public Ingredient addIngredient(String name) throws ValidationException, WrongIDGenerationInitialization {
-		Map<String, String> seed = new TreeMap<>(); seed.put(Protocol.NAME_KEY, name);
+		Map<String, String> seed = new TreeMap<>(); seed.put(Protocol.NAME_BODY_KEY, name);
 		seed = IngredientFormatterValidator.getInstance().handle(seed);
-		name = seed.get(Protocol.NAME_KEY);
+		name = seed.get(Protocol.NAME_BODY_KEY);
 		
 		Ingredient ingredient = this.getIngredientByName(name);
 		if(ingredient != null)
