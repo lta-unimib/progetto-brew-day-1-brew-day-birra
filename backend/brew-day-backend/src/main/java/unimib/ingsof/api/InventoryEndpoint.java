@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.logic.InventoryController;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.IngredientView;
 
 @RestController
@@ -38,7 +39,7 @@ public class InventoryEndpoint {
 		try {
 			String ingredientID = inventoryController.addIngredient(ingredientObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("ingredientID", ingredientID);
+			headers.add(Protocol.INGREDIENT_ID_HEADER_KEY, ingredientID);
 			return new ResponseEntity<>(headers, HttpStatus.CREATED);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
