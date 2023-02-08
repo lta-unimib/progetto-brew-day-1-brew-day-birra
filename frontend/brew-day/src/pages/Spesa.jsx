@@ -47,8 +47,8 @@ class Spesa extends Component {
     }
   }
   handleDeleteIngredient(index) {
-    this.state.added -= 1;
     this.setState({
+      added: this.state.added - 1,
       ingredients: this.state.ingredients.filter((p, i) => i !== index),
     });
   }
@@ -77,7 +77,9 @@ class Spesa extends Component {
         ingredients.push({ ingredientName: "", ingredientQuantity: "" });
       }
     }
-    this.setState({ ingredients });
+    this.setState({
+      ingredients,
+      added: this.state.added + 1 });
   }
 
   handleIngredientChange(field, index, value) {
@@ -87,7 +89,6 @@ class Spesa extends Component {
   }
 
   render() {
-    this.state.added = 0;
     return (
       <ThemeProvider theme={theme}>
         <table className="myTable">
@@ -119,7 +120,6 @@ class Spesa extends Component {
                 <MButton text="Aggiungi" onClick={this.handleAddIngredient} />
               );
               if (index !== this.state.ingredients.length - 1) {
-                this.state.added += 1;
                 button = (
                   <MButton
                     text="Elimina"
