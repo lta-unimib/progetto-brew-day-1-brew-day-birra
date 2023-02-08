@@ -116,7 +116,7 @@ class Spesa extends Component {
                 firstColumn = <p>{ingredient.ingredientName}</p>;
               }
               return (
-                <tr key={index}>
+                <tr key={(this.state.ingredients.length - 1) === index ? 'default' : ingredient.ingredientName}>
                   <td>{firstColumn}</td>
                   <td>
                     <input
