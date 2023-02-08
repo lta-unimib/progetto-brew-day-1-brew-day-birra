@@ -18,7 +18,7 @@ public class Protocol {
 	public static final String DEFAULT_EQUIPMENT = "30";
 	public static final String EQUIPMENT_SETTING_ID = "equipment";
 	
-	private Protocol() {
+	Protocol() {
 	    throw new IllegalStateException("Utility class");
 	}
 }

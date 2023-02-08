@@ -27,7 +27,8 @@ public class InventoryController {
 		ArrayList<InventoryIngredient> ingredients = inventoryIngredientRepository.getAll();
 		ArrayList<IngredientView> result =  new ArrayList<>();
 		for (InventoryIngredient ingredient : ingredients) {
-			String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
+			String name;
+			name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
 			result.add(new IngredientView(ingredient.getIngredientID(), name, ingredient.getQuantity()));
 		}
 		return result;

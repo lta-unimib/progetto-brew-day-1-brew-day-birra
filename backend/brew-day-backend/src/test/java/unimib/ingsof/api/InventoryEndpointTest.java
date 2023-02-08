@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
@@ -30,30 +31,30 @@ class InventoryEndpointTest {
 	void testBehavior() {
 		try {
 			resetController.doAssure();
-		} catch (InternalServerException e) {
+		
+			int oldnum = inventoryEndpoint.getAllIngredients().getBody().size();
+			
+			String name = "name";
+			Map<String, String> ingredientBody = new TreeMap<String, String>();
+			ingredientBody.put(Protocol.NAME_BODY_KEY , name);
+			ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
+			
+			//assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
+			String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get(Protocol.INGREDIENT_ID_HEADER_KEY).get(0);
+			inventoryIngredientEndpoint.getIngredientByID(name);
+			assertTrue(inventoryIngredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
+			assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
+			
+			assertFalse(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
+			assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
+			
+			assertFalse(inventoryEndpoint.postIngredient(null).getStatusCode().is2xxSuccessful());
+			assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());	
+	
+			resetController.doDrop();
+		} catch (InternalServerException|DoesntExistsException e) {
 			fail();
 		}
-		
-		int oldnum = inventoryEndpoint.getAllIngredients().getBody().size();
-		
-		String name = "name";
-		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		ingredientBody.put(Protocol.NAME_BODY_KEY , name);
-		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
-		
-		//assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get(Protocol.INGREDIENT_ID_HEADER_KEY).get(0);
-		inventoryIngredientEndpoint.getIngredientByID(name);
-		assertTrue(inventoryIngredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
-		
-		assertFalse(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
-		
-		assertFalse(inventoryEndpoint.postIngredient(null).getStatusCode().is2xxSuccessful());
-		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());	
-
-		resetController.doDrop();
 
 	}
 	
@@ -61,23 +62,23 @@ class InventoryEndpointTest {
 	void allGoesWrong() {
 		try {
 			resetController.doAssure();
+	
+			String ingredientID = "name";
+			Map<String, String> ingredientBody = new TreeMap<String, String>();
+			
+			ingredientBody.put(Protocol.NAME_BODY_KEY, ingredientID);
+			assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+			
+			ingredientBody.clear();
+			ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
+			assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+			
+			ingredientBody.clear();
+			assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
+	
+			resetController.doDrop();
 		} catch (InternalServerException e) {
 			fail();
 		}
-
-		String ingredientID = "name";
-		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		
-		ingredientBody.put(Protocol.NAME_BODY_KEY, ingredientID);
-		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
-		
-		ingredientBody.clear();
-		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
-		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
-		
-		ingredientBody.clear();
-		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
-
-		resetController.doDrop();
 	}
 }

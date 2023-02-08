@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.logic.InventoryController;
 import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.IngredientView;
@@ -24,14 +25,10 @@ public class InventoryEndpoint {
 	InventoryController inventoryController;
 
 	@GetMapping
-    public ResponseEntity<List<IngredientView>> getAllIngredients() {
+    public ResponseEntity<List<IngredientView>> getAllIngredients() throws DoesntExistsException {
 		List<IngredientView> result;
-		try {
-			result = inventoryController.getAll();
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		} catch(Exception exception) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		result = inventoryController.getAll();
+		return new ResponseEntity<>(result, HttpStatus.OK);
     }
 	
 	@PostMapping 

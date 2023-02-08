@@ -17,12 +17,8 @@ public class ResetEndpoint {
 	private ResetController resetController;
 	
 	@PostMapping
-	public ResponseEntity<Object> doReset() {
-		try {
-			resetController.doReset();
-		} catch (InternalServerException e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<Object> doReset() throws InternalServerException {
+		resetController.doReset();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

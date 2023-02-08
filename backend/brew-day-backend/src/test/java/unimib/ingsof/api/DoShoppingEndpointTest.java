@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -27,26 +29,26 @@ class DoShoppingEndpointTest {
 	void testBehaviorPost() {
 		try {
 			resetController.doAssure();
-		} catch (InternalServerException e) {
+			List<Map<String, String>> ingredients = new ArrayList<>();
+			for (int i = 1; i < 11; i++) {
+				Map<String, String> ingredientObject = new TreeMap<>();
+				ingredientObject.put(Protocol.NAME_BODY_KEY, String.format("ingredient#%d", i%2));
+				ingredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(i));
+				ingredients.add(ingredientObject);
+			}
+			assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is2xxSuccessful());
+	
+			ingredients.clear();
+			for (int i = 0; i < 1; i++) {
+				Map<String, String> ingredientObject = new TreeMap<>();
+				ingredientObject.put(Protocol.NAME_BODY_KEY, String.format("ingredient#%d", i));
+				ingredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(-10));
+				ingredients.add(ingredientObject);
+			}
+			assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is4xxClientError());
+			resetController.doDrop();
+		} catch (InternalServerException | WrongIDGenerationInitialization | DoesntExistsException e) {
 			fail();
 		}
-		List<Map<String, String>> ingredients = new ArrayList<>();
-		for (int i = 1; i < 11; i++) {
-			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.NAME_BODY_KEY, String.format("ingredient#%d", i%2));
-			ingredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(i));
-			ingredients.add(ingredientObject);
-		}
-		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is2xxSuccessful());
-
-		ingredients.clear();
-		for (int i = 0; i < 1; i++) {
-			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.NAME_BODY_KEY, String.format("ingredient#%d", i));
-			ingredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(-10));
-			ingredients.add(ingredientObject);
-		}
-		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is4xxClientError());
-		resetController.doDrop();
 	}
 }
