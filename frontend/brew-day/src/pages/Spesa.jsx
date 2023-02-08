@@ -35,7 +35,7 @@ class Spesa extends Component {
       }
     }
     if (_ingredients.length !== 0) {
-      fetch("api/shopping/test", {
+      fetch("api/shopping", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(_ingredients),
