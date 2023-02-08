@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 
 @SpringBootTest
@@ -29,9 +30,9 @@ class InventoryIngredientEndpointTest {
 		
 		String ingredientName = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		ingredientBody.put("name", ingredientName);
-		ingredientBody.put("quantity", "7");
-		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().getFirst("ingredientID");
+		ingredientBody.put(Protocol.NAME_BODY_KEY, ingredientName);
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
+		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().getFirst(Protocol.INGREDIENT_ID_HEADER_KEY);
 		
 		assertTrue(ingredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientEndpoint.getIngredientByID(null).getStatusCode().is4xxClientError());
@@ -44,14 +45,14 @@ class InventoryIngredientEndpointTest {
 		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 		assertTrue(ingredientEndpoint.updateIngredient(null, ingredientBody).getStatusCode().is4xxClientError());
 		
-		ingredientBody.put("quantity", "17");
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "17");
 		
 		assertFalse(ingredientEndpoint.updateIngredient("ingredienteNonPresente", ingredientBody).getStatusCode().is2xxSuccessful());
 		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is2xxSuccessful());
 		assertEquals(17, ingredientEndpoint.getIngredientByID(ingredientID).getBody().getQuantity(), 0.1);
 		
 		ingredientBody.clear();
-		ingredientBody.put("quantity", "ciao");
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "ciao");
 		assertTrue(ingredientEndpoint.updateIngredient(ingredientID, ingredientBody).getStatusCode().is4xxClientError());
 
 		
