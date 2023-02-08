@@ -11,7 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -111,7 +114,7 @@ class AdviceEndpointTest {
 			
 			
 			resetController.doDrop();
-		} catch (InternalServerException e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException | InternalServerException e) {
 			fail();
 		}
 	}
@@ -123,7 +126,7 @@ class AdviceEndpointTest {
 			resetController.doAssure();
 			assertTrue(recipeAdviseEndpoint.getRecipeAdvice().getStatusCode().is4xxClientError());
 			resetController.doDrop();
-		} catch (InternalServerException e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException | InternalServerException e) {
 			fail();
 		}
 	}

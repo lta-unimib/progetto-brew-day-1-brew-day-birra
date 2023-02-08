@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ResetController;
 
 @RestController
@@ -17,7 +19,7 @@ public class ResetEndpoint {
 	private ResetController resetController;
 	
 	@PostMapping
-	public ResponseEntity<Object> doReset() throws InternalServerException {
+	public ResponseEntity<Object> doReset() throws ValidationException, AlreadyExistsException, DoesntExistsException {
 		resetController.doReset();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

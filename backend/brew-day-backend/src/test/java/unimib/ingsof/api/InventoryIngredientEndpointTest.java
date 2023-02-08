@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
@@ -30,7 +32,7 @@ class InventoryIngredientEndpointTest {
 	void testBehavior() {
 		try {
 			resetController.doAssure();
-		} catch (InternalServerException e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
 			fail();
 		}
 		

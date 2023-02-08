@@ -11,7 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
@@ -66,7 +69,7 @@ class BeerNoteEndpointTest {
 			assertTrue(beerNoteEndpoint.getBeerNoteByID(beerID, noteID).getStatusCode().is4xxClientError());
 	
 			resetController.doDrop();
-		} catch (InternalServerException | WrongIDGenerationInitialization e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException | WrongIDGenerationInitialization | InternalServerException e) {
 			fail();
 		}
 	}
@@ -106,7 +109,7 @@ class BeerNoteEndpointTest {
 			assertTrue(beerNoteEndpoint.updateBeerNote(beerID, noteID, noteBody).getStatusCode().is4xxClientError());
 			
 			resetController.doDrop();
-		} catch (InternalServerException | WrongIDGenerationInitialization e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException | WrongIDGenerationInitialization | InternalServerException e) {
 			fail();
 		}
 	}

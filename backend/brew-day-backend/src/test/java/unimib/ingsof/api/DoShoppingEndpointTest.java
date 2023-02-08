@@ -12,8 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
@@ -47,7 +48,7 @@ class DoShoppingEndpointTest {
 			}
 			assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is4xxClientError());
 			resetController.doDrop();
-		} catch (InternalServerException | WrongIDGenerationInitialization | DoesntExistsException e) {
+		} catch (AlreadyExistsException | ValidationException | WrongIDGenerationInitialization | DoesntExistsException e) {
 			fail();
 		}
 	}

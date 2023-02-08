@@ -12,7 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.ResetController;
 import unimib.ingsof.persistence.service.Protocol;
@@ -68,7 +71,7 @@ class BeerListEndpointTest {
 			assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
 			
 			resetController.doDrop();
-		} catch (InternalServerException | WrongIDGenerationInitialization e) {
+		} catch (InternalServerException | WrongIDGenerationInitialization | ValidationException | AlreadyExistsException | DoesntExistsException e) {
 			fail();
 		}
 	}
@@ -79,7 +82,7 @@ class BeerListEndpointTest {
 			resetController.doAssure();
 			assertTrue(beerListEndpoint.getBeerIDs(Optional.of("name"), Optional.of("recipeID")).getStatusCode().is2xxSuccessful());
 			resetController.doDrop();
-		} catch (InternalServerException e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
 			fail();
 		}
 	}
@@ -101,7 +104,7 @@ class BeerListEndpointTest {
 			assertTrue(beerListEndpoint.postBeer(beerBody).getStatusCode().is4xxClientError());
 			
 			resetController.doDrop();
-		} catch (InternalServerException | WrongIDGenerationInitialization e) {
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException | WrongIDGenerationInitialization | InternalServerException e) {
 			fail();
 		}
 	}

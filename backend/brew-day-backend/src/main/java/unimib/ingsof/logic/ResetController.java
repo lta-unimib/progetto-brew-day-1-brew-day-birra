@@ -3,7 +3,9 @@ package unimib.ingsof.logic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import unimib.ingsof.exceptions.InternalServerException;
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
 import unimib.ingsof.persistence.repository.BeerRepository;
 import unimib.ingsof.persistence.repository.IngredientRepository;
@@ -31,7 +33,7 @@ public class ResetController {
     @Autowired
     private SettingController settingController;
 
-	public void doReset() throws InternalServerException {
+	public void doReset() throws ValidationException, AlreadyExistsException, DoesntExistsException {
 		this.doDrop();
 		this.doAssure();
 	}
@@ -46,7 +48,7 @@ public class ResetController {
 		settingRepository.drop();
 	}
 	
-	public void doAssure() throws InternalServerException {
+	public void doAssure() throws ValidationException, AlreadyExistsException, DoesntExistsException {
 		settingRepository.assure();
 		ingredientRepository.assure();
 		inventoryIngredientRepository.assure();
@@ -54,11 +56,7 @@ public class ResetController {
 		recipeIngredientRepository.assure();
 		beerRepository.assure();
 		beerNoteRepository.assure();
-		try {
-			settingController.getEquipment();
-		} catch (Exception e) {
-			throw new InternalServerException();
-		}
+		settingController.getEquipment();
 	}
 
 }
