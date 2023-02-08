@@ -22,4 +22,13 @@ describe("Spesa component", () => {
     await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0]);});
     await act(() => {fireEvent.click(screen.getAllByText("Conferma")[0]);});
   });
+
+  test("Correctly deletes ingredient", async () => {
+    await act(() => render(<Spesa />));
+    await act(() => {fireEvent.change(screen.getAllByTestId("shopping-name")[0], {target: { value: "newName" },});});
+    await act(() => {fireEvent.change(screen.getAllByTestId("shopping-quantity")[0], {target: { value: 2.0 },});});
+    await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0]);});
+    await act(() => {fireEvent.click(screen.getAllByText("Elimina")[0]);});
+    expect(screen.queryByText("newName")).not.toBeInTheDocument();
+  });
 });
