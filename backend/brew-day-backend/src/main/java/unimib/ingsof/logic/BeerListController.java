@@ -35,9 +35,9 @@ public class BeerListController {
 	
 	public String addBeer(Map<String, String> beerObject) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
-		String name = beerObject.get(Protocol.NAME_KEY);
-		String recipeID = beerObject.get(Protocol.RECIPE_ID_KEY);
-		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_KEY));
+		String name = beerObject.get(Protocol.NAME_BODY_KEY);
+		String recipeID = beerObject.get(Protocol.RECIPE_ID_BODY_KEY);
+		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_BODY_KEY));
 		recipeController.getRecipeByID(recipeID);
 		float equipment = 0;
 		try {
