@@ -27,8 +27,8 @@ class DoShoppingEndpointTest {
 		List<Map<String, String>> ingredients = new ArrayList<>();
 		for (int i = 1; i < 11; i++) {
 			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.NAME_KEY, String.format("ingredient#%d", i%2));
-			ingredientObject.put(Protocol.QUANTITY_KEY, Float.toString(i));
+			ingredientObject.put(Protocol.NAME_BODY_KEY, String.format("ingredient#%d", i%2));
+			ingredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(i));
 			ingredients.add(ingredientObject);
 		}
 		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is2xxSuccessful());
@@ -36,8 +36,8 @@ class DoShoppingEndpointTest {
 		ingredients.clear();
 		for (int i = 0; i < 1; i++) {
 			Map<String, String> ingredientObject = new TreeMap<>();
-			ingredientObject.put(Protocol.NAME_KEY, String.format("ingredient#%d", i));
-			ingredientObject.put(Protocol.QUANTITY_KEY, Float.toString(-10));
+			ingredientObject.put(Protocol.NAME_BODY_KEY, String.format("ingredient#%d", i));
+			ingredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(-10));
 			ingredients.add(ingredientObject);
 		}
 		assertTrue(shoppingEndpoint.postShoppingList(ingredients).getStatusCode().is4xxClientError());
