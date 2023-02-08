@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
 
