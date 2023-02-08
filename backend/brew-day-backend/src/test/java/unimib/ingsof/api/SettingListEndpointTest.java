@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class SettingListEndpointTest {
@@ -28,14 +29,14 @@ class SettingListEndpointTest {
 		Map<String, String> settingBody = new TreeMap<>();
 		assertTrue(settingListEndpoint.postSetting(settingBody).getStatusCode().is4xxClientError());
 		
-		settingBody.put("settingID", "theSettingID");
+		settingBody.put(Protocol.SETTING_ID_BODY_KEY, "theSettingID");
 		assertTrue(settingListEndpoint.postSetting(settingBody).getStatusCode().is4xxClientError());
 		
 		settingBody.clear();
-		settingBody.put("value", "theValue");
+		settingBody.put(Protocol.VALUE_BODY_KEY, "theValue");
 		assertTrue(settingListEndpoint.postSetting(settingBody).getStatusCode().is4xxClientError());
 
-		settingBody.put("settingID", "theSettingID");
+		settingBody.put(Protocol.SETTING_ID_BODY_KEY, "theSettingID");
 		assertTrue(settingListEndpoint.postSetting(settingBody).getStatusCode().is2xxSuccessful());
 		assertTrue(settingListEndpoint.postSetting(settingBody).getStatusCode().is4xxClientError());
 		
