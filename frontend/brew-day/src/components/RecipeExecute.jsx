@@ -122,11 +122,13 @@ class RecipeExecute extends Component {
     return (
       <ThemeProvider theme={theme}>
         <div>
-          <RecipeView
-            name={this.state.name}
-            description={this.state.description}
-            ingredients={this.state.ingredients}
-          />
+          {Object.keys(this.state.name).length === 0 ? null : (
+            <RecipeView
+              name={this.state.name}
+              description={this.state.description}
+              ingredients={this.state.ingredients}
+              recipeID={this.state.recipeID} />
+          )}
           {action()}
         </div>
       </ThemeProvider>
