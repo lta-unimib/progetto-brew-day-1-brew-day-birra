@@ -9,7 +9,7 @@ import unimib.ingsof.persistence.service.Protocol;
 public class NoteTypeDefaultingValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		String noteType = object.get(Protocol.NOTETYPE_KEY);
+		String noteType = object.get(Protocol.NOTETYPE_BODY_KEY);
 		if (noteType == null)
 			noteType = "generic";
 		else {
@@ -17,7 +17,7 @@ public class NoteTypeDefaultingValidationHandler extends BaseValidationHandler {
 				throw new WrongBodyException();
 		}
 		
-		object.put("noteType", noteType);
+		object.put(Protocol.NOTETYPE_BODY_KEY, noteType);
 		return super.handle(object);
 	}
 }
