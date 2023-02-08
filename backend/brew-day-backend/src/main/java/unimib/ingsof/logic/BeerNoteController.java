@@ -26,8 +26,8 @@ public class BeerNoteController {
 	
 	public BeerNote updateNote(String beerID, String noteID, Map<String, String> noteObject) throws ValidationException, DoesntExistsException {
 		noteObject = BeerNoteUpdatingValidator.getInstance().handle(noteObject);
-		String noteType = noteObject.get(Protocol.NOTETYPE_KEY);
-		String description = noteObject.get(Protocol.DESCRIPTION_KEY);
+		String noteType = noteObject.get(Protocol.NOTETYPE_BODY_KEY);
+		String description = noteObject.get(Protocol.DESCRIPTION_BODY_KEY);
 		BeerNote beerNote = this.getNote(beerID, noteID);
 		
 		if (noteType != null) {
