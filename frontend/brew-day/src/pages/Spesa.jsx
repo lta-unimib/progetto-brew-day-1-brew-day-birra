@@ -90,6 +90,7 @@ class Spesa extends Component {
               let firstColumn = (
                 <input
                   id="shoppingInputName"
+                  data-testid="shopping-name"
                   type="text"
                   value={ingredient.ingredientName}
                   onChange={(e) =>
@@ -120,6 +121,7 @@ class Spesa extends Component {
                   <td>
                     <input
                       type="text"
+                      data-testid="shopping-quantity"
                       value={ingredient.ingredientQuantity}
                       onChange={(e) =>
                         this.handleIngredientChange(
