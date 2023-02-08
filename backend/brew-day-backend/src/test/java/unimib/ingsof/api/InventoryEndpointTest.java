@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 
 @SpringBootTest
@@ -31,11 +32,11 @@ class InventoryEndpointTest {
 		
 		String name = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
-		ingredientBody.put("name", name);
-		ingredientBody.put("quantity", "7");
+		ingredientBody.put(Protocol.NAME_BODY_KEY , name);
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
 		
 		//assertTrue(inventoryController.postIngredient(ingredientBody).getStatusCode().is2xxSuccessful());
-		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get("ingredientID").get(0);
+		String ingredientID = inventoryEndpoint.postIngredient(ingredientBody).getHeaders().get(Protocol.INGREDIENT_ID_HEADER_KEY).get(0);
 		inventoryIngredientEndpoint.getIngredientByID(name);
 		assertTrue(inventoryIngredientEndpoint.getIngredientByID(ingredientID).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, inventoryEndpoint.getAllIngredients().getBody().size());
@@ -57,11 +58,11 @@ class InventoryEndpointTest {
 		String ingredientID = "name";
 		Map<String, String> ingredientBody = new TreeMap<String, String>();
 		
-		ingredientBody.put("name", ingredientID);
+		ingredientBody.put(Protocol.NAME_BODY_KEY, ingredientID);
 		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.clear();
-		ingredientBody.put("quantity", "7");
+		ingredientBody.put(Protocol.QUANTITY_BODY_KEY, "7");
 		assertTrue(inventoryEndpoint.postIngredient(ingredientBody).getStatusCode().is4xxClientError());
 		
 		ingredientBody.clear();
