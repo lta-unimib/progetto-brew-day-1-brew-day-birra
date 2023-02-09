@@ -35,7 +35,7 @@ public class AdviceController {
 			throw new InternalServerException();
 		}
 		AdviceView advice = new AdviceView();
-		float maxQuantitySum = 0;
+		float maxQuantitySum = -1;
 		for (String recipeID : recipeIDs) {
 			List<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
 			List<Float> ingredientsQuantity = new ArrayList<>();
@@ -48,7 +48,7 @@ public class AdviceController {
 			if (literProduced > equipment)
 				literProduced = equipment;
 			quantitySum = ingredientQuantitySum(ingredientsQuantity, literProduced);
-			if(quantitySum > maxQuantitySum ||
+			if(quantitySum > maxQuantitySum || maxQuantitySum == -1 ||
 					(Float.compare(quantitySum, maxQuantitySum) == 0 && advice.getQuantity() < literProduced)) {
 				maxQuantitySum = quantitySum;
 				advice.setQuantity(literProduced);

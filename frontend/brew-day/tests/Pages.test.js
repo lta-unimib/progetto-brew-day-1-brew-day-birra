@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import Home from "../src/pages/Home";
 import Spesa from "../src/pages/Spesa";
 

@@ -40,8 +40,8 @@ export default class RecipeView extends React.Component {
     return (
       <div>
         <center>
-          <h1> {this.state.name}</h1>
-          <p> {this.state.description} </p>
+          <h1 style={{color: (this.props.color ?? 'black')}}> {this.state.name}</h1>
+          <p style={{color: (this.props.color ?? 'black')}}> {this.state.description} </p>
           <table className="myTable">
             <thead>
               <tr>

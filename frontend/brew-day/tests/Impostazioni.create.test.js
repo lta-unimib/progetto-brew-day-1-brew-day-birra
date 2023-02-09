@@ -4,14 +4,7 @@ import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/
 import Impostazioni from "../src/pages/Impostazioni";
 import { act } from "react-test-renderer";
 
-var settings = [
-    {
-        settingID: "equipment", value: "30",
-        settingID: "color", value: "#fcdd2e",
-        settingID: "background", value: "#fcdd2e",
-        settingID: "name", value: "Pierino"
-    }
-]
+var settings = []
 
 const findSetting = (settingID) => {
     for (let index in settings) {
@@ -37,7 +30,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 )
 
-describe('Impostazioni.jsx can correctly render page', () => {
+describe('Impostazioni.jsx can correctly render this page', () => {
     test('load page', async () => {
         await act(() => {render(<Impostazioni/>);});
         expect(screen.getByText("Equipaggiamento disponibile", { exact: false })).toBeInTheDocument();
