@@ -60,7 +60,6 @@ class Spesa extends Component {
     const isAlreadyAdded = ingredients.find(
       (ingredient) => ingredient.ingredientName === newIngName
     );
-    console.log(isAlreadyAdded);
     if (
       isAlreadyAdded &&
       ingredients.indexOf(isAlreadyAdded) !== ingredients.length - 1
