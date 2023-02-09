@@ -20,10 +20,10 @@ class Home extends Component {
         <center>
           <h1 className="advice-texts">Vuoi un consiglio?</h1>
           {(this.state.advice === null) ? 
-            <h1>Prova ad inserire qualche ricetta</h1>
+            <h1 className="advice-texts">Prova ad inserire qualche ricetta</h1>
           : (
             <div>
-              <h1>Ecco quale birra dovresti preparare</h1>
+              <h1 className="advice-texts">Ecco quale birra dovresti preparare</h1>
               <RecipeExecute recipeID={this.state.advice.recipeID} color="white"/>
               <h3 className="advice-texts">La massima quantità realizzabile è di {this.state.advice.quantity}</h3>
             </div>
