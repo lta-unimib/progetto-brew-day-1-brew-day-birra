@@ -9,7 +9,6 @@ export default class Impostazioni extends Component {
         super(props);
         this.triggerReload = this.triggerReload.bind(this);
         this.updateValue = this.updateValue.bind(this);
-        this.fillSetting = this.fillSetting.bind(this);
         this.setNewEquipment = this.setNewEquipment.bind(this);
         this.setNewName = this.setNewName.bind(this);
         this.setNewBackground = this.setNewBackground.bind(this);
@@ -37,7 +36,6 @@ export default class Impostazioni extends Component {
                         this.setState({name: data.filter(i => i.settingID === "name")[0].value});
                       }
                       if (data.filter(i => i.settingID === "background").length === 0){
-                        console.log("qui");
                         this.postValue("background", "default");
                         this.setState({background:"default"});
                       } else {
@@ -50,11 +48,6 @@ export default class Impostazioni extends Component {
                         this.setState({equipment: data.filter(i => i.settingID === "equipment")[0].value});
                       }
       })
-    }
-
-    fillSetting(){
-      let data = this.state.settings;
-      
     }
 
     setNewEquipment(event){
@@ -94,10 +87,6 @@ export default class Impostazioni extends Component {
                           <td><input value={this.state.equipment} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewEquipment(event)}></input></td>
                           <td><MButton text="Aggiorna" onClick={() => this.updateValue("equipment", this.state.equipment)} /></td>
                         </tr>
-                    </tbody>
-                </table>
-                <table className="myTable">
-                    <tbody>
                         <tr>
                           <td>Inserisci qui il tuo nome</td>
                           <td><input value={this.state.name} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewName(event)}></input></td>
@@ -123,10 +112,6 @@ export default class Impostazioni extends Component {
                             </select>
                           </td>
                         </tr>
-                    </tbody>
-                </table>
-                <table className="myTable">
-                    <tbody>
                         <tr>
                           <td>Seleziona la location</td>
                           <td>
