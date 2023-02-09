@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.persistence.model.RecipeIngredient;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.view.AdviceView;
@@ -20,13 +21,21 @@ public class AdviceController {
 	RecipeListController recipeListController;
 	@Autowired
 	InventoryIngredientController inventoryIngredientController;
+	@Autowired
+	private SettingController settingController;
 	
-	public AdviceView getAdvice() throws DoesntExistsException {
+	public AdviceView getAdvice() throws DoesntExistsException, InternalServerException {
 		List<String> recipeIDs = recipeListController.getAllRecipeIDs(java.util.Optional.empty());
 		if (recipeIDs.isEmpty())
 			throw new DoesntExistsException();
+		float equipment = 0;
+		try {
+			equipment = Float.parseFloat(settingController.getEquipment());
+		} catch (Exception e) {
+			throw new InternalServerException();
+		}
 		AdviceView advice = new AdviceView();
-		float maxQuantitySum = 0;
+		float maxQuantitySum = -1;
 		for (String recipeID : recipeIDs) {
 			List<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
 			List<Float> ingredientsQuantity = new ArrayList<>();
@@ -35,9 +44,11 @@ public class AdviceController {
 			for (RecipeIngredient recipeIngredient : ingredients) {
 				ingredientsQuantity.add(recipeIngredient.getQuantity());
 				literProduced = ratioCalculator(recipeIngredient, literProduced);
-			}				
+			}
+			if (literProduced > equipment)
+				literProduced = equipment;
 			quantitySum = ingredientQuantitySum(ingredientsQuantity, literProduced);
-			if(quantitySum > maxQuantitySum ||
+			if(quantitySum > maxQuantitySum || maxQuantitySum == -1 ||
 					(Float.compare(quantitySum, maxQuantitySum) == 0 && advice.getQuantity() < literProduced)) {
 				maxQuantitySum = quantitySum;
 				advice.setQuantity(literProduced);

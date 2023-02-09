@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.NotEnoughIngredientsException;
 import unimib.ingsof.exceptions.ValidationException;
+import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.BeerListController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @RestController
 @RequestMapping("/api/beer")
@@ -32,18 +36,16 @@ public class BeerListEndpoint {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> postBeer(@RequestBody Map<String, String> beerObject) {
+	public ResponseEntity<Object> postBeer(@RequestBody Map<String, String> beerObject) throws InternalServerException, WrongIDGenerationInitialization {
 		try {
 			String beerID = beerListController.addBeer(beerObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("beerID", beerID);
+			headers.add(Protocol.BEER_ID_HEADER_KEY, beerID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch(ValidationException|NotEnoughIngredientsException exception) {
+		} catch(ValidationException|NotEnoughIngredientsException|InsufficientEquipmentException exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} catch(Exception exception) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

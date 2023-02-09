@@ -1,10 +1,12 @@
 package unimib.ingsof.logic;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Setting;
@@ -12,10 +14,13 @@ import unimib.ingsof.persistence.repository.SettingRepository;
 import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.SettingUpdatingValidator;
 
+
 @Service
 public class SettingController {
 	@Autowired
 	private SettingRepository settingRepository;
+	@Autowired
+	private SettingListController settingListController;	
 	
 	public Setting getSetting(String settingID) throws DoesntExistsException {
 		Setting setting = settingRepository.getSetting(settingID);
@@ -28,7 +33,7 @@ public class SettingController {
 		settingObject = SettingUpdatingValidator.getInstance().handle(settingObject);
 		Setting setting = this.getSetting(settingID);
 		
-		String value = settingObject.get(Protocol.VALUE_KEY);
+		String value = settingObject.get(Protocol.VALUE_BODY_KEY);
 		settingRepository.updateSetting(settingID, value);
 		setting.setValue(value);
 		return setting;
@@ -37,4 +42,19 @@ public class SettingController {
 	public void deleteSetting(String settingID) {
 		settingRepository.deleteSetting(settingID);
 	}
+	
+	public String getEquipment() throws ValidationException, AlreadyExistsException, DoesntExistsException   {
+		Setting setting;
+		try {
+			setting = getSetting(Protocol.EQUIPMENT_SETTING_ID);
+		} catch (DoesntExistsException e) {
+			Map<String, String> settingObject = new TreeMap<>();
+			settingObject.put(Protocol.SETTING_ID_BODY_KEY, Protocol.EQUIPMENT_SETTING_ID);
+			settingObject.put(Protocol.VALUE_BODY_KEY, Protocol.DEFAULT_EQUIPMENT);
+			settingListController.addSetting(settingObject);
+			setting = getSetting(Protocol.EQUIPMENT_SETTING_ID);
+		}	
+		return setting.getValue();
+	}
+	
 }

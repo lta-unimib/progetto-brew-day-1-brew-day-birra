@@ -8,7 +8,7 @@ import unimib.ingsof.persistence.service.Protocol;
 public class QuantityDefaultingValidationHandler extends QuantityValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		object.computeIfAbsent(Protocol.QUANTITY_KEY, t -> "1");
+		object.computeIfAbsent(Protocol.QUANTITY_BODY_KEY, t -> "1");
 		return super.handle(object);
 	}
 }

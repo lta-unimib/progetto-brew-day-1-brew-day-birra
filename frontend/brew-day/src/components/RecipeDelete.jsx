@@ -43,8 +43,8 @@ class RecipeDelete extends Component{
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    });
-    this.props.onConfirm();
+    })
+    .then(() => this.props.onConfirm())
 }
 
 }

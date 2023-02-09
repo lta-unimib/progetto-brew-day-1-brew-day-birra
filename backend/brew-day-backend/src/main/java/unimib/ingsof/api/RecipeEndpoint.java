@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.logic.RecipeController;
+import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.RecipeView;
 
 @RestController
@@ -60,7 +61,7 @@ public class RecipeEndpoint {
 		try {
 			String ingredientID = this.recipeController.addIngredient(recipeID, ingredientObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("ingredientID", ingredientID);
+			headers.add(Protocol.INGREDIENT_ID_HEADER_KEY, ingredientID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

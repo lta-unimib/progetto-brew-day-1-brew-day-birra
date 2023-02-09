@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import unimib.ingsof.logic.RecipeListController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -33,7 +34,7 @@ public class RecipeListEndpoint {
 		try {
 			String recipeID = recipeListController.addRecipe(recipeObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("recipeID", recipeID);
+			headers.add(Protocol.RECIPE_ID_HEADER_KEY, recipeID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

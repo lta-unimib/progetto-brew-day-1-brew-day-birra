@@ -9,7 +9,7 @@ import unimib.ingsof.persistence.service.Protocol;
 public class RecipeIDValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		if (object.get(Protocol.RECIPE_ID_KEY) == null)
+		if (object.get(Protocol.RECIPE_ID_BODY_KEY) == null)
 			throw new WrongRecipeIDException();
 		return super.handle(object);
 	}

@@ -25,8 +25,8 @@ public class RecipeListController {
 	
 	public String addRecipe(Map<String, String> recipeObject) throws ValidationException, WrongIDGenerationInitialization {
 		recipeObject = RecipeInitializationValidator.getInstance().handle(recipeObject);
-		String name = recipeObject.get(Protocol.NAME_KEY);
-		String description = recipeObject.get(Protocol.DESCRIPTION_KEY);
+		String name = recipeObject.get(Protocol.NAME_BODY_KEY);
+		String description = recipeObject.get(Protocol.DESCRIPTION_BODY_KEY);
 		
 		String recipeID = "";
 		while(true) {

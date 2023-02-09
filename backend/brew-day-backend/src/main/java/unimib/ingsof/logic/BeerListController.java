@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.NotEnoughIngredientsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
@@ -24,27 +26,34 @@ public class BeerListController {
 	private RecipeController recipeController;
 	@Autowired
 	ExecuteRecipeController executeRecipeController;
+	@Autowired
+	private SettingController settingController;
 	
 	public List<String> getAllBeerIDs(Optional<String> filterByName, Optional<String> filterByRecipeID) {
 		return beerRepository.getAllBeerIDs(filterByName.orElse(""), filterByRecipeID.orElse(""));
 	}
 	
-	public String addBeer(Map<String, String> beerObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException, NotEnoughIngredientsException {
+	public String addBeer(Map<String, String> beerObject) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
-		String name = beerObject.get(Protocol.NAME_KEY);
-		String recipeID = beerObject.get(Protocol.RECIPE_ID_KEY);
-		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_KEY));
+		String name = beerObject.get(Protocol.NAME_BODY_KEY);
+		String recipeID = beerObject.get(Protocol.RECIPE_ID_BODY_KEY);
+		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_BODY_KEY));
 		recipeController.getRecipeByID(recipeID);
-		
+		float equipment = 0;
+		try {
+			equipment = Float.parseFloat(settingController.getEquipment());
+		} catch (Exception e) {
+			throw new InternalServerException();
+		}
+		if (quantity > equipment)
+			throw new InsufficientEquipmentException();
 		executeRecipeController.execute(recipeID, quantity);
-
 		String beerID = "";
 		while(true) {
 			beerID = IDGenerationFacade.getInstance().generateBeerID(beerObject);
 			if (!beerRepository.getAllBeerIDs("", "").contains(beerID))
 				break;
 		}
-		
 		beerRepository.addBeer(beerID, name, recipeID);
 		return beerID;
 	}

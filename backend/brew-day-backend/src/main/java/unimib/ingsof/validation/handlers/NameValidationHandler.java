@@ -9,7 +9,7 @@ import unimib.ingsof.persistence.service.Protocol;
 public class NameValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
-		if (object.get(Protocol.NAME_KEY) == null)
+		if (object.get(Protocol.NAME_BODY_KEY) == null)
 			throw new WrongNameException();
 		return super.handle(object);
 	}

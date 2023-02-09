@@ -1,6 +1,7 @@
 package unimib.ingsof.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
@@ -11,7 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import unimib.ingsof.exceptions.AlreadyExistsException;
+import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class RecipeListEndpointTest {
@@ -22,13 +27,17 @@ class RecipeListEndpointTest {
 	
 	@Test
 	void testBehavior() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
+			fail();
+		}
 		
 		int oldnum = recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size();
 		
 		Map<String, String> recipeBody = new TreeMap<String, String>();
-		recipeBody.put("name", "RecipeListControllerTest");
-		recipeBody.put("description", "RecipeListControllerTest");
+		recipeBody.put(Protocol.NAME_BODY_KEY, "RecipeListControllerTest");
+		recipeBody.put(Protocol.DESCRIPTION_BODY_KEY, "RecipeListControllerTest");
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is2xxSuccessful());
 		assertEquals(oldnum + 1, recipeListEndpoint.getRecipeIDs(Optional.empty()).getBody().size());
 		
@@ -40,7 +49,11 @@ class RecipeListEndpointTest {
 	
 	@Test
 	void testAlternative() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
+			fail();
+		}
 		
 		assertTrue(recipeListEndpoint.getRecipeIDs(Optional.of("name")).getStatusCode().is2xxSuccessful());
 		
@@ -49,7 +62,11 @@ class RecipeListEndpointTest {
 	
 	@Test
 	void allGoesWrong() {
-		resetController.doAssure();
+		try {
+			resetController.doAssure();
+		} catch (AlreadyExistsException | DoesntExistsException | ValidationException e) {
+			fail();
+		}
 		
 		Map<String, String> recipeBody = null;
 		assertTrue(recipeListEndpoint.postRecipe(recipeBody).getStatusCode().is4xxClientError());

@@ -51,8 +51,8 @@ public class RecipeController {
 		recipeObject = RecipeUpdatingValidator.getInstance().handle(recipeObject);
 		this.getRecipeDetailsByID(recipeID);
 
-		String newName = recipeObject.get(Protocol.NAME_KEY);
-		String newDescription = recipeObject.get(Protocol.DESCRIPTION_KEY);
+		String newName = recipeObject.get(Protocol.NAME_BODY_KEY);
+		String newDescription = recipeObject.get(Protocol.DESCRIPTION_BODY_KEY);
 		
 		if (newName != null)
 			this.recipeRepository.updateRecipeName(recipeID, newName);
@@ -68,8 +68,8 @@ public class RecipeController {
 	
 	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
 		ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
-		String name = ingredientObject.get(Protocol.NAME_KEY);
-		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY));
+		String name = ingredientObject.get(Protocol.NAME_BODY_KEY);
+		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_BODY_KEY));
 		
 		String ingredientID = this.ingredientController.addIngredient(name).getIngredientID();
 		this.getRecipeDetailsByID(recipeID);

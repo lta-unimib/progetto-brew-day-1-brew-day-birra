@@ -24,8 +24,8 @@ public class SettingListController {
 	
 	public String addSetting(Map<String, String> settingObject) throws ValidationException, AlreadyExistsException {
 		settingObject = SettingInitializationValidator.getInstance().handle(settingObject);
-		String settingID = settingObject.get(Protocol.SETTING_ID_KEY);
-		String value = settingObject.get(Protocol.VALUE_KEY);
+		String settingID = settingObject.get(Protocol.SETTING_ID_BODY_KEY);
+		String value = settingObject.get(Protocol.VALUE_BODY_KEY);
 		
 		Setting setting = settingRepository.getSetting(settingID);
 		if (setting != null)

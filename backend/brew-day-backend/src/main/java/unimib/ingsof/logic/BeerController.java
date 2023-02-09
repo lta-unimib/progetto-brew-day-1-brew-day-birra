@@ -44,7 +44,7 @@ public class BeerController {
 		beerObject = BeerUpdatingValidator.getInstance().handle(beerObject);
 		BeerView beer = this.getBeerByID(beerID);
 		
-		String newName = beerObject.get(Protocol.NAME_KEY);
+		String newName = beerObject.get(Protocol.NAME_BODY_KEY);
 		this.beerRepository.updateBeer(beerID, newName);
 		beer.setName(newName);
 		return beer;
@@ -57,8 +57,8 @@ public class BeerController {
 	public String addBeerNote(String beerID, Map<String, String> noteObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
 		this.getBeerDetailsByID(beerID);
 		noteObject = BeerNoteInitializationValidator.getInstance().handle(noteObject);
-		String noteType = noteObject.get(Protocol.NOTETYPE_KEY);
-		String description = noteObject.get(Protocol.DESCRIPTION_KEY);
+		String noteType = noteObject.get(Protocol.NOTETYPE_BODY_KEY);
+		String description = noteObject.get(Protocol.DESCRIPTION_BODY_KEY);
 
 		String noteID = "";
 		while(true) {

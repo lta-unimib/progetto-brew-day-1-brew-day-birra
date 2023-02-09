@@ -17,6 +17,7 @@ import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.logic.SettingListController;
 import unimib.ingsof.persistence.model.Setting;
+import unimib.ingsof.persistence.service.Protocol;
 
 @RestController
 @RequestMapping("/api/settings")
@@ -34,7 +35,7 @@ public class SettingListEndpoint {
 		try {
 			String settingID = settingListController.addSetting(settingObject);
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("settingID", settingID);
+			headers.add(Protocol.SETTING_ID_HEADER_KEY, settingID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);
 		} catch(ValidationException|AlreadyExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

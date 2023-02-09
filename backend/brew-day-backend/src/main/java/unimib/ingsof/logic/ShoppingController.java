@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
+import unimib.ingsof.exceptions.InsufficientEquipmentException;
+import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.service.Protocol;
@@ -28,27 +30,37 @@ public class ShoppingController {
 	InventoryController inventoryController;
 	@Autowired
 	IngredientController ingredientController;
+	@Autowired
+	private SettingController settingController;
 	
 	public IngredientView probeInventoryIngredient(String ingredientID, String ingredientName) throws ValidationException, WrongIDGenerationInitialization {
 		try {
 			return inventoryIngredientController.getIngredient(ingredientID);
 		} catch(DoesntExistsException exception) {
 			Map<String, String> newIngredientObject = new TreeMap<>();
-			newIngredientObject.put(Protocol.NAME_KEY, ingredientName);
-			newIngredientObject.put(Protocol.QUANTITY_KEY, "0");
+			newIngredientObject.put(Protocol.NAME_BODY_KEY, ingredientName);
+			newIngredientObject.put(Protocol.QUANTITY_BODY_KEY, "0");
 			return new IngredientView(inventoryController.addIngredient(newIngredientObject), ingredientName, 0);
 		}
 	}
 	
-	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization {
 		requestBody = ShoppingListCreationValidator.getInstance().handle(requestBody);
-		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_KEY));
+		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_BODY_KEY));
 		return this.getShoppingList(recipeID, multiplier);
 	}
 
-	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = recipeController.getRecipeByID(recipeID);
+		float equipment = 0;
+		try {
+			equipment = Float.parseFloat(settingController.getEquipment());
+		} catch (Exception e) {
+			throw new InternalServerException();
+		}
+		if (multiplier > equipment)
+			throw new InsufficientEquipmentException();
 		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {
 			String ingredientID = recipeIngredient.getIngredientID();
 			float inventoryIngredientQuantity = this.probeInventoryIngredient(ingredientID, recipeIngredient.getName()).getQuantity();
@@ -63,17 +75,17 @@ public class ShoppingController {
 		List<IngredientView> updateList = new ArrayList<>();
 		for (Map<String, String> ingredientObject : ingredients) {
 			ingredientObject = IngredientInitializationValidator.getInstance().handle(ingredientObject);
-			String ingredientName = ingredientObject.get(Protocol.NAME_KEY);
+			String ingredientName = ingredientObject.get(Protocol.NAME_BODY_KEY);
 			String ingredientID = ingredientController.addIngredient(ingredientName).getIngredientID();
 			
 			IngredientView inventoryIngredient = this.probeInventoryIngredient(ingredientID, ingredientName);
-			inventoryIngredient.setQuantity(inventoryIngredient.getQuantity() + Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_KEY)));
+			inventoryIngredient.setQuantity(inventoryIngredient.getQuantity() + Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_BODY_KEY)));
 			updateList.add(inventoryIngredient);
 		}
 		
 		for (IngredientView ingredient : updateList) {
 			Map<String, String> newIngredientObject = new TreeMap<>();
-			newIngredientObject.put(Protocol.QUANTITY_KEY, Float.toString(ingredient.getQuantity()));
+			newIngredientObject.put(Protocol.QUANTITY_BODY_KEY, Float.toString(ingredient.getQuantity()));
 			inventoryIngredientController.updateIngredient(ingredient.getIngredientID(), newIngredientObject);
 		}
 	}
