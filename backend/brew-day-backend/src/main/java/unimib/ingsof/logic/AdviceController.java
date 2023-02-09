@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
-import unimib.ingsof.persistence.model.RecipeIngredient;
-import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
 import unimib.ingsof.persistence.view.AdviceView;
+import unimib.ingsof.persistence.view.RecipeIngredientView;
 
 @Service
 public class AdviceController {
-
-	@Autowired
-	private RecipeIngredientRepository recipeIngredientRepository;
 	@Autowired
 	RecipeController recipeController;
 	@Autowired
@@ -37,11 +33,11 @@ public class AdviceController {
 		AdviceView advice = new AdviceView();
 		float maxQuantitySum = -1;
 		for (String recipeID : recipeIDs) {
-			List<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
+			List<RecipeIngredientView> ingredients =  recipeController.getRecipeByID(recipeID).getIngredients();
 			List<Float> ingredientsQuantity = new ArrayList<>();
 			float literProduced = -1;
 			float quantitySum = 0;
-			for (RecipeIngredient recipeIngredient : ingredients) {
+			for (RecipeIngredientView recipeIngredient : ingredients) {
 				ingredientsQuantity.add(recipeIngredient.getQuantity());
 				literProduced = ratioCalculator(recipeIngredient, literProduced);
 			}
@@ -66,7 +62,7 @@ public class AdviceController {
 		return quantitySum;
 	}
 	
-	private float ratioCalculator(RecipeIngredient recipeIngredient, float maxLiterProduced) {
+	private float ratioCalculator(RecipeIngredientView recipeIngredient, float maxLiterProduced) {
 		String ingredientID = recipeIngredient.getIngredientID();
 		float invIngQuantity;
 		try {
