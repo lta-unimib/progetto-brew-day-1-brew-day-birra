@@ -22,7 +22,7 @@ export default class Impostazioni extends Component {
         this.handleResetSettings = this.handleResetSettings.bind(this);
         this.handleResetNextRecipeID = this.handleResetNextRecipeID.bind(this);
 
-        this.state = {settings: [], equipment: "", color: "", name: "", background: "",
+        this.state = {showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
                       colors: [{"name": "default", "value": "#fcdd2e"}, {"name": "black", "value": "#645F81"}],
                       backgrounds: [{"name": "default", "value": "#fcdd2e"}, {"name": "location1", "value": "#645F81"}]};
     }
