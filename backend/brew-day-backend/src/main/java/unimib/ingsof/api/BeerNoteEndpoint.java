@@ -18,7 +18,7 @@ import unimib.ingsof.logic.BeerNoteController;
 import unimib.ingsof.persistence.model.BeerNote;
 
 @RestController
-@RequestMapping("/api/beer/{beerID}/{noteID}")
+@RequestMapping("/api/beers/{beerID}/{noteID}")
 public class BeerNoteEndpoint {
 	@Autowired
 	private BeerNoteController beerNoteController;

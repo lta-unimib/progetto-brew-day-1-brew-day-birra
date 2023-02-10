@@ -24,12 +24,12 @@ class Birre extends Component {
   }
 
   triggerReload = () => {
-    fetch("/api/beer")
+    fetch("/api/beers")
       .then((response) => response.json())
       .then((data) => {
         const beerIDs = data;
         const beerIDsFiltered = data;
-        const promises = beerIDs.map((id) => fetch(`/api/beer/${id}`));
+        const promises = beerIDs.map((id) => fetch(`/api/beers/${id}`));
         Promise.all(promises).then((results) => {
           const beers = results.map((response) => response.json());
           Promise.all(beers)
@@ -93,7 +93,7 @@ class Birre extends Component {
 
   handleDeleteConfirm =  () => {
     const beerToDeleteID = this.state.selectedBeer.beerID;
-     fetch(`/api/beer/${beerToDeleteID}`, {
+     fetch(`/api/beers/${beerToDeleteID}`, {
       method: "DELETE",
     }).then(() => {
       this.triggerReload();
@@ -221,15 +221,15 @@ class Birre extends Component {
     let url = "";
     if (this.state.filterName === "") {
       if (this.state.filterRecipe === "") {
-        url = `/api/beer`;
+        url = `/api/beers`;
       } else {
-        url = `/api/beer?recipeID=${this.state.filterRecipe}`;
+        url = `/api/beers?recipeID=${this.state.filterRecipe}`;
       }
     } else {
       if (this.state.filterRecipe === "") {
-        url = `/api/beer?name=${this.state.filterName}`;
+        url = `/api/beers?name=${this.state.filterName}`;
       } else {
-        url = `/api/beer?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
+        url = `/api/beers?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
       }
     }
 
