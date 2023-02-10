@@ -33,13 +33,14 @@ global.fetch = jest.fn().mockImplementation((url) =>
 describe('Ricette.jsx can correctly render page', () => {
     test('load page', async () => {
         await act(() => {render(<Ricette/>);});
-        expect(screen.getByText(recipes.recipeID.name, { exact: false })).toBeInTheDocument();
+        expect(screen.getAllByText(recipes.recipeID.name, { exact: false })[0]).toBeInTheDocument();
         expect(screen.getByText(recipes.recipeID.description, { exact: false })).toBeInTheDocument();
     })
     
     test('can filter recipes', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "recipeName"}}));
+        await act(() => fireEvent.change(screen.getAllByRole("combobox")[0], {target: {value: "recipeName"}}));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })

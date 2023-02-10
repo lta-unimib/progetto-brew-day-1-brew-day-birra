@@ -25,7 +25,7 @@ import unimib.ingsof.logic.BeerListController;
 import unimib.ingsof.persistence.service.Protocol;
 
 @RestController
-@RequestMapping("/api/beer")
+@RequestMapping("/api/beers")
 public class BeerListEndpoint {
 	@Autowired
 	private BeerListController beerListController;

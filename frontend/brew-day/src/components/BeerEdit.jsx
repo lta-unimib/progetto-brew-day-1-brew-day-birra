@@ -13,7 +13,7 @@ class BeerEdit extends Component {
   }
 
   triggerReload = () => {
-    fetch(`/api/beer/${this.props.beerID}`)
+    fetch(`/api/beers/${this.props.beerID}`)
     .then(response => response.json())
     .then(data => {
       this.setState({...data, noteType: "", description: ""});
@@ -32,7 +32,7 @@ class BeerEdit extends Component {
 
   handleDeleteNote = (note) => {
     const { beerID, noteID } = note;
-    fetch(`/api/beer/${beerID}/${noteID}`, {
+    fetch(`/api/beers/${beerID}/${noteID}`, {
       method: "DELETE",
     })
     .then(() => this.triggerReload());
@@ -56,7 +56,7 @@ class BeerEdit extends Component {
     const { beerID } = this.props;
     const { name } = this.state;
 
-    fetch(`/api/beer/${beerID}`, {
+    fetch(`/api/beers/${beerID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +70,7 @@ class BeerEdit extends Component {
   handleAddNote = (noteType, description) => {
     const { beerID } = this.props;
 
-    fetch(`/api/beer/${beerID}`, {
+    fetch(`/api/beers/${beerID}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ class BeerEdit extends Component {
   handleEditNote = (note) => {
     const { beerID, description, noteType, noteID } = note;
 
-    fetch(`/api/beer/${beerID}/${noteID}`, {
+    fetch(`/api/beers/${beerID}/${noteID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

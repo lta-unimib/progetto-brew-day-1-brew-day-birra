@@ -2,19 +2,24 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from '../src/App';
 import reportWebVitals from '../src/reportWebVitals';
+import { act } from "react-test-renderer";
 
 global.fetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
     json: () => {
-      return Promise.resolve({});
+      return Promise.resolve([]);
     },
   })
 )
 
 describe('App component', () => {
-  test('should render correctly', () => {
-    const { container } = render(<App />);
-    expect(container.firstChild).toMatchSnapshot();
+  test('should render correctly', async () => {
+    let theContainer;
+    await act(() => {
+      const { container } = render(<App />);
+      theContainer = container;
+    })
+    expect(theContainer.firstChild).toMatchSnapshot();
   });
 });
 
