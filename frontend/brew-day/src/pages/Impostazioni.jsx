@@ -1,20 +1,28 @@
 import React, { Component } from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
+import Modal from "../components/Modal";
 import MButton from '../components/MButton';
+import SettingsReset from "../components/SettingsReset";
+import NextRecipeReset from "../components/NextRecipeReset";
 
 export default class Impostazioni extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {currentAction: "", showModal:false};
         this.triggerReload = this.triggerReload.bind(this);
         this.updateValue = this.updateValue.bind(this);
         this.setNewEquipment = this.setNewEquipment.bind(this);
         this.setNewName = this.setNewName.bind(this);
         this.setNewBackground = this.setNewBackground.bind(this);
         this.setNewColor = this.setNewColor.bind(this);
+        this.getCurrentComponent = this.getCurrentComponent.bind(this);
+        this.setShowModal = this.setShowModal.bind(this);
+        this.handleResetSettings = this.handleResetSettings.bind(this);
+        this.handleResetNextRecipeID = this.handleResetNextRecipeID.bind(this);
 
-        this.state = {settings: [], equipment: "", color: "", name: "", background: "",
+        this.state = {showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
                       colors: [{"name": "default", "value": "#fcdd2e"}, {"name": "black", "value": "#645F81"}],
                       backgrounds: [{"name": "default", "value": "#fcdd2e"}, {"name": "location1", "value": "#645F81"}]};
     }
@@ -76,6 +84,36 @@ export default class Impostazioni extends Component {
       this.triggerReload();
     }
 
+    closeModal = () => this.setShowModal(false);
+    closeModalAndReload = () => {this.closeModal(); this.triggerReload()};
+
+    handleResetSettings(item) {
+      this.setState({currentAction:"resetSettings", showModal:true})
+    };  
+
+    handleResetNextRecipeID(item) {
+      this.setState({currentAction:"resetRecipeID", showModal:true})
+    }; 
+
+    getCurrentComponent(){
+      let currentAction = this.state.currentAction;
+      switch (currentAction) {
+        case "resetSettings":
+          return <SettingsReset onConfirm={this.closeModalAndReload}/>;
+        case "resetRecipeID":
+          return <NextRecipeReset onConfirm={this.closeModal}/>;
+        default:
+          return <div></div>;
+      }
+    }    
+
+
+    setShowModal(flag) {
+      if (!flag)
+        this.setState({currentAction:""})
+      this.setState({showModal:flag})
+    }
+
     render(){
       return (
         <ThemeProvider theme={theme}>
@@ -128,8 +166,15 @@ export default class Impostazioni extends Component {
                               </select>
                           </td>
                         </tr>
+                        <tr>
+                          <td> <MButton text="Elimina tutti i dati" onClick={() => this.handleResetSettings()} /></td>
+                          <td> <MButton text="Resetta la prossima ricetta da eseguire" onClick={() => this.handleResetNextRecipeID()} /></td>
+                        </tr>
                     </tbody>
                 </table>
+                <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
+                  {this.getCurrentComponent()}
+                </Modal>
             </div>
           </ThemeProvider>
         )
@@ -159,6 +204,6 @@ export default class Impostazioni extends Component {
           },
           body: JSON.stringify({settingID: id, value: newValue})
       });
-    } 
+    }
 
 }

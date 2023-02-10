@@ -36,12 +36,12 @@ class Home extends Component {
                 color="white"
               />
               <h3 className="advice-texts">
-                La massima quantità realizzabile è di{" "}
-                {this.state.advice.quantity}
+                La massima quantità realizzabile è {" "}
+                {this.state.advice.quantity == -1 ? "infinita" : this.state.advice.quantity}
               </h3>
             </div>
           )}
-          {this.state.nextRecipeID === null ? (
+          {this.state.nextRecipeID === null || this.state.nextRecipeID === "" ? (
             <h1 className="advice-texts">Nessuna ricetta in programma</h1>
           ) : (
             <div>

@@ -11,7 +11,7 @@ import MButton from '../components/MButton';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "", nextRecipeID: null, selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
+        this.state = {recipes: [], currentAction: "", nextRecipeID: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
         this.handleView = this.handleView.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -37,7 +37,7 @@ export default class Ricette extends Component {
         .then(response => response.json())
         .then(data => this.setState({nextRecipeID: data.value}))
         .catch((error) => {this.postNextRecipeID();
-                          this.setState({nextRecipeID: "default"});
+                          this.setState({nextRecipeID: ""});
                     });
     }
 
@@ -57,7 +57,7 @@ export default class Ricette extends Component {
     handleDelete(item) {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
       if(item.recipeID === this.state.nextRecipeID)
-        this.updateNextRecipeID("default");
+        this.updateNextRecipeID("");
     };
 
     handleExecute(item) {
@@ -150,7 +150,7 @@ export default class Ricette extends Component {
                                   style={{ width: "90%", textAlign: "center" }}
                                   onChange={(event) => this.setNewNextRecipeID(event)} 
                                 >
-                                  <option value="default" key="">
+                                  <option value="" key="">
                                       --seleziona una ricetta--
                                   </option>
                                   {this.state.recipes.map((recipe) => (
@@ -235,7 +235,7 @@ export default class Ricette extends Component {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({settingID: "nextRecipeID", value: "default"})
+          body: JSON.stringify({settingID: "nextRecipeID", value: ""})
       });
     }
 }
