@@ -21,7 +21,7 @@ import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.BeerView;
 
 @RestController
-@RequestMapping("/api/beer/{beerID}")
+@RequestMapping("/api/beers/{beerID}")
 public class BeerEndpoint {
 	@Autowired
 	private BeerController beerController;

@@ -138,7 +138,7 @@ class RecipeExecute extends Component {
   }
 
   addBeer() {
-    fetch(`/api/beer`, {
+    fetch(`/api/beers`, {
       method: "POST",
       headers: {
         Accept: "application/json",

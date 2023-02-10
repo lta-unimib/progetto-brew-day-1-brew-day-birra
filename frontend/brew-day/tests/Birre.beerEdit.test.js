@@ -33,11 +33,11 @@ var recipes = {
                   let recipeID = url.replace("/api/recipes/", "");
                   return Promise.resolve(recipes[recipeID]);
               }
-          } else if (url.startsWith("/api/beer")) {
-              if (url === "/api/beer" || url.startsWith("/api/beer?"))
+          } else if (url.startsWith("/api/beers")) {
+              if (url === "/api/beers" || url.startsWith("/api/beers?"))
                 return Promise.resolve(Object.keys(beers));
               else {
-                  let beerID = url.replace("/api/beer/", "");
+                  let beerID = url.replace("/api/beers/", "");
                   return Promise.resolve(beers[beerID]);
               }
           }
