@@ -11,7 +11,7 @@ import MButton from '../components/MButton';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
+        this.state = {recipes: [], currentAction: "", nextRecipeID: null, selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
         this.handleView = this.handleView.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -20,6 +20,8 @@ export default class Ricette extends Component {
         this.setShowModal = this.setShowModal.bind(this);
         this.filterRecipe = this.filterRecipe.bind(this);
         this.triggerReload = this.triggerReload.bind(this);
+        this.triggerReloadSettings = this.triggerReloadSettings.bind(this);
+
     }
 
     triggerReload() {
@@ -30,8 +32,18 @@ export default class Ricette extends Component {
         .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}));
     }
 
+     triggerReloadSettings() {
+        fetch("/api/settings/nextRecipeID")
+        .then(response => response.json())
+        .then(data => this.setState({nextRecipeID: data.value}))
+        .catch((error) => {this.postNextRecipeID();
+                          this.setState({nextRecipeID: "default"});
+                    });
+    }
+
     componentDidMount() {
       this.triggerReload();
+      this.triggerReloadSettings();
     }
 
     handleView(item) {
@@ -43,7 +55,9 @@ export default class Ricette extends Component {
     };    
     
     handleDelete(item) {
-      this.setState({currentAction:"delete", selectedRecipe:item, showModal:true})
+      this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
+      if(item.recipeID === this.state.nextRecipeID)
+        this.updateNextRecipeID("default");
     };
 
     handleExecute(item) {
@@ -86,6 +100,12 @@ export default class Ricette extends Component {
       this.setState({newRecipeDescription: newRecipeDescription});
     }
 
+    setNewNextRecipeID(event){
+      let newNextRecipeID = event.target.value;
+      this.setState({nextRecipeID: newNextRecipeID});
+      this.updateNextRecipeID(newNextRecipeID);
+    }
+
     setShowModal(flag) {
       if (!flag)
         this.setState({currentAction:""})
@@ -119,6 +139,31 @@ export default class Ricette extends Component {
         return (
           <ThemeProvider theme={theme}>
             <div>
+
+                <table className="myTable">
+                    <tbody>
+                        <tr>
+                          <td>Seleziona la prossima ricetta che vorresti eseguire</td>
+                          <td>
+                              <select
+                                  value={this.state.nextRecipeID}
+                                  style={{ width: "90%", textAlign: "center" }}
+                                  onChange={(event) => this.setNewNextRecipeID(event)} 
+                                >
+                                  <option value="default" key="">
+                                      --seleziona una ricetta--
+                                  </option>
+                                  {this.state.recipes.map((recipe) => (
+                                    <option value={recipe.recipeID} key={recipe.recipeID}>
+                                      {recipe.name}
+                                    </option>
+                                  ))}
+                              </select>
+                          </td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <table className="myTable">
                     <thead>
                         <tr>
@@ -170,5 +215,27 @@ export default class Ricette extends Component {
           let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.recipeID));
           this.setState({recipesFiltered: recipeFiltered});
         })
+    }
+
+    updateNextRecipeID(newNextRecipeID) {
+      fetch(`/api/settings/nextRecipeID`, {
+          method: 'PUT',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({value: newNextRecipeID})
+      })
+    }
+
+    postNextRecipeID() {
+      fetch(`/api/settings`, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({settingID: "nextRecipeID", value: "default"})
+      });
     }
 }
