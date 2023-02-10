@@ -102,7 +102,7 @@ class RecipeExecute extends Component {
         return (
           <div>
             <center>
-              <h2>Ingredienti Mancanti</h2>
+              <h2 style={{color: (this.props.color ?? 'black')}}>Ingredienti Mancanti</h2>
             </center>
             <table className="myTable">
               <thead>
