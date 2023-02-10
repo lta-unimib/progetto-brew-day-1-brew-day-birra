@@ -14,11 +14,12 @@ global.fetch = jest.fn().mockImplementation(() =>
 
 describe('App component', () => {
   test('should render correctly', async () => {
-    let container;
+    let theContainer;
     await act(() => {
-      container = render(<App />);
+      const { container } = render(<App />);
+      theContainer = container;
     })
-    expect(container.firstChild).toMatchSnapshot();
+    expect(theContainer.firstChild).toMatchSnapshot();
   });
 });
 
