@@ -4,6 +4,7 @@ import theme from "../theme/theme";
 import MButton from '../components/MButton';
 import IngredientDelete from "../components/IngredientDelete";
 import Modal from "../components/Modal";
+import {INVENTORY_LIST_ENDPOINT, INVENTORY_ENDPOINT} from '../Protocol';
 
 class Inventario extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Inventario extends Component {
   }
 
   triggerReload = () => {
-    fetch("/api/inventory")
+    fetch(INVENTORY_LIST_ENDPOINT)
     .then((response) => response.json())
     .then((data) => {
       this.setState({ inventory: data, isLoading: false }, () => {
@@ -43,7 +44,7 @@ class Inventario extends Component {
 
   handleDeleteConfirm = () => {
     const { ingredientID } = this.state;
-    fetch(`/api/inventory/${ingredientID}`, {
+    fetch(INVENTORY_ENDPOINT+`${ingredientID}`, {
       method: "DELETE",
     }).then(() => {
       this.setState({showModal: false,});

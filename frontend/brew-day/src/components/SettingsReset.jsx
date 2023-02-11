@@ -2,6 +2,7 @@ import React, { Component }  from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import { RESET_ENDPOINT } from '../Protocol';
 
 class SettingsReset extends Component{
   constructor(props) {
@@ -23,7 +24,7 @@ class SettingsReset extends Component{
   }
 
     resetAllSettings() {
-      fetch(`/api/reset`, {
+      fetch(RESET_ENDPOINT, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',

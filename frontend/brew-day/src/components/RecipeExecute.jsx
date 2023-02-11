@@ -3,6 +3,7 @@ import RecipeView from "./RecipeView";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from "../components/MButton";
+import { RECIPE_ENDPOINT, SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT } from '../Protocol';
 
 class RecipeExecute extends Component {
   constructor(props) {
@@ -20,11 +21,11 @@ class RecipeExecute extends Component {
 
   triggerReload() {
     const recipeID = this.props.recipeID;
-    fetch(`/api/recipes/${recipeID}`)
+    fetch(RECIPE_ENDPOINT+`${recipeID}`)
       .then((response) => response.json())
       .then((data) => this.setState({ ...data }))
       .then(() => {
-        fetch(`/api/shopping/${recipeID}`)
+        fetch(SHOPPING_ENDPOINT + `${recipeID}`)
           .then((response) => response.json())
           .then((data) => this.setState({ missingIngredients: data }));
       });
@@ -138,7 +139,7 @@ class RecipeExecute extends Component {
   }
 
   addBeer() {
-    fetch(`/api/beers`, {
+    fetch(BEER_LIST_ENDPOINT, {
       method: "POST",
       headers: {
         Accept: "application/json",
