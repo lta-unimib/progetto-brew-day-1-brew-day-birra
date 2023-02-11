@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from "../components/MButton";
-import {SHOPPING_ENDPOINT} from '../Protocol';
+import {DO_SHOPPING_ENDPOINT} from '../Protocol';
 
 class Spesa extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class Spesa extends Component {
       }
     }
     if (_ingredients.length !== 0) {
-      fetch(SHOPPING_ENDPOINT, {
+      fetch(DO_SHOPPING_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(_ingredients),
