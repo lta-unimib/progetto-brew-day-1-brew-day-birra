@@ -87,7 +87,7 @@ class RecipeExecute extends Component {
         );
       }
 
-      if (!(this.state.missingIngredients.length === 0)) {
+      if (this.state.missingIngredients.length !== 0) {
         return (
           <div>
             <center>
