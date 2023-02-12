@@ -18,6 +18,7 @@ public class Initializr {
 	@PostConstruct 
 	public void init() throws ValidationException, AlreadyExistsException, DoesntExistsException {
 		controllerResetController.doAssign();
+		RepositoryResetController.getInstance().doAssign();
 		RepositoryResetController.getInstance().doAssure();
 	}
 }

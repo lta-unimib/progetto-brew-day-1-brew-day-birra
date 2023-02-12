@@ -4,23 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.InventoryIngredient;
-import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.persistence.repository.InventoryIngredientRepositoryGateway;
 import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.IngredientView;
 import unimib.ingsof.validation.validators.IngredientInitializationValidator;
 
 @Service
 public class InventoryController {
-	@Autowired
-	private InventoryIngredientRepository inventoryIngredientRepository;
-	
 	private static InventoryController instance = null;
 	public static InventoryController getInstance() {
 		return InventoryController.instance;
@@ -30,7 +26,7 @@ public class InventoryController {
 	}
 
 	public List<IngredientView> getAll() throws DoesntExistsException {
-		ArrayList<InventoryIngredient> ingredients = inventoryIngredientRepository.getAll();
+		ArrayList<InventoryIngredient> ingredients = InventoryIngredientRepositoryGateway.getInstance().getAll();
 		ArrayList<IngredientView> result =  new ArrayList<>();
 		for (InventoryIngredient ingredient : ingredients) {
 			String name;
@@ -46,7 +42,7 @@ public class InventoryController {
 		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_BODY_KEY));
 		
         String ingredientID = IngredientController.getInstance().addIngredient(name).getIngredientID();
-        inventoryIngredientRepository.addIngredient(ingredientID, quantity);
+        InventoryIngredientRepositoryGateway.getInstance().addIngredient(ingredientID, quantity);
         return ingredientID;
 	}
 }

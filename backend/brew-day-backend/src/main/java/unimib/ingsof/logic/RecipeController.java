@@ -3,7 +3,6 @@ package unimib.ingsof.logic;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
@@ -11,8 +10,8 @@ import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.model.Recipe;
 import unimib.ingsof.persistence.model.RecipeIngredient;
-import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
-import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.persistence.repository.RecipeIngredientRepositoryGateway;
+import unimib.ingsof.persistence.repository.RecipeRepositoryGateway;
 import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.persistence.view.RecipeIngredientView;
 import unimib.ingsof.persistence.view.RecipeView;
@@ -21,11 +20,6 @@ import unimib.ingsof.validation.validators.RecipeUpdatingValidator;
 
 @Service
 public class RecipeController {
-	@Autowired
-	private RecipeRepository recipeRepository;
-	@Autowired
-	private RecipeIngredientRepository recipeIngredientRepository;
-	
 	private static RecipeController instance = null;
 	public static RecipeController getInstance() {
 		return RecipeController.instance;
@@ -38,7 +32,7 @@ public class RecipeController {
 		Recipe recipe = this.getRecipeDetailsByID(recipeID);
 		
 		ArrayList<RecipeIngredientView> result =  new ArrayList<>();
-		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
+		ArrayList<RecipeIngredient> ingredients =  RecipeIngredientRepositoryGateway.getInstance().getAll(recipeID);
 		for (RecipeIngredient ingredient : ingredients) {
 			String name = IngredientController.getInstance().getIngredient(ingredient.getIngredientID()).getName();
 			result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
@@ -47,7 +41,7 @@ public class RecipeController {
 	}
 
 	public Recipe getRecipeDetailsByID(String recipeID) throws DoesntExistsException {
-		Recipe recipe = this.recipeRepository.getRecipe(recipeID);
+		Recipe recipe = RecipeRepositoryGateway.getInstance().getRecipe(recipeID);
 		if (recipe == null)
 			throw new DoesntExistsException();
 		return new Recipe(recipeID, recipe.getName(), recipe.getDescription());
@@ -61,15 +55,15 @@ public class RecipeController {
 		String newDescription = recipeObject.get(Protocol.DESCRIPTION_BODY_KEY);
 		
 		if (newName != null)
-			this.recipeRepository.updateRecipeName(recipeID, newName);
+			RecipeRepositoryGateway.getInstance().updateRecipeName(recipeID, newName);
 		
 		if (newDescription != null)
-			this.recipeRepository.updateRecipeDescription(recipeID, newDescription);
+			RecipeRepositoryGateway.getInstance().updateRecipeDescription(recipeID, newDescription);
 		return this.getRecipeByID(recipeID);
 	}
 	
 	public void deleteRecipe(String recipeID) {
-		this.recipeRepository.deleteRecipe(recipeID);
+		RecipeRepositoryGateway.getInstance().deleteRecipe(recipeID);
 	}
 	
 	public String addIngredient(String recipeID, Map<String, String> ingredientObject) throws ValidationException, WrongIDGenerationInitialization, DoesntExistsException {
@@ -79,7 +73,7 @@ public class RecipeController {
 		
 		String ingredientID = IngredientController.getInstance().addIngredient(name).getIngredientID();
 		this.getRecipeDetailsByID(recipeID);
-		this.recipeIngredientRepository.addIngredient(recipeID, ingredientID, quantity);
+		RecipeIngredientRepositoryGateway.getInstance().addIngredient(recipeID, ingredientID, quantity);
 		return ingredientID;
 	}
 }

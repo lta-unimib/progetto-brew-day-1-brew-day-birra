@@ -3,23 +3,18 @@ package unimib.ingsof.logic;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.model.Setting;
-import unimib.ingsof.persistence.repository.SettingRepository;
+import unimib.ingsof.persistence.repository.SettingRepositoryGateway;
 import unimib.ingsof.persistence.service.Protocol;
 import unimib.ingsof.validation.validators.SettingUpdatingValidator;
 
-
 @Service
 public class SettingController {
-	@Autowired
-	private SettingRepository settingRepository;
-	
 	private static SettingController instance = null;
 	public static SettingController getInstance() {
 		return SettingController.instance;
@@ -29,7 +24,7 @@ public class SettingController {
 	}
 	
 	public Setting getSetting(String settingID) throws DoesntExistsException {
-		Setting setting = settingRepository.getSetting(settingID);
+		Setting setting = SettingRepositoryGateway.getInstance().getSetting(settingID);
 		if (setting == null)
 			throw new DoesntExistsException();
 		return setting;
@@ -40,13 +35,13 @@ public class SettingController {
 		Setting setting = this.getSetting(settingID);
 		
 		String value = settingObject.get(Protocol.VALUE_BODY_KEY);
-		settingRepository.updateSetting(settingID, value);
+		SettingRepositoryGateway.getInstance().updateSetting(settingID, value);
 		setting.setValue(value);
 		return setting;
 	}
 
 	public void deleteSetting(String settingID) {
-		settingRepository.deleteSetting(settingID);
+		SettingRepositoryGateway.getInstance().deleteSetting(settingID);
 	}
 	
 	public String getEquipment() throws ValidationException, AlreadyExistsException, DoesntExistsException   {
