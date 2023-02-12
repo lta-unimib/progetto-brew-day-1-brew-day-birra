@@ -8,4 +8,8 @@ public class InventoryIngredientRepositoryGateway {
 	public static void setInstance(InventoryIngredientRepository instance) {
 		InventoryIngredientRepositoryGateway.instance= instance;
 	}
+	
+	InventoryIngredientRepositoryGateway() {
+		throw new IllegalStateException("Gateway class");
+    }
 }

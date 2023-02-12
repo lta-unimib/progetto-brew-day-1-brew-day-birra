@@ -8,4 +8,8 @@ public class SettingRepositoryGateway {
 	public static void setInstance(SettingRepository instance) {
 		SettingRepositoryGateway.instance= instance;
 	}
+	
+	SettingRepositoryGateway() {
+		throw new IllegalStateException("Gateway class");
+    }
 }

@@ -8,7 +8,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>unimib.ingsof</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>brewday</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>brew.day.backend</name>
 	<description>Brew Day Backend</description>

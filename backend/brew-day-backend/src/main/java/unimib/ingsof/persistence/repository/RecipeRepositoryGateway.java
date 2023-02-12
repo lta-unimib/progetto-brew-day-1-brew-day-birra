@@ -8,4 +8,8 @@ public class RecipeRepositoryGateway {
 	public static void setInstance(RecipeRepository instance) {
 		RecipeRepositoryGateway.instance= instance;
 	}
+	
+	RecipeRepositoryGateway() {
+		throw new IllegalStateException("Gateway class");
+    }
 }

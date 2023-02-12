@@ -8,4 +8,8 @@ public class BeerNoteRepositoryGateway {
 	public static void setInstance(BeerNoteRepository instance) {
 		BeerNoteRepositoryGateway.instance= instance;
 	}
+	
+	BeerNoteRepositoryGateway() {
+		throw new IllegalStateException("Gateway class");
+    }
 }
