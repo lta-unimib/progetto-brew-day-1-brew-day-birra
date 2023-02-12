@@ -2,7 +2,6 @@ package unimib.ingsof.api;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,14 +19,11 @@ import unimib.ingsof.persistence.model.BeerNote;
 @RestController
 @RequestMapping("/api/beers/{beerID}/{noteID}")
 public class BeerNoteEndpoint {
-	@Autowired
-	private BeerNoteController beerNoteController;
-	
 	@GetMapping
 	public ResponseEntity<BeerNote> getBeerNoteByID(@PathVariable String beerID,
 															@PathVariable String noteID) {
 		try {
-			BeerNote beerNoteView = this.beerNoteController.getNote(beerID, noteID);
+			BeerNote beerNoteView = BeerNoteController.getInstance().getNote(beerID, noteID);
 			return new ResponseEntity<>(beerNoteView, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -39,7 +35,7 @@ public class BeerNoteEndpoint {
 															@PathVariable String noteID,
 															@RequestBody Map<String, String> noteObject) {
 		try {
-			BeerNote beerNoteView = this.beerNoteController.updateNote(beerID, noteID, noteObject);
+			BeerNote beerNoteView = BeerNoteController.getInstance().updateNote(beerID, noteID, noteObject);
 			return new ResponseEntity<>(beerNoteView, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,7 +47,7 @@ public class BeerNoteEndpoint {
 	@DeleteMapping
 	public ResponseEntity<Object> deleteBeerNote(@PathVariable String beerID,
 															@PathVariable String noteID) {
-		beerNoteController.deleteNote(beerID, noteID);
+		BeerNoteController.getInstance().deleteNote(beerID, noteID);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

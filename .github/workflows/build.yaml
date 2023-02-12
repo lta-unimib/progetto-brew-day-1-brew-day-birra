@@ -80,7 +80,7 @@ jobs:
         run: mvn verify package
       - name: Rename the package
         working-directory: ./backend/brew-day-backend
-        run: mv ./target/demo-0.0.1-SNAPSHOT.jar applicativo.jar
+        run: mv ./target/brewday-0.0.1-SNAPSHOT.jar applicativo.jar
       - uses: actions/upload-artifact@v2
         with:
           name: applicativo

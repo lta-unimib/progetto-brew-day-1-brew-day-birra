@@ -3,7 +3,6 @@ package unimib.ingsof.logic;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
@@ -18,24 +17,25 @@ import unimib.ingsof.persistence.view.RecipeView;
 
 @Service
 public class ExecuteRecipeController {
-	@Autowired
-	RecipeController recipeController;
-	@Autowired
-	InventoryIngredientController inventoryIngredientController;
-	@Autowired
-	ShoppingController shoppingController;
+	private static ExecuteRecipeController instance = null;
+	public static ExecuteRecipeController getInstance() {
+		return ExecuteRecipeController.instance;
+	}
+	public static void createInstance(ExecuteRecipeController instance) {
+		ExecuteRecipeController.instance = instance;
+	}
 
 	public void execute(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
-		if (!shoppingController.getShoppingList(recipeID, multiplier).isEmpty()) 
+		if (!ShoppingController.getInstance().getShoppingList(recipeID, multiplier).isEmpty()) 
 			throw new NotEnoughIngredientsException();
-		RecipeView recipe = recipeController.getRecipeByID(recipeID);
+		RecipeView recipe = RecipeController.getInstance().getRecipeByID(recipeID);
 		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {
 			String ingredientID = recipeIngredient.getIngredientID();
-			float inventoryIngredientQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
+			float inventoryIngredientQuantity = InventoryIngredientController.getInstance().getIngredient(ingredientID).getQuantity();
 			float recipeIngredientQuantity =  multiplier * recipeIngredient.getQuantity();
 			Map<String, String> ingredientObject = new TreeMap<>();
 			ingredientObject.put(Protocol.QUANTITY_BODY_KEY,  Float.toString(inventoryIngredientQuantity-recipeIngredientQuantity));				
-			inventoryIngredientController.updateIngredient(ingredientID, ingredientObject);
+			InventoryIngredientController.getInstance().updateIngredient(ingredientID, ingredientObject);
 		}		
 	}
 }

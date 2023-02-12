@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,18 +26,15 @@ import unimib.ingsof.persistence.service.Protocol;
 @RestController
 @RequestMapping("/api/beers")
 public class BeerListEndpoint {
-	@Autowired
-	private BeerListController beerListController;
-	
 	@GetMapping
 	public ResponseEntity<List<String>> getBeerIDs(@RequestParam("name") Optional<String> filterByName, @RequestParam("recipeID") Optional<String> filterByRecipeID) {
-		return new ResponseEntity<>(beerListController.getAllBeerIDs(filterByName, filterByRecipeID), HttpStatus.OK);
+		return new ResponseEntity<>(BeerListController.getInstance().getAllBeerIDs(filterByName, filterByRecipeID), HttpStatus.OK);
 	}
 	
 	@PostMapping
 	public ResponseEntity<Object> postBeer(@RequestBody Map<String, String> beerObject) throws InternalServerException, WrongIDGenerationInitialization {
 		try {
-			String beerID = beerListController.addBeer(beerObject);
+			String beerID = BeerListController.getInstance().addBeer(beerObject);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(Protocol.BEER_ID_HEADER_KEY, beerID);
 			return new ResponseEntity<>(headers, HttpStatus.OK);

@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
-import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.logic.RepositoryResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
 
@@ -26,7 +26,7 @@ class InventoryIngredientEndpointTest {
 	@Autowired
 	private InventoryIngredientEndpoint ingredientEndpoint;
 	@Autowired
-	ResetController resetController;
+	RepositoryResetController resetController;
 
 	@Test
 	void testBehavior() {
