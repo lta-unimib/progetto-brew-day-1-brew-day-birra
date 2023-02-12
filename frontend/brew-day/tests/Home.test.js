@@ -29,7 +29,8 @@ global.fetch = jest.fn().mockImplementation((url) =>
         return Promise.resolve([]);
       } else if (url == "/api/settings/nextRecipeID") {
         return Promise.resolve({ value: "recipe1" });
-      }
+      } else if (url == "/api/settings/equipment") {
+        return Promise.resolve({ value: "30" })};
     },
   })
 );
