@@ -157,24 +157,24 @@ class RecipeExecute extends Component {
     if(this.state.newBeerQuantity > parseFloat(this.state.equipment)){
       this.setState({missingEquipment: true});
     } else {
-        this.setState({missingEquipment: false});
-        fetch(BEER_LIST_ENDPOINT, {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                name: this.state.newBeerName,
-                recipeID: this.state.recipeID,
-                quantity: this.state.newBeerQuantity,
-              }),
-            }).then((response) => {
-              if (response.status >= 400 && response.status < 600) {
-                this.getShoppingList();
-              } else {
-                this.props.onConfirm();
-            }});
+      this.setState({missingEquipment: false});
+      fetch(BEER_LIST_ENDPOINT, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: this.state.newBeerName,
+              recipeID: this.state.recipeID,
+              quantity: this.state.newBeerQuantity,
+            }),
+          }).then((response) => {
+            if (response.status >= 400 && response.status < 600) {
+              this.getShoppingList();
+            } else {
+              this.props.onConfirm();
+          }});
     }
   }
 

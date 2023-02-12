@@ -26,21 +26,18 @@ var recipes = {
 
 var beerResult;
 
-function getStatus(url){
-        
-        if (url.startsWith("/api/beers/")) {
-            return 400;
-        } else {
-            return 200;
-        }
+function getStatus(url) {
+    if (url.startsWith("/api/beers")) {
+        return 400;
+    } else {
+        return 200;
+    }
 }
 
 
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
-
     status: getStatus(url),
-
     json: () => {
         if (url == "/api/recipes")
           return Promise.resolve(Object.keys(recipes));
@@ -55,7 +52,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
         } else {
             return Promise.resolve(null);
         }
-    },
+    }
   })
 )
 
@@ -87,7 +84,7 @@ describe('Ricette.jsx can correctly execute recipe', () => {
 
     test('open recipe execute and create beer but not enoght ingredient', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[1])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newBeerName"}})});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "1"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
