@@ -3,6 +3,8 @@ import RecipeView from "./RecipeView";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import {BEERS_ENDPOINT} from '../Protocol';
+
 
 class BeerView extends Component {
   state = {
@@ -13,7 +15,7 @@ class BeerView extends Component {
   };
 
   triggerReload = () => {
-    fetch(`/api/beers/${this.props.beerID}`)
+    fetch(BEERS_ENDPOINT + `${this.props.beerID}`)
     .then(response => response.json())
     .then(data => this.setState({...data}));
   }

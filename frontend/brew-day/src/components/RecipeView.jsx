@@ -1,4 +1,5 @@
 import React from "react";
+import { RECIPE_ENDPOINT } from '../Protocol';
 
 export default class RecipeView extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ export default class RecipeView extends React.Component {
   }
 
   triggerReload() {
-      fetch(`/api/recipes/${this.props.recipeID}`)
+      fetch(RECIPE_ENDPOINT + `${this.props.recipeID}`)
       .then(response => response.json())
       .then(data => this.setState({...data}));
   }

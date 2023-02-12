@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import RecipeExecute from "../components/RecipeExecute";
+import {ADVICE_ENDPOINT, SETTINGS_ENDPOINT } from '../Protocol';
 
 class Home extends Component {
   constructor(props) {
@@ -9,16 +10,26 @@ class Home extends Component {
       nextRecipeID: null,
     };
   }
-  componentDidMount() {
-    fetch("/api/advice")
+
+  triggerReload() {
+    fetch(ADVICE_ENDPOINT)
       .then((res) => res.json())
       .then((data) => this.setState({ advice: data }))
       .catch(() => {});
-    fetch("/api/settings/nextRecipeID")
+  }
+
+  triggerReloadSettings() {
+    fetch(SETTINGS_ENDPOINT + "nextRecipeID")
       .then((res) => res.json())
       .then((data) => this.setState({ nextRecipeID: data.value }))
       .catch(() => {});
   }
+
+  componentDidMount() {
+    this.triggerReload();
+    this.triggerReloadSettings();
+  }
+
   render() {
     return (
       <div>
@@ -34,6 +45,7 @@ class Home extends Component {
               <RecipeExecute
                 recipeID={this.state.advice.recipeID}
                 color="white"
+                onConfirm={this.triggerReload}
               />
               <h3 className="advice-texts">
                 La massima quantità realizzabile è {" "}
@@ -51,6 +63,7 @@ class Home extends Component {
               <RecipeExecute
                 recipeID={this.state.nextRecipeID}
                 color="white"
+                onConfirm={this.triggerReload}
               />
             </div>
           )}

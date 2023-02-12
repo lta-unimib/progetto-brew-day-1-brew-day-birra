@@ -43,6 +43,8 @@ public class AdviceController {
 			}
 			if (literProduced > equipment)
 				literProduced = equipment;
+			if (literProduced == 0)
+				continue;
 			quantitySum = ingredientQuantitySum(ingredientsQuantity, literProduced);
 			if(quantitySum > maxQuantitySum || maxQuantitySum == -1 ||
 					(Float.compare(quantitySum, maxQuantitySum) == 0 && advice.getQuantity() < literProduced)) {
@@ -51,6 +53,8 @@ public class AdviceController {
 				advice.setRecipeID(recipeID);	
 			}
 		}
+		if(advice.getRecipeID() == null)
+			throw new DoesntExistsException();
 		return advice;
 	}
 	

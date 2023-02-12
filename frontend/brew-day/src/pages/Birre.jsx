@@ -6,6 +6,8 @@ import Modal from "../components/Modal";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from "../components/MButton";
+import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
+
 
 class Birre extends Component {
   constructor(props) {
@@ -24,12 +26,12 @@ class Birre extends Component {
   }
 
   triggerReload = () => {
-    fetch("/api/beers")
+    fetch(BEER_LIST_ENDPOINT)
       .then((response) => response.json())
       .then((data) => {
         const beerIDs = data;
         const beerIDsFiltered = data;
-        const promises = beerIDs.map((id) => fetch(`/api/beers/${id}`));
+        const promises = beerIDs.map((id) => fetch(BEERS_ENDPOINT+`${id}`));
         Promise.all(promises).then((results) => {
           const beers = results.map((response) => response.json());
           Promise.all(beers)
@@ -45,7 +47,7 @@ class Birre extends Component {
             })
             .then((updatedBeers) => {
               Promise.all(
-                updatedBeers.map((beer) => fetch(`/api/recipes/${beer}`))
+                updatedBeers.map((beer) => fetch(RECIPE_ENDPOINT+`${beer}`))
               )
                 .then((responses) =>
                   Promise.all(responses.map((response) => response.json()))
@@ -93,7 +95,7 @@ class Birre extends Component {
 
   handleDeleteConfirm =  () => {
     const beerToDeleteID = this.state.selectedBeer.beerID;
-     fetch(`/api/beers/${beerToDeleteID}`, {
+     fetch(BEERS_ENDPOINT+`${beerToDeleteID}`, {
       method: "DELETE",
     }).then(() => {
       this.triggerReload();
@@ -221,15 +223,15 @@ class Birre extends Component {
     let url = "";
     if (this.state.filterName === "") {
       if (this.state.filterRecipe === "") {
-        url = `/api/beers`;
+        url = BEER_LIST_ENDPOINT;
       } else {
-        url = `/api/beers?recipeID=${this.state.filterRecipe}`;
+        url = BEER_LIST_ENDPOINT + `?recipeID=${this.state.filterRecipe}`;
       }
     } else {
       if (this.state.filterRecipe === "") {
-        url = `/api/beers?name=${this.state.filterName}`;
+        url = BEER_LIST_ENDPOINT + `?name=${this.state.filterName}`;
       } else {
-        url = `/api/beers?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
+        url = BEER_LIST_ENDPOINT + `?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
       }
     }
 

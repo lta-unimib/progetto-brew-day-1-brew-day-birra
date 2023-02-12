@@ -2,6 +2,7 @@ import React, { Component }  from "react";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import { SETTINGS_ENDPOINT } from '../Protocol';
 
 class NextRecipeReset extends Component{
   constructor(props) {
@@ -23,7 +24,7 @@ class NextRecipeReset extends Component{
   }
 
     resetNextRecipeID() {
-      fetch(`/api/settings/nextRecipeID`, {
+      fetch(SETTINGS_ENDPOINT + `nextRecipeID`, {
           method: 'DELETE',
           headers: {
               'Accept': 'application/json',

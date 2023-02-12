@@ -5,6 +5,7 @@ import Modal from "../components/Modal";
 import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
+import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
 
 export default class Impostazioni extends Component {
 
@@ -28,7 +29,7 @@ export default class Impostazioni extends Component {
     }
 
     triggerReload() {
-        fetch("/api/settings")
+        fetch(SETTING_LIST_ENDPOINT)
         .then(response => response.json())
         .then(data => {this.setState({settings: data});
                       if (data.filter(i => i.settingID === "color").length === 0){
@@ -182,7 +183,7 @@ export default class Impostazioni extends Component {
     }
 
     updateValue(id, newValue) {
-      fetch(`/api/settings/${id}`, {
+      fetch(SETTINGS_ENDPOINT+`${id}`, {
           method: 'PUT',
           headers: {
               'Accept': 'application/json',
@@ -196,7 +197,7 @@ export default class Impostazioni extends Component {
     }
 
     postValue(id, newValue) {
-      fetch(`/api/settings`, {
+      fetch(SETTING_LIST_ENDPOINT, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',

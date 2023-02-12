@@ -7,6 +7,7 @@ import RecipeExecute from "../components/RecipeExecute";
 import { ThemeProvider } from "@mui/material";
 import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
 
 export default class Ricette extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class Ricette extends Component {
     }
 
     triggerReload() {
-        fetch("/api/recipes")
+        fetch(RECIPE_LIST_ENDPOINT)
         .then(response => response.json())
         .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
         .then(responses => Promise.all(responses.map(response => response.json())))
@@ -33,7 +34,7 @@ export default class Ricette extends Component {
     }
 
      triggerReloadSettings() {
-        fetch("/api/settings/nextRecipeID")
+        fetch(SETTINGS_ENDPOINT + "nextRecipeID")
         .then(response => response.json())
         .then(data => this.setState({nextRecipeID: data.value}))
         .catch((error) => {this.postNextRecipeID();
@@ -197,7 +198,7 @@ export default class Ricette extends Component {
     }
 
     addRecipe() {
-      fetch(`/api/recipes`, {
+      fetch(RECIPE_LIST_ENDPOINT, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -209,7 +210,7 @@ export default class Ricette extends Component {
     }
 
     filterRecipe() {
-      fetch(`/api/recipes?name=${this.state.filterName}`)
+      fetch(RECIPE_LIST_ENDPOINT + `?name=${this.state.filterName}`)
         .then(response => response.json())
         .then(recipesIDsFiltered => {
           let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.recipeID));
@@ -218,7 +219,7 @@ export default class Ricette extends Component {
     }
 
     updateNextRecipeID(newNextRecipeID) {
-      fetch(`/api/settings/nextRecipeID`, {
+      fetch(SETTINGS_ENDPOINT + `nextRecipeID`, {
           method: 'PUT',
           headers: {
               'Accept': 'application/json',
@@ -229,7 +230,7 @@ export default class Ricette extends Component {
     }
 
     postNextRecipeID() {
-      fetch(`/api/settings`, {
+      fetch(SETTING_LIST_ENDPOINT, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',
