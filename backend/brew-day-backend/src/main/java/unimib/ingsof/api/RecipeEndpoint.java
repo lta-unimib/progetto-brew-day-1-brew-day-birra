@@ -2,7 +2,6 @@ package unimib.ingsof.api;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +22,10 @@ import unimib.ingsof.persistence.view.RecipeView;
 @RestController
 @RequestMapping("/api/recipes/{recipeID}")
 public class RecipeEndpoint {
-	@Autowired
-	private RecipeController recipeController;
-	
 	@GetMapping
 	public ResponseEntity<RecipeView> getRecipeByID(@PathVariable String recipeID) {
 		try {
-			RecipeView recipe = this.recipeController.getRecipeByID(recipeID);
+			RecipeView recipe = RecipeController.getInstance().getRecipeByID(recipeID);
 			return new ResponseEntity<>(recipe, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -40,7 +36,7 @@ public class RecipeEndpoint {
 	public ResponseEntity<RecipeView> updateRecipe(@PathVariable String recipeID,
 												@RequestBody Map<String, String> recipeObject) {
 		try {
-			RecipeView recipeView = this.recipeController.updateRecipe(recipeID, recipeObject);
+			RecipeView recipeView = RecipeController.getInstance().updateRecipe(recipeID, recipeObject);
 			return new ResponseEntity<>(recipeView, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,7 +47,7 @@ public class RecipeEndpoint {
 	
 	@DeleteMapping
 	public ResponseEntity<Object> deleteRecipe(@PathVariable String recipeID) {
-		this.recipeController.deleteRecipe(recipeID);
+		RecipeController.getInstance().deleteRecipe(recipeID);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -59,7 +55,7 @@ public class RecipeEndpoint {
 	public ResponseEntity<Object> postRecipeIngredient(@PathVariable String recipeID,
 														@RequestBody Map<String, String> ingredientObject) {
 		try {
-			String ingredientID = this.recipeController.addIngredient(recipeID, ingredientObject);
+			String ingredientID = RecipeController.getInstance().addIngredient(recipeID, ingredientObject);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(Protocol.INGREDIENT_ID_HEADER_KEY, ingredientID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);

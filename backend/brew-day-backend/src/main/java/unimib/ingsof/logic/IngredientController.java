@@ -20,6 +20,14 @@ public class IngredientController {
 	@Autowired
 	private IngredientRepository ingredientRepository;
 	
+	private static IngredientController instance = null;
+	public static IngredientController getInstance() {
+		return IngredientController.instance;
+	}
+	public static void createInstance(IngredientController instance) {
+		IngredientController.instance = instance;
+	}
+	
 	Ingredient getIngredientByName(String name) {
 		return ingredientRepository.getIngredientByName(name);
 	}

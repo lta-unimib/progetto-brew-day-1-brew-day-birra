@@ -22,12 +22,14 @@ import unimib.ingsof.validation.validators.BeerInitializationValidator;
 public class BeerListController {
 	@Autowired
 	private BeerRepository beerRepository;
-	@Autowired
-	private RecipeController recipeController;
-	@Autowired
-	ExecuteRecipeController executeRecipeController;
-	@Autowired
-	private SettingController settingController;
+	
+	private static BeerListController instance = null;
+	public static BeerListController getInstance() {
+		return BeerListController.instance;
+	}
+	public static void createInstance(BeerListController instance) {
+		BeerListController.instance = instance;
+	}
 	
 	public List<String> getAllBeerIDs(Optional<String> filterByName, Optional<String> filterByRecipeID) {
 		return beerRepository.getAllBeerIDs(filterByName.orElse(""), filterByRecipeID.orElse(""));
@@ -38,16 +40,16 @@ public class BeerListController {
 		String name = beerObject.get(Protocol.NAME_BODY_KEY);
 		String recipeID = beerObject.get(Protocol.RECIPE_ID_BODY_KEY);
 		float quantity = Float.parseFloat(beerObject.get(Protocol.QUANTITY_BODY_KEY));
-		recipeController.getRecipeByID(recipeID);
+		RecipeController.getInstance().getRecipeByID(recipeID);
 		float equipment = 0;
 		try {
-			equipment = Float.parseFloat(settingController.getEquipment());
+			equipment = Float.parseFloat(SettingController.getInstance().getEquipment());
 		} catch (Exception e) {
 			throw new InternalServerException();
 		}
 		if (quantity > equipment)
 			throw new InsufficientEquipmentException();
-		executeRecipeController.execute(recipeID, quantity);
+		ExecuteRecipeController.getInstance().execute(recipeID, quantity);
 		String beerID = "";
 		while(true) {
 			beerID = IDGenerationFacade.getInstance().generateBeerID(beerObject);

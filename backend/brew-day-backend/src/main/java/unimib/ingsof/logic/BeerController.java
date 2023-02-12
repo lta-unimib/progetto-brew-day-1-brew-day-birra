@@ -26,6 +26,14 @@ public class BeerController {
 	private BeerRepository beerRepository;
 	@Autowired
 	private BeerNoteRepository beerNoteRepository;
+	
+	private static BeerController instance = null;
+	public static BeerController getInstance() {
+		return BeerController.instance;
+	}
+	public static void createInstance(BeerController instance) {
+		BeerController.instance = instance;
+	}
 
 	public BeerView getBeerByID(String beerID) throws DoesntExistsException {
 		BeerDetailsView beer = this.getBeerDetailsByID(beerID);

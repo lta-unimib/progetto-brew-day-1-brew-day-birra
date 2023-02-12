@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,14 +24,11 @@ import unimib.ingsof.persistence.view.IngredientView;
 @RestController
 @RequestMapping("/api/shopping/{recipeID}")
 public class ShoppingEndpoint {
-	@Autowired
-	ShoppingController shoppingController;
-
 	@PostMapping
     public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) throws ValidationException, InternalServerException, WrongIDGenerationInitialization {
 		List<IngredientView> result = new ArrayList<>();
 		try {
-			result = shoppingController.getShoppingList(recipeID, requestBody.orElse(null));
+			result = ShoppingController.getInstance().getShoppingList(recipeID, requestBody.orElse(null));
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (InsufficientEquipmentException e) {

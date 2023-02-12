@@ -18,6 +18,14 @@ public class SettingListController {
 	@Autowired
 	private SettingRepository settingRepository;
 	
+	private static SettingListController instance = null;
+	public static SettingListController getInstance() {
+		return SettingListController.instance;
+	}
+	public static void createInstance(SettingListController instance) {
+		SettingListController.instance = instance;
+	}
+	
 	public List<Setting> getSettings() {
 		return settingRepository.getAll();
 	}

@@ -17,6 +17,14 @@ public class BeerNoteController {
 	@Autowired
 	private BeerNoteRepository beerNoteRepository;
 	
+	private static BeerNoteController instance = null;
+	public static BeerNoteController getInstance() {
+		return BeerNoteController.instance;
+	}
+	public static void createInstance(BeerNoteController instance) {
+		BeerNoteController.instance = instance;
+	}
+	
 	public BeerNote getNote(String beerID, String noteID) throws DoesntExistsException {
 		BeerNote beerNote = beerNoteRepository.getNote(beerID, noteID);
 		if (beerNote == null)

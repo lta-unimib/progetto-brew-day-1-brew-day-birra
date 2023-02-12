@@ -13,13 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
-import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.logic.RepositoryResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
 class SettingEndpointTest {
 	@Autowired
-	ResetController resetController;
+	RepositoryResetController resetController;
 	@Autowired
 	SettingEndpoint settingEndpoint;
 	@Autowired

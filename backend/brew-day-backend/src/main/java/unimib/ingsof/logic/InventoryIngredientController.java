@@ -18,12 +18,18 @@ import unimib.ingsof.validation.validators.IngredientUpdatingValidator;
 public class InventoryIngredientController {
 	@Autowired
 	private InventoryIngredientRepository inventoryIngredientRepository;
-	@Autowired
-	private IngredientController ingredientController;
+	
+	private static InventoryIngredientController instance = null;
+	public static InventoryIngredientController getInstance() {
+		return InventoryIngredientController.instance;
+	}
+	public static void createInstance(InventoryIngredientController instance) {
+		InventoryIngredientController.instance = instance;
+	}
 	
 	public IngredientView getIngredient(String ingredientID) throws DoesntExistsException {
 		InventoryIngredient inventoryIngredient = inventoryIngredientRepository.getIngredient(ingredientID);
-		Ingredient ingredient = ingredientController.getIngredient(ingredientID);
+		Ingredient ingredient = IngredientController.getInstance().getIngredient(ingredientID);
 		if (ingredient == null || inventoryIngredient == null)
 			throw new DoesntExistsException();
 		

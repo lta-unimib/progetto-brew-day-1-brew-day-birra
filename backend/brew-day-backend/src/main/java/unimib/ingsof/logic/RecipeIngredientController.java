@@ -18,12 +18,18 @@ import unimib.ingsof.validation.validators.IngredientUpdatingValidator;
 public class RecipeIngredientController {
 	@Autowired
 	private RecipeIngredientRepository recipeIngredientRepository;
-	@Autowired
-	private IngredientController ingredientController;
+	
+	private static RecipeIngredientController instance = null;
+	public static RecipeIngredientController getInstance() {
+		return RecipeIngredientController.instance;
+	}
+	public static void createInstance(RecipeIngredientController instance) {
+		RecipeIngredientController.instance = instance;
+	}
 	
 	public RecipeIngredientView getIngredient(String recipeID, String ingredientID) throws DoesntExistsException {
 		RecipeIngredient recipeIngredient = recipeIngredientRepository.getIngredient(recipeID, ingredientID);
-		Ingredient ingredient = ingredientController.getIngredient(ingredientID);
+		Ingredient ingredient = IngredientController.getInstance().getIngredient(ingredientID);
 		if (ingredient == null || recipeIngredient == null)
 			throw new DoesntExistsException();
 		
@@ -44,6 +50,6 @@ public class RecipeIngredientController {
 	}
 	
 	public void deleteIngredient(String recipeID, String ingredientID) {
-		this.recipeIngredientRepository.deleteIngredient(recipeID, ingredientID);
+		recipeIngredientRepository.deleteIngredient(recipeID, ingredientID);
 	}
 }

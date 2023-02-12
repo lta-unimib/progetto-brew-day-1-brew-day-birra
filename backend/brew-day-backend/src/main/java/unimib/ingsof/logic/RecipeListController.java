@@ -19,6 +19,14 @@ public class RecipeListController {
 	@Autowired
 	private RecipeRepository recipeRepository;
 	
+	private static RecipeListController instance = null;
+	public static RecipeListController getInstance() {
+		return RecipeListController.instance;
+	}
+	public static void createInstance(RecipeListController instance) {
+		RecipeListController.instance = instance;
+	}
+	
 	public List<String> getAllRecipeIDs(Optional<String> filterByName) {
 		return recipeRepository.getAllRecipeIDsByName(filterByName.orElse(""));
 	}

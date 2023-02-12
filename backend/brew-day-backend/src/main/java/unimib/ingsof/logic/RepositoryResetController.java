@@ -15,7 +15,7 @@ import unimib.ingsof.persistence.repository.RecipeRepository;
 import unimib.ingsof.persistence.repository.SettingRepository;
 
 @Service
-public class ResetController {
+public class RepositoryResetController {
 	@Autowired
 	private RecipeRepository recipeRepository;
 	@Autowired
@@ -32,6 +32,14 @@ public class ResetController {
     private SettingRepository settingRepository;
     @Autowired
     private SettingController settingController;
+	
+	private static RepositoryResetController instance = null;
+	public static RepositoryResetController getInstance() {
+		return RepositoryResetController.instance;
+	}
+	public static void createInstance(RepositoryResetController instance) {
+		RepositoryResetController.instance = instance;
+	}
 
 	public void doReset() throws ValidationException, AlreadyExistsException, DoesntExistsException {
 		this.doDrop();

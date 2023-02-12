@@ -25,8 +25,14 @@ public class RecipeController {
 	private RecipeRepository recipeRepository;
 	@Autowired
 	private RecipeIngredientRepository recipeIngredientRepository;
-	@Autowired
-	IngredientController ingredientController;
+	
+	private static RecipeController instance = null;
+	public static RecipeController getInstance() {
+		return RecipeController.instance;
+	}
+	public static void createInstance(RecipeController instance) {
+		RecipeController.instance = instance;
+	}
 
 	public RecipeView getRecipeByID(String recipeID) throws DoesntExistsException {
 		Recipe recipe = this.getRecipeDetailsByID(recipeID);
@@ -34,7 +40,7 @@ public class RecipeController {
 		ArrayList<RecipeIngredientView> result =  new ArrayList<>();
 		ArrayList<RecipeIngredient> ingredients =  recipeIngredientRepository.getAll(recipeID);
 		for (RecipeIngredient ingredient : ingredients) {
-			String name = ingredientController.getIngredient(ingredient.getIngredientID()).getName();
+			String name = IngredientController.getInstance().getIngredient(ingredient.getIngredientID()).getName();
 			result.add(new RecipeIngredientView(ingredient.getRecipeID(), ingredient.getIngredientID(), name, ingredient.getQuantity()));
 		}
 		return new RecipeView(recipeID, recipe.getName(), recipe.getDescription(), result);
@@ -71,7 +77,7 @@ public class RecipeController {
 		String name = ingredientObject.get(Protocol.NAME_BODY_KEY);
 		float quantity = Float.parseFloat(ingredientObject.get(Protocol.QUANTITY_BODY_KEY));
 		
-		String ingredientID = this.ingredientController.addIngredient(name).getIngredientID();
+		String ingredientID = IngredientController.getInstance().addIngredient(name).getIngredientID();
 		this.getRecipeDetailsByID(recipeID);
 		this.recipeIngredientRepository.addIngredient(recipeID, ingredientID, quantity);
 		return ingredientID;

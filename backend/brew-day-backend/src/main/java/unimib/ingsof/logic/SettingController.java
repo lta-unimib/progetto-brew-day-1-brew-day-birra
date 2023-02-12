@@ -19,8 +19,14 @@ import unimib.ingsof.validation.validators.SettingUpdatingValidator;
 public class SettingController {
 	@Autowired
 	private SettingRepository settingRepository;
-	@Autowired
-	private SettingListController settingListController;	
+	
+	private static SettingController instance = null;
+	public static SettingController getInstance() {
+		return SettingController.instance;
+	}
+	public static void createInstance(SettingController instance) {
+		SettingController.instance = instance;
+	}
 	
 	public Setting getSetting(String settingID) throws DoesntExistsException {
 		Setting setting = settingRepository.getSetting(settingID);
@@ -51,7 +57,7 @@ public class SettingController {
 			Map<String, String> settingObject = new TreeMap<>();
 			settingObject.put(Protocol.SETTING_ID_BODY_KEY, Protocol.EQUIPMENT_SETTING_ID);
 			settingObject.put(Protocol.VALUE_BODY_KEY, Protocol.DEFAULT_EQUIPMENT);
-			settingListController.addSetting(settingObject);
+			SettingListController.getInstance().addSetting(settingObject);
 			setting = getSetting(Protocol.EQUIPMENT_SETTING_ID);
 		}	
 		return setting.getValue();

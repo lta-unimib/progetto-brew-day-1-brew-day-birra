@@ -3,7 +3,6 @@ package unimib.ingsof.api;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +20,17 @@ import unimib.ingsof.persistence.view.IngredientView;
 @RestController
 @RequestMapping("/api/inventory")
 public class InventoryEndpoint {
-	@Autowired
-	InventoryController inventoryController;
-
 	@GetMapping
     public ResponseEntity<List<IngredientView>> getAllIngredients() throws DoesntExistsException {
 		List<IngredientView> result;
-		result = inventoryController.getAll();
+		result = InventoryController.getInstance().getAll();
 		return new ResponseEntity<>(result, HttpStatus.OK);
     }
 	
 	@PostMapping 
 	public ResponseEntity<Object> postIngredient(@RequestBody Map<String, String> ingredientObject) {
 		try {
-			String ingredientID = inventoryController.addIngredient(ingredientObject);
+			String ingredientID = InventoryController.getInstance().addIngredient(ingredientObject);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(Protocol.INGREDIENT_ID_HEADER_KEY, ingredientID);
 			return new ResponseEntity<>(headers, HttpStatus.CREATED);
