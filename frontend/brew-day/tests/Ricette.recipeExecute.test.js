@@ -24,8 +24,23 @@ var recipes = {
     }
 }
 
+var beerResult;
+
+function getStatus(url){
+        
+        if (url.startsWith("/api/beers/")) {
+            return 400;
+        } else {
+            return 200;
+        }
+}
+
+
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
+
+    status: getStatus(url),
+
     json: () => {
         if (url == "/api/recipes")
           return Promise.resolve(Object.keys(recipes));
@@ -35,6 +50,8 @@ global.fetch = jest.fn().mockImplementation((url) =>
         } else if (url.startsWith("/api/shopping/")) {
             let recipeID = url.replace("/api/shopping/", "");
             return Promise.resolve(recipes[recipeID].ingredients);
+        } else if (url.startsWith("/api/settings/")) {
+            return Promise.resolve({value : "30"});
         } else {
             return Promise.resolve(null);
         }
@@ -43,11 +60,6 @@ global.fetch = jest.fn().mockImplementation((url) =>
 )
 
 describe('Ricette.jsx can correctly execute recipe', () => {
-    test('open recipe execute and see shopping list', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
-    })
     
     test('open recipe execute but dont create beer', async () => {
         await act(() => {render(<Ricette/>);});
@@ -62,5 +74,23 @@ describe('Ricette.jsx can correctly execute recipe', () => {
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "0"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
+    })
+
+    test('open recipe execute and create beer but not enoght equipment', async () => {
+        await act(() => {render(<Ricette/>);});
+        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newBeerName"}})});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "90"}})});
+        await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
+        expect(screen.getByText("Equipaggiamento Mancante", { exact: false })).toBeInTheDocument();
+    })
+
+    test('open recipe execute and create beer but not enoght ingredient', async () => {
+        await act(() => {render(<Ricette/>);});
+        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newBeerName"}})});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "1"}})});
+        await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
+        expect(screen.getByText("Ingredienti Mancanti", { exact: false })).toBeInTheDocument();
     })
 })
