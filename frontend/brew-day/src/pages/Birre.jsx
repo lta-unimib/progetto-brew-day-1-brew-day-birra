@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import MButton from "../components/MButton";
 import ThemeManager from '../components/ThemeManager'
 import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
+import Selector from "../components/Selector";
 
 
 class Birre extends Component {
@@ -132,12 +133,12 @@ class Birre extends Component {
     }
   }
 
-  setFilterName(event) {
+  setFilterName = (event) => {
     let filterName = event.target.value;
     this.setState({ filterName: filterName });
   }
 
-  setFilterRecipe(event) {
+  setFilterRecipe = (event) => {
     let filterRecipe = event.target.value;
     this.setState({ filterRecipe: filterRecipe });
   }
@@ -182,18 +183,12 @@ class Birre extends Component {
               <tr>
                 <th width="30%">FILTRA PER RICETTA</th>
                 <th width="50%">
-                  <select
-                    options={this.state.recipesName}
-                    style={{ width: "90%", textAlign: "center" }}
-                    onChange={(event) => this.setFilterRecipe(event)}
-                  >
-                    <option value="" key=""></option>
-                    {this.state.recipes.map((recipe) => (
-                      <option value={recipe.recipeID} key={recipe.recipeID}>
-                        {recipe.name}
-                      </option>
-                    ))}
-                  </select>
+                  <Selector
+                    label="Recipe"
+                    value={this.state.filterRecipe}
+                    onChange={this.setFilterRecipe}
+                    options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                  />
                 </th>
                 <th width="20%">
                   <MButton text="Filtra" onClick={() => this.filterBeer()} />

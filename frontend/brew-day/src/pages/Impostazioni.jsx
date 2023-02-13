@@ -6,6 +6,7 @@ import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
 import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
+import Selector from "../components/Selector";
 
 export default class Impostazioni extends Component {
 
@@ -25,7 +26,7 @@ export default class Impostazioni extends Component {
 
         this.state = {showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
                       colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
-                      backgrounds: [{"name": "default", "value": "#fcdd2e"}, {"name": "location1", "value": "#645F81"}]};
+                      backgrounds: [{"name": "default", "value": "default"}, {"name": "totaldark", "value": "totaldark"}]};
     }
 
     triggerReload() {
@@ -136,35 +137,23 @@ export default class Impostazioni extends Component {
                 <table className="myTable">
                     <tbody>
                         <tr>
-                          <td>Seleziona il colore del tema dell'applicazione</td>
+                          <td>Seleziona il colore del tema</td>
                           <td>
-                            <select
+                            <Selector 
+                              label="Color"
                               value={this.state.color}
-                              style={{ width: "90%", textAlign: "center" }}
-                              onChange={(event) => this.setNewColor(event)} 
-                            >
-                              {this.state.colors.map((color) => (
-                                <option value={color.value} key={color.name}>
-                                  {color.name}
-                                </option>
-                              ))}
-                            </select>
+                              onChange={this.setNewColor}
+                              options={this.state.colors}/>
                           </td>
                         </tr>
                         <tr>
-                          <td>Seleziona la location</td>
+                          <td>Seleziona lo sfondo</td>
                           <td>
-                              <select
-                                  value={this.state.background}
-                                  style={{ width: "90%", textAlign: "center" }}
-                                  onChange={(event) => this.setNewBackground(event)} 
-                                >
-                                  {this.state.backgrounds.map((background) => (
-                                    <option value={background.value} key={background.name}>
-                                      {background.name}
-                                    </option>
-                                  ))}
-                              </select>
+                            <Selector 
+                              label="Background"
+                              value={this.state.background}
+                              onChange={this.setNewBackground}
+                              options={this.state.backgrounds}/>
                           </td>
                         </tr>
                         <tr>

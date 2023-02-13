@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MButton from '../components/MButton';
 import { RECIPE_ENDPOINT } from '../Protocol';
+import IngredientNameInput from "./IngredientNameInput";
 
 class RecipeEdit extends Component{
 
@@ -43,12 +44,12 @@ class RecipeEdit extends Component{
     this.setState({description: newDescription})
   }
 
-  setNewIngredientName(event){
+  setNewIngredientName = (event) => {
     let newName = event.target.value;
     this.setState({newIngredientName: newName});
   }
 
-  setNewIngredientQuantity(event){
+  setNewIngredientQuantity = (event) => {
     let newQuantity = event.target.value;
     this.setState({newIngredientQuantity: newQuantity});
   }
@@ -102,8 +103,8 @@ class RecipeEdit extends Component{
               <tbody>
                 {itemList}
                 <tr>
-                  <td><input value={this.state.newIngredientName} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientName(event)}></input></td>
-                  <td><input value={this.state.newIngredientQuantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={ (event) => this.setNewIngredientQuantity(event)}></input></td>
+                  <td><IngredientNameInput value={this.state.newIngredientName} onChange={this.setNewIngredientName}></IngredientNameInput></td>
+                  <td><input value={this.state.newIngredientQuantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={this.setNewIngredientQuantity}></input></td>
                   <td><MButton text="V" onClick={() => this.addIngredient()}/></td>
                 </tr>
               </tbody>
@@ -112,6 +113,7 @@ class RecipeEdit extends Component{
         </div>
     );
   }
+
 
   deleteIngredient(id) {
     fetch(RECIPE_ENDPOINT + `${this.state.recipeID}/${id}`, {

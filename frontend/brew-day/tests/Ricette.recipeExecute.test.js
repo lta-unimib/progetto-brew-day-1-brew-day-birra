@@ -14,17 +14,15 @@ var recipes = {
         description: "recipeDescription2", ingredients: [
             {
                 "name": "malto", "quantity": "1",
-                "recipeID": "recipeID", "ingredientID": "ingredientID"
+                "recipeID": "recipeID2", "ingredientID": "ingredientID"
             },
             {
                 "name": "ingredientName2", "quantity": "1",
-                "recipeID": "recipeID", "ingredientID": "ingredientID2"
+                "recipeID": "recipeID2", "ingredientID": "ingredientID2"
             }
         ]
     }
 }
-
-var beerResult;
 
 function getStatus(url) {
     if (url.startsWith("/api/beers")) {
@@ -35,26 +33,26 @@ function getStatus(url) {
 }
 
 
-global.fetch = jest.fn().mockImplementation((url) =>
-  Promise.resolve({
-    status: getStatus(url),
-    json: () => {
-        if (url == "/api/recipes")
-          return Promise.resolve(Object.keys(recipes));
-        else if (url.startsWith("/api/recipes/")) {
-            let recipeID = url.replace("/api/recipes/", "");
-            return Promise.resolve(recipes[recipeID]);
-        } else if (url.startsWith("/api/shopping/")) {
-            let recipeID = url.replace("/api/shopping/", "");
-            return Promise.resolve(recipes[recipeID].ingredients);
-        } else if (url.startsWith("/api/settings/")) {
-            return Promise.resolve({value : "30"});
-        } else {
-            return Promise.resolve(null);
+global.fetch = jest.fn().mockImplementation((url) => {
+    return Promise.resolve({
+        status: getStatus(url),
+        json: () => {
+            if (url == "/api/recipes")
+              return Promise.resolve(Object.keys(recipes));
+            else if (url.startsWith("/api/recipes/")) {
+                let recipeID = url.replace("/api/recipes/", "");
+                return Promise.resolve(recipes[recipeID]);
+            } else if (url.startsWith("/api/shopping/")) {
+                let recipeID = url.replace("/api/shopping/", "");
+                return Promise.resolve(recipes[recipeID].ingredients);
+            } else if (url.startsWith("/api/settings/")) {
+                return Promise.resolve({value : "30"});
+            } else {
+                return Promise.resolve(null);
+            }
         }
-    }
-  })
-)
+    })
+})
 
 describe('Ricette.jsx can correctly execute recipe', () => {
     
@@ -88,6 +86,6 @@ describe('Ricette.jsx can correctly execute recipe', () => {
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newBeerName"}})});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "1"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
-        expect(screen.getByText("Ingredienti Mancanti", { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText("Ingredienti Mancanti", { exact: false })).toBeInTheDocument();
     })
 })

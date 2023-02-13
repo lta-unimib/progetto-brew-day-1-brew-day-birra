@@ -1,14 +1,15 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import Impostazioni from "../src/pages/Impostazioni";
 import { act } from "react-test-renderer";
+import userEvent from "@testing-library/user-event";
 
 var settings = [
     {
         settingID: "equipment", value: "30",
-        settingID: "color", value: "#fcdf2e",
-        settingID: "background", value: "#fcdd2e",
+        settingID: "color", value: "default",
+        settingID: "background", value: "default",
         settingID: "name", value: "Pierino"
     }
 ]
@@ -38,13 +39,21 @@ global.fetch = jest.fn().mockImplementation((url) =>
 )
 
 describe('Impostazioni.jsx can correctly render page', () => {
-    test('can filter recipes', async () => {
+    test('can update equipment and name', async () => {
         await act(() => {render(<Impostazioni/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "10"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[0]));
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "Paolina"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[1]));
-        await act(() => fireEvent.change(screen.getAllByRole("combobox")[0], {target: {value: "#645F81"}}));
-        await act(() => fireEvent.change(screen.getAllByRole("combobox")[1], {target: {value: "#645F81"}}));
+    })
+    test('can update color', async () => {
+        await act(() => {render(<Impostazioni/>);});
+        await act(() => userEvent.click(screen.getByLabelText("Color")));
+        await act(() => userEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark")));
+    })
+    test('can update background', async () => {
+        await act(() => {render(<Impostazioni/>);});
+        await act(() => userEvent.click(screen.getByLabelText("Background")));
+        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("totaldark")));
     })
 })
