@@ -57,7 +57,7 @@ class RecipeExecute extends Component {
         return (
           <div>
             <center>
-              <h2 style={{color: (this.props.color ?? 'black')}}>Equipaggiamento Mancante</h2>
+              <h2>Equipaggiamento Mancante</h2>
             </center>
           </div>
         );
@@ -70,16 +70,7 @@ class RecipeExecute extends Component {
 
     return (
         <div>
-          {Object.keys(this.state.name).length === 0 ? null : (
-            <RecipeView
-              color={this.props.color}
-              name={this.state.name}
-              description={this.state.description}
-              ingredients={this.state.ingredients}
-              recipeID={this.state.recipeID}
-            />
-          )}
-
+            <RecipeView recipeID={this.props.recipeID}/>
           <table className="myTable">
               <tbody>
                 <tr>

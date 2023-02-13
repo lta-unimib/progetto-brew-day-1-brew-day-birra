@@ -24,31 +24,38 @@ class Home extends Component {
   }
 
   render() {
+    const adviceView = (
+      <div>
+      <h1 className="advice-texts">Vuoi un consiglio?</h1>
+      {this.state.advice === null ? (
+        <h1 className="advice-texts">Prova ad inserire qualche ricetta</h1>
+      ) : (
+        <div>
+          <h1 className="advice-texts">
+            Ecco quale birra dovresti preparare
+          </h1>
+          <RecipeExecute
+            recipeID={this.state.advice.recipeID}
+            onConfirm={this.triggerReload}
+          />
+          <h3 className="advice-texts">
+            La massima quantità realizzabile è
+            {this.state.advice.quantity === -1 ? "infinita" : this.state.advice.quantity}
+          </h3>
+        </div>
+      )}
+      </div>
+    );
+
+    const nextRecipeView = (
+      <NextRecipeView/>
+    );
+    //<center>{adviceView}</center>
+
     return (
       <ThemeManager>
         <div>
-          <center>
-            <h1 className="advice-texts">Vuoi un consiglio?</h1>
-            {this.state.advice === null ? (
-              <h1 className="advice-texts">Prova ad inserire qualche ricetta</h1>
-            ) : (
-              <div>
-                <h1 className="advice-texts">
-                  Ecco quale birra dovresti preparare
-                </h1>
-                <RecipeExecute
-                  recipeID={this.state.advice.recipeID}
-                  color="white"
-                  onConfirm={this.triggerReload}
-                />
-                <h3 className="advice-texts">
-                  La massima quantità realizzabile è {" "}
-                  {this.state.advice.quantity === -1 ? "infinita" : this.state.advice.quantity}
-                </h3>
-              </div>
-            )}
-            <NextRecipeView/>
-          </center>
+          <center>{nextRecipeView}</center>
         </div>
       </ThemeManager>
     );
