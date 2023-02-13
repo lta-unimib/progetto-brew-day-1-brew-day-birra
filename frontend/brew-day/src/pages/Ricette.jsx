@@ -10,7 +10,7 @@ import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "", nextRecipeID: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
+        this.state = {recipes: [], currentAction: "", nextRecipeQuantity: "", nextRecipeID: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
         this.handleView = this.handleView.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -35,9 +35,15 @@ export default class Ricette extends Component {
         fetch(SETTINGS_ENDPOINT + "nextRecipeID")
         .then(response => response.json())
         .then(data => this.setState({nextRecipeID: data.value}))
-        .catch((error) => {this.postNextRecipeID();
+        .catch((error) => {this.postNextRecipeSetting("nextRecipeID", "");
                           this.setState({nextRecipeID: ""});
                     });
+        fetch(SETTINGS_ENDPOINT + "nextRecipeQuantity")
+        .then(response => response.json())
+        .then(data => this.setState({nextRecipeQuantity: data.value}))
+        .catch((error) => {this.postNextRecipeSetting("nextRecipeQuantity", "0");
+                          this.setState({nextRecipeQuantity: "0"});
+                    });     
     }
 
     componentDidMount() {
@@ -55,8 +61,11 @@ export default class Ricette extends Component {
     
     handleDelete(item) {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
-      if(item.recipeID === this.state.nextRecipeID)
-        this.updateNextRecipeID("");
+      if(item.recipeID === this.state.nextRecipeID){
+        this.updateNextRecipeSetting("nextRecipeID", "");
+        this.updateNextRecipeSetting("nextRecipeQuantity", "0");
+      }
+
     };
 
     handleExecute(item) {
@@ -102,7 +111,12 @@ export default class Ricette extends Component {
     setNewNextRecipeID(event){
       let newNextRecipeID = event.target.value;
       this.setState({nextRecipeID: newNextRecipeID});
-      this.updateNextRecipeID(newNextRecipeID);
+      this.updateNextRecipeSetting("nextRecipeID", newNextRecipeID)
+    }
+
+    setNewNextRecipeQuantity(event){
+      let newNextRecipeQuantity = event.target.value;
+      this.setState({nextRecipeQuantity: newNextRecipeQuantity});
     }
 
     setShowModal(flag) {
@@ -141,7 +155,7 @@ export default class Ricette extends Component {
                 <table className="myTable">
                     <tbody>
                         <tr>
-                          <td>Seleziona la prossima ricetta che vorresti eseguire</td>
+                          <td>Seleziona la prossima ricetta che vorresti eseguire e la quantità</td>
                           <td>
                               <select
                                   value={this.state.nextRecipeID}
@@ -158,6 +172,8 @@ export default class Ricette extends Component {
                                   ))}
                               </select>
                           </td>
+                          <td><input value={this.state.nextRecipeQuantity} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewNextRecipeQuantity(event)}></input></td>
+                          <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)} /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -215,25 +231,25 @@ export default class Ricette extends Component {
         })
     }
 
-    updateNextRecipeID(newNextRecipeID) {
-      fetch(SETTINGS_ENDPOINT + `nextRecipeID`, {
+    updateNextRecipeSetting(settingID, value) {
+      fetch(SETTINGS_ENDPOINT + `${settingID}`, {
           method: 'PUT',
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({value: newNextRecipeID})
+          body: JSON.stringify({value: value})
       })
     }
 
-    postNextRecipeID() {
+    postNextRecipeSetting(settingID, value) {
       fetch(SETTING_LIST_ENDPOINT, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({settingID: "nextRecipeID", value: ""})
+          body: JSON.stringify({settingID: settingID, value: value})
       });
     }
 }
