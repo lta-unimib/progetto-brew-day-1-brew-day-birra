@@ -3,6 +3,7 @@ import NextRecipeView from "../components/NextRecipeView";
 import RecipeExecute from "../components/RecipeExecute";
 import ThemeManager from "../components/ThemeManager";
 import {ADVICE_ENDPOINT } from '../Protocol';
+import ContentCard from '../components/ContentCard';
 
 class Home extends Component {
   constructor(props) {
@@ -55,8 +56,8 @@ class Home extends Component {
     return (
       <ThemeManager>
         <div>
-          <center>{adviceView}</center>
-          <center>{nextRecipeView}</center>
+          <ContentCard>{adviceView}</ContentCard>
+          <ContentCard>{nextRecipeView}</ContentCard>
         </div>
       </ThemeManager>
     );
