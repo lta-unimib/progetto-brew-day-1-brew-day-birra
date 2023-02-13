@@ -11,7 +11,7 @@ import unimib.ingsof.api.ResetEndpoint;
 @SpringBootTest
 class ResetControllerTest {
 	@Autowired
-	ResetController resetController;
+	RepositoryResetController resetController;
 	@Autowired
 	ResetEndpoint resetEndpoint;
 	

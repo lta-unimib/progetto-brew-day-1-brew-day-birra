@@ -7,15 +7,22 @@ import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.persistence.repository.BeerNoteRepository;
+import unimib.ingsof.persistence.repository.BeerNoteRepositoryGateway;
 import unimib.ingsof.persistence.repository.BeerRepository;
+import unimib.ingsof.persistence.repository.BeerRepositoryGateway;
 import unimib.ingsof.persistence.repository.IngredientRepository;
+import unimib.ingsof.persistence.repository.IngredientRepositoryGateway;
 import unimib.ingsof.persistence.repository.InventoryIngredientRepository;
+import unimib.ingsof.persistence.repository.InventoryIngredientRepositoryGateway;
 import unimib.ingsof.persistence.repository.RecipeIngredientRepository;
+import unimib.ingsof.persistence.repository.RecipeIngredientRepositoryGateway;
 import unimib.ingsof.persistence.repository.RecipeRepository;
+import unimib.ingsof.persistence.repository.RecipeRepositoryGateway;
 import unimib.ingsof.persistence.repository.SettingRepository;
+import unimib.ingsof.persistence.repository.SettingRepositoryGateway;
 
 @Service
-public class ResetController {
+public class RepositoryResetController {
 	@Autowired
 	private RecipeRepository recipeRepository;
 	@Autowired
@@ -30,8 +37,14 @@ public class ResetController {
 	private BeerNoteRepository beerNoteRepository;
     @Autowired
     private SettingRepository settingRepository;
-    @Autowired
-    private SettingController settingController;
+	
+	private static RepositoryResetController instance = null;
+	public static RepositoryResetController getInstance() {
+		return RepositoryResetController.instance;
+	}
+	public static void createInstance(RepositoryResetController instance) {
+		RepositoryResetController.instance = instance;
+	}
 
 	public void doReset() throws ValidationException, AlreadyExistsException, DoesntExistsException {
 		this.doDrop();
@@ -56,7 +69,15 @@ public class ResetController {
 		recipeIngredientRepository.assure();
 		beerRepository.assure();
 		beerNoteRepository.assure();
-		settingController.getEquipment();
+		SettingController.getInstance().getEquipment();
 	}
-
+	public void doAssign() {
+		RecipeRepositoryGateway.setInstance(recipeRepository);
+		RecipeIngredientRepositoryGateway.setInstance(recipeIngredientRepository);
+		InventoryIngredientRepositoryGateway.setInstance(inventoryIngredientRepository);
+		IngredientRepositoryGateway.setInstance(ingredientRepository);
+		BeerRepositoryGateway.setInstance(beerRepository);
+		BeerNoteRepositoryGateway.setInstance(beerNoteRepository);
+	    SettingRepositoryGateway.setInstance(settingRepository);
+	}
 }

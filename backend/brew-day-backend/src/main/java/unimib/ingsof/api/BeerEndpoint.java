@@ -2,7 +2,6 @@ package unimib.ingsof.api;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +22,10 @@ import unimib.ingsof.persistence.view.BeerView;
 @RestController
 @RequestMapping("/api/beers/{beerID}")
 public class BeerEndpoint {
-	@Autowired
-	private BeerController beerController;
-	
 	@GetMapping
 	public ResponseEntity<BeerView> getBeerByID(@PathVariable String beerID) {
 		try {
-			BeerView beer = this.beerController.getBeerByID(beerID);
+			BeerView beer = BeerController.getInstance().getBeerByID(beerID);
 			return new ResponseEntity<>(beer, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -40,7 +36,7 @@ public class BeerEndpoint {
 	public ResponseEntity<BeerView> updateBeer(@PathVariable String beerID,
 												@RequestBody Map<String, String> beerObject) {
 		try {
-			BeerView beerView = this.beerController.updateBeer(beerID, beerObject);
+			BeerView beerView = BeerController.getInstance().updateBeer(beerID, beerObject);
 			return new ResponseEntity<>(beerView, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,7 +47,7 @@ public class BeerEndpoint {
 	
 	@DeleteMapping
 	public ResponseEntity<Object> deleteBeer(@PathVariable String beerID) {
-		this.beerController.deleteBeer(beerID);
+		BeerController.getInstance().deleteBeer(beerID);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -59,7 +55,7 @@ public class BeerEndpoint {
 	public ResponseEntity<Object> postBeerNote(@PathVariable String beerID,
 														@RequestBody Map<String, String> noteObject) {
 		try {
-			String noteID = this.beerController.addBeerNote(beerID, noteObject);
+			String noteID = BeerController.getInstance().addBeerNote(beerID, noteObject);
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(Protocol.NOTE_ID_HEADER_KEY, noteID);
 	        return new ResponseEntity<>(headers, HttpStatus.CREATED);

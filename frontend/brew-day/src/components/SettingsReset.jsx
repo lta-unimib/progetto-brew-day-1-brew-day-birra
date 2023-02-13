@@ -1,7 +1,6 @@
 import React, { Component }  from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import { RESET_ENDPOINT } from '../Protocol';
 
 class SettingsReset extends Component{
   constructor(props) {
@@ -11,19 +10,17 @@ class SettingsReset extends Component{
 
   render(){
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
             <p>Sei sicuro di voler rimuovere tutti i tuoi dati?</p>
             <MButton text="Conferma" onClick={() => this.resetAllSettings()} />
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 
     resetAllSettings() {
-      fetch(`/api/reset`, {
+      fetch(RESET_ENDPOINT, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',

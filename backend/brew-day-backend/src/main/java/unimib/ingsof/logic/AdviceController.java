@@ -2,7 +2,6 @@ package unimib.ingsof.logic;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
@@ -11,29 +10,28 @@ import unimib.ingsof.persistence.view.RecipeIngredientView;
 
 @Service
 public class AdviceController {
-	@Autowired
-	RecipeController recipeController;
-	@Autowired
-	RecipeListController recipeListController;
-	@Autowired
-	InventoryIngredientController inventoryIngredientController;
-	@Autowired
-	private SettingController settingController;
+	private static AdviceController instance = null;
+	public static AdviceController getInstance() {
+		return AdviceController.instance;
+	}
+	public static void createInstance(AdviceController instance) {
+		AdviceController.instance = instance;
+	}
 	
 	public AdviceView getAdvice() throws DoesntExistsException, InternalServerException {
-		List<String> recipeIDs = recipeListController.getAllRecipeIDs(java.util.Optional.empty());
+		List<String> recipeIDs = RecipeListController.getInstance().getAllRecipeIDs(java.util.Optional.empty());
 		if (recipeIDs.isEmpty())
 			throw new DoesntExistsException();
 		float equipment = 0;
 		try {
-			equipment = Float.parseFloat(settingController.getEquipment());
+			equipment = Float.parseFloat(SettingController.getInstance().getEquipment());
 		} catch (Exception e) {
 			throw new InternalServerException();
 		}
 		AdviceView advice = new AdviceView();
 		float maxQuantitySum = -1;
 		for (String recipeID : recipeIDs) {
-			List<RecipeIngredientView> ingredients =  recipeController.getRecipeByID(recipeID).getIngredients();
+			List<RecipeIngredientView> ingredients =  RecipeController.getInstance().getRecipeByID(recipeID).getIngredients();
 			List<Float> ingredientsQuantity = new ArrayList<>();
 			float literProduced = -1;
 			float quantitySum = 0;
@@ -43,6 +41,8 @@ public class AdviceController {
 			}
 			if (literProduced > equipment)
 				literProduced = equipment;
+			if (literProduced == 0)
+				continue;
 			quantitySum = ingredientQuantitySum(ingredientsQuantity, literProduced);
 			if(quantitySum > maxQuantitySum || maxQuantitySum == -1 ||
 					(Float.compare(quantitySum, maxQuantitySum) == 0 && advice.getQuantity() < literProduced)) {
@@ -51,6 +51,8 @@ public class AdviceController {
 				advice.setRecipeID(recipeID);	
 			}
 		}
+		if(advice.getRecipeID() == null)
+			throw new DoesntExistsException();
 		return advice;
 	}
 	
@@ -66,7 +68,7 @@ public class AdviceController {
 		String ingredientID = recipeIngredient.getIngredientID();
 		float invIngQuantity;
 		try {
-			invIngQuantity = inventoryIngredientController.getIngredient(ingredientID).getQuantity();
+			invIngQuantity = InventoryIngredientController.getInstance().getIngredient(ingredientID).getQuantity();
 		} catch (DoesntExistsException e) {
 			return 0;
 		}

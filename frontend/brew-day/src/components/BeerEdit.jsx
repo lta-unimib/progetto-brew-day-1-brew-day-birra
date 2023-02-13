@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import {BEERS_ENDPOINT} from '../Protocol';
+
 
 class BeerEdit extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class BeerEdit extends Component {
   }
 
   triggerReload = () => {
-    fetch(`/api/beers/${this.props.beerID}`)
+    fetch(BEERS_ENDPOINT + `${this.props.beerID}`)
     .then(response => response.json())
     .then(data => {
       this.setState({...data, noteType: "", description: ""});
@@ -32,7 +32,7 @@ class BeerEdit extends Component {
 
   handleDeleteNote = (note) => {
     const { beerID, noteID } = note;
-    fetch(`/api/beers/${beerID}/${noteID}`, {
+    fetch(BEERS_ENDPOINT + `${beerID}/${noteID}`, {
       method: "DELETE",
     })
     .then(() => this.triggerReload());
@@ -56,7 +56,7 @@ class BeerEdit extends Component {
     const { beerID } = this.props;
     const { name } = this.state;
 
-    fetch(`/api/beers/${beerID}`, {
+    fetch(BEERS_ENDPOINT + `${beerID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +70,7 @@ class BeerEdit extends Component {
   handleAddNote = (noteType, description) => {
     const { beerID } = this.props;
 
-    fetch(`/api/beers/${beerID}`, {
+    fetch(BEERS_ENDPOINT + `${beerID}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ class BeerEdit extends Component {
   handleEditNote = (note) => {
     const { beerID, description, noteType, noteID } = note;
 
-    fetch(`/api/beers/${beerID}/${noteID}`, {
+    fetch(BEERS_ENDPOINT + `${beerID}/${noteID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +95,6 @@ class BeerEdit extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
             <table>
@@ -182,7 +181,6 @@ class BeerEdit extends Component {
             </table>
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 }

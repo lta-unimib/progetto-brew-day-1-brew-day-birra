@@ -2,7 +2,6 @@ package unimib.ingsof.api;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,13 +19,10 @@ import unimib.ingsof.persistence.model.Setting;
 @RestController
 @RequestMapping("/api/settings/{settingID}")
 public class SettingEndpoint {
-	@Autowired
-	private SettingController settingController;
-	
 	@GetMapping
 	public ResponseEntity<Object> getSetting(@PathVariable String settingID) {
 		try {
-			Setting setting = settingController.getSetting(settingID);
+			Setting setting = SettingController.getInstance().getSetting(settingID);
 			return new ResponseEntity<>(setting, HttpStatus.OK);
 		} catch(Exception exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,7 +32,7 @@ public class SettingEndpoint {
 	@PutMapping
 	public ResponseEntity<Object> updateSetting(@PathVariable String settingID, @RequestBody Map<String, String> settingObject) {
 		try {
-			Setting setting = settingController.updateSetting(settingID, settingObject);
+			Setting setting = SettingController.getInstance().updateSetting(settingID, settingObject);
 			return new ResponseEntity<>(setting, HttpStatus.OK);
 		} catch(DoesntExistsException exception) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,7 +43,7 @@ public class SettingEndpoint {
 
 	@DeleteMapping
 	public ResponseEntity<Object> deleteSetting(@PathVariable String settingID) {
-		settingController.deleteSetting(settingID);
+		SettingController.getInstance().deleteSetting(settingID);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

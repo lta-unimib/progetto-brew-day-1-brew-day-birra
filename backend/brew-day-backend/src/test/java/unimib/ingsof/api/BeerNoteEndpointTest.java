@@ -16,7 +16,7 @@ import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
-import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.logic.RepositoryResetController;
 import unimib.ingsof.persistence.service.Protocol;
 
 @SpringBootTest
@@ -30,7 +30,7 @@ class BeerNoteEndpointTest {
 	@Autowired
 	private BeerNoteEndpoint beerNoteEndpoint;
 	@Autowired
-	ResetController resetController;
+	RepositoryResetController resetController;
 
 	@Test
 	void testBehavior() {

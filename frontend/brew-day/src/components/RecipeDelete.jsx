@@ -1,7 +1,6 @@
 import React, { Component }  from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import {RECIPE_ENDPOINT} from '../Protocol';
 
 class RecipeDelete extends Component{
   constructor(props) {
@@ -23,7 +22,6 @@ class RecipeDelete extends Component{
 
   render(){
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
             <h1>{this.state.name}</h1>
@@ -32,12 +30,11 @@ class RecipeDelete extends Component{
             <MButton text="Conferma" onClick={() => this.deleteRecipe(this.state.recipeID)} />
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 
   deleteRecipe(id) {
-    fetch(`/api/recipes/${id}`, {
+    fetch(RECIPE_ENDPOINT+ `${id}`, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',

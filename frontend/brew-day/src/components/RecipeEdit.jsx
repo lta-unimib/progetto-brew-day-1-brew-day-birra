@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
+import { RECIPE_ENDPOINT } from '../Protocol';
 
 class RecipeEdit extends Component{
 
@@ -13,7 +12,7 @@ class RecipeEdit extends Component{
   }
 
   triggerReload() {
-      fetch(`/api/recipes/${this.props.recipeID}`)
+      fetch(RECIPE_ENDPOINT +`${this.props.recipeID}`)
       .then(response => response.json())
       .then(data => this.setState({newIngredientName: "", newIngredientQuantity: "", ...data}));
   }
@@ -67,7 +66,6 @@ class RecipeEdit extends Component{
     });
   
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
           <table className="myTable">
@@ -112,12 +110,11 @@ class RecipeEdit extends Component{
             </table>
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 
   deleteIngredient(id) {
-    fetch(`/api/recipes/${this.state.recipeID}/${id}`, {
+    fetch(RECIPE_ENDPOINT + `${this.state.recipeID}/${id}`, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -131,7 +128,7 @@ class RecipeEdit extends Component{
 
   editQuantity(id) {
     let newQuantity = [...this.state.ingredients].filter(i => i.ingredientID === id)[0].quantity;
-    fetch(`/api/recipes/${this.state.recipeID}/${id}`, {
+    fetch(RECIPE_ENDPOINT+`${this.state.recipeID}/${id}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -145,7 +142,7 @@ class RecipeEdit extends Component{
   }
 
   editName() {
-    fetch(`/api/recipes/${this.state.recipeID}`, {
+    fetch(RECIPE_ENDPOINT + `${this.state.recipeID}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -160,7 +157,7 @@ class RecipeEdit extends Component{
   }
 
   editDescription() {
-    fetch(`/api/recipes/${this.state.recipeID}`, {
+    fetch(RECIPE_ENDPOINT + `${this.state.recipeID}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -175,7 +172,7 @@ class RecipeEdit extends Component{
   }
 
   addIngredient() {
-    fetch(`/api/recipes/${this.state.recipeID}`, {
+    fetch(RECIPE_ENDPOINT+`${this.state.recipeID}`, {
       method: 'POST',
       headers: {
           'Accept': 'application/json',

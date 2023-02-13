@@ -7,15 +7,18 @@ import jakarta.annotation.PostConstruct;
 import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.ValidationException;
-import unimib.ingsof.logic.ResetController;
+import unimib.ingsof.logic.ControllerResetController;
+import unimib.ingsof.logic.RepositoryResetController;
 
 @Service
 public class Initializr {
 	@Autowired
-	ResetController resetController;
+	ControllerResetController controllerResetController;
 	
 	@PostConstruct 
 	public void init() throws ValidationException, AlreadyExistsException, DoesntExistsException {
-		resetController.doAssure();
+		controllerResetController.doAssign();
+		RepositoryResetController.getInstance().doAssign();
+		RepositoryResetController.getInstance().doAssure();
 	}
 }

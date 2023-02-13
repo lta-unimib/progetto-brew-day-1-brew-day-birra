@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
+import themes from "../theme/themes";
+import ThemeManager from "../components/ThemeManager";
 import Modal from "../components/Modal";
 import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
+import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
 
 export default class Impostazioni extends Component {
 
@@ -23,12 +24,12 @@ export default class Impostazioni extends Component {
         this.handleResetNextRecipeID = this.handleResetNextRecipeID.bind(this);
 
         this.state = {showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
-                      colors: [{"name": "default", "value": "#fcdd2e"}, {"name": "black", "value": "#645F81"}],
+                      colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
                       backgrounds: [{"name": "default", "value": "#fcdd2e"}, {"name": "location1", "value": "#645F81"}]};
     }
 
     triggerReload() {
-        fetch("/api/settings")
+        fetch(SETTING_LIST_ENDPOINT)
         .then(response => response.json())
         .then(data => {this.setState({settings: data});
                       if (data.filter(i => i.settingID === "color").length === 0){
@@ -116,7 +117,7 @@ export default class Impostazioni extends Component {
 
     render(){
       return (
-        <ThemeProvider theme={theme}>
+        <ThemeManager>
             <div>
                 <table className="myTable">
                     <tbody>
@@ -176,13 +177,13 @@ export default class Impostazioni extends Component {
                   {this.getCurrentComponent()}
                 </Modal>
             </div>
-          </ThemeProvider>
+          </ThemeManager>
         )
 
     }
 
     updateValue(id, newValue) {
-      fetch(`/api/settings/${id}`, {
+      fetch(SETTINGS_ENDPOINT+`${id}`, {
           method: 'PUT',
           headers: {
               'Accept': 'application/json',
@@ -196,7 +197,7 @@ export default class Impostazioni extends Component {
     }
 
     postValue(id, newValue) {
-      fetch(`/api/settings`, {
+      fetch(SETTING_LIST_ENDPOINT, {
           method: 'POST',
           headers: {
               'Accept': 'application/json',
