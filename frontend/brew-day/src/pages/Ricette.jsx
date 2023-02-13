@@ -9,6 +9,7 @@ import MButton from '../components/MButton';
 import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
+import JimTable from '../components/JimTable';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -131,50 +132,59 @@ export default class Ricette extends Component {
         return (
           <ThemeManager>
             <div>
-                <table className="myTable">
+              <JimTable>
+                <table style={{width: "100%"}}>
                     <tbody>
-                        <tr>
-                            <td width="30%">FILTRA PER NOME</td>
-                            <td width="50%"><input value={this.state.filterName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></td>
-                            <td width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()} />
-                                            <MButton text="Togli" onClick={() => this.removeFilter()} />
-                            </td>
-                        </tr>
-                        <tr>
-                          <td>Seleziona la prossima ricetta</td>
-                          <td style={{display:"flex", flexFlow: "row wrap", justifyContent:"space-around"}}>
-                              <Selector
-                                label="Recipe"
-                                value={this.state.nextRecipeID}
-                                onChange={this.setNewNextRecipeID}
-                                options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
-                              />
-                              <input
-                                sx={{ width: "25%", textAlign:"center" }}
-                                value={this.state.nextRecipeQuantity} type="text"
-                                onChange={ (event) => this.setNewNextRecipeQuantity(event)}
-                              />
-                          </td>
-                          <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/></td>
-                        </tr>
+                      <tr>
+                        <td width="30%">FILTRA PER NOME</td>
+                        <td width="50%">
+                          <input
+                            value={this.state.filterName} type="text"
+                            style={{width: "100%", textAlign:"center"}}
+                            onChange={ (event) => this.setFilterName(event)}
+                          />
+                        </td>
+                        <td width="20%">
+                          <MButton text="Filtra" onClick={() => this.filterRecipe()} />
+                          <MButton text="Togli" onClick={() => this.removeFilter()} />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Seleziona la prossima ricetta</td>
+                        <td style={{display:"flex", flexFlow: "column nowrap", justifyContent:"space-around"}}>
+                          <Selector
+                            label="Recipe"
+                            value={this.state.nextRecipeID}
+                            onChange={this.setNewNextRecipeID}
+                            options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                          />
+                          <input
+                            style={{width: "100%", textAlign:"center"}}
+                            value={this.state.nextRecipeQuantity} type="text"
+                            onChange={ (event) => this.setNewNextRecipeQuantity(event)}
+                          />
+                        </td>
+                        <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/></td>
+                      </tr>
                     </tbody>
                 </table>
+              </JimTable>
 
-                <RecipeTable
-                  recipes={recipesFiltered}
-                  handleView={this.handleView}
-                  handleEdit={this.handleEdit}
-                  handleDelete={this.handleDelete}
-                  handleExecute={this.handleExecute}
-                  newRecipeName={this.state.newRecipeName}
-                  newRecipeDescription={this.state.newRecipeDescription}
-                  setNewRecipeName={this.setNewRecipeName}
-                  setNewRecipeDescription={this.setNewRecipeDescription}
-                  addRecipe={this.addRecipe}
-                  />
-                <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
-                  {this.getCurrentComponent()}
-                </Modal>
+              <RecipeTable
+                recipes={recipesFiltered}
+                handleView={this.handleView}
+                handleEdit={this.handleEdit}
+                handleDelete={this.handleDelete}
+                handleExecute={this.handleExecute}
+                newRecipeName={this.state.newRecipeName}
+                newRecipeDescription={this.state.newRecipeDescription}
+                setNewRecipeName={this.setNewRecipeName}
+                setNewRecipeDescription={this.setNewRecipeDescription}
+                addRecipe={this.addRecipe}
+                />
+              <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
+                {this.getCurrentComponent()}
+              </Modal>
             </div>
           </ThemeManager>
         );

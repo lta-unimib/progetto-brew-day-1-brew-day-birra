@@ -6,7 +6,10 @@ import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
 import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
-import Selector from "../components/Selector";
+import InputFieldSetting from "../components/InputFieldSetting";
+import InputSelectorSetting from "../components/InputSelectorSetting";
+import JimTable from "../components/JimTable";
+import JimFlex from "../components/JimFlex";
 
 export default class Impostazioni extends Component {
 
@@ -119,53 +122,43 @@ export default class Impostazioni extends Component {
     render(){
       return (
         <ThemeManager>
-            <div>
-                <table className="myTable">
-                    <tbody>
-                        <tr>
-                          <td>Equipaggiamento Disponibile</td>
-                          <td><input value={this.state.equipment} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewEquipment(event)}></input></td>
-                          <td><MButton text="Aggiorna" onClick={() => this.updateValue("equipment", this.state.equipment)} /></td>
-                        </tr>
-                        <tr>
-                          <td>Inserisci qui il tuo nome</td>
-                          <td><input value={this.state.name} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewName(event)}></input></td>
-                          <td><MButton text="Aggiorna" onClick={() => this.updateValue("name", this.state.name)} /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table className="myTable">
-                    <tbody>
-                        <tr>
-                          <td>Seleziona il colore del tema</td>
-                          <td>
-                            <Selector 
-                              label="Color"
-                              value={this.state.color}
-                              onChange={this.setNewColor}
-                              options={this.state.colors}/>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Seleziona lo sfondo</td>
-                          <td>
-                            <Selector 
-                              label="Background"
-                              value={this.state.background}
-                              onChange={this.setNewBackground}
-                              options={this.state.backgrounds}/>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td> <MButton text="Elimina tutti i dati" onClick={() => this.handleResetSettings()} /></td>
-                          <td> <MButton text="Resetta la prossima ricetta da eseguire" onClick={() => this.handleResetNextRecipeID()} /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
-                  {this.getCurrentComponent()}
-                </Modal>
-            </div>
+            <JimFlex>
+              <InputFieldSetting
+                value={this.state.equipment}
+                title="Equipaggiamento Disponibile"
+                onChange={(event) => this.setNewEquipment(event)}
+                onConfirm={() => this.updateValue("equipment", this.state.equipment)}
+              />
+              <InputFieldSetting
+                value={this.state.name}
+                title="Inserisci qui il tuo nome"
+                onChange={(event) => this.setNewName(event)}
+                onConfirm={() => this.updateValue("name", this.state.equipment)}
+              />
+              <InputSelectorSetting
+                title="Seleziona il colore del tema"
+                label="Color"
+                value={this.state.color}
+                onChange={this.setNewColor}
+                options={this.state.colors}
+              />
+              <InputSelectorSetting
+                title="Seleziona lo sfondo"
+                label="Background"
+                value={this.state.background}
+                onChange={this.setNewBackground}
+                options={this.state.backgrounds}
+              />
+              <JimTable>
+                <MButton center text="Elimina tutti i dati" onClick={() => this.handleResetSettings()}/>
+              </JimTable>
+              <JimTable>
+                <MButton center text="Resetta la prossima ricetta da eseguire" onClick={() => this.handleResetNextRecipeID()}/>
+              </JimTable>
+            </JimFlex>
+            <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
+              {this.getCurrentComponent()}
+            </Modal>
           </ThemeManager>
         )
 

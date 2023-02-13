@@ -8,6 +8,7 @@ import ThemeManager from '../components/ThemeManager'
 import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
 import Selector from "../components/Selector";
 import BeerTable from "../components/BeerTable";
+import JimTable from "../components/JimTable";
 
 
 class Birre extends Component {
@@ -155,44 +156,42 @@ class Birre extends Component {
     return (
       <ThemeManager>
         <div>
-          <table className="myTable">
-            <thead>
-              <tr>
-                <th width="30%">FILTRA PER NOME</th>
-                <th width="50%">
-                  <input
-                    value={this.state.filterName}
-                    type="text"
-                    style={{ width: "90%", textAlign: "center" }}
-                    onChange={(event) => this.setFilterName(event)}
-                  ></input>
-                </th>
-                <th width="20%">
-                  <MButton text="Filtra" onClick={() => this.filterBeer()} />
-                  <MButton text="Togli" onClick={() => this.removeFilter()} />
-                </th>
-              </tr>
-              <tr>
-                <th width="30%">FILTRA PER RICETTA</th>
-                <th width="50%">
-                  <Selector
-                    label="Recipe"
-                    value={this.state.filterRecipe}
-                    onChange={this.setFilterRecipe}
-                    options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
-                  />
-                </th>
-                <th width="20%">
-                  <MButton text="Filtra" onClick={() => this.filterBeer()} />
-                  <MButton text="Togli" onClick={() => this.removeFilter()} />
-                </th>
-              </tr>
-              <tr>
-                <th width="50%">Nome</th>
-                <th width="50%">Azioni</th>
-              </tr>
-            </thead>
-          </table>
+          <JimTable>
+            <table style={{width: "100%"}}>
+              <thead>
+                <tr>
+                  <th width="20%">FILTRA PER NOME</th>
+                  <th width="50%">
+                    <input
+                      value={this.state.filterName}
+                      type="text"
+                      style={{ width: "100%", textAlign: "center" }}
+                      onChange={(event) => this.setFilterName(event)}
+                    ></input>
+                  </th>
+                  <th width="30%">
+                    <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                    <MButton text="Togli" onClick={() => this.removeFilter()} />
+                  </th>
+                </tr>
+                <tr>
+                  <th width="20%">FILTRA PER RICETTA</th>
+                  <th width="50%">
+                    <Selector
+                      label="Recipe"
+                      value={this.state.filterRecipe}
+                      onChange={this.setFilterRecipe}
+                      options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                    />
+                  </th>
+                  <th width="30%">
+                    <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                    <MButton text="Togli" onClick={() => this.removeFilter()} />
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </JimTable>
           <BeerTable
             beers={beerItems}
             handleView={this.handleView}
