@@ -17,28 +17,30 @@ class RecipeExecute extends Component {
       equipment: "",
       missingEquipment: false
     };
-
-    this.triggerReload = this.triggerReload.bind(this);
-    this.addBeer = this.addBeer.bind(this);
   }
 
-  triggerReload() {
-    const recipeID = this.props.recipeID;
-    fetch(RECIPE_ENDPOINT+`${recipeID}`)
-      .then((response) => response.json())
-      .then((data) => this.setState({ ...data }));
+  triggerReload = () => {
+    return new Promise((acc, rej) => {
+      const recipeID = this.props.recipeID;
+      fetch(RECIPE_ENDPOINT+`${recipeID}`)
+        .then((response) => response.json())
+        .then((data) => this.setState({ ...data }))
+        .then(() => acc());
+    })
   }
 
-  triggerReloadSettings() {
-      fetch(SETTINGS_ENDPOINT + "equipment")
-      .then(response => response.json())
-      .then(data => this.setState({equipment: data.value}));
+  triggerReloadSettings = () => {
+      return new Promise((acc, rej) => {
+        fetch(SETTINGS_ENDPOINT + "equipment")
+        .then(response => response.json())
+        .then(data => this.setState({equipment: data.value}))
+        .then(() => acc());
+      });
     }
 
 
   componentDidMount() {
-    this.triggerReload();
-    this.triggerReloadSettings();
+    this.triggerReload().then(this.triggerReloadSettings);
   }
 
   setNewBeerName(event) {
@@ -64,13 +66,13 @@ class RecipeExecute extends Component {
       }
 
       if (this.state.missingIngredients) {
-        return <div> <ShoppingList recipeID={this.props.recipeID} quantity={this.state.newBeerQuantity}/> </div>
+        return (<ShoppingList recipeID={this.props.recipeID} quantity={this.state.newBeerQuantity}/>);
       }
     };
 
     return (
         <div>
-            <RecipeView recipeID={this.props.recipeID}/>
+          <RecipeView recipeID={this.props.recipeID}/>
           <table className="myTable">
               <tbody>
                 <tr>
@@ -106,24 +108,23 @@ class RecipeExecute extends Component {
     if(this.state.newBeerQuantity > parseFloat(this.state.equipment)){
       this.setState({missingEquipment: true});
     } else {
-      this.setState({missingEquipment: false});
       fetch(BEER_LIST_ENDPOINT, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: this.state.newBeerName,
-              recipeID: this.state.recipeID,
-              quantity: this.state.newBeerQuantity,
-            }),
-          }).then((response) => {
-            if (response.status >= 400 && response.status < 600) {
-              this.setState({missingIngredients: true});
-            } else {
-              this.props.onConfirm();
-          }});
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.state.newBeerName,
+          recipeID: this.state.recipeID,
+          quantity: this.state.newBeerQuantity,
+        }),
+      }).then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          this.setState({missingEquipment: false, missingIngredients: true});
+        } else {
+          this.props.onConfirm();
+      }});
     }
   }
 

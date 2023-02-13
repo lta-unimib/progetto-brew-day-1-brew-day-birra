@@ -39,7 +39,7 @@ class Home extends Component {
             onConfirm={this.triggerReload}
           />
           <h3 className="advice-texts">
-            La massima quantità realizzabile è
+            La massima quantità realizzabile è {" "}
             {this.state.advice.quantity === -1 ? "infinita" : this.state.advice.quantity}
           </h3>
         </div>
@@ -55,6 +55,7 @@ class Home extends Component {
     return (
       <ThemeManager>
         <div>
+          <center>{adviceView}</center>
           <center>{nextRecipeView}</center>
         </div>
       </ThemeManager>

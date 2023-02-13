@@ -21,8 +21,15 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + "nextRecipeID")
       .then(response => response.json())
-      .then(data => this.setState({nextRecipeID: data.value}))
-      .then(() => acc());
+      .then(data => {
+        if (data.value !== "") {
+            this.setState({nextRecipeID: data.value})
+            acc();
+        } else
+          rej();
+      })
+      .catch(() => this.updateNextRecipeSetting("nextRecipeID", ""))
+      .then(() => rej());
     })
   }
 
@@ -30,8 +37,15 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + "nextRecipeQuantity")
       .then(response => response.json())
-      .then(data => this.setState({nextRecipeQuantity: parseFloat(data.value)}))
-      .then(() => acc());
+      .then(data => {
+        if (data.value !== "") {
+          this.setState({nextRecipeQuantity: parseFloat(data.value)})
+          acc();
+        } else
+          rej();
+      })
+      .catch(() => this.updateNextRecipeSetting("nextRecipeQuantity", ""))
+      .then(() => rej());
     })
   }
 
@@ -66,7 +80,7 @@ export default class NextRecipeView extends Component {
   }
 
   triggerReload = () => {
-    this.getNextRecipeID().then(this.getNextRecipeQuantity).then(this.getShoppingList).then(this.getEquipment);
+    this.getNextRecipeID().then(this.getNextRecipeQuantity).then(this.getShoppingList).then(this.getEquipment).catch(() => {});
   }
 
   setNewBeerName = (event) => {
@@ -82,6 +96,7 @@ export default class NextRecipeView extends Component {
           <div>
             <center>
               <h2>Equipaggiamento Mancante</h2>
+              <h2>Si chiede di fare {this.state.nextRecipeQuantity} litri ma si dispone di una capacita' di {this.state.equipment} litri</h2>
             </center>
           </div>
         );
@@ -144,18 +159,21 @@ export default class NextRecipeView extends Component {
 
   resetNextRecipeSettings = () => {
     this.updateNextRecipeSetting("nextRecipeID", "")
-    this.updateNextRecipeSetting("nextRecipeQuantity", "0");
+    .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", ""))
+    .then(this.triggerReload);
   }
 
   updateNextRecipeSetting = (settingID, value) => {
-    fetch(SETTINGS_ENDPOINT + `${settingID}`, {
+    return new Promise((acc, rej) => {
+      fetch(SETTINGS_ENDPOINT + `${settingID}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({value: value})
-    }).then(() => this.triggerReload());
+      }).then(() => acc());
+    });
   }
 
 }
