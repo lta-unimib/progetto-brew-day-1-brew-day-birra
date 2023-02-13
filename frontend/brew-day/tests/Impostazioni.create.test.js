@@ -35,7 +35,7 @@ describe('Impostazioni.jsx can correctly render this page', () => {
         await act(() => {render(<Impostazioni/>);});
         expect(screen.getByText("Equipaggiamento disponibile", { exact: false })).toBeInTheDocument();
         expect(screen.getByText("Inserisci qui il tuo nome", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Seleziona il colore del tema dell'applicazione", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Seleziona la location", { exact: false })).toBeInTheDocument();
+        expect(screen.getByText("Seleziona il colore del tema", { exact: false })).toBeInTheDocument();
+        expect(screen.getByText("Seleziona lo sfondo", { exact: false })).toBeInTheDocument();
     })
 })

@@ -42,8 +42,8 @@ describe('Impostazioni.jsx can correctly render page', () => {
         await act(() => {render(<Impostazioni/>);});
         expect(screen.getByText("Equipaggiamento disponibile", { exact: false })).toBeInTheDocument();
         expect(screen.getByText("Inserisci qui il tuo nome", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Seleziona il colore del tema dell'applicazione", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Seleziona la location", { exact: false })).toBeInTheDocument();
+        expect(screen.getByText("Seleziona il colore del tema", { exact: false })).toBeInTheDocument();
+        expect(screen.getByText("Seleziona lo sfondo", { exact: false })).toBeInTheDocument();
         await act(() => fireEvent.click(screen.getAllByText("Elimina tutti i dati")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Resetta la prossima ricetta da eseguire")[0]));
 
