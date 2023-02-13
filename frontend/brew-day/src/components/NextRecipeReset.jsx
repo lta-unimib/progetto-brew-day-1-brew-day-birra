@@ -5,7 +5,8 @@ import { SETTINGS_ENDPOINT } from '../Protocol';
 class NextRecipeReset extends Component{
   constructor(props) {
     super(props);
-    this.resetNextRecipeID = this.resetNextRecipeID.bind(this);
+    this.resetNextRecipeSettings = this.resetNextRecipeSettings.bind(this);
+    this.updateNextRecipeSetting = this.updateNextRecipeSetting.bind(this);
   }
 
   render(){
@@ -13,19 +14,25 @@ class NextRecipeReset extends Component{
         <div>
           <center>
             <p>Sei sicuro di voler rimuovere la ricetta?</p>
-            <MButton text="Conferma" onClick={() => this.resetNextRecipeID()} />
+            <MButton text="Conferma" onClick={() => this.resetNextRecipeSettings()} />
           </center>
         </div>
     );
   }
 
-    resetNextRecipeID() {
-      fetch(SETTINGS_ENDPOINT + `nextRecipeID`, {
-          method: 'DELETE',
+    resetNextRecipeSettings(){
+      this.updateNextRecipeSetting("nextRecipeID", "")
+      this.updateNextRecipeSetting("nextRecipeQuantity", "0");
+    }
+  
+    updateNextRecipeSetting(settingID, value) {
+      fetch(SETTINGS_ENDPOINT + `${settingID}`, {
+          method: 'PUT',
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
+          body: JSON.stringify({value: value})
       }).then(() => this.props.onConfirm());
     }
 
