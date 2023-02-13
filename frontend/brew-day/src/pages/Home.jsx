@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import NextRecipeView from "../components/NextRecipeView";
 import RecipeExecute from "../components/RecipeExecute";
 import ThemeManager from "../components/ThemeManager";
 import {ADVICE_ENDPOINT, SETTINGS_ENDPOINT } from '../Protocol';
@@ -8,7 +9,6 @@ class Home extends Component {
     super(props);
     this.state = {
       advice: null,
-      nextRecipeID: null,
     };
   }
 
@@ -19,16 +19,8 @@ class Home extends Component {
       .catch(() => {});
   }
 
-  triggerReloadSettings() {
-    fetch(SETTINGS_ENDPOINT + "nextRecipeID")
-      .then((res) => res.json())
-      .then((data) => this.setState({ nextRecipeID: data.value }))
-      .catch(() => {});
-  }
-
   componentDidMount() {
     this.triggerReload();
-    this.triggerReloadSettings();
   }
 
   render() {
@@ -55,20 +47,7 @@ class Home extends Component {
                 </h3>
               </div>
             )}
-            {this.state.nextRecipeID === null || this.state.nextRecipeID === "" ? (
-              <h1 className="advice-texts">Nessuna ricetta in programma</h1>
-            ) : (
-              <div>
-                <h1 className="advice-texts">
-                  Ecco la prossima birra in programma
-                </h1>
-                <RecipeExecute
-                  recipeID={this.state.nextRecipeID}
-                  color="white"
-                  onConfirm={this.triggerReload}
-                />
-              </div>
-            )}
+            <NextRecipeView/>
           </center>
         </div>
       </ThemeManager>
