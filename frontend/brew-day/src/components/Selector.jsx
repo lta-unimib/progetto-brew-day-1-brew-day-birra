@@ -1,6 +1,5 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem } from "@mui/material";
-import { Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default class Selector extends React.Component {
     render() {
