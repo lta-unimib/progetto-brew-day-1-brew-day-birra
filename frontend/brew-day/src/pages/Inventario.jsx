@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
 import IngredientDelete from "../components/IngredientDelete";
 import Modal from "../components/Modal";
 import {INVENTORY_LIST_ENDPOINT, INVENTORY_ENDPOINT} from '../Protocol';
+import ThemeManager from "../components/ThemeManager";
 
 class Inventario extends Component {
   constructor(props) {
@@ -82,7 +81,7 @@ class Inventario extends Component {
     });
 
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeManager>
         <div>
           <table className="myTable">
             <thead>
@@ -102,7 +101,7 @@ class Inventario extends Component {
             {this.state.showModal && <IngredientDelete onConfirm={this.handleDeleteConfirm}/>}
           </Modal>
         </div>
-      </ThemeProvider>
+      </ThemeManager>
     );
   }
 }

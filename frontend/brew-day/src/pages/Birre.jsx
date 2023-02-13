@@ -3,9 +3,8 @@ import BeerView from "../components/BeerView";
 import BeerEdit from "../components/BeerEdit";
 import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from "../components/MButton";
+import ThemeManager from '../components/ThemeManager'
 import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
 
 
@@ -161,7 +160,7 @@ class Birre extends Component {
     });
 
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeManager>
         <div>
           <table className="myTable">
             <thead>
@@ -215,7 +214,7 @@ class Birre extends Component {
             {this.getCurrentComponent()}
           </Modal>
         </div>
-      </ThemeProvider>
+      </ThemeManager>
     );
   }
 

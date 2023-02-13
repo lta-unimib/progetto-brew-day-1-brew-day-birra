@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
 import {BEERS_ENDPOINT} from '../Protocol';
 
@@ -97,7 +95,6 @@ class BeerEdit extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
             <table>
@@ -184,7 +181,6 @@ class BeerEdit extends Component {
             </table>
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 }

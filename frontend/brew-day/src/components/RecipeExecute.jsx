@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from "../components/MButton";
 import { RECIPE_ENDPOINT, SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
 
@@ -109,7 +107,6 @@ class RecipeExecute extends Component {
     };
 
     return (
-      <ThemeProvider theme={theme}>
         <div>
           {Object.keys(this.state.name).length === 0 ? null : (
             <RecipeView
@@ -149,7 +146,6 @@ class RecipeExecute extends Component {
             </table>
           {action()}
         </div>
-      </ThemeProvider>
     );
   }
 

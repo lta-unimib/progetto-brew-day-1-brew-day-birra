@@ -1,6 +1,4 @@
 import React, { Component }  from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
 import { SETTINGS_ENDPOINT } from '../Protocol';
 
@@ -12,14 +10,12 @@ class NextRecipeReset extends Component{
 
   render(){
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
             <p>Sei sicuro di voler rimuovere la ricetta?</p>
             <MButton text="Conferma" onClick={() => this.resetNextRecipeID()} />
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 

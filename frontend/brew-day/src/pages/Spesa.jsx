@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from "../components/MButton";
 import {DO_SHOPPING_ENDPOINT} from '../Protocol';
+import ThemeManager from '../components/ThemeManager';
 
 class Spesa extends Component {
   constructor(props) {
@@ -90,7 +89,7 @@ class Spesa extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeManager>
         <table className="myTable">
           <thead>
             <tr>
@@ -160,7 +159,7 @@ class Spesa extends Component {
         <div id="shoppingButtonContainer">
           <MButton text="Conferma" onClick={this.handleSubmit} />
         </div>
-      </ThemeProvider>
+      </ThemeManager>
     );
   }
 }

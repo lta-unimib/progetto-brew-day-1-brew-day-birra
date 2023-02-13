@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
+import themes from "../theme/themes";
+import ThemeManager from "../components/ThemeManager";
 import Modal from "../components/Modal";
 import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
@@ -24,7 +24,7 @@ export default class Impostazioni extends Component {
         this.handleResetNextRecipeID = this.handleResetNextRecipeID.bind(this);
 
         this.state = {showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
-                      colors: [{"name": "default", "value": "#fcdd2e"}, {"name": "black", "value": "#645F81"}],
+                      colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
                       backgrounds: [{"name": "default", "value": "#fcdd2e"}, {"name": "location1", "value": "#645F81"}]};
     }
 
@@ -117,7 +117,7 @@ export default class Impostazioni extends Component {
 
     render(){
       return (
-        <ThemeProvider theme={theme}>
+        <ThemeManager>
             <div>
                 <table className="myTable">
                     <tbody>
@@ -177,7 +177,7 @@ export default class Impostazioni extends Component {
                   {this.getCurrentComponent()}
                 </Modal>
             </div>
-          </ThemeProvider>
+          </ThemeManager>
         )
 
     }

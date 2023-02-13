@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
 import MButton from '../components/MButton';
 import { RECIPE_ENDPOINT } from '../Protocol';
 
@@ -68,7 +66,6 @@ class RecipeEdit extends Component{
     });
   
     return (
-      <ThemeProvider theme={theme}>
         <div>
           <center>
           <table className="myTable">
@@ -113,7 +110,6 @@ class RecipeEdit extends Component{
             </table>
           </center>
         </div>
-      </ThemeProvider>
     );
   }
 

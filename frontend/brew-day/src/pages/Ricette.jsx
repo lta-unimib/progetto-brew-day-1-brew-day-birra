@@ -4,11 +4,9 @@ import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
-import { ThemeProvider } from "@mui/material";
-import theme from "../theme/theme";
+import ThemeManager from '../components/ThemeManager';
 import MButton from '../components/MButton';
 import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
-
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -138,9 +136,8 @@ export default class Ricette extends Component {
         });
         
         return (
-          <ThemeProvider theme={theme}>
+          <ThemeManager>
             <div>
-
                 <table className="myTable">
                     <tbody>
                         <tr>
@@ -193,7 +190,7 @@ export default class Ricette extends Component {
                   {this.getCurrentComponent()}
                 </Modal>
             </div>
-          </ThemeProvider>
+          </ThemeManager>
         );
     }
 

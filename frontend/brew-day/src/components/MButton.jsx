@@ -5,15 +5,15 @@ class MButton extends Component {
   render() {
     const button = (
       <Button
-        style={{
-          marginRight: 10,
-          marginLeft: 10,
-          marginTop: 10,
-          marginBottom: 10,
-        }}
-        variant="contained"
-        color="primary"
-        onClick={this.props.onClick ?? (() => {})}
+      style={{
+        marginRight: 10,
+        marginLeft: 10,
+        marginTop: 10,
+        marginBottom: 10,
+      }}
+      variant="contained"
+      color="primary"
+      onClick={this.props.onClick ?? (() => {})}
       >
         {this.props.text}
       </Button>
