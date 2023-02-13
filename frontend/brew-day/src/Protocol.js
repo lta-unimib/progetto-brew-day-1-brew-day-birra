@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const ADVICE_ENDPOINT = '/api/advice';
 export const BEERS_ENDPOINT = '/api/beers/';
 export const BEER_LIST_ENDPOINT = '/api/beers';

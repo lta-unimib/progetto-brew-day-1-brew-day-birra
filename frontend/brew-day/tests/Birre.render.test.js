@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
+import userEvent from "@testing-library/user-event";
 
 var recipes = {
     "recipeID": {
@@ -49,7 +50,8 @@ describe('Birre.jsx can correctly render page', () => {
     test('can filter beers', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "beerName"}}));
-        await act(() => fireEvent.change(screen.getAllByRole("combobox")[0], {target: {value: "recipeID"}}));
+        await act(() => userEvent.click(screen.getByLabelText("Recipe")));
+        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("recipeName")));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })

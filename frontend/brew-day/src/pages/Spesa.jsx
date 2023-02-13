@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MButton from "../components/MButton";
 import {DO_SHOPPING_ENDPOINT} from '../Protocol';
 import ThemeManager from '../components/ThemeManager';
+import IngredientNameInput from "../components/IngredientNameInput";
 
 class Spesa extends Component {
   constructor(props) {
@@ -88,6 +89,7 @@ class Spesa extends Component {
   }
 
   render() {
+    console.log(this.state.ingredients);
     return (
       <ThemeManager>
         <table className="myTable">
@@ -101,10 +103,7 @@ class Spesa extends Component {
           <tbody>
             {this.state.ingredients.map((ingredient, index) => {
               let firstColumn = (
-                <input
-                  id="shoppingInputName"
-                  data-testid="shopping-name"
-                  type="text"
+                <IngredientNameInput
                   value={ingredient.ingredientName}
                   onChange={(e) =>
                     this.handleIngredientChange(

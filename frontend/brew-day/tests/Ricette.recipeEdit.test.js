@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
 
@@ -41,8 +41,8 @@ describe('Ricette.jsx can correctly edit recipe', () => {
     test('open recipe edit', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
-        expect(screen.getAllByRole("textbox").length).toBeGreaterThanOrEqual(6);
-        expect(screen.getAllByRole("textbox").length).toBeLessThanOrEqual(6);
+        expect(screen.getAllByRole("textbox").length).toBeGreaterThanOrEqual(5);
+        expect(screen.getAllByRole("textbox").length).toBeLessThanOrEqual(5);
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
@@ -73,8 +73,8 @@ describe('Ricette.jsx can correctly edit recipe', () => {
     test('open recipe edit and add an ingredient', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
-        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[4], {target: {value: "newIngredientName"}})});
-        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[5], {target: {value: "newIngredientDescription"}})});
+        await act(() => {fireEvent.change(within(screen.getByTestId("ingredient-name-input")).getByRole("combobox"), {target: { value: "newName" },});});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[4], {target: {value: "newIngredientDescription"}})});
         await act(() => {fireEvent.click(screen.getAllByText("V")[4])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
