@@ -8,23 +8,14 @@ import ThemeManager from '../components/ThemeManager';
 import MButton from '../components/MButton';
 import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
 import Selector from '../components/Selector';
+import RecipeTable from '../components/RecipeTable';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
         this.state = {recipes: [], currentAction: "", nextRecipeQuantity: "", nextRecipeID: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
-        this.handleView = this.handleView.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleExecute = this.handleExecute.bind(this);
-        this.getCurrentComponent = this.getCurrentComponent.bind(this);
-        this.setShowModal = this.setShowModal.bind(this);
-        this.filterRecipe = this.filterRecipe.bind(this);
-        this.triggerReload = this.triggerReload.bind(this);
-        this.triggerReloadSettings = this.triggerReloadSettings.bind(this);
-
     }
 
-    triggerReload() {
+    triggerReload = () => {
         fetch(RECIPE_LIST_ENDPOINT)
         .then(response => response.json())
         .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
@@ -32,7 +23,7 @@ export default class Ricette extends Component {
         .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}));
     }
 
-     triggerReloadSettings() {
+     triggerReloadSettings = () => {
         fetch(SETTINGS_ENDPOINT + "nextRecipeID")
         .then(response => response.json())
         .then(data => this.setState({nextRecipeID: data.value}))
@@ -52,15 +43,15 @@ export default class Ricette extends Component {
       this.triggerReloadSettings();
     }
 
-    handleView(item) {
+    handleView = (item) => {
       this.setState({currentAction:"view", selectedRecipe:item, showModal:true})
     };
 
-    handleEdit(item) {
+    handleEdit = (item) => {
       this.setState({currentAction:"edit", selectedRecipe:item, showModal:true})
     };    
     
-    handleDelete(item) {
+    handleDelete = (item) => {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
       if(item.recipeID === this.state.nextRecipeID){
         this.updateNextRecipeSetting("nextRecipeID", "");
@@ -69,14 +60,14 @@ export default class Ricette extends Component {
 
     };
 
-    handleExecute(item) {
+    handleExecute = (item) => {
       this.setState({currentAction:"execute", selectedRecipe:item, showModal:true})
     };
 
     closeModal = () => this.setShowModal(false);
     closeModalAndReload = () => {this.closeModal(); this.triggerReload()};
 
-    getCurrentComponent(){
+    getCurrentComponent = () => {
       let selectedRecipe = this.state.selectedRecipe;
       let currentAction = this.state.currentAction;
       if (!selectedRecipe) return <div>Caricamento...</div>;
@@ -94,17 +85,17 @@ export default class Ricette extends Component {
       }
     }
 
-    setNewRecipeName(event){
+    setNewRecipeName = (event) => {
       let newRecipeName = event.target.value;
       this.setState({newRecipeName: newRecipeName});
     }
 
-    setFilterName(event){
+    setFilterName = (event) => {
       let filterName = event.target.value;
       this.setState({filterName: filterName});
     }
   
-    setNewRecipeDescription(event){
+    setNewRecipeDescription = (event) => {
       let newRecipeDescription = event.target.value;
       this.setState({newRecipeDescription: newRecipeDescription});
     }
@@ -115,18 +106,18 @@ export default class Ricette extends Component {
       this.updateNextRecipeSetting("nextRecipeID", newNextRecipeID)
     }
 
-    setNewNextRecipeQuantity(event){
+    setNewNextRecipeQuantity = (event) => {
       let newNextRecipeQuantity = event.target.value;
       this.setState({nextRecipeQuantity: newNextRecipeQuantity});
     }
 
-    setShowModal(flag) {
+    setShowModal = (flag) => {
       if (!flag)
         this.setState({currentAction:""})
       this.setState({showModal:flag})
     }
     
-    removeFilter(){
+    removeFilter = () => {
       this.setState({recipesFiltered: this.state.recipes, filterName: ""})
     }
 
@@ -137,64 +128,50 @@ export default class Ricette extends Component {
             return <p>Caricamento...</p>;
         }
         
-        const itemList = recipesFiltered.map(item => {
-            return <tr key={item.recipeID}>
-              <td>{item.name}</td>
-              <td>{item.description}</td>
-              <td>
-                <MButton text="Dettagli" onClick={() => this.handleView(item)} />
-                <MButton text="Esegui" onClick={() => this.handleExecute(item)} />
-                <MButton text="Modifica" onClick={() => this.handleEdit(item)} />
-                <MButton text="Elimina" onClick={() => this.handleDelete(item)} />
-              </td>
-            </tr>
-        });
-        
         return (
           <ThemeManager>
             <div>
                 <table className="myTable">
                     <tbody>
                         <tr>
-                          <td>Seleziona la prossima ricetta che vorresti eseguire e la quantità</td>
-                          <td>
+                            <td width="30%">FILTRA PER NOME</td>
+                            <td width="50%"><input value={this.state.filterName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></td>
+                            <td width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()} />
+                                            <MButton text="Togli" onClick={() => this.removeFilter()} />
+                            </td>
+                        </tr>
+                        <tr>
+                          <td>Seleziona la prossima ricetta</td>
+                          <td style={{display:"flex", flexFlow: "row wrap", justifyContent:"space-around"}}>
                               <Selector
                                 label="Recipe"
                                 value={this.state.nextRecipeID}
                                 onChange={this.setNewNextRecipeID}
                                 options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
                               />
+                              <input
+                                sx={{ width: "25%", textAlign:"center" }}
+                                value={this.state.nextRecipeQuantity} type="text"
+                                onChange={ (event) => this.setNewNextRecipeQuantity(event)}
+                              />
                           </td>
-                          <td><input value={this.state.nextRecipeQuantity} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewNextRecipeQuantity(event)}></input></td>
-                          <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)} /></td>
+                          <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <table className="myTable">
-                    <thead>
-                        <tr>
-                            <th width="30%">FILTRA PER NOME</th>
-                            <th width="50%"><input value={this.state.filterName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setFilterName(event)}></input></th>
-                            <th width="20%"><MButton text="Filtra" onClick={() => this.filterRecipe()} />
-                                            <MButton text="Togli" onClick={() => this.removeFilter()} />
-                            </th>
-                        </tr>
-                        <tr>
-                            <th width="30%">Nome</th>
-                            <th width="50%">Descrizione</th>
-                            <th width="10%">Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {itemList}
-                        <tr>
-                          <td><input value={this.state.newRecipeName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeName(event)}></input></td>
-                          <td><input value={this.state.newRecipeDescription} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewRecipeDescription(event)}></input></td>
-                          <td><MButton text="Aggiungi" onClick={() => this.addRecipe()} /></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <RecipeTable
+                  recipes={recipesFiltered}
+                  handleView={this.handleView}
+                  handleEdit={this.handleEdit}
+                  handleDelete={this.handleDelete}
+                  handleExecute={this.handleExecute}
+                  newRecipeName={this.state.newRecipeName}
+                  newRecipeDescription={this.state.newRecipeDescription}
+                  setNewRecipeName={this.setNewRecipeName}
+                  setNewRecipeDescription={this.setNewRecipeDescription}
+                  addRecipe={this.addRecipe}
+                  />
                 <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
                   {this.getCurrentComponent()}
                 </Modal>
@@ -203,7 +180,7 @@ export default class Ricette extends Component {
         );
     }
 
-    addRecipe() {
+    addRecipe = () => {
       fetch(RECIPE_LIST_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -215,7 +192,7 @@ export default class Ricette extends Component {
       .then(() => this.triggerReload());
     }
 
-    filterRecipe() {
+    filterRecipe = () => {
       fetch(RECIPE_LIST_ENDPOINT + `?name=${this.state.filterName}`)
         .then(response => response.json())
         .then(recipesIDsFiltered => {
@@ -224,7 +201,7 @@ export default class Ricette extends Component {
         })
     }
 
-    updateNextRecipeSetting(settingID, value) {
+    updateNextRecipeSetting = (settingID, value) => {
       fetch(SETTINGS_ENDPOINT + `${settingID}`, {
           method: 'PUT',
           headers: {
@@ -235,7 +212,7 @@ export default class Ricette extends Component {
       })
     }
 
-    postNextRecipeSetting(settingID, value) {
+    postNextRecipeSetting = (settingID, value) => {
       fetch(SETTING_LIST_ENDPOINT, {
           method: 'POST',
           headers: {

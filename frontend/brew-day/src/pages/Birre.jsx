@@ -7,6 +7,7 @@ import MButton from "../components/MButton";
 import ThemeManager from '../components/ThemeManager'
 import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
 import Selector from "../components/Selector";
+import BeerTable from "../components/BeerTable";
 
 
 class Birre extends Component {
@@ -65,7 +66,7 @@ class Birre extends Component {
     this.triggerReload();
   }
 
-  handleView(item) {
+  handleView = (item) => {
     this.setState({
       currentAction: "view",
       selectedBeer: item,
@@ -73,7 +74,7 @@ class Birre extends Component {
     });
   }
 
-  handleEdit(item) {
+  handleEdit = (item) => {
     this.setState({
       currentAction: "edit",
       selectedBeer: item,
@@ -81,7 +82,7 @@ class Birre extends Component {
     });
   }
 
-  handleDelete(item) {
+  handleDelete = (item) => {
     this.setState({
       currentAction: "delete",
       selectedBeer: item,
@@ -93,7 +94,7 @@ class Birre extends Component {
     this.setState({ showModal: flag });
   };
 
-  handleDeleteConfirm =  () => {
+  handleDeleteConfirm = () => {
     const beerToDeleteID = this.state.selectedBeer.beerID;
      fetch(BEERS_ENDPOINT+`${beerToDeleteID}`, {
       method: "DELETE",
@@ -103,7 +104,7 @@ class Birre extends Component {
     })
   };
 
-  getCurrentComponent() {
+  getCurrentComponent = () => {
     let selectedBeer = this.state.selectedBeer;
     let currentAction = this.state.currentAction;
 
@@ -146,18 +147,9 @@ class Birre extends Component {
   render() {
     const { beerIDsFiltered, beers } = this.state;
 
-    const itemList = beerIDsFiltered.map((item) => {
+    const beerItems = beerIDsFiltered.map((item) => {
       const beer = beers.find((b) => b.beerID === item);
-      return (
-        <tr key={item}>
-          <td>{beer.name}</td>
-          <td>
-            <MButton text="Dettagli" onClick={() => this.handleView(beer)} />
-            <MButton text="Modifica" onClick={() => this.handleEdit(beer)} />
-            <MButton text="Elimina" onClick={() => this.handleDelete(beer)} />
-          </td>
-        </tr>
-      );
+      return beer
     });
 
     return (
@@ -200,8 +192,13 @@ class Birre extends Component {
                 <th width="50%">Azioni</th>
               </tr>
             </thead>
-            <tbody>{itemList}</tbody>
           </table>
+          <BeerTable
+            beers={beerItems}
+            handleView={this.handleView}
+            handleEdit={this.handleEdit}
+            handleDelete={this.handleDelete}
+          />
           <Modal
             showModal={this.state.showModal}
             setShowModal={this.setShowModal}
@@ -213,7 +210,7 @@ class Birre extends Component {
     );
   }
 
-  filterBeer() {
+  filterBeer = () => {
     let url = "";
     if (this.state.filterName === "") {
       if (this.state.filterRecipe === "") {
@@ -236,7 +233,7 @@ class Birre extends Component {
       });
   }
 
-  removeFilter() {
+  removeFilter = () => {
     this.setState({
       beerIDsFiltered: this.state.beerIDs,
       filterName: "",

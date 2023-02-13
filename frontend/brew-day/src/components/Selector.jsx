@@ -7,7 +7,7 @@ export default class Selector extends React.Component {
             return (<MenuItem value={option.value} key={option.name}>{option.name}</MenuItem>);
         });
         return (
-            <FormControl fullWidth>
+            <FormControl sx={{width: "65%"}}>
                 <InputLabel id={`selector-${this.props.label}`}>{this.props.label}</InputLabel>
                 <Select
                     labelId={`selector-${this.props.label}`}
