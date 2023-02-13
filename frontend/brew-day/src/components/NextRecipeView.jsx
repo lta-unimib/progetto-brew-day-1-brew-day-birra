@@ -13,7 +13,7 @@ class NextRecipeView extends Component {
       nextRecipeQuantity: "0",
       nextRecipeID: "",
       equipment: "",
-      recipe: "",
+      recipe: {},
     };
     this.triggerReload = this.triggerReload.bind(this);
     this.addBeer = this.addBeer.bind(this);
@@ -131,7 +131,7 @@ getEquipment() {
             ) : (
               <div>
                 <h1 className="advice-texts">Ecco la prossima birra in programma</h1>
-                    {Object.keys(this.state.recipe.name).length === 0 ? null : (
+                    {Object.keys(this.state.recipe).length === 0 ? null : (
                     <RecipeView
                       color={this.props.color}
                       name={this.state.recipe.name}
