@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "../components/MButton";
 import { RECIPE_ENDPOINT, SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
+import ShoppingList from "./ShoppingList";
 
 class RecipeExecute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      missingIngredients: [],
+      missingIngredients: false,
       newBeerName: "new Beer",
       newBeerQuantity: 0,
       name: "",
@@ -18,7 +19,6 @@ class RecipeExecute extends Component {
     };
 
     this.triggerReload = this.triggerReload.bind(this);
-    this.getShoppingList = this.getShoppingList.bind(this);
     this.addBeer = this.addBeer.bind(this);
   }
 
@@ -51,28 +51,6 @@ class RecipeExecute extends Component {
   }
 
   render() {
-    const itemList = this.state.missingIngredients.map((item) => {
-      let imagePath = `../../icons/inventory-icons/${item.name}.png`;
-      let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
-      return (
-        <tr key={item.name}>
-          <td>
-            <img
-              className="shoppingImage"
-              src={imagePath}
-              alt=""
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = defaultImage;
-              }}
-            />
-          </td>
-          <td>{item.name}</td>
-          <td>{item.quantity}</td>
-        </tr>
-      );
-    });
-
     const action = () => {
 
       if (this.state.missingEquipment) {
@@ -85,24 +63,8 @@ class RecipeExecute extends Component {
         );
       }
 
-      if (this.state.missingIngredients.length !== 0) {
-        return (
-          <div>
-            <center>
-              <h2 style={{color: (this.props.color ?? 'black')}}>Ingredienti Mancanti</h2>
-            </center>
-            <table className="myTable">
-              <thead>
-                <tr>
-                  <th width="25%">Immagine</th>
-                  <th width="25%">Nome</th>
-                  <th width="25%">Quantità</th>
-                </tr>
-              </thead>
-              <tbody>{itemList}</tbody>
-            </table>
-          </div>
-        );
+      if (this.state.missingIngredients) {
+        return <div> <ShoppingList recipeID={this.props.recipeID} quantity={this.state.newBeerQuantity}/> </div>
       }
     };
 
@@ -167,26 +129,11 @@ class RecipeExecute extends Component {
             }),
           }).then((response) => {
             if (response.status >= 400 && response.status < 600) {
-              this.getShoppingList();
+              this.setState({missingIngredients: true});
             } else {
               this.props.onConfirm();
           }});
     }
-  }
-
-
-  getShoppingList(){
-      fetch(SHOPPING_ENDPOINT + `${this.state.recipeID}`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            quantity: this.state.newBeerQuantity,
-          }),
-          }).then((response) => response.json())
-          .then((data) => this.setState({ missingIngredients: data }));
   }
 
 }
