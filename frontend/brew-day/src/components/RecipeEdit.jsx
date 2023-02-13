@@ -103,7 +103,7 @@ class RecipeEdit extends Component{
               <tbody>
                 {itemList}
                 <tr>
-                  <td><IngredientNameInput value={this.state.newIngredientQuantity} onChange={this.setNewIngredientQuantity}></IngredientNameInput></td>
+                  <td><IngredientNameInput value={this.state.newIngredientName} onChange={this.setNewIngredientName}></IngredientNameInput></td>
                   <td><input value={this.state.newIngredientQuantity} type="text" style={{width: "50%", textAlign:"center"}} onChange={this.setNewIngredientQuantity}></input></td>
                   <td><MButton text="V" onClick={() => this.addIngredient()}/></td>
                 </tr>
