@@ -7,6 +7,7 @@ import RecipeExecute from "../components/RecipeExecute";
 import ThemeManager from '../components/ThemeManager';
 import MButton from '../components/MButton';
 import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
+import Selector from '../components/Selector';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -108,7 +109,7 @@ export default class Ricette extends Component {
       this.setState({newRecipeDescription: newRecipeDescription});
     }
 
-    setNewNextRecipeID(event){
+    setNewNextRecipeID = (event) => {
       let newNextRecipeID = event.target.value;
       this.setState({nextRecipeID: newNextRecipeID});
       this.updateNextRecipeSetting("nextRecipeID", newNextRecipeID)
@@ -157,20 +158,12 @@ export default class Ricette extends Component {
                         <tr>
                           <td>Seleziona la prossima ricetta che vorresti eseguire e la quantità</td>
                           <td>
-                              <select
-                                  value={this.state.nextRecipeID}
-                                  style={{ width: "90%", textAlign: "center" }}
-                                  onChange={(event) => this.setNewNextRecipeID(event)} 
-                                >
-                                  <option value="" key="">
-                                      --seleziona una ricetta--
-                                  </option>
-                                  {this.state.recipes.map((recipe) => (
-                                    <option value={recipe.recipeID} key={recipe.recipeID}>
-                                      {recipe.name}
-                                    </option>
-                                  ))}
-                              </select>
+                              <Selector
+                                label="Recipe"
+                                value={this.state.nextRecipeID}
+                                onChange={this.setNewNextRecipeID}
+                                options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                              />
                           </td>
                           <td><input value={this.state.nextRecipeQuantity} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.setNewNextRecipeQuantity(event)}></input></td>
                           <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)} /></td>

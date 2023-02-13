@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import NextRecipeView from "../components/NextRecipeView";
 import RecipeExecute from "../components/RecipeExecute";
 import ThemeManager from "../components/ThemeManager";
-import {ADVICE_ENDPOINT, SETTINGS_ENDPOINT } from '../Protocol';
+import {ADVICE_ENDPOINT } from '../Protocol';
 
 class Home extends Component {
   constructor(props) {
