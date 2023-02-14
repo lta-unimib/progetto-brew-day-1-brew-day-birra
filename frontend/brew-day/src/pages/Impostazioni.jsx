@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import themes from "../theme/themes";
+import backgrounds from '../theme/backgrounds';
 import ThemeManager from "../components/ThemeManager";
 import Modal from "../components/Modal";
 import MButton from '../components/MButton';
@@ -15,24 +16,15 @@ export default class Impostazioni extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {currentAction: "", showModal:false};
-        this.triggerReload = this.triggerReload.bind(this);
-        this.updateValue = this.updateValue.bind(this);
-        this.setNewEquipment = this.setNewEquipment.bind(this);
-        this.setNewName = this.setNewName.bind(this);
-        this.setNewBackground = this.setNewBackground.bind(this);
-        this.setNewColor = this.setNewColor.bind(this);
-        this.getCurrentComponent = this.getCurrentComponent.bind(this);
-        this.setShowModal = this.setShowModal.bind(this);
-        this.handleResetSettings = this.handleResetSettings.bind(this);
-        this.handleResetNextRecipeID = this.handleResetNextRecipeID.bind(this);
-
-        this.state = {showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
-                      colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
-                      backgrounds: [{"name": "default", "value": "default"}, {"name": "totaldark", "value": "totaldark"}]};
+        this.state = {
+          currentAction: "",
+          showModal:false, settings: [], equipment: "", color: "", name: "", background: "",
+          colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
+          backgrounds: Object.keys(backgrounds).map((key) => { return {name:key, value:key}; })
+        };
     }
 
-    triggerReload() {
+    triggerReload = () => {
         fetch(SETTING_LIST_ENDPOINT)
         .then(response => response.json())
         .then(data => {this.setState({settings: data});
@@ -63,44 +55,44 @@ export default class Impostazioni extends Component {
       })
     }
 
-    setNewEquipment(event){
+    setNewEquipment = (event) => {
       let newEquipment = event.target.value;
       this.setState({equipment: newEquipment});
     }
 
-    setNewName(event){
+    setNewName = (event) => {
       let newName = event.target.value;
       this.setState({name: newName});
     }
 
-    setNewBackground(event){
+    setNewBackground = (event) => {
       let newBackground = event.target.value;
       this.setState({background: newBackground});
       this.updateValue("background", newBackground)
     }
 
-    setNewColor(event){
+    setNewColor = (event) => {
       let newColor = event.target.value;
       this.setState({color: newColor});
       this.updateValue("color", newColor)
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
       this.triggerReload();
     }
 
     closeModal = () => this.setShowModal(false);
     closeModalAndReload = () => {this.closeModal(); this.triggerReload()};
 
-    handleResetSettings(item) {
+    handleResetSettings = () => {
       this.setState({currentAction:"resetSettings", showModal:true})
     };  
 
-    handleResetNextRecipeID(item) {
+    handleResetNextRecipeID = () => {
       this.setState({currentAction:"resetRecipeID", showModal:true})
     }; 
 
-    getCurrentComponent(){
+    getCurrentComponent = () => {
       let currentAction = this.state.currentAction;
       switch (currentAction) {
         case "resetSettings":
@@ -113,7 +105,7 @@ export default class Impostazioni extends Component {
     }    
 
 
-    setShowModal(flag) {
+    setShowModal = (flag) => {
       if (!flag)
         this.setState({currentAction:""})
       this.setState({showModal:flag})
@@ -164,7 +156,7 @@ export default class Impostazioni extends Component {
 
     }
 
-    updateValue(id, newValue) {
+    updateValue = (id, newValue) => {
       fetch(SETTINGS_ENDPOINT+`${id}`, {
           method: 'PUT',
           headers: {
@@ -178,7 +170,7 @@ export default class Impostazioni extends Component {
       });
     }
 
-    postValue(id, newValue) {
+    postValue = (id, newValue) => {
       fetch(SETTING_LIST_ENDPOINT, {
           method: 'POST',
           headers: {

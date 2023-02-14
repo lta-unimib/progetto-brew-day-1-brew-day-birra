@@ -2,6 +2,7 @@ import React from 'react';
 import themes from '../theme/themes';
 import { SETTINGS_ENDPOINT } from '../Protocol';
 import { ThemeProvider } from '@mui/material';
+import BackgroundManager from './BackgroundManager';
 
 export default class ThemeManager extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ export default class ThemeManager extends React.Component {
             let value = data.value;
             if (themes[value] === undefined)
                 value = "default";
-            this.setState({currentTheme: value, loaded: true});
+            this.setState({currentTheme: value});
         })
         .catch(() => {
             this.setState({currentTheme: "default"});
@@ -31,6 +32,8 @@ export default class ThemeManager extends React.Component {
     }
 
     render() {
-        return (<ThemeProvider theme={themes[this.state.currentTheme]}>{this.props.children}</ThemeProvider>);
+        return (<BackgroundManager>
+            <ThemeProvider theme={themes[this.state.currentTheme]}>{this.props.children}</ThemeProvider>
+        </BackgroundManager>);
     }
 }

@@ -6,7 +6,6 @@ export default class Selector extends React.Component {
         const options = this.props.options.map((option) => {
             return (<MenuItem value={option.value} key={option.name}>{option.name}</MenuItem>);
         });
-        console.log({textAlign:"center", width: this.props.width});
         return (
             <FormControl
                 sx={{textAlign:"center"}} fullWidth>

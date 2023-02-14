@@ -4,12 +4,12 @@ import RecipeView from "../components/RecipeView";
 import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
-import ThemeManager from '../components/ThemeManager';
 import MButton from '../components/MButton';
 import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
+import ThemeManager from '../components/ThemeManager';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
