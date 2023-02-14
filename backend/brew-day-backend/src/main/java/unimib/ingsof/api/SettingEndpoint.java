@@ -20,7 +20,7 @@ import unimib.ingsof.persistence.model.Setting;
 @RequestMapping("/api/settings/{settingID}")
 public class SettingEndpoint {
 	@GetMapping
-	public ResponseEntity<Object> getSetting(@PathVariable String settingID) {
+	public ResponseEntity<Setting> getSetting(@PathVariable String settingID) {
 		try {
 			Setting setting = SettingController.getInstance().getSetting(settingID);
 			return new ResponseEntity<>(setting, HttpStatus.OK);
@@ -30,7 +30,7 @@ public class SettingEndpoint {
 	}
 
 	@PutMapping
-	public ResponseEntity<Object> updateSetting(@PathVariable String settingID, @RequestBody Map<String, String> settingObject) {
+	public ResponseEntity<Setting> updateSetting(@PathVariable String settingID, @RequestBody Map<String, String> settingObject) {
 		try {
 			Setting setting = SettingController.getInstance().updateSetting(settingID, settingObject);
 			return new ResponseEntity<>(setting, HttpStatus.OK);
