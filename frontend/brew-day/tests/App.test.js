@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import App from '../src/App';
 import reportWebVitals from '../src/reportWebVitals';
 import { act } from "react-test-renderer";
+import {BrowserRouter} from "react-router-dom"
 
 global.fetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
@@ -16,7 +17,7 @@ describe('App component', () => {
   test('should render correctly', async () => {
     let theContainer;
     await act(() => {
-      const { container } = render(<App />);
+      const { container } = render(<BrowserRouter><App /></BrowserRouter>);
       theContainer = container;
     })
     expect(theContainer.firstChild).toMatchSnapshot();
