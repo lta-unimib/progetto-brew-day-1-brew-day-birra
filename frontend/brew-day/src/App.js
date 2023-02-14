@@ -19,11 +19,11 @@ export default class App extends React.Component {
         </NavBarThemeManager>
         <Routes>
           <Route path="/" element={<Home />}/>
-          <Route path="Ricette" element={<Ricette />}/>
-          <Route path="Birre" element={<Birre />}/>
-          <Route path="Inventario" element={<Inventario />}/>
-          <Route path="Spesa" element={<Spesa />}/>                
-          <Route path="Impostazioni" element={<Impostazioni masterCall={() => this.setState({})}/>}/>
+          <Route path="/Ricette" element={<Ricette />}/>
+          <Route path="/Birre" element={<Birre />}/>
+          <Route path="/Inventario" element={<Inventario />}/>
+          <Route path="/Spesa" element={<Spesa />}/>                
+          <Route path="/Impostazioni" element={<Impostazioni masterCall={() => this.setState({})}/>}/>
         </Routes>
       </React.Fragment>
     );
