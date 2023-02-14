@@ -37,12 +37,22 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 )
 
-describe('Impostazioni.jsx can correctly render page', () => {
+describe('Impostazioni.jsx can correctly update equipement and name', () => {
     test('can update equipment and name', async () => {
         await act(() => {render(<Impostazioni/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "10"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[0]));
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "Paolina"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[1]));
+    })
+    test('can update color', async () => {
+        await act(() => {render(<Impostazioni/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Color"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
+    })
+    test('can update background', async () => {
+        await act(() => {render(<Impostazioni/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Background"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
     })
 })

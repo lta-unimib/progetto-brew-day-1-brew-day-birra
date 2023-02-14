@@ -41,8 +41,8 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can filter recipes', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "recipeName"}}));
-        await act(() => userEvent.click(screen.getByLabelText("Recipe")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("recipeName")));
+        fireEvent.mouseDown(screen.getByLabelText("Recipe"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName"));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })

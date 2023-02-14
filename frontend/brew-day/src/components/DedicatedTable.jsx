@@ -8,19 +8,8 @@ import TableRow from '@mui/material/TableRow';
 
 class DedicatedTableData extends React.Component {
     render() {
-        return (<TableCell
+        return (<TableCell key={this.props.theKey}
                 align={this.props.align}
-            >
-                {this.props.children}
-        </TableCell>);
-    }
-}
-
-class DedicatedTableHeader extends React.Component {
-    render() {
-        return (<TableCell
-                align={this.props.align}
-                sx={{ fontSize: 30 }}
             >
                 {this.props.children}
         </TableCell>);
@@ -38,13 +27,13 @@ export default class DedicatedTable extends React.Component {
     }
     render() {
         const columnRow = this.columns.map((column) => {
-            return (<DedicatedTableHeader align={column.align}>{column.title}</DedicatedTableHeader>);
+            return (<TableCell sx={{ fontSize: 30 }} key={column.key} align={column.align}>{column.title}</TableCell>);
         })
 
-        const tableRows = this.props.rows.map((row, index) => {
-            return (<TableRow key={index}>
+        const tableRows = this.props.rows.map((row, rowIndex) => {
+            return (<TableRow key={`row-${rowIndex}`}>
                 {this.columns.map((column) => {
-                    return (<DedicatedTableData align={column.align}>{row[column.key]}</DedicatedTableData>);
+                    return (<TableCell key={column.key} align={column.align}>{row[column.key]}</TableCell>);
                 })}
             </TableRow>);
         })

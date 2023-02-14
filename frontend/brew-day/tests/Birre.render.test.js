@@ -3,7 +3,6 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
-import userEvent from "@testing-library/user-event";
 
 var recipes = {
     "recipeID": {
@@ -16,6 +15,10 @@ var beers = {
     "beerID": {
         recipeID: "recipeID", name: "beerName",
         beerID: "beerID", notes: []
+    },
+    "beerID2": {
+        recipeID: "recipeID", name: "beerNome",
+        beerID: "beerID2", notes: []
     }
 }
 
@@ -46,12 +49,11 @@ describe('Birre.jsx can correctly render page', () => {
         await act(() => {render(<Birre/>);});
         expect(screen.getByText(beers.beerID.name, { exact: false })).toBeInTheDocument();
     })
-    
     test('can filter beers', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "beerName"}}));
-        await act(() => userEvent.click(screen.getByLabelText("Recipe")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("recipeName")));
+        fireEvent.mouseDown(screen.getByLabelText("Recipe"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName"));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })
