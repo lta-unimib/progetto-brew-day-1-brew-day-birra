@@ -79,24 +79,16 @@ function NavBar() {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
-            > 
+            >
               {pages.map((page) => (
-                <div href={`/${page}`}
->
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>     
-                
-                   
-                    
-                {page}
-                
+                <MenuItem key={page}>     
+                <Link
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    href={`/${page}`}
+                >{page}
+                </Link>
                 </MenuItem>
-
-
-
-                </div>
-
-
-                
               ))}
             </Menu>
           </Box>
