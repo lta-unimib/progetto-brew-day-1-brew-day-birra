@@ -17,7 +17,7 @@ class Birre extends Component {
     this.state = {
       beerIDs: [],
       beers: [],
-      currentAction: "view",
+      currentAction: "",
       selectedBeer: null,
       showModal: false,
       filterRecipe: "",

@@ -6,16 +6,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-class DedicatedTableData extends React.Component {
-    render() {
-        return (<TableCell key={this.props.theKey}
-                align={this.props.align}
-            >
-                {this.props.children}
-        </TableCell>);
-    }
-}
-
 export default class DedicatedTable extends React.Component {
     constructor(props) {
         super(props);
