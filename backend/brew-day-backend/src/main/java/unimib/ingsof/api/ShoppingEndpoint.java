@@ -31,7 +31,7 @@ public class ShoppingEndpoint {
 			result = ShoppingController.getInstance().getShoppingList(recipeID, requestBody.orElse(null));
 		} catch (DoesntExistsException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (InsufficientEquipmentException e) {
+		} catch (InsufficientEquipmentException|ValidationException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);

@@ -4,9 +4,11 @@ import BeerEdit from "../components/BeerEdit";
 import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
 import MButton from "../components/MButton";
-import ThemeManager from '../components/ThemeManager'
+import BodyThemeManager from '../components/BodyThemeManager'
 import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
 import Selector from "../components/Selector";
+import BeerTable from "../components/BeerTable";
+import JimTable from "../components/JimTable";
 
 
 class Birre extends Component {
@@ -15,7 +17,7 @@ class Birre extends Component {
     this.state = {
       beerIDs: [],
       beers: [],
-      currentAction: "view",
+      currentAction: "",
       selectedBeer: null,
       showModal: false,
       filterRecipe: "",
@@ -65,7 +67,7 @@ class Birre extends Component {
     this.triggerReload();
   }
 
-  handleView(item) {
+  handleView = (item) => {
     this.setState({
       currentAction: "view",
       selectedBeer: item,
@@ -73,7 +75,7 @@ class Birre extends Component {
     });
   }
 
-  handleEdit(item) {
+  handleEdit = (item) => {
     this.setState({
       currentAction: "edit",
       selectedBeer: item,
@@ -81,7 +83,7 @@ class Birre extends Component {
     });
   }
 
-  handleDelete(item) {
+  handleDelete = (item) => {
     this.setState({
       currentAction: "delete",
       selectedBeer: item,
@@ -93,7 +95,7 @@ class Birre extends Component {
     this.setState({ showModal: flag });
   };
 
-  handleDeleteConfirm =  () => {
+  handleDeleteConfirm = () => {
     const beerToDeleteID = this.state.selectedBeer.beerID;
      fetch(BEERS_ENDPOINT+`${beerToDeleteID}`, {
       method: "DELETE",
@@ -103,7 +105,7 @@ class Birre extends Component {
     })
   };
 
-  getCurrentComponent() {
+  getCurrentComponent = () => {
     let selectedBeer = this.state.selectedBeer;
     let currentAction = this.state.currentAction;
 
@@ -146,62 +148,56 @@ class Birre extends Component {
   render() {
     const { beerIDsFiltered, beers } = this.state;
 
-    const itemList = beerIDsFiltered.map((item) => {
+    const beerItems = beerIDsFiltered.map((item) => {
       const beer = beers.find((b) => b.beerID === item);
-      return (
-        <tr key={item}>
-          <td>{beer.name}</td>
-          <td>
-            <MButton text="Dettagli" onClick={() => this.handleView(beer)} />
-            <MButton text="Modifica" onClick={() => this.handleEdit(beer)} />
-            <MButton text="Elimina" onClick={() => this.handleDelete(beer)} />
-          </td>
-        </tr>
-      );
+      return beer
     });
 
     return (
-      <ThemeManager>
+      <BodyThemeManager>
         <div>
-          <table className="myTable">
-            <thead>
-              <tr>
-                <th width="30%">FILTRA PER NOME</th>
-                <th width="50%">
-                  <input
-                    value={this.state.filterName}
-                    type="text"
-                    style={{ width: "90%", textAlign: "center" }}
-                    onChange={(event) => this.setFilterName(event)}
-                  ></input>
-                </th>
-                <th width="20%">
-                  <MButton text="Filtra" onClick={() => this.filterBeer()} />
-                  <MButton text="Togli" onClick={() => this.removeFilter()} />
-                </th>
-              </tr>
-              <tr>
-                <th width="30%">FILTRA PER RICETTA</th>
-                <th width="50%">
-                  <Selector
-                    label="Recipe"
-                    value={this.state.filterRecipe}
-                    onChange={this.setFilterRecipe}
-                    options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
-                  />
-                </th>
-                <th width="20%">
-                  <MButton text="Filtra" onClick={() => this.filterBeer()} />
-                  <MButton text="Togli" onClick={() => this.removeFilter()} />
-                </th>
-              </tr>
-              <tr>
-                <th width="50%">Nome</th>
-                <th width="50%">Azioni</th>
-              </tr>
-            </thead>
-            <tbody>{itemList}</tbody>
-          </table>
+          <JimTable>
+            <table style={{width: "100%"}}>
+              <thead>
+                <tr>
+                  <th width="20%">FILTRA PER NOME</th>
+                  <th width="50%">
+                    <input
+                      value={this.state.filterName}
+                      type="text"
+                      style={{ width: "100%", textAlign: "center" }}
+                      onChange={(event) => this.setFilterName(event)}
+                    ></input>
+                  </th>
+                  <th width="30%">
+                    <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                    <MButton text="Togli" onClick={() => this.removeFilter()} />
+                  </th>
+                </tr>
+                <tr>
+                  <th width="20%">FILTRA PER RICETTA</th>
+                  <th width="50%">
+                    <Selector
+                      label="Recipe"
+                      value={this.state.filterRecipe}
+                      onChange={this.setFilterRecipe}
+                      options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                    />
+                  </th>
+                  <th width="30%">
+                    <MButton text="Filtra" onClick={() => this.filterBeer()} />
+                    <MButton text="Togli" onClick={() => this.removeFilter()} />
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </JimTable>
+          <BeerTable
+            beers={beerItems}
+            handleView={this.handleView}
+            handleEdit={this.handleEdit}
+            handleDelete={this.handleDelete}
+          />
           <Modal
             showModal={this.state.showModal}
             setShowModal={this.setShowModal}
@@ -209,11 +205,11 @@ class Birre extends Component {
             {this.getCurrentComponent()}
           </Modal>
         </div>
-      </ThemeManager>
+      </BodyThemeManager>
     );
   }
 
-  filterBeer() {
+  filterBeer = () => {
     let url = "";
     if (this.state.filterName === "") {
       if (this.state.filterRecipe === "") {
@@ -236,7 +232,7 @@ class Birre extends Component {
       });
   }
 
-  removeFilter() {
+  removeFilter = () => {
     this.setState({
       beerIDsFiltered: this.state.beerIDs,
       filterName: "",

@@ -1,23 +1,32 @@
 import React, { Component } from "react";
 import { Button } from "@mui/material";
+import { Box } from "@mui/system";
 
 class MButton extends Component {
   render() {
-    const button = (
-      <Button
-      style={{
-        marginRight: 10,
-        marginLeft: 10,
-        marginTop: 10,
-        marginBottom: 10,
-      }}
-      variant="contained"
-      color="primary"
-      onClick={this.props.onClick ?? (() => {})}
-      >
-        {this.props.text}
-      </Button>
-    );
+    const button = this.props.center === undefined
+      ? (
+        <Button
+          style={{
+            margin: 10
+          }}
+          variant="contained"
+          color="primary"
+          onClick={this.props.onClick ?? (() => {})}
+        >
+          {this.props.text}
+        </Button>
+      ) : (
+        <Box textAlign='center'>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.props.onClick ?? (() => {})}
+          >
+            {this.props.text}
+          </Button>
+        </Box>
+      );
     if(this.props.id || this.props.className) {
       return (
         <div className={this.props.className ?? ""} id={this.props.id ?? ""}>

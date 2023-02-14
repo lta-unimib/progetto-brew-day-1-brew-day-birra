@@ -3,12 +3,15 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
-import userEvent from "@testing-library/user-event";
 
 var recipes = {
     "recipeID": {
         recipeID: "recipeID", name: "recipeName",
         description: "recipeDescription", ingredients: []
+    },
+    "ricetta": {
+        recipeID: "ricetta", name: "nome",
+        description: "descrizione", ingredients: []
     }
 }
 
@@ -36,13 +39,16 @@ describe('Ricette.jsx can correctly render page', () => {
         await act(() => {render(<Ricette/>);});
         expect(screen.getAllByText(recipes.recipeID.name, { exact: false })[0]).toBeInTheDocument();
         expect(screen.getByText(recipes.recipeID.description, { exact: false })).toBeInTheDocument();
+        fireEvent.click(screen.getByText("Nome"));
+        fireEvent.click(screen.getByText("Nome"));
+        fireEvent.click(screen.getByText("Descrizione"));
     })
     
     test('can filter recipes', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "recipeName"}}));
-        await act(() => userEvent.click(screen.getByLabelText("Recipe")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("recipeName")));
+        fireEvent.mouseDown(screen.getByLabelText("Recipe"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName"));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NextRecipeView from "../components/NextRecipeView";
 import RecipeExecute from "../components/RecipeExecute";
-import ThemeManager from "../components/ThemeManager";
+import BodyThemeManager from "../components/BodyThemeManager";
 import {ADVICE_ENDPOINT } from '../Protocol';
 import ContentCard from '../components/ContentCard';
 
@@ -54,12 +54,17 @@ class Home extends Component {
     //<center>{adviceView}</center>
 
     return (
-      <ThemeManager>
-        <div>
+      <BodyThemeManager>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "stretch",
+          flexFlow: "row wrap"
+        }}>
           <ContentCard>{adviceView}</ContentCard>
           <ContentCard>{nextRecipeView}</ContentCard>
         </div>
-      </ThemeManager>
+      </BodyThemeManager>
     );
   }
 }
