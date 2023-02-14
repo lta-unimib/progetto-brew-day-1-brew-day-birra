@@ -32,6 +32,10 @@ export default class BackgroundManager extends React.Component {
     }
 
     render() {
+        if (document.cookie.includes("backgroundReload=true")) {
+            document.cookie = document.cookie.replace("backgroundReload=true", "")
+            this.triggerReload();
+        }
         return (
             <div>
                 {this.props.children}

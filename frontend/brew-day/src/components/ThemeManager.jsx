@@ -7,8 +7,9 @@ import BackgroundManager from './BackgroundManager';
 export default class ThemeManager extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {currentTheme: "default", loaded: false};
+        this.state = {currentTheme: "default"};
     }
+    
     triggerReload = () => {
         fetch(SETTINGS_ENDPOINT + "color")
         .then((response) => {
@@ -32,6 +33,10 @@ export default class ThemeManager extends React.Component {
     }
 
     render() {
+        if (document.cookie.includes("themeReload=true")) {
+            document.cookie = document.cookie.replace("themeReload=true", "")
+            this.triggerReload();
+        }
         return (<BackgroundManager>
             <ThemeProvider theme={themes[this.state.currentTheme]}>{this.props.children}</ThemeProvider>
         </BackgroundManager>);

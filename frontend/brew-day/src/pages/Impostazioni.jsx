@@ -68,13 +68,13 @@ export default class Impostazioni extends Component {
     setNewBackground = (event) => {
       let newBackground = event.target.value;
       this.setState({background: newBackground});
-      this.updateValue("background", newBackground)
+      this.updateValue("background", newBackground).then(() => document.cookie="backgroundReload=true").then(this.triggerReload)
     }
 
     setNewColor = (event) => {
       let newColor = event.target.value;
       this.setState({color: newColor});
-      this.updateValue("color", newColor)
+      this.updateValue("color", newColor).then(() => document.cookie="themeReload=true").then(this.triggerReload)
     }
 
     componentDidMount = () => {
@@ -119,13 +119,13 @@ export default class Impostazioni extends Component {
                 value={this.state.equipment}
                 title="Equipaggiamento Disponibile"
                 onChange={(event) => this.setNewEquipment(event)}
-                onConfirm={() => this.updateValue("equipment", this.state.equipment)}
+                onConfirm={() => this.updateValue("equipment", this.state.equipment).then(this.triggerReload)}
               />
               <InputFieldSetting
                 value={this.state.name}
                 title="Inserisci qui il tuo nome"
                 onChange={(event) => this.setNewName(event)}
-                onConfirm={() => this.updateValue("name", this.state.equipment)}
+                onConfirm={() => this.updateValue("name", this.state.equipment).then(this.triggerReload)}
               />
               <InputSelectorSetting
                 title="Seleziona il colore del tema"
@@ -157,28 +157,31 @@ export default class Impostazioni extends Component {
     }
 
     updateValue = (id, newValue) => {
-      fetch(SETTINGS_ENDPOINT+`${id}`, {
-          method: 'PUT',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({value: newValue})
+      return new Promise((acc, rej) => {
+        fetch(SETTINGS_ENDPOINT+`${id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({value: newValue})
+        })
+        .then(() => acc())
       })
-      .then(() => {
-        this.triggerReload();
-      });
     }
 
     postValue = (id, newValue) => {
-      fetch(SETTING_LIST_ENDPOINT, {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({settingID: id, value: newValue})
-      });
+      return new Promise((acc, rej) => {
+        fetch(SETTING_LIST_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({settingID: id, value: newValue})
+        })
+        .then(() => acc());
+      })
     }
 
 }
