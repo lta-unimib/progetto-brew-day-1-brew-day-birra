@@ -9,6 +9,7 @@ export default class JimTable extends React.Component {
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: "30px",
+            marginBottom: "30px",
             border: "5px",
             padding: "1.5%"
         }}>

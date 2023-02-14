@@ -11,7 +11,6 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from "@mui/material";
 import SportsBarIcon from '@mui/icons-material/SportsBar';
-import ThemeManager from "./ThemeManager";
 
 const pages = ['Ricette', 'Birre', 'Inventario', 'Spesa', 'Impostazioni'];
 
@@ -26,9 +25,7 @@ function NavBar() {
     setAnchorElNav(null);
   };
 
-
   return (
-    <ThemeManager>
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -81,14 +78,18 @@ function NavBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page}>     
                 <Link
                     key={page}
                     onClick={handleCloseNavMenu}
                     href={`/${page}`}
-                >{page}
+                    sx={{
+                      textDecoration: "none"
+                    }}
+                >
+                  <MenuItem key={page}>
+                    {page}
+                  </MenuItem>
                 </Link>
-                </MenuItem>
               ))}
             </Menu>
           </Box>
@@ -125,7 +126,6 @@ function NavBar() {
         </Toolbar>
       </Container>
     </AppBar>
-    </ThemeManager>
   );
 }
 export default NavBar;
