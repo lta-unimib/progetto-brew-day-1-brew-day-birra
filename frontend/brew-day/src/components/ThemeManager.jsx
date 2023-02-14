@@ -1,16 +1,15 @@
 import React from 'react';
 import themes from '../theme/themes';
-import { BACKGROUND_MANAGER_TRIGGER, SETTINGS_ENDPOINT, THEME_MANAGER_ESCAPE, THEME_MANAGER_TRIGGER } from '../Protocol';
+import { DEFAULT_THEME, LAST_USED_THEME_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../Protocol';
 import { ThemeProvider } from '@mui/material';
-import BackgroundManager from './BackgroundManager';
 
 export default class ThemeManager extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {currentTheme: "default"};
+        this.state = {currentTheme: localStorage.getItem(LAST_USED_THEME_LOCALSTORAGE_KEY) || DEFAULT_THEME};
     }
     
-    triggerReload = () => {
+    triggerReload() {
         return new Promise((acc, rej) => {
             fetch(SETTINGS_ENDPOINT + "color")
             .then((response) => {
@@ -22,33 +21,35 @@ export default class ThemeManager extends React.Component {
             .then(data => {
                 let value = data.value;
                 if (themes[value] === undefined)
-                    value = "default";
+                    value = DEFAULT_THEME;
                 this.setState({currentTheme: value});
                 acc();
             })
             .catch(() => {
-                this.setState({currentTheme: "default"});
+                this.setState({currentTheme: DEFAULT_THEME});
                 acc();
             })
         })
     }
+    
     componentDidMount() {
         if (this.props.testThemeCookie) {
-            document.cookie = THEME_MANAGER_TRIGGER;
-        }
-        if (this.props.testBackgroundCookie) {
-            document.cookie = BACKGROUND_MANAGER_TRIGGER;
+            document.cookie = this.props.trigger;
         }
         this.triggerReload();
     }
 
     render() {
-        if (document.cookie.includes(THEME_MANAGER_TRIGGER)) {
-            document.cookie = THEME_MANAGER_ESCAPE;
+        if (document.cookie.includes(this.props.trigger)) {
+            document.cookie = this.props.escape;
             this.triggerReload();
         }
-        return (<BackgroundManager>
-            <ThemeProvider theme={themes[this.state.currentTheme]}>{this.props.children}</ThemeProvider>
-        </BackgroundManager>);
+        return (
+            <ThemeProvider
+                theme={themes[this.state.currentTheme]}
+            >
+                {this.props.children}
+            </ThemeProvider>
+        );
     }
 }

@@ -21,7 +21,7 @@ describe('App component', () => {
       theContainer = container;
     })
     expect(theContainer.firstChild).toMatchSnapshot();
-  });
+  })
 });
 
 describe('reportWebVitals', () => {

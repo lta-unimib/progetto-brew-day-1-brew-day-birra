@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
 import {DO_SHOPPING_ENDPOINT} from '../Protocol';
-import ThemeManager from '../components/ThemeManager';
+import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
 
 class Spesa extends Component {
@@ -90,7 +90,7 @@ class Spesa extends Component {
 
   render() {
     return (
-      <ThemeManager>
+      <BodyThemeManager>
         <table className="myTable">
           <thead>
             <tr>
@@ -157,7 +157,7 @@ class Spesa extends Component {
         <div id="shoppingButtonContainer">
           <MButton text="Conferma" onClick={this.handleSubmit} />
         </div>
-      </ThemeManager>
+      </BodyThemeManager>
     );
   }
 }

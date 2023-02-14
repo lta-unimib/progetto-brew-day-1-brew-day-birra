@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import IngredientDelete from "../components/IngredientDelete";
 import Modal from "../components/Modal";
 import {INVENTORY_LIST_ENDPOINT, INVENTORY_ENDPOINT} from '../Protocol';
-import ThemeManager from "../components/ThemeManager";
+import BodyThemeManager from "../components/BodyThemeManager";
 import InventoryTable from "../components/InventoryTable";
 
 class Inventario extends Component {
@@ -59,7 +59,7 @@ class Inventario extends Component {
     }
 
     return (
-      <ThemeManager>
+      <BodyThemeManager>
         <div>
           <InventoryTable
             items={inventory}
@@ -72,7 +72,7 @@ class Inventario extends Component {
             {this.state.showModal && <IngredientDelete onConfirm={this.handleDeleteConfirm}/>}
           </Modal>
         </div>
-      </ThemeManager>
+      </BodyThemeManager>
     );
   }
 }

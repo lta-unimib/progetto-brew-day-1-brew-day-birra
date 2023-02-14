@@ -16,3 +16,7 @@ export const NAVBAR_THEME_MANAGER_TRIGGER = "navbarReload=true";
 export const NAVBAR_THEME_MANAGER_ESCAPE = "navbarReload=false";
 export const BACKGROUND_MANAGER_TRIGGER = "backgroundReload=true";
 export const BACKGROUND_MANAGER_ESCAPE = "backgroundReload=false";
+export const LAST_USED_THEME_LOCALSTORAGE_KEY = "lastUsedTheme";
+export const LAST_USED_BACKGROUND_LOCALSTORAGE_KEY = "lastUsedBackground";
+export const DEFAULT_THEME = "default";
+export const DEFAULT_BACKGROUND = "default";

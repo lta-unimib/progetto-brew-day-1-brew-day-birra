@@ -1,7 +1,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-test-renderer";
-import ThemeManager from "../src/components/ThemeManager";
+import BodyThemeManager from "../src/components/BodyThemeManager";
 import { render } from "@testing-library/react";
 
 var settings = {
@@ -57,28 +57,28 @@ global.fetch = jest.fn().mockImplementation((url) => {
     })
 });
 
-describe("ThemeManager behave correctly", () => {
+describe("BodyThemeManager behave correctly", () => {
     test("theme manager request settings and all is there", async () => {
-        await act(() => render(<ThemeManager/>))
+        await act(() => render(<BodyThemeManager/>))
     })
     
     test("theme manager request settings but values are invalid", async () => {
         contentFlicks.color = false;
         contentFlicks.background = false;
-        await act(() => render(<ThemeManager/>))
+        await act(() => render(<BodyThemeManager/>))
     })
     
     test("theme manager request settings but nothing is there", async () => {
         statusFlicks.color = false;
         statusFlicks.background = false;
-        await act(() => render(<ThemeManager/>))
+        await act(() => render(<BodyThemeManager/>))
     })
     
     test("theme manager get triggered", async () => {
-        await act(() => render(<ThemeManager testThemeCookie/>))
+        await act(() => render(<BodyThemeManager testThemeCookie/>))
     })
     
     test("background manager get triggered", async () => {
-        await act(() => render(<ThemeManager testBackgroundCookie/>))
+        await act(() => render(<BodyThemeManager testBackgroundCookie/>))
     })
 })

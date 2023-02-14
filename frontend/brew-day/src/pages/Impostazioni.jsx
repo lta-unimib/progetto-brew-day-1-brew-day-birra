@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import themes from "../theme/themes";
 import backgrounds from '../theme/backgrounds';
-import ThemeManager from "../components/ThemeManager";
+import BodyThemeManager from "../components/BodyThemeManager";
 import Modal from "../components/Modal";
 import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
-import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT, BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_TRIGGER, NAVBAR_THEME_MANAGER_TRIGGER } from '../Protocol';
+import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT, BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_TRIGGER, NAVBAR_THEME_MANAGER_TRIGGER, LAST_USED_THEME_LOCALSTORAGE_KEY, DEFAULT_BACKGROUND, DEFAULT_THEME, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY } from '../Protocol';
 import InputFieldSetting from "../components/InputFieldSetting";
 import InputSelectorSetting from "../components/InputSelectorSetting";
 import JimTable from "../components/JimTable";
@@ -29,8 +29,8 @@ export default class Impostazioni extends Component {
         .then(response => response.json())
         .then(data => {this.setState({settings: data});
                       if (data.filter(i => i.settingID === "color").length === 0){
-                        this.postValue("color", "default");
-                        this.setState({color: "default"});
+                        this.postValue("color", DEFAULT_THEME);
+                        this.setState({color: DEFAULT_THEME});
                       } else {
                         this.setState({color: data.filter(i => i.settingID === "color")[0].value});
                       }
@@ -41,8 +41,8 @@ export default class Impostazioni extends Component {
                         this.setState({name: data.filter(i => i.settingID === "name")[0].value});
                       }
                       if (data.filter(i => i.settingID === "background").length === 0){
-                        this.postValue("background", "default");
-                        this.setState({background:"default"});
+                        this.postValue("background", DEFAULT_BACKGROUND);
+                        this.setState({background: DEFAULT_BACKGROUND});
                       } else {
                         this.setState({background: data.filter(i => i.settingID === "background")[0].value});
                       }
@@ -70,6 +70,7 @@ export default class Impostazioni extends Component {
       this.setState({background: newBackground});
       this.updateValue("background", newBackground)
         .then(() => document.cookie=BACKGROUND_MANAGER_TRIGGER)
+        .then(() => localStorage.setItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, newBackground))
         .then(this.triggerReload)
     }
 
@@ -79,6 +80,7 @@ export default class Impostazioni extends Component {
       this.updateValue("color", newColor)
         .then(() => document.cookie=THEME_MANAGER_TRIGGER)
         .then(() => document.cookie=NAVBAR_THEME_MANAGER_TRIGGER)
+        .then(() => localStorage.setItem(LAST_USED_THEME_LOCALSTORAGE_KEY, newColor))
         .then(this.triggerReload)
         .then(this.notifyMaster)
     }
@@ -124,7 +126,7 @@ export default class Impostazioni extends Component {
 
     render(){
       return (
-        <ThemeManager>
+        <BodyThemeManager>
             <JimFlex>
               <InputFieldSetting
                 value={this.state.equipment}
@@ -162,7 +164,7 @@ export default class Impostazioni extends Component {
             <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
               {this.getCurrentComponent()}
             </Modal>
-          </ThemeManager>
+          </BodyThemeManager>
         )
 
     }

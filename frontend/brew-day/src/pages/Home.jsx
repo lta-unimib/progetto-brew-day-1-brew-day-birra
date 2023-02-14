@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NextRecipeView from "../components/NextRecipeView";
 import RecipeExecute from "../components/RecipeExecute";
-import ThemeManager from "../components/ThemeManager";
+import BodyThemeManager from "../components/BodyThemeManager";
 import {ADVICE_ENDPOINT } from '../Protocol';
 import ContentCard from '../components/ContentCard';
 
@@ -54,7 +54,7 @@ class Home extends Component {
     //<center>{adviceView}</center>
 
     return (
-      <ThemeManager>
+      <BodyThemeManager>
         <div style={{
           display: "flex",
           justifyContent: "space-around",
@@ -64,7 +64,7 @@ class Home extends Component {
           <ContentCard>{adviceView}</ContentCard>
           <ContentCard>{nextRecipeView}</ContentCard>
         </div>
-      </ThemeManager>
+      </BodyThemeManager>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import backgrounds from '../theme/backgrounds';
-import { BACKGROUND_MANAGER_ESCAPE, BACKGROUND_MANAGER_TRIGGER, SETTINGS_ENDPOINT } from '../Protocol';
+import { BACKGROUND_MANAGER_ESCAPE, BACKGROUND_MANAGER_TRIGGER, DEFAULT_BACKGROUND, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../Protocol';
 
 export default class BackgroundManager extends React.Component {
     triggerReload = () => {
@@ -17,17 +17,17 @@ export default class BackgroundManager extends React.Component {
                 if (backgrounds[value] === undefined)
                     value = "default";
                 document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[value]}")`;
-                document.body.style.backgroundSize = "cover";
             })
             .catch(() => {
-                document.body.style.backgroundImage = `url("/backgrounds/${backgrounds["default"]}")`;
-                document.body.style.backgroundSize = "cover";
+                document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[DEFAULT_BACKGROUND]}")`;
                 acc();
             });
         });
     }
 
     componentDidMount() {
+        document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[localStorage.getItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY) || DEFAULT_BACKGROUND]}")`;
+        document.body.style.backgroundSize = "cover";
         this.triggerReload();
     }
 

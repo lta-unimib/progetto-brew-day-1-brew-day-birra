@@ -36,9 +36,7 @@ global.fetch = jest.fn().mockImplementation(() =>
 
 describe('NavBar component', () => {
   test('should render correctly', async () => {
-    
     resizeScreenSize(900);
-
     let theContainer;
     await act(() => {
       const { container } = render(<BrowserRouter><App /></BrowserRouter>);
@@ -46,5 +44,5 @@ describe('NavBar component', () => {
     })
     await act(() => {fireEvent.click(screen.getAllByRole("button")[0])});
     await act(() => {fireEvent.click(screen.getAllByText("Impostazioni")[0])});
-  });
+  })
 });

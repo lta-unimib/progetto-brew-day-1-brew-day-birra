@@ -9,7 +9,7 @@ import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
-import ThemeManager from '../components/ThemeManager';
+import BodyThemeManager from '../components/BodyThemeManager';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -130,7 +130,7 @@ export default class Ricette extends Component {
         }
         
         return (
-          <ThemeManager>
+          <BodyThemeManager>
             <div>
               <JimTable>
                 <table style={{width: "100%"}}>
@@ -186,7 +186,7 @@ export default class Ricette extends Component {
                 {this.getCurrentComponent()}
               </Modal>
             </div>
-          </ThemeManager>
+          </BodyThemeManager>
         );
     }
 

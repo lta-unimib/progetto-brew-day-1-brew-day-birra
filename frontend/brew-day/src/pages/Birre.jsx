@@ -4,7 +4,7 @@ import BeerEdit from "../components/BeerEdit";
 import BeerDelete from "../components/BeerDelete";
 import Modal from "../components/Modal";
 import MButton from "../components/MButton";
-import ThemeManager from '../components/ThemeManager'
+import BodyThemeManager from '../components/BodyThemeManager'
 import {BEER_LIST_ENDPOINT, BEERS_ENDPOINT, RECIPE_ENDPOINT  } from '../Protocol';
 import Selector from "../components/Selector";
 import BeerTable from "../components/BeerTable";
@@ -154,7 +154,7 @@ class Birre extends Component {
     });
 
     return (
-      <ThemeManager>
+      <BodyThemeManager>
         <div>
           <JimTable>
             <table style={{width: "100%"}}>
@@ -205,7 +205,7 @@ class Birre extends Component {
             {this.getCurrentComponent()}
           </Modal>
         </div>
-      </ThemeManager>
+      </BodyThemeManager>
     );
   }
 
