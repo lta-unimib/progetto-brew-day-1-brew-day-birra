@@ -1,6 +1,6 @@
 import React from 'react';
 import themes from '../theme/themes';
-import { SETTINGS_ENDPOINT } from '../Protocol';
+import { BACKGROUND_MANAGER_TRIGGER, SETTINGS_ENDPOINT, THEME_MANAGER_ESCAPE, THEME_MANAGER_TRIGGER } from '../Protocol';
 import { ThemeProvider } from '@mui/material';
 import BackgroundManager from './BackgroundManager';
 
@@ -11,30 +11,40 @@ export default class ThemeManager extends React.Component {
     }
     
     triggerReload = () => {
-        fetch(SETTINGS_ENDPOINT + "color")
-        .then((response) => {
-            if (response.status >= 400 && response.status <= 600) {
-                throw new Error();
-            }
-            return response.json();
-        })
-        .then(data => {
-            let value = data.value;
-            if (themes[value] === undefined)
-                value = "default";
-            this.setState({currentTheme: value});
-        })
-        .catch(() => {
-            this.setState({currentTheme: "default"});
+        return new Promise((acc, rej) => {
+            fetch(SETTINGS_ENDPOINT + "color")
+            .then((response) => {
+                if (response.status >= 400 && response.status <= 600) {
+                    throw new Error();
+                }
+                return response.json();
+            })
+            .then(data => {
+                let value = data.value;
+                if (themes[value] === undefined)
+                    value = "default";
+                this.setState({currentTheme: value});
+                acc();
+            })
+            .catch(() => {
+                this.setState({currentTheme: "default"});
+                acc();
+            })
         })
     }
     componentDidMount() {
+        if (this.props.testThemeCookie) {
+            document.cookie = THEME_MANAGER_TRIGGER;
+        }
+        if (this.props.testBackgroundCookie) {
+            document.cookie = BACKGROUND_MANAGER_TRIGGER;
+        }
         this.triggerReload();
     }
 
     render() {
-        if (document.cookie.includes("themeReload=true")) {
-            document.cookie = document.cookie.replace("themeReload=true", "")
+        if (document.cookie.includes(THEME_MANAGER_TRIGGER)) {
+            document.cookie = THEME_MANAGER_ESCAPE;
             this.triggerReload();
         }
         return (<BackgroundManager>

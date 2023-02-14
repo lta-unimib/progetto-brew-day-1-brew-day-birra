@@ -1,6 +1,6 @@
 import React from 'react';
 import backgrounds from '../theme/backgrounds';
-import { SETTINGS_ENDPOINT } from '../Protocol';
+import { BACKGROUND_MANAGER_ESCAPE, BACKGROUND_MANAGER_TRIGGER, SETTINGS_ENDPOINT } from '../Protocol';
 
 export default class BackgroundManager extends React.Component {
     triggerReload = () => {
@@ -32,8 +32,8 @@ export default class BackgroundManager extends React.Component {
     }
 
     render() {
-        if (document.cookie.includes("backgroundReload=true")) {
-            document.cookie = document.cookie.replace("backgroundReload=true", "")
+        if (document.cookie.includes(BACKGROUND_MANAGER_TRIGGER)) {
+            document.cookie = BACKGROUND_MANAGER_ESCAPE;
             this.triggerReload();
         }
         return (

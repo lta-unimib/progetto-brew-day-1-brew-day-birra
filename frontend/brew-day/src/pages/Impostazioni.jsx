@@ -6,7 +6,7 @@ import Modal from "../components/Modal";
 import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
-import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
+import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT, BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_TRIGGER } from '../Protocol';
 import InputFieldSetting from "../components/InputFieldSetting";
 import InputSelectorSetting from "../components/InputSelectorSetting";
 import JimTable from "../components/JimTable";
@@ -68,13 +68,13 @@ export default class Impostazioni extends Component {
     setNewBackground = (event) => {
       let newBackground = event.target.value;
       this.setState({background: newBackground});
-      this.updateValue("background", newBackground).then(() => document.cookie="backgroundReload=true").then(this.triggerReload)
+      this.updateValue("background", newBackground).then(() => document.cookie=BACKGROUND_MANAGER_TRIGGER).then(this.triggerReload)
     }
 
     setNewColor = (event) => {
       let newColor = event.target.value;
       this.setState({color: newColor});
-      this.updateValue("color", newColor).then(() => document.cookie="themeReload=true").then(this.triggerReload)
+      this.updateValue("color", newColor).then(() => document.cookie=THEME_MANAGER_TRIGGER).then(this.triggerReload)
     }
 
     componentDidMount = () => {
