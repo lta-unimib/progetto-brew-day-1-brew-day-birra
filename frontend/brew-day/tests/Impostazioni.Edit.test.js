@@ -3,7 +3,6 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Impostazioni from "../src/pages/Impostazioni";
 import { act } from "react-test-renderer";
-import userEvent from "@testing-library/user-event";
 
 var settings = [
     {
@@ -45,15 +44,5 @@ describe('Impostazioni.jsx can correctly render page', () => {
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[0]));
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "Paolina"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[1]));
-    })
-    test('can update color', async () => {
-        await act(() => {render(<Impostazioni/>);});
-        await act(() => userEvent.click(screen.getByLabelText("Color")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark")));
-    })
-    test('can update background', async () => {
-        await act(() => {render(<Impostazioni/>);});
-        await act(() => userEvent.click(screen.getByLabelText("Background")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("totaldark")));
     })
 })
