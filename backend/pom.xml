@@ -33,6 +33,32 @@
     <hibernate.dialect>org.hibernate.community.dialect.SQLiteDialect</hibernate.dialect>
   </properties>
 
+  <profiles>
+	<profile>
+		<id>skipMerge</id>
+		<activation>
+		  <property>
+			<name>maven.merge.skip</name>
+			<value>true</value>
+		  </property>
+		</activation>
+		<build>
+			<plugins>
+			  <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>merge</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			  </plugin>
+			</plugins>
+		</build>
+	  </profile>
+  </profiles>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -195,7 +221,7 @@
           </execution>
 		  <execution>
 			  <id>merge</id>
-			  <phase>refolli</phase>
+			  <phase>initialize</phase>
 			  <goals>
 				  <goal>unpack</goal>
 			  </goals>
