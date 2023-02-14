@@ -10,10 +10,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>unimib.ingsof</groupId>
-  <artifactId>brewday.backend</artifactId>
+  <artifactId>backend</artifactId>
   <version>1.0.4</version>
-  <name>brew.day.backend</name>
-  <description>Brew Day Backend</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -229,7 +227,7 @@
 				  <artifactItems>
 					  <artifactItem>
 						  <groupId>unimib.ingsof</groupId>
-						  <artifactId>brewday.frontend</artifactId>
+						  <artifactId>frontend</artifactId>
 						  <type>jar</type>
 						  <overWrite>true</overWrite>
 						  <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
