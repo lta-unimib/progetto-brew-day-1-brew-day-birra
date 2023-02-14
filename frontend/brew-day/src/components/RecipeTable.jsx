@@ -5,7 +5,7 @@ import MButton from "./MButton";
 const COLUMNS = [
     {title: "Nome", key: "name"},
     {title: "Descrizione", key: "description"},
-    {title: "Azioni", key: "toolbox"}
+    {title: "Azioni", key: "toolbox", sortable: false}
 ]
 
 export default class RecipeTable extends React.Component {
@@ -22,11 +22,12 @@ export default class RecipeTable extends React.Component {
                 </div>)
             }
         })
-        rows.push({
+        const pivotRow = {
             name: (<input value={this.props.newRecipeName} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeName(event)}></input>),
             description: (<input value={this.props.newRecipeDescription} type="text" style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeDescription(event)}></input>),
             toolbox: (<MButton text="Aggiungi" onClick={() => this.props.addRecipe()} />)
-        })
-        return <DedicatedTable rows={rows} columns={COLUMNS}/>
+        };
+
+        return <DedicatedTable rows={rows} columns={COLUMNS} pivotRow={pivotRow}/>
     }
 }

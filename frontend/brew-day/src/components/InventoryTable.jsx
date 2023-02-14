@@ -3,10 +3,10 @@ import DedicatedTable from "./DedicatedTable";
 import MButton from "./MButton";
 
 const COLUMNS = [
-    {title: "Immagine", key: "icon"},
+    {title: "Immagine", key: "icon", sortable: false},
     {title: "Nome", key: "name"},
     {title: "Quantita'", key: "quantity"},
-    {title: "Azioni", key: "toolbox"}
+    {title: "Azioni", key: "toolbox", sortable: false}
 ]
 
 export default class InventoryTable extends React.Component {

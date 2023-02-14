@@ -4,7 +4,7 @@ import MButton from "./MButton";
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
-    {title: "Azioni", key: "toolbox"}
+    {title: "Azioni", key: "toolbox", sortable: false}
 ]
 
 export default class BeerTable extends React.Component {
