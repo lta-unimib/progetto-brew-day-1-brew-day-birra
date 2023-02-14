@@ -3,7 +3,6 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Impostazioni from "../src/pages/Impostazioni";
 import { act } from "react-test-renderer";
-import userEvent from "@testing-library/user-event";
 
 var settings = [
     {
@@ -38,7 +37,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 )
 
-describe('Impostazioni.jsx can correctly render page', () => {
+describe('Impostazioni.jsx can correctly update equipement and name', () => {
     test('can update equipment and name', async () => {
         await act(() => {render(<Impostazioni/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "10"}}));
@@ -48,12 +47,12 @@ describe('Impostazioni.jsx can correctly render page', () => {
     })
     test('can update color', async () => {
         await act(() => {render(<Impostazioni/>);});
-        await act(() => userEvent.click(screen.getByLabelText("Color")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark")));
+        fireEvent.mouseDown(screen.getByLabelText("Color"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
     })
     test('can update background', async () => {
         await act(() => {render(<Impostazioni/>);});
-        await act(() => userEvent.click(screen.getByLabelText("Background")));
-        await act(() => userEvent.click(within(screen.getByRole("listbox")).getByText("totaldark")));
+        fireEvent.mouseDown(screen.getByLabelText("Background"));
+        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
     })
 })

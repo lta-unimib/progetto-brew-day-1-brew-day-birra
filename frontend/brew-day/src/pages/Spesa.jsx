@@ -89,7 +89,6 @@ class Spesa extends Component {
   }
 
   render() {
-    console.log(this.state.ingredients);
     return (
       <ThemeManager>
         <table className="myTable">

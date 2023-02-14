@@ -45,7 +45,6 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         expect(screen.getAllByRole("textbox").length).toBeLessThanOrEqual(5);
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
-    
     test('open recipe edit and set name', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
@@ -53,7 +52,6 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("V")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
-    
     test('open recipe edit and set description', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
@@ -61,7 +59,6 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("V")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
-    
     test('open recipe edit and update an ingredient', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
@@ -69,7 +66,6 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("V")[2])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
-    
     test('open recipe edit and add an ingredient', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
@@ -78,7 +74,6 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("V")[4])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
-    
     test('open recipe edit and delete an ingredient', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});

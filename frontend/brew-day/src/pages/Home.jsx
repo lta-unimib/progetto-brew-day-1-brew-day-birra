@@ -55,7 +55,12 @@ class Home extends Component {
 
     return (
       <ThemeManager>
-        <div>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "stretch",
+          flexFlow: "row wrap"
+        }}>
           <ContentCard>{adviceView}</ContentCard>
           <ContentCard>{nextRecipeView}</ContentCard>
         </div>

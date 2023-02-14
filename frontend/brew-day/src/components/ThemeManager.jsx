@@ -1,36 +1,54 @@
 import React from 'react';
 import themes from '../theme/themes';
-import { SETTINGS_ENDPOINT } from '../Protocol';
+import { BACKGROUND_MANAGER_TRIGGER, SETTINGS_ENDPOINT, THEME_MANAGER_ESCAPE, THEME_MANAGER_TRIGGER } from '../Protocol';
 import { ThemeProvider } from '@mui/material';
+import BackgroundManager from './BackgroundManager';
 
 export default class ThemeManager extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {currentTheme: "default", loaded: false};
+        this.state = {currentTheme: "default"};
     }
+    
     triggerReload = () => {
-        fetch(SETTINGS_ENDPOINT + "color")
-        .then((response) => {
-            if (response.status >= 400 && response.status <= 600) {
-                throw new Error();
-            }
-            return response.json();
-        })
-        .then(data => {
-            let value = data.value;
-            if (themes[value] === undefined)
-                value = "default";
-            this.setState({currentTheme: value, loaded: true});
-        })
-        .catch(() => {
-            this.setState({currentTheme: "default"});
+        return new Promise((acc, rej) => {
+            fetch(SETTINGS_ENDPOINT + "color")
+            .then((response) => {
+                if (response.status >= 400 && response.status <= 600) {
+                    throw new Error();
+                }
+                return response.json();
+            })
+            .then(data => {
+                let value = data.value;
+                if (themes[value] === undefined)
+                    value = "default";
+                this.setState({currentTheme: value});
+                acc();
+            })
+            .catch(() => {
+                this.setState({currentTheme: "default"});
+                acc();
+            })
         })
     }
     componentDidMount() {
+        if (this.props.testThemeCookie) {
+            document.cookie = THEME_MANAGER_TRIGGER;
+        }
+        if (this.props.testBackgroundCookie) {
+            document.cookie = BACKGROUND_MANAGER_TRIGGER;
+        }
         this.triggerReload();
     }
 
     render() {
-        return (<ThemeProvider theme={themes[this.state.currentTheme]}>{this.props.children}</ThemeProvider>);
+        if (document.cookie.includes(THEME_MANAGER_TRIGGER)) {
+            document.cookie = THEME_MANAGER_ESCAPE;
+            this.triggerReload();
+        }
+        return (<BackgroundManager>
+            <ThemeProvider theme={themes[this.state.currentTheme]}>{this.props.children}</ThemeProvider>
+        </BackgroundManager>);
     }
 }

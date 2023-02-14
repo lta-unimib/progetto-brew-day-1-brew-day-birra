@@ -10,3 +10,7 @@ export const RECIPE_LIST_ENDPOINT = '/api/recipes';
 export const RESET_ENDPOINT = '/api/reset';
 export const SETTINGS_ENDPOINT = '/api/settings/';
 export const SETTING_LIST_ENDPOINT = '/api/settings';
+export const THEME_MANAGER_TRIGGER = "themeReload=true";
+export const THEME_MANAGER_ESCAPE = "themeReload=false";
+export const BACKGROUND_MANAGER_TRIGGER = "backgroundReload=true";
+export const BACKGROUND_MANAGER_ESCAPE = "backgroundReload=false";

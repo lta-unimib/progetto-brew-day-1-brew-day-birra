@@ -7,11 +7,6 @@ import Modal from "../src/components/Modal";
 import { act } from "react-test-renderer";
 import MButton from "../src/components/MButton";
 
-const testIngredient = [
-  { name: "boh", quantity: "0" },
-  { name: "luppoli", quantity: "1" },
-];
-
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
     json: () => {
