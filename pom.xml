@@ -35,10 +35,10 @@
               </goals>
               <configuration>
                 <encoding>UTF-8</encoding>
-                <outputDirectory>${basedir}/backend/target/classes/static</outputDirectory>
+                <outputDirectory>${project.parent.basedir}/backend/target/classes/static</outputDirectory>
                 <resources>
                   <resource>
-                    <directory>${basedir}/frontend/build</directory>
+                    <directory>${project.parent.basedir}/frontend/build</directory>
                     <filtering>false</filtering>
                   </resource>
                 </resources>
