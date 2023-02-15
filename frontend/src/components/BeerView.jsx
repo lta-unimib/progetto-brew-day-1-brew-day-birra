@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from '../components/MButton';
 import {BEERS_ENDPOINT} from '../Protocol';
+import BeerNoteTableReadOnly from "./BeerNoteTableReadOnly";
 
 
 class BeerView extends Component {
@@ -27,15 +28,14 @@ class BeerView extends Component {
   };
 
   render() {
-    const { showRicetta, recipeID, name, notes } = this.state;
+    const { showRicetta, recipeID, name } = this.state;
 
     const recipeView = (
       <div>
         {(recipeID !== null) ? (
-          <div>
-            <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>
-            {showRicetta ? (<RecipeView recipeID={recipeID}/>) : null}
-          </div>
+          showRicetta
+            ? (<RecipeView recipeID={recipeID}/>)
+            : <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>
         ) : null}
       </div>
     );
@@ -45,10 +45,9 @@ class BeerView extends Component {
         <center>
           <h1>{name}</h1>
           {recipeView}
-          <h4>Note:</h4>
-          {notes.map(note => (
-            <p key={note.noteID}>• {note.description}</p>
-          ))}
+          <BeerNoteTableReadOnly
+            notes={this.state.notes}
+          />
         </center>
       </div>
     );

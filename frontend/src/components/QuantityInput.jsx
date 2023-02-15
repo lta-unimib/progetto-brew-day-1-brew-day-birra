@@ -1,43 +1,40 @@
 import React from "react";
 
+const isValidQuantity = (quantity) => {
+  return ((!isNaN(quantity)) && (quantity >= 0));
+}
+
+const isValidInput = (newValue) => {
+  if (newValue === "")
+    return true;
+  const parsedValue = Number(newValue);
+  return isValidQuantity(parsedValue);
+
+}
+
 class QuantityInput extends React.Component {
-  constructor() {
-    super();
-    this.state = { value: '' };
-    this.handleValue = this.handleValue.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.comma = null;
-    this.max = 999;
+  handleValue = (event) => {
+    const newValue = event.target.value;
+    if (isValidInput(newValue))
+      this.props.onChange({target: {value: newValue}});
   }
-  handleValue(event) {
-    const string = event.target.value;
 
-    if (string === '.') this.setState({ value: '0.'});
-    else if (string.endsWith('.') && !this.comma) this.setState({ value: string });
-    else if (string.startsWith('0') && string.endsWith('00') && !string.includes('.')) this.setState({ value: '0' });
-    else if (/\d$/.test(string)) {
-        if(parseFloat(string) <= 999) this.setState({ value: string });
-        else this.setState({ value: this.max });
-    }
-    else this.setState({ value: string.slice(0, -1) });
+  handleBlur = (event) => {
+    let newValue = event.target.value;
+    if (isValidInput(newValue))
+      this.props.onChange({target: {value: ""+Number(newValue)}});
+  }
 
-    this.comma = string.includes('.');
-  }
-  handleBlur(event) {
-    if(/0\.0+$/.test(event.target.value)) this.setState({ value: '0'});
-  }
   render() {
     return (
-      <div>
         <input
-          id="shoppingItemId"
-          name="shoppingItemId"
-          data-testid="quantity-input"
-          value={this.state.value}
+          style={{ height: "100%", width: "100%", textAlign: "center" }}
+          type="text"
+          data-testid="shopping-quantity"
+          value={this.props.value}
           onChange={this.handleValue}
           onBlur={this.handleBlur}
-        ></input>
-      </div>
+        />
     );
   }
 }

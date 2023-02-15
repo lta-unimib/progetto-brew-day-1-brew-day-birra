@@ -1,12 +1,13 @@
+import { Box } from "@mui/material";
 import * as React from "react";
 
 export default class JimFlex extends React.Component {
     render() {
-        return (<div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 50%)"
+        return (<Box sx={{
+            display: {md: "grid", sx: "flex"},
+            gridTemplateColumns: "50% 50%"
           }}>
             {this.props.children}
-        </div>);
+        </Box>);
     }
 }

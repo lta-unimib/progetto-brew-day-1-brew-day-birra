@@ -10,6 +10,7 @@ import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
 import BodyThemeManager from '../components/BodyThemeManager';
+import QuantityInput from '../components/QuantityInput';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -76,7 +77,7 @@ export default class Ricette extends Component {
         case "view":
           return <RecipeView recipeID={selectedRecipe.recipeID}/>;
         case "edit":
-          return <RecipeEdit recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
+          return <RecipeEdit enqueueSnackbar={this.props.enqueueSnackbar} recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
         case "delete":
           return <RecipeDelete recipeID={selectedRecipe.recipeID} onConfirm={this.closeModalAndReload}/>;
         case "execute":
@@ -158,10 +159,9 @@ export default class Ricette extends Component {
                             onChange={this.setNewNextRecipeID}
                             options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
                           />
-                          <input
-                            style={{width: "100%", textAlign:"center"}}
-                            value={this.state.nextRecipeQuantity} type="text"
-                            onChange={ (event) => this.setNewNextRecipeQuantity(event)}
+                          <QuantityInput
+                            value={this.state.nextRecipeQuantity}
+                            onChange={this.setNewNextRecipeQuantity}
                           />
                         </td>
                         <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/></td>

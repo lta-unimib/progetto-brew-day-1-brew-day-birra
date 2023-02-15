@@ -3,6 +3,7 @@ import RecipeView from "./RecipeView";
 import MButton from "../components/MButton";
 import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
 import ShoppingList from "./ShoppingList";
+import QuantityInput from "./QuantityInput";
 
 class RecipeExecute extends Component {
   constructor(props) {
@@ -43,12 +44,12 @@ class RecipeExecute extends Component {
     this.triggerReload().then(this.triggerReloadSettings);
   }
 
-  setNewBeerName(event) {
+  setNewBeerName = (event) => {
     let newBeerName = event.target.value;
     this.setState({ newBeerName: newBeerName });
   }
 
-  setNewBeerQuantity(event) {
+  setNewBeerQuantity = (event) => {
     this.setState({ newBeerQuantity: event.target.value });
   }
 
@@ -82,16 +83,14 @@ class RecipeExecute extends Component {
                       value={this.state.newBeerName}
                       type="text"
                       style={{ width: "90%", textAlign: "center" }}
-                      onChange={(event) => this.setNewBeerName(event)}
+                      onChange={this.setNewBeerName}
                     ></input>
                   </td>
                   <td>
-                    <input
+                    <QuantityInput
                       value={this.state.newBeerQuantity}
-                      type="text"
-                      style={{ width: "90%", textAlign: "center" }}
-                      onChange={(event) => this.setNewBeerQuantity(event)}
-                    ></input>
+                      onChange={this.setNewBeerQuantity}
+                    ></QuantityInput>
                   </td>
                   <td>
                     <MButton text="Crea" onClick={() => this.addBeer()} />

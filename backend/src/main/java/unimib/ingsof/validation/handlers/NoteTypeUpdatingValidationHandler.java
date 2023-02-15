@@ -10,7 +10,7 @@ public class NoteTypeUpdatingValidationHandler extends BaseValidationHandler {
 	@Override
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
 		String noteType = object.get(Protocol.NOTETYPE_BODY_KEY);
-		if (noteType != null && !(noteType.equals("taste")) && !(noteType.equals("generic")) )
+		if (noteType != null && !Protocol.NOTETYPES.contains(noteType))
 			throw new WrongBodyException();
 		return super.handle(object);
 	}

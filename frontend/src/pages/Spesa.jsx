@@ -3,6 +3,7 @@ import MButton from "../components/MButton";
 import {DO_SHOPPING_ENDPOINT} from '../Protocol';
 import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
+import QuantityInput from "../components/QuantityInput";
 
 class Spesa extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Spesa extends Component {
       ingredients: [
         {
           ingredientName: "",
-          ingredientQuantity: "",
+          ingredientQuantity: "0",
         },
       ],
     };
@@ -42,7 +43,7 @@ class Spesa extends Component {
         body: JSON.stringify(_ingredients),
       }).then(() => {
         this.setState({
-          ingredients: [{ ingredientName: "", ingredientQuantity: "" }],
+          ingredients: [{ ingredientName: "", ingredientQuantity: "0" }],
         });
       });
     }
@@ -74,7 +75,7 @@ class Spesa extends Component {
         ingredientQuantity: newIngQuantity,
       };
       if (newIngName !== "" && newIngQuantity !== "") {
-        ingredients.push({ ingredientName: "", ingredientQuantity: "" });
+        ingredients.push({ ingredientName: "", ingredientQuantity: "0" });
       }
     }
     this.setState({
@@ -135,9 +136,7 @@ class Spesa extends Component {
                 >
                   <td>{firstColumn}</td>
                   <td>
-                    <input
-                      type="text"
-                      data-testid="shopping-quantity"
+                    <QuantityInput
                       value={ingredient.ingredientQuantity}
                       onChange={(e) =>
                         this.handleIngredientChange(
