@@ -41,7 +41,7 @@ class BeerView extends Component {
     const recipeView = (
       <div>
         {(recipeID !== null) ? (
-          action()
+          action
         ) : null}
       </div>
     );
