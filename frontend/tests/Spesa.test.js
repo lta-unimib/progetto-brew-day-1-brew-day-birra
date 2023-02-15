@@ -23,7 +23,7 @@ describe("Spesa component", () => {
   test("Correctly sends POST request", async () => {
     await act(() => render(<Spesa />));
     act(() => {fireEvent.change(within(screen.getByTestId("ingredient-name-input")).getByRole("combobox"), {target: { value: "newName" },});});
-    act(() => {fireEvent.change(screen.getAllByTestId("shopping-quantity")[0], {target: { value: 2.0 },});});
+    act(() => {fireEvent.change(within(screen.getAllByTestId("shopping-quantity")[0]).getByRole("textbox"), {target: { value: 2.0 },});});
     act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0]);});
     act(() => {fireEvent.click(screen.getAllByText("Conferma")[0]);});
   });
@@ -31,7 +31,7 @@ describe("Spesa component", () => {
   test("Correctly deletes ingredient", async () => {
     await act(() => render(<Spesa />));
     act(() => {fireEvent.change(within(screen.getByTestId("ingredient-name-input")).getByRole("combobox"), {target: { value: "newName" },});});
-    act(() => {fireEvent.change(screen.getAllByTestId("shopping-quantity")[0], {target: { value: 2.0 },});});
+    act(() => {fireEvent.change(within(screen.getAllByTestId("shopping-quantity")[0]).getByRole("textbox"), {target: { value: 2.0 },});});
     act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0]);});
     act(() => {fireEvent.click(screen.getAllByText("Elimina")[0]);});
     expect(screen.queryByText("newName")).not.toBeInTheDocument();
@@ -40,10 +40,10 @@ describe("Spesa component", () => {
   test("Ingredients with same name render as one that has sum of both quantities", async () => {
     await act(() => render(<Spesa />));
     act(() => {fireEvent.change(within(screen.getByTestId("ingredient-name-input")).getByRole("combobox"), {target: { value: "newName" },});});
-    act(() => {fireEvent.change(screen.getAllByTestId("shopping-quantity")[0], {target: { value: 2.0 },});});
+    act(() => {fireEvent.change(within(screen.getAllByTestId("shopping-quantity")[0]).getByRole("textbox"), {target: { value: 2.0 },});});
     act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0]);});
     act(() => {fireEvent.change(within(screen.getByTestId("ingredient-name-input")).getByRole("combobox"), {target: { value: "newName" },});});
-    act(() => {fireEvent.change(screen.getAllByTestId("shopping-quantity")[1], {target: { value: 2.0 },});});
+    act(() => {fireEvent.change(within(screen.getAllByTestId("shopping-quantity")[1]).getByRole("textbox"), {target: { value: 2.0 },});});
     act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0]);});
   });
 
