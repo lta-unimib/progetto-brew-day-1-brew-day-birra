@@ -81,7 +81,7 @@
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>CI= run build</arguments>
+              <arguments>run build</arguments>
             </configuration>
           </execution>
 
