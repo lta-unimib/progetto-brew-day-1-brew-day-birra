@@ -34,12 +34,14 @@ class BeerView extends Component {
   render() {
     const { showRicetta, recipeID, name } = this.state;
 
+    const action = showRicetta
+    ? (<RecipeView notifier={this.notifier} recipeID={recipeID}/>)
+    : <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>;
+
     const recipeView = (
       <div>
         {(recipeID !== null) ? (
-          showRicetta
-            ? (<RecipeView notifier={this.notifier} recipeID={recipeID}/>)
-            : <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>
+          action()
         ) : null}
       </div>
     );
