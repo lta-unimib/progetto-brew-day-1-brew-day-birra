@@ -17,6 +17,12 @@ jobs:
         working-directory: ./frontend/
     steps:
       - uses: actions/setup-node@v3
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-frontend
+          restore-keys: ${{ runner.os }}-sonar-frontend
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -24,17 +30,11 @@ jobs:
         run: npm install
       - name: Run tests and coverage
         run: npx jest --coverage
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.projectKey=brew.day.frontend
-            -Dsonar.organization=se-unimib
-            -Dsonar.sources="./frontend/src"
-            -Dsonar.javascript.lcov.reportPaths="./frontend/coverage/lcov.info"
+      - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn clean verify test sonar:sonar -Dsonar.host.url=https://sonarcloud.io
   backend:
     needs: [frontend]
     name: Build and analyze backend
@@ -51,8 +51,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+          key: ${{ runner.os }}-sonar-backend
+          restore-keys: ${{ runner.os }}-sonar-backend
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
