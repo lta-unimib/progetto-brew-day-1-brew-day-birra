@@ -77,10 +77,10 @@ returns a json object like:
 
 ```json
 {
-    "beerID":"beerID",
-    "name": "name",
-    "recipeID":"recipeID",
-    "notes": [{
+  "beerID":"beerID",
+  "name": "name",
+  "recipeID":"recipeID",
+  "notes": [{
   	"beerID":"beerID"
       	"noteID": "noteID",
 	"noteType": "noteType",
@@ -95,7 +95,7 @@ requires a json object like:
 
 ```json
 {
-    "name": "new name"
+  "name": "new name"
 }
 ```
 
@@ -103,10 +103,10 @@ returns a json object like:
 
 ```json
 {
-    "beerID":"beerID",
-    "name": "new name",
-    "recipeID":"recipeID",
-    "notes": [{
+  "beerID":"beerID",
+  "name": "new name",
+  "recipeID":"recipeID",
+  "notes": [{
     	"noteID": "noteID",
 	"noteType": "noteType",
 	"description":"description"
@@ -120,8 +120,8 @@ requires a json object like:
 
 ```json
 {
-    "description": "description",
-    "noteType": "noteType"
+  "description": "description",
+  "noteType": "noteType"
 }
 ```
 
@@ -132,10 +132,10 @@ put in noteID header the path of created resource
 
 ```json
 {
-    "beerID":"beerID",
-    "noteID": "noteID",
-    "noteType": "noteType",
-    "description": "description"
+  "beerID":"beerID",
+  "noteID": "noteID",
+  "noteType": "noteType",
+  "description": "description"
 }
 ```
 
@@ -145,8 +145,8 @@ requires a json object like:
 
 ```json
 {
-    "noteType": "noteType",
-    "description": "description"
+  "noteType": "noteType",
+  "description": "description"
 }
 ```
 
@@ -154,10 +154,10 @@ returns a json object like:
 
 ```json
 {
-    "beerID":"beerID",
-    "noteID": "noteID",
-    "noteType": "noteType",
-    "description": "description"
+  "beerID":"beerID",
+  "noteID": "noteID",
+  "noteType": "noteType",
+  "description": "description"
 }
 ```
 
@@ -167,13 +167,13 @@ get a json object like:
 
 ```json
 [{
-    "ingredientID": "ingredientID1",
-    "name": "nome1",
-    "quantity": 17.0
+  "ingredientID": "ingredientID1",
+  "name": "nome1",
+  "quantity": 17.0
 }, {
-    "ingredientID": "ingredientID2",
-    "name": "nome2",
-    "quantity": "2.0"
+  "ingredientID": "ingredientID2",
+  "name": "nome2",
+  "quantity": "2.0"
 }]
 ```
 
@@ -183,8 +183,8 @@ requires a json object like:
 
 ```json
 {
-    "name": "nome1",
-    "quantity": "17.0"
+  "name": "nome1",
+  "quantity": "17.0"
 }
 ```
 
@@ -194,9 +194,9 @@ get a json object like:
 
 ```json
 {
-    "ingredientID": "ingredientID",
-    "name": "nome1",
-    "quantity": "17.0"
+  "ingredientID": "ingredientID",
+  "name": "nome1",
+  "quantity": "17.0"
 }
 ```
 
@@ -206,16 +206,16 @@ requires a json object like:
 
 ```json
 {
-    "quantity": "17.2"
+  "quantity": "17.2"
 }
 ```
 get a json object like:
 
 ```json
 [{
-    "name": "nome1",
-    "ingredientID": "ingredientID",
-    "quantity": "17.2"
+  "name": "nome1",
+  "ingredientID": "ingredientID",
+  "quantity": "17.2"
 }]
 ```
 
@@ -233,7 +233,7 @@ requires a json object like:
 
 ```json
 {
-    "name": "name"
+  "name": "name"
 }
 ```
 
@@ -245,9 +245,9 @@ returns a json object like:
 
 ```json
 {
-    "name": "name",
-    "recipeID": "recipeID",
-    "ingredients": [{
+  "name": "name",
+  "recipeID": "recipeID",
+  "ingredients": [{
   	"name": "name",
 	"ingredientID": "ingredientID",
 	"quantity": "17.0"
@@ -261,7 +261,7 @@ requires a json object like:
 
 ```json
 {
-    "name": "new name"
+  "name": "new name"
 }
 ```
 
@@ -269,9 +269,9 @@ returns a json object like:
 
 ```json
 {
-    "name": "new name",
-    "recipeID": "recipeID",
-    "ingredients": [{
+  "name": "new name",
+  "recipeID": "recipeID",
+  "ingredients": [{
   	"name": "name",
 	"ingredientID": "ingredientID",
 	"quantity": "17.0"
@@ -285,8 +285,8 @@ requires a json object like:
 
 ```json
 {
-    "name": "name",
-    "quantity": "17.0"
+  "name": "name",
+  "quantity": "17.0"
 }
 ```
 
@@ -294,10 +294,10 @@ requires a json object like:
 
 ```json
 {
-    "name": "name",
-    "recipeID": "recipeID",
-    "ingredientID": "ingredientID",
-    "quantity": "17.0"
+  "name": "name",
+  "recipeID": "recipeID",
+  "ingredientID": "ingredientID",
+  "quantity": "17.0"
 }
 ```
 
@@ -307,7 +307,7 @@ requires a json object like:
 
 ```json
 {
-    "quantity": "17.0"
+  "quantity": "17.0"
 }
 ```
 
@@ -315,10 +315,10 @@ returns a json object like:
 
 ```json
 {
-    "name": "name",
-    "recipeID": "recipeID",
-    "ingredientID": "ingredientID",
-    "quantity": "17.0"
+  "name": "name",
+  "recipeID": "recipeID",
+  "ingredientID": "ingredientID",
+  "quantity": "17.0"
 }
 ```
 
@@ -328,11 +328,11 @@ get a json object like:
 
 ```json
 [{
-    "settingID": "Background",
-    "value": "Background1"
+  "settingID": "Background",
+  "value": "Background1"
 }, {
-    "settingID": "Color",
-    "value": "Blue"
+  "settingID": "Color",
+  "value": "Blue"
 }]
 ```
 
@@ -342,8 +342,8 @@ requires a json object like:
 
 ```json
 {
-    "settingID": "Color",
-    "value": "Blue"
+  "settingID": "Color",
+  "value": "Blue"
 }
 ```
 
@@ -353,8 +353,8 @@ get a json object like:
 
 ```json
 {
-    "settingID": "settingID",
-    "value": "Blue"
+  "settingID": "settingID",
+  "value": "Blue"
 }
 ```
 
@@ -364,15 +364,15 @@ requires a json object like:
 
 ```json
 {
-    "value": "blue"
+  "value": "blue"
 }
 ```
 get a json object like:
 
 ```json
 [{
-    "settingID": "settingID",
-    "value": "Blue"
+  "settingID": "settingID",
+  "value": "Blue"
 }]
 ```
 
@@ -382,8 +382,8 @@ requires a json object like:
 
 ```json
 [{
-    "name": "nome1",
-    "quantity": "17.0"
+  "name": "nome1",
+  "quantity": "17.0"
 }, {
     "name": "nome2",
     "quantity": "2.0"
@@ -396,12 +396,12 @@ get a json object like:
 
 ```json
 [{
-    "ingredientID": "ingredientID1",
-    "name": "nome1",
-    "quantity": "17.0"
+  "ingredientID": "ingredientID1",
+  "name": "nome1",
+  "quantity": "17.0"
 }, {
-    "ingredientID": "ingredientID2",
-    "name": "nome2",
-    "quantity": "2.0"
+  "ingredientID": "ingredientID2",
+  "name": "nome2",
+  "quantity": "2.0"
 }]
 ```
