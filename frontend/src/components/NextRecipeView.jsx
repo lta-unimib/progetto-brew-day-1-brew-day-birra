@@ -16,6 +16,7 @@ export default class NextRecipeView extends Component {
       equipment: "",
       recipe: {},
     };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   getNextRecipeID = () => {
@@ -76,7 +77,8 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + "equipment")
       .then(response => response.json())
-      .then(data => this.setState({equipment: parseFloat(data.value)}));
+      .then(data => this.setState({equipment: parseFloat(data.value)}))
+      .catch(this.notifier.connectionError)
     })
   }
 
