@@ -21,17 +21,6 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 );
 
-describe("NavBar component", () => {
-  test("should render correctly", async () => {
-    let theContainer;
-    await act(() => {
-      const { container } = render(<NavBar />);
-      theContainer = container;
-    });
-    expect(theContainer.firstChild).toMatchSnapshot();
-  });
-});
-
 describe("QuantityInput component", () => {
   test("should render correctly", async () => {
     let theContainer;

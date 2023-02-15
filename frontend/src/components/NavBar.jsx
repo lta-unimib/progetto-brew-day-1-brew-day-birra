@@ -9,7 +9,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import {Link} from "@mui/material";
+import {Link as MaterialLink} from "@mui/material";
+import {Link as RouterLink} from 'react-router-dom';
 import SportsBarIcon from '@mui/icons-material/SportsBar';
 
 const pages = ['Ricette', 'Birre', 'Inventario', 'Spesa', 'Impostazioni'];
@@ -33,8 +34,8 @@ function NavBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -78,10 +79,11 @@ function NavBar() {
               }}
             >
               {pages.map((page) => (
-                <Link
+                <MaterialLink
+                    component={RouterLink}
                     key={page}
                     onClick={handleCloseNavMenu}
-                    href={`/${page}`}
+                    to={`/${page}`}
                     sx={{
                       textDecoration: "none"
                     }}
@@ -89,7 +91,7 @@ function NavBar() {
                   <MenuItem key={page}>
                     {page}
                   </MenuItem>
-                </Link>
+                </MaterialLink>
               ))}
             </Menu>
           </Box>
@@ -97,8 +99,8 @@ function NavBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -115,10 +117,11 @@ function NavBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
+                component={RouterLink}
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
-                href={`/${page}`}
+                to={`/${page}`}
               >{page}
               </Button>
             ))}

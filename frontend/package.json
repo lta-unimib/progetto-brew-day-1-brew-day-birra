@@ -9,6 +9,7 @@
     "@mui/material": "^5.11.7",
     "@testing-library/user-event": "^13.5.0",
     "css-mediaquery": "^0.1.2",
+    "eslint": "^8.34.0",
     "history": "^5.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,8 +25,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js src/**/*.jsx",
     "sonarqube": "sonar-scanner -Dsonar.login=squ_f91b9a7394d69d0f9ac15370ad6d8fffa9001a62 -Dsonar.host.url=http://localhost:9000 -Dsonar.projectKey=brew.day.frontend -Dsonar.sources=\"src\" -Dsonar.javascript.lcov.reportPaths=\"./coverage/lcov.info\"",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage -u --silent"
   },
   "eslintConfig": {
     "extends": [

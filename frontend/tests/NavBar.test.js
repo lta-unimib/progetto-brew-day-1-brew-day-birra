@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import App from '../src/App';
 import reportWebVitals from '../src/reportWebVitals';
 import { act } from "react-test-renderer";
@@ -44,5 +44,7 @@ describe('NavBar component', () => {
     })
     await act(() => {fireEvent.click(screen.getAllByRole("button")[0])});
     await act(() => {fireEvent.click(screen.getAllByText("Impostazioni")[0])});
+    fireEvent.mouseDown(screen.getByLabelText("Color"));
+    fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
   })
 });

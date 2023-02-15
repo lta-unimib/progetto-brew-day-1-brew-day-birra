@@ -7,8 +7,11 @@ import { act } from "react-test-renderer";
 var settings = [
     {
         settingID: "equipment", value: "30",
+    }, {
         settingID: "color", value: "default",
+    }, {
         settingID: "background", value: "default",
+    }, {
         settingID: "name", value: "Pierino"
     }
 ]
