@@ -36,7 +36,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: CI= mvn clean sonar:sonar -Dsonar.host.url=https://sonarcloud.io
   backend:
-    needs: [frontend]
     name: Build and analyze backend
     runs-on: ubuntu-latest
     steps:
@@ -86,7 +85,7 @@ jobs:
       - name: Build all
         run: CI= mvn clean package
       - name:
-        run: mv ./distribution/target/distribution.*.jar ./brewday.jar
+        run: mv ./backend/target/backend-1.0.0.jar ./brewday.jar
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

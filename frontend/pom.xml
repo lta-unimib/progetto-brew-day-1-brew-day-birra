@@ -12,7 +12,6 @@
   </parent>
 
   <artifactId>frontend</artifactId>
-  <packaging>jar</packaging>
 
   <properties>
     <!-- bind this java project to sonarqube (/ sonarcloud) project -->
@@ -88,12 +87,11 @@
         </executions>
       </plugin>
     </plugins>
-
+    <!--
     <resources>
       <resource>
-        <!-- we copy the content of the frontend directory in the final artifact -->
         <directory>build</directory>
       </resource>
-    </resources>
+    </resources>-->
   </build>
 </project>
