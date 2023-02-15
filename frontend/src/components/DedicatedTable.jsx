@@ -141,8 +141,9 @@ export default class DedicatedTable extends React.Component {
         })
 
         return (
-            <TableContainer component={JimTable}>
-                <Table sx={{ margin: 0 }} aria-label="simple table">
+            <JimTable sx={{ overflow: 'hidden' }}>
+            <TableContainer>
+                <Table sx={{ margin: 0 }} stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             {columnRow}
@@ -162,6 +163,7 @@ export default class DedicatedTable extends React.Component {
                     onRowsPerPageChange={this.handleChangeRowsPerPage}
                 />
             </TableContainer>
+            </JimTable>
         );
     }
 }
