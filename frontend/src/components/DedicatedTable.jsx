@@ -5,7 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { TablePagination, TableSortLabel } from '@mui/material';
+import { Paper, TablePagination, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { Box } from '@mui/system';
 import JimTable from './JimTable';
@@ -141,8 +141,9 @@ export default class DedicatedTable extends React.Component {
         })
 
         return (
-            <TableContainer component={JimTable}>
-                <Table sx={{ margin: 0 }} aria-label="simple table">
+            <JimTable sx={{ overflow: 'hidden' }}>
+            <TableContainer>
+                <Table sx={{ margin: 0 }} stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             {columnRow}
@@ -162,6 +163,7 @@ export default class DedicatedTable extends React.Component {
                     onRowsPerPageChange={this.handleChangeRowsPerPage}
                 />
             </TableContainer>
+            </JimTable>
         );
     }
 }

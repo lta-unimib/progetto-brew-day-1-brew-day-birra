@@ -2,15 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>unimib.ingsof</groupId>
     <artifactId>brewday</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+
   <artifactId>frontend</artifactId>
   <packaging>jar</packaging>
+
   <build>
     <plugins>
       <!-- clean the dist directory used by Angular -->
@@ -32,7 +35,6 @@
         <version>1.11.2</version>
 
         <executions>
-
           <!-- Install node and npm -->
           <execution>
             <id>Install Node and NPM</id>

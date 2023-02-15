@@ -6,18 +6,19 @@
 
     <groupId>unimib.ingsof</groupId>
     <artifactId>brewday</artifactId>
-    <version>1.0.4</version>
-    <name>brew.day</name>
-    <description>Brew Day</description>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.0.2</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
+    
     <modules>
         <module>frontend</module>
         <module>backend</module>
+        <module>distribution</module>
     </modules>
 </project>

@@ -24,8 +24,8 @@
 
 ### Backend-only build
 
-`mvn clean package -Dmaven.merge.skip=true` dalla cartella `backend`
-
-### Backend build that integrates frontend build
-
 `mvn clean package` dalla cartella `backend`
+
+### Build complete jar
+
+`mvn clean package` dalla cartella `distribution`
