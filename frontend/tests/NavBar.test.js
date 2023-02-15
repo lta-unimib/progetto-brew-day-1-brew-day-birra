@@ -3,9 +3,9 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import App from '../src/App';
 import { act } from "react-test-renderer";
 import mediaQuery from "css-mediaquery";
-import { MemoryRouter} from "react-router-dom"
 import { SETTINGS_ENDPOINT, SHOPPING_ENDPOINT } from '../src/utils/Protocol';
 import { SnackbarProvider } from 'notistack';
+import { MemoryRouter} from "react-router-dom"
 
 
 function createMatchMedia(width) {

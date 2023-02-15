@@ -21,7 +21,6 @@ class Inventario extends Component {
     fetch(INVENTORY_LIST_ENDPOINT)
     .then((response) => response.json())
     .then((data) => {
-      console.log("bingchillign")
       this.setState({ inventory: data, isLoading: false }, () => {
         return <p>Caricamento...</p>;
       });

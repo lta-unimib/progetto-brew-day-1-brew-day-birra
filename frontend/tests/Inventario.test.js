@@ -10,7 +10,7 @@ var ingredients = [
   { name: "luppoli", quantity: 3.0, ingredientID: "luppoli" },
 ]
 
-global.fetch = jest.fn().mockImplementation(() =>
+global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
     json: () => {
       if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
