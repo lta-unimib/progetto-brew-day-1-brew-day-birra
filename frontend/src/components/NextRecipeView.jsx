@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "./MButton";
-import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
+import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 
 export default class NextRecipeView extends Component {

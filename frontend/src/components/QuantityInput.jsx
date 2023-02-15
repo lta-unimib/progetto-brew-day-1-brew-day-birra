@@ -26,9 +26,10 @@ class QuantityInput extends React.Component {
   }
 
   render() {
+    const theStile = this.props.style || {width: "100%", textAlign:"center"}
     return (
         <input
-          style={{ height: "100%", width: "100%", textAlign: "center" }}
+          style={theStile}
           type="text"
           data-testid="shopping-quantity"
           value={this.props.value}

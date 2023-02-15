@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "../components/MButton";
-import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
+import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import QuantityInput from "./QuantityInput";
 
@@ -18,6 +18,7 @@ class RecipeExecute extends Component {
       equipment: "",
       missingEquipment: false
     };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   triggerReload = () => {
@@ -26,7 +27,7 @@ class RecipeExecute extends Component {
       fetch(RECIPE_ENDPOINT+`${recipeID}`)
         .then((response) => response.json())
         .then((data) => this.setState({ ...data }))
-        .then(() => acc());
+        .catch(this.notifier.connectionError)
     })
   }
 
@@ -35,7 +36,7 @@ class RecipeExecute extends Component {
         fetch(SETTINGS_ENDPOINT + "equipment")
         .then(response => response.json())
         .then(data => this.setState({equipment: data.value}))
-        .then(() => acc());
+        .catch(this.notifier.connectionError)
       });
     }
 
@@ -67,13 +68,12 @@ class RecipeExecute extends Component {
       }
 
       if (this.state.missingIngredients) {
-        return (<ShoppingList recipeID={this.props.recipeID} quantity={this.state.newBeerQuantity}/>);
+        return (<ShoppingList notifier={this.notifier} recipeID={this.props.recipeID} quantity={this.state.newBeerQuantity}/>);
       }
     };
 
     return (
         <div>
-          <RecipeView recipeID={this.props.recipeID}/>
           <table className="myTable">
               <tbody>
                 <tr>
@@ -104,8 +104,9 @@ class RecipeExecute extends Component {
   }
 
   addBeer() {
-    if(this.state.newBeerQuantity > parseFloat(this.state.equipment)){
+    if(this.state.newBeerQuantity > parseFloat(this.state.equipment)) {
       this.setState({missingEquipment: true});
+      this.notifier.warning("capacita' dell'equipaggiamento insufficiente");
     } else {
       fetch(BEER_LIST_ENDPOINT, {
         method: "POST",
@@ -121,8 +122,10 @@ class RecipeExecute extends Component {
       }).then((response) => {
         if (response.status >= 400 && response.status < 600) {
           this.setState({missingEquipment: false, missingIngredients: true});
+          this.notifier.warning("mancano degli ingredienti");
         } else {
           this.props.onConfirm();
+          this.notifier.success("birra creata con successo");
       }});
     }
   }

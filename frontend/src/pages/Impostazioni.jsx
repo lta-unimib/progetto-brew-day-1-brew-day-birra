@@ -6,11 +6,12 @@ import Modal from "../components/Modal";
 import MButton from '../components/MButton';
 import SettingsReset from "../components/SettingsReset";
 import NextRecipeReset from "../components/NextRecipeReset";
-import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT, BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_TRIGGER, NAVBAR_THEME_MANAGER_TRIGGER, LAST_USED_THEME_LOCALSTORAGE_KEY, DEFAULT_BACKGROUND, DEFAULT_THEME, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY } from '../Protocol';
+import {SETTING_LIST_ENDPOINT, SETTINGS_ENDPOINT, BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_TRIGGER, NAVBAR_THEME_MANAGER_TRIGGER, LAST_USED_THEME_LOCALSTORAGE_KEY, DEFAULT_BACKGROUND, DEFAULT_THEME, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, FAKE_NOTIFIER } from '../utils/Protocol';
 import InputFieldSetting from "../components/InputFieldSetting";
 import InputSelectorSetting from "../components/InputSelectorSetting";
 import JimTable from "../components/JimTable";
 import JimFlex from "../components/JimFlex";
+import InputQuantitySetting from "../components/InputQuantitySetting";
 
 export default class Impostazioni extends Component {
 
@@ -22,37 +23,46 @@ export default class Impostazioni extends Component {
           colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
           backgrounds: Object.keys(backgrounds).map((key) => { return {name:key, value:key}; })
         };
+        this.notifier = this.props.notifier || FAKE_NOTIFIER;
     }
 
     triggerReload = () => {
-        fetch(SETTING_LIST_ENDPOINT)
-        .then(response => response.json())
-        .then(data => {this.setState({settings: data});
-                      if (data.filter(i => i.settingID === "color").length === 0){
-                        this.postValue("color", DEFAULT_THEME);
-                        this.setState({color: DEFAULT_THEME});
-                      } else {
-                        this.setState({color: data.filter(i => i.settingID === "color")[0].value});
-                      }
-                      if (data.filter(i => i.settingID === "name").length === 0){
-                        this.postValue("name", " ");
-                        this.setState({name: " "});
-                      } else {
-                        this.setState({name: data.filter(i => i.settingID === "name")[0].value});
-                      }
-                      if (data.filter(i => i.settingID === "background").length === 0){
-                        this.postValue("background", DEFAULT_BACKGROUND);
-                        this.setState({background: DEFAULT_BACKGROUND});
-                      } else {
-                        this.setState({background: data.filter(i => i.settingID === "background")[0].value});
-                      }
-                      if (data.filter(i => i.settingID === "equipment").length === 0){
-                        this.postValue("equipment", "30");
-                        this.setState({equipment: "30"});
-                      } else {
-                        this.setState({equipment: data.filter(i => i.settingID === "equipment")[0].value});
-                      }
+      fetch(SETTING_LIST_ENDPOINT)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({settings: data});
+        if (data.filter(i => i.settingID === "color").length === 0){
+          this.postValue("color", DEFAULT_THEME);
+          this.setState({color: DEFAULT_THEME});
+        } else {
+          this.setState({color: data.filter(i => i.settingID === "color")[0].value});
+        }
+        if (data.filter(i => i.settingID === "name").length === 0){
+          this.postValue("name", " ");
+          this.setState({name: " "});
+        } else {
+          this.setState({name: data.filter(i => i.settingID === "name")[0].value});
+        }
+        if (data.filter(i => i.settingID === "background").length === 0){
+          this.postValue("background", DEFAULT_BACKGROUND);
+          this.setState({background: DEFAULT_BACKGROUND});
+        } else {
+          this.setState({background: data.filter(i => i.settingID === "background")[0].value});
+        }
+        if (data.filter(i => i.settingID === "equipment").length === 0){
+          this.postValue("equipment", "30");
+          this.setState({equipment: "30"});
+        } else {
+          this.setState({equipment: data.filter(i => i.settingID === "equipment")[0].value});
+        }
+        if (data.filter(i => i.settingID === "nextRecipeID").length === 0){
+          this.postValue("nextRecipeID", "");
+        }
+        if (data.filter(i => i.settingID === "nextRecipeQuantity").length === 0){
+          this.postValue("nextRecipeQuantity", "0");
+        }
       })
+      .catch(this.notifier.connectionError)
     }
 
     setNewEquipment = (event) => {
@@ -72,6 +82,7 @@ export default class Impostazioni extends Component {
         .then(() => document.cookie=BACKGROUND_MANAGER_TRIGGER)
         .then(() => localStorage.setItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, newBackground))
         .then(this.triggerReload)
+        .catch(() => this.notifier.error("impossibile cambiare lo sfondo"))
     }
 
     setNewColor = (event) => {
@@ -83,6 +94,23 @@ export default class Impostazioni extends Component {
         .then(() => localStorage.setItem(LAST_USED_THEME_LOCALSTORAGE_KEY, newColor))
         .then(this.triggerReload)
         .then(this.notifyMaster)
+        .catch(() => this.notifier.error("impossibile il tema"))
+    }
+
+    handleSetEquipment = () => {
+      this.updateValue("equipment", this.state.equipment)
+      .then(this.triggerReload)
+      .catch(() => this.notifier.error("impossibile cambiare l'equipaggiamento"))
+    }
+
+    handleSetName = () => {
+      if (this.state.name === "") {
+        this.notifier.warning("il nome non deve essere vuoto");
+        return this.triggerReload();
+      }
+      this.updateValue("name", this.state.name)
+      .then(this.triggerReload)
+      .catch(() => this.notifier.error("impossibile cambiare il nome"))
     }
 
     notifyMaster = () => {
@@ -109,9 +137,9 @@ export default class Impostazioni extends Component {
       let currentAction = this.state.currentAction;
       switch (currentAction) {
         case "resetSettings":
-          return <SettingsReset onConfirm={this.closeModalAndReload}/>;
+          return <SettingsReset notifier={this.notifier} onConfirm={this.closeModalAndReload}/>;
         case "resetRecipeID":
-          return <NextRecipeReset onConfirm={this.closeModal}/>;
+          return <NextRecipeReset notifier={this.notifier} onConfirm={this.closeModal}/>;
         default:
           return <div></div>;
       }
@@ -128,17 +156,17 @@ export default class Impostazioni extends Component {
       return (
         <BodyThemeManager>
             <JimFlex>
-              <InputFieldSetting
+              <InputQuantitySetting
                 value={this.state.equipment}
                 title="Equipaggiamento Disponibile"
-                onChange={(event) => this.setNewEquipment(event)}
-                onConfirm={() => this.updateValue("equipment", this.state.equipment).then(this.triggerReload)}
+                onChange={this.setNewEquipment}
+                onConfirm={this.handleSetEquipment}
               />
               <InputFieldSetting
                 value={this.state.name}
                 title="Inserisci qui il tuo nome"
-                onChange={(event) => this.setNewName(event)}
-                onConfirm={() => this.updateValue("name", this.state.equipment).then(this.triggerReload)}
+                onChange={this.setNewName}
+                onConfirm={this.handleSetName}
               />
               <InputSelectorSetting
                 title="Seleziona il colore del tema"
@@ -179,7 +207,12 @@ export default class Impostazioni extends Component {
             },
             body: JSON.stringify({value: newValue})
         })
+        .then(response => {
+          if (response.status >= 400 && response.status < 600)
+            throw new Error();
+        })
         .then(() => acc())
+        .catch(() => rej())
       })
     }
 

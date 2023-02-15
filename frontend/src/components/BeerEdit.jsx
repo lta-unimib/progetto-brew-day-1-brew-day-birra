@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {BEERS_ENDPOINT, DEFAULT_NOTE_TYPE} from '../Protocol';
+import {BEERS_ENDPOINT, DEFAULT_NOTE_TYPE, FAKE_NOTIFIER} from '../utils/Protocol';
 import BeerNoteTable from "./BeerNoteTable";
 import InputFieldSetting from "./InputFieldSetting";
 
@@ -11,6 +11,7 @@ class BeerEdit extends Component {
       notes: [], name: "",
       noteType: DEFAULT_NOTE_TYPE, description: ""
     };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   triggerReload = () => {
@@ -19,6 +20,7 @@ class BeerEdit extends Component {
     .then(data => {
       this.setState({...data, noteType: DEFAULT_NOTE_TYPE, description: ""});
     })
+    .catch(this.notifier.connectionError);
   }
 
   componentDidMount() {
@@ -36,6 +38,7 @@ class BeerEdit extends Component {
     fetch(BEERS_ENDPOINT + `${beerID}/${noteID}`, {
       method: "DELETE",
     })
+    .then(this.notifier.onRequestError("impossibile eliminare la nota"))
     .then(() => this.triggerReload());
   };
 
@@ -64,13 +67,14 @@ class BeerEdit extends Component {
       },
       body: JSON.stringify({ name }),
     })
+    .then(this.notifier.onRequestSuccess("nome modificato correttamente"))
+    .then(this.notifier.onRequestError("impossibile cambiare il nome"))
     .then(() => this.triggerReload())
     .then(() => this.props.onConfirm())
   };
 
   handleAddNote = (noteType, description) => {
     const { beerID } = this.props;
-
     fetch(BEERS_ENDPOINT + `${beerID}`, {
       method: "POST",
       headers: {
@@ -78,6 +82,7 @@ class BeerEdit extends Component {
       },
       body: JSON.stringify({ description: description, noteType: noteType }),
     })
+    .then(this.notifier.onRequestError("impossibile aggiungere la nota"))
     .then(() => this.triggerReload());
   };
 
@@ -91,6 +96,7 @@ class BeerEdit extends Component {
       },
       body: JSON.stringify({ description, noteType }),
     })
+    .then(this.notifier.onRequestError("impossibile aggiornare la nota"))
     .then(() => this.triggerReload());
   };
 

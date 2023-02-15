@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Inventario from "../src/pages/Inventario";
 import { act } from "react-test-renderer";
+import { SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var ingredients = [
   { name: "ingredient1", quantity: 2.0, ingredientID: "ingredient1" },
@@ -11,8 +12,13 @@ var ingredients = [
 
 global.fetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
-    json: () =>
-      Promise.resolve(ingredients),
+    json: () => {
+      if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
+        return Promise.resolve({value:"30"})
+      if (url.startsWith(SETTINGS_ENDPOINT))
+        return Promise.resolve({value:"default"})
+      return Promise.resolve(ingredients)
+    }
   })
 );
 

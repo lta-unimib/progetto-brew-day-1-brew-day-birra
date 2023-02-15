@@ -1,7 +1,7 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { NOTE_TYPE_OPTIONS as OPTIONS } from '../Protocol';
+import { NOTE_TYPE_OPTIONS as OPTIONS } from '../utils/Protocol';
 
 export default class NoteTypeInput extends React.Component {
     render() {

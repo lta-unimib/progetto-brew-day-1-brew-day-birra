@@ -1,6 +1,6 @@
 import React from 'react';
 import themes from '../theme/themes';
-import { DEFAULT_THEME, LAST_USED_THEME_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../Protocol';
+import { DEFAULT_THEME, LAST_USED_THEME_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../utils/Protocol';
 import { ThemeProvider } from '@mui/material';
 
 export default class ThemeManager extends React.Component {
@@ -14,7 +14,7 @@ export default class ThemeManager extends React.Component {
             fetch(SETTINGS_ENDPOINT + "color")
             .then((response) => {
                 if (response.status >= 400 && response.status <= 600) {
-                    throw new Error();
+                    return {value: DEFAULT_THEME}
                 }
                 return response.json();
             })
@@ -22,11 +22,8 @@ export default class ThemeManager extends React.Component {
                 let value = data.value;
                 if (themes[value] === undefined)
                     value = DEFAULT_THEME;
+                localStorage.setItem(LAST_USED_THEME_LOCALSTORAGE_KEY, value);
                 this.setState({currentTheme: value});
-                acc();
-            })
-            .catch(() => {
-                this.setState({currentTheme: DEFAULT_THEME});
                 acc();
             })
         })
@@ -36,7 +33,8 @@ export default class ThemeManager extends React.Component {
         if (this.props.testThemeCookie) {
             document.cookie = this.props.trigger;
         }
-        this.triggerReload();
+        this.triggerReload()
+            .then(this.saveTheme)
     }
 
     render() {

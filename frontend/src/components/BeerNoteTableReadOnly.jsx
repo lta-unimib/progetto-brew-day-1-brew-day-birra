@@ -1,5 +1,5 @@
 import React from "react";
-import { NOTE_TYPE_ICONS } from "../Protocol";
+import { NOTE_TYPE_ICONS } from "../utils/Protocol";
 import DedicatedTable from "./DedicatedTable";
 
 const COLUMNS = [

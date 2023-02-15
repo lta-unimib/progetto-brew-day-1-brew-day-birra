@@ -1,5 +1,6 @@
 import React from 'react';
 import { Cookie, Feedback, Warning } from '@mui/icons-material';
+import Notifier from './Notifier';
 
 export const ADVICE_ENDPOINT = '/api/advice';
 export const BEERS_ENDPOINT = '/api/beers/';
@@ -36,3 +37,4 @@ export const NOTE_TYPE_ICONS = {
     taste: <Cookie/>,
     problem: <Warning/>
 }
+export const FAKE_NOTIFIER = new Notifier(() => {});

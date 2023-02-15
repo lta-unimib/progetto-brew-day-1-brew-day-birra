@@ -1,18 +1,19 @@
 import React from "react";
-import { RECIPE_ENDPOINT } from '../Protocol';
+import { FAKE_NOTIFIER, RECIPE_ENDPOINT } from '../utils/Protocol';
 import RecipeIngredientTableReadOnly from "./RecipeIngredientTableReadOnly";
 
 export default class RecipeView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {name: "", description: "", ingredients: []};
-      this.triggerReload = this.triggerReload.bind(this);
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
-  triggerReload() {
+  triggerReload = () => {
       fetch(RECIPE_ENDPOINT + `${this.props.recipeID}`)
       .then(response => response.json())
-      .then(data => this.setState({...data}));
+      .then(data => this.setState({...data}))
+      .catch(this.notifier.connectionError)
   }
 
   componentDidMount() {

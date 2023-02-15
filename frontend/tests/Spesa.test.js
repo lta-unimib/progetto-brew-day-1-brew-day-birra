@@ -3,10 +3,14 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Spesa from "../src/pages/Spesa";
 import { act } from "react-test-renderer";
+import { SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
-global.fetch = jest.fn().mockImplementation(() =>
+global.fetch = jest.fn().mockImplementation((url) =>
     Promise.resolve({
-      json: () => {},
+      json: () => {
+        if (url.startsWith(SETTINGS_ENDPOINT))
+          return Promise.resolve({value:"default"})
+      },
     })
   )
 
