@@ -81,7 +81,7 @@
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>run build --omit=dev</arguments>
+              <arguments>CI= run build</arguments>
             </configuration>
           </execution>
 
