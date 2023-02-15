@@ -45,8 +45,8 @@ returns a json object like:
 
 ```json
 {
-    "recipeID": "recipeID",
-    "quantity": "quantity"
+  "recipeID": "recipeID",
+  "quantity": "quantity"
 }
 ```
 
@@ -385,8 +385,8 @@ requires a json object like:
   "name": "nome1",
   "quantity": "17.0"
 }, {
-    "name": "nome2",
-    "quantity": "2.0"
+  "name": "nome2",
+  "quantity": "2.0"
 }]
 ```
 
