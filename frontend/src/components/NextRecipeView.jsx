@@ -29,8 +29,10 @@ export default class NextRecipeView extends Component {
         } else
           rej();
       })
-      .catch(() => this.updateNextRecipeSetting("nextRecipeID", ""))
-      .then(() => rej());
+      .catch(() => {
+        this.updateNextRecipeSetting("nextRecipeID", "")
+        rej();
+      })
     })
   }
 
@@ -45,8 +47,10 @@ export default class NextRecipeView extends Component {
         } else
           rej();
       })
-      .catch(() => this.updateNextRecipeSetting("nextRecipeQuantity", ""))
-      .then(() => rej());
+      .catch(() => {
+        this.updateNextRecipeSetting("nextRecipeQuantity", "")
+        rej();
+      })
     })
   }
 
