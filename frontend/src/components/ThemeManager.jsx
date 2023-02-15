@@ -26,6 +26,7 @@ export default class ThemeManager extends React.Component {
                 this.setState({currentTheme: value});
                 acc();
             })
+          .catch(() => acc())
         })
     }
     

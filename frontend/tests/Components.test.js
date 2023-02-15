@@ -10,7 +10,11 @@ global.fetch = jest.fn().mockImplementation((url) =>
     json: () => {
       if (url === "/api/advice")
         return Promise.resolve(null);
-        if (url === "/api/settings/nextRecipeID")
+        if (url === "/api/settings/color")
+        return Promise.resolve({value:"default"});
+        if (url === "/api/settings/background")
+        return Promise.resolve({value:"default"});
+         if (url === "/api/settings/nextRecipeID")
         return Promise.resolve({value:""});
         if (url === "/api/settings/nextRecipeQuantity")
         return Promise.resolve({value:""});

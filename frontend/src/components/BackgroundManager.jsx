@@ -20,6 +20,7 @@ export default class BackgroundManager extends React.Component {
                 document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[value]}")`;
                 acc()
             })
+            .catch(() => acc())
         });
     }
 
