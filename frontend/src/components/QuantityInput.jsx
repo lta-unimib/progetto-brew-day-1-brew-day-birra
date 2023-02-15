@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React from "react";
 
 const isValidQuantity = (quantity) => {
@@ -28,13 +29,14 @@ class QuantityInput extends React.Component {
   render() {
     const theStile = this.props.style || {width: "100%", textAlign:"center"}
     return (
-        <input
-          style={theStile}
+        <TextField
+          sx={theStile}
           type="text"
           data-testid="shopping-quantity"
           value={this.props.value}
           onChange={this.handleValue}
           onBlur={this.handleBlur}
+          label={this.props.label}
         />
     );
   }

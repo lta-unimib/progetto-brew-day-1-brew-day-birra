@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import RecipeView from "./RecipeView";
 import MButton from "../components/MButton";
 import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import QuantityInput from "./QuantityInput";
+import { TextField } from "@mui/material";
 
 class RecipeExecute extends Component {
   constructor(props) {
@@ -77,17 +77,18 @@ class RecipeExecute extends Component {
           <table className="myTable">
               <tbody>
                 <tr>
-                  <td>Nome Nuova Birra: </td>
+                  <td>Nuova Birra</td>
                   <td>
-                    <input
+                    <TextField
+                      label="Name"
                       value={this.state.newBeerName}
-                      type="text"
                       style={{ width: "90%", textAlign: "center" }}
                       onChange={this.setNewBeerName}
-                    ></input>
+                    />
                   </td>
                   <td>
                     <QuantityInput
+                      label="Quantity"
                       value={this.state.newBeerQuantity}
                       onChange={this.setNewBeerQuantity}
                     ></QuantityInput>

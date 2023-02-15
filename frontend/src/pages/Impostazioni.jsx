@@ -159,12 +159,14 @@ export default class Impostazioni extends Component {
               <InputQuantitySetting
                 value={this.state.equipment}
                 title="Equipaggiamento Disponibile"
+                label="Equipment"
                 onChange={this.setNewEquipment}
                 onConfirm={this.handleSetEquipment}
               />
               <InputFieldSetting
                 value={this.state.name}
                 title="Inserisci qui il tuo nome"
+                label="Name"
                 onChange={this.setNewName}
                 onConfirm={this.handleSetName}
               />

@@ -139,6 +139,7 @@ class Spesa extends Component {
                   <td>{firstColumn}</td>
                   <td>
                     <QuantityInput
+                      label="Quantity"
                       value={ingredient.ingredientQuantity}
                       onChange={(e) =>
                         this.handleIngredientChange(

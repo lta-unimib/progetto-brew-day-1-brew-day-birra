@@ -5,7 +5,8 @@ export default class JimFlex extends React.Component {
     render() {
         return (<Box sx={{
             display: {md: "grid", sx: "flex"},
-            gridTemplateColumns: "50% 50%"
+            gridTemplateColumns: "50% 50%",
+            gap: ""
           }}>
             {this.props.children}
         </Box>);

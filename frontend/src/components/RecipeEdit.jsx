@@ -64,6 +64,7 @@ class RecipeEdit extends Component{
         <center>
           <JimFlex>
               <InputFieldSetting
+                label="Name"
                 value={this.state.name}
                 title="Nome"
                 onChange={this.setName}

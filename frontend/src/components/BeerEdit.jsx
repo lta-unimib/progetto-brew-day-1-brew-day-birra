@@ -105,6 +105,7 @@ class BeerEdit extends Component {
         <div>
           <center>
             <InputFieldSetting
+              label="Name"
               id="inputBeerEdit"
               data-testid="inputBeerEdit"
               value={this.state.name}

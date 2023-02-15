@@ -3,6 +3,7 @@ import RecipeView from "./RecipeView";
 import MButton from "./MButton";
 import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
+import { TextField } from "@mui/material";
 
 export default class NextRecipeView extends Component {
   constructor(props) {
@@ -107,14 +108,14 @@ export default class NextRecipeView extends Component {
           <table className="myTable">
               <tbody>
                 <tr>
-                  <td>Nome Nuova Birra: </td>
+                  <td>Nuova Birra</td>
                   <td>
-                    <input
+                    <TextField
+                      label="Name"
                       value={this.state.newBeerName}
-                      type="text"
                       style={{ width: "90%", textAlign: "center" }}
-                      onChange={(event) => this.setNewBeerName(event)}
-                    ></input>
+                      onChange={this.setNewBeerName}
+                    />
                   </td>
                   <td>
                     <MButton text="Crea" onClick={() => this.addBeer()} />

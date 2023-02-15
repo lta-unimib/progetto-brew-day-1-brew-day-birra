@@ -11,6 +11,9 @@ import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
 import BodyThemeManager from '../components/BodyThemeManager';
 import QuantityInput from '../components/QuantityInput';
+import { TextField } from '@mui/material';
+import JimFlex from '../components/JimFlex';
+import JimGrid from '../components/JimGrid';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -141,42 +144,47 @@ export default class Ricette extends Component {
         return (
           <BodyThemeManager>
             <div>
-              <JimTable>
-                <table style={{width: "100%"}}>
-                    <tbody>
-                      <tr>
-                        <td width="30%">FILTRA PER NOME</td>
-                        <td width="50%">
-                          <input
-                            value={this.state.filterName} type="text"
-                            style={{width: "100%", textAlign:"center"}}
-                            onChange={ (event) => this.setFilterName(event)}
-                          />
-                        </td>
-                        <td width="20%">
-                          <MButton text="Filtra" onClick={() => this.filterRecipe()} />
-                          <MButton text="Togli" onClick={() => this.removeFilter()} />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Seleziona la prossima ricetta</td>
-                        <td style={{display:"flex", flexFlow: "column nowrap", justifyContent:"space-around"}}>
-                          <Selector
-                            label="Recipe"
-                            value={this.state.nextRecipeID}
-                            onChange={this.setNewNextRecipeID}
-                            options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
-                          />
-                          <QuantityInput
-                            value={this.state.nextRecipeQuantity}
-                            onChange={this.setNewNextRecipeQuantity}
-                          />
-                        </td>
-                        <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/></td>
-                      </tr>
-                    </tbody>
-                </table>
-              </JimTable>
+              <JimFlex>
+                <JimTable>
+                  <p style={{textAlign:"center"}}>FILTRA PER NOME</p>
+                  <TextField
+                    label="Name"
+                    value={this.state.filterName} type="text"
+                    style={{
+                      marginRight:"5%", marginLeft:"5%",
+                      marginTop:"1%", marginBottom:"1%",
+                      width: "90%", textAlign:"center"}}
+                    onChange={this.setFilterName}
+                  />
+                  <JimGrid>
+                    <MButton text="Filtra" onClick={this.filterRecipe}/>
+                  </JimGrid>
+                  <JimGrid>
+                    <MButton text="Togli" onClick={this.removeFilter}/>
+                  </JimGrid>
+                </JimTable>
+                <JimTable>
+                  <p style={{textAlign:"center"}}>Seleziona la prossima ricetta</p>
+                  <JimGrid>
+                    <Selector
+                      label="Recipe"
+                      value={this.state.nextRecipeID}
+                      onChange={this.setNewNextRecipeID}
+                      options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                    />
+                  </JimGrid>
+                  <JimGrid>
+                    <QuantityInput
+                      label="Quantity"
+                      value={this.state.nextRecipeQuantity}
+                      onChange={this.setNewNextRecipeQuantity}
+                    />
+                  </JimGrid>
+                  <JimGrid>
+                    <MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/>
+                  </JimGrid>
+                </JimTable>
+              </JimFlex>
 
               <RecipeTable
                 recipes={recipesFiltered}
