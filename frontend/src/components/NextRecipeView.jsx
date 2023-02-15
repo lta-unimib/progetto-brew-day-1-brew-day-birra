@@ -70,6 +70,7 @@ export default class NextRecipeView extends Component {
       .then((response) => response.json())
       .then((data) => this.setState({ missingIngredients: data }))
       .then(() => acc())
+      .catch(this.notifier.connectionError)
     })
   }
 
