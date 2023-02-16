@@ -5,6 +5,8 @@ import MButton from "./MButton";
 import QuantityInput from "./QuantityInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/DeleteIcon';
+import DoneIcon from '@mui/icons-material/DoneIcon';
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
@@ -20,6 +22,7 @@ export default class RecipeIngredientTable extends React.Component {
                 quantity: (<QuantityInput label="Ingredient Quantity" value={ingredient.quantity} onChange={(event) => this.props.setQuantity(ingredient.ingredientID, event)}/>),
                 toolbox: (<div>
                     <MButton text="V" onClick={() => this.props.editQuantity(ingredient.ingredientID)} />
+                    <IconButton aria-label="V" onClick={() => this.props.editQuantity(ingredient.ingredientID)}><DoneIcon /></IconButton>
                     <MButton text="X" onClick={() => this.props.deleteIngredient(ingredient.ingredientID)} />
                 </div>)
             }
