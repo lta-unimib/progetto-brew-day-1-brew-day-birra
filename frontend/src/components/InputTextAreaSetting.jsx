@@ -8,6 +8,7 @@ export default class InputTextAreaSetting extends React.Component {
         return (<JimTable>
             <p style={{textAlign: "center"}}>{this.props.title}</p>
             <TextField
+                label={this.props.label}
                 multiline
                 sx={{width: "90%", margin: "5%", textAlign:"center"}}
                 value={this.props.value}

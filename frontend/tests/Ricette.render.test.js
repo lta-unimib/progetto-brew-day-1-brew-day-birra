@@ -16,7 +16,7 @@ var recipes = {
     }
 }
 
-global.fetch = jest.fn().mockImplementation((url) => {
+global.fetch = jest.fn().mockImplementation((url, body) => {
   if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipe"))
     return Promise.resolve({});
   return Promise.resolve({
@@ -25,7 +25,7 @@ global.fetch = jest.fn().mockImplementation((url) => {
             return Promise.resolve({value:"default"})
           if (url.startsWith("/api/recipes?name="))
             return Promise.resolve(Object.keys(recipes));
-          if (url == RECIPE_LIST_ENDPOINT)
+          if (url === RECIPE_LIST_ENDPOINT)
             return Promise.resolve(Object.keys(recipes));
           else {
               if (url.startsWith(RECIPE_ENDPOINT)) {
@@ -59,7 +59,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity ok, recipe ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName")));
+        await act(() => fireEvent.click(within(screen.getByRole("listbox")).getByText("recipeName")));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })
@@ -67,7 +67,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity ok , recipe not ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getAllByText("")[0]));
+        await act(() => fireEvent.click(within(screen.getByRole("listbox")).getAllByText("")[0]));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })
@@ -75,7 +75,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity not ok, recipe ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName")));
+        await act(() => fireEvent.click(within(screen.getByRole("listbox")).getByText("recipeName")));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 0}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })
@@ -83,7 +83,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity not ok, recipe not ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getAllByText("")[0]));
+        await act(() => fireEvent.click(within(screen.getByRole("listbox")).getAllByText("")[0]));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 0}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })

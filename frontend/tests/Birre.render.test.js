@@ -58,7 +58,7 @@ describe('Birre.jsx can correctly render page', () => {
         await act(() => {render(<Birre/>);});
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "beerName"}}));
         fireEvent.mouseDown(screen.getByLabelText("Recipe"));
-        fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName"));
+        fireEvent.click(within(screen.getByRole("listbox")).getByText("recipeName"));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })

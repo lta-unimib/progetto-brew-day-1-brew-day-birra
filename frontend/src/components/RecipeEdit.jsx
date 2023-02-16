@@ -6,7 +6,6 @@ import JimFlex from "./JimFlex";
 import RecipeIngredientTable from "./RecipeIngredientTable";
 
 class RecipeEdit extends Component{
-
   constructor(props) {
     super(props);
     this.state = {
@@ -64,13 +63,14 @@ class RecipeEdit extends Component{
         <center>
           <JimFlex>
               <InputFieldSetting
-                label="Name"
+                label="Recipe Name"
                 value={this.state.name}
                 title="Nome"
                 onChange={this.setName}
                 onConfirm={() => this.editName()}
               />
               <InputTextAreaSetting
+                label="Recipe Description"
                 value={this.state.description}
                 title="Descrizione"
                 onChange={this.setDescription}
@@ -119,6 +119,7 @@ class RecipeEdit extends Component{
         },
         body: JSON.stringify({quantity: newQuantity})
     })
+    .then(this.notifier.onRequestSuccess("quantita' aggiornata correttamente'"))
     .then(this.notifier.onRequestError("impossibile modificare la quantita'"))
     .then(() => {
       this.triggerReload();

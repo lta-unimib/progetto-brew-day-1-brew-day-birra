@@ -9,7 +9,7 @@ export default class IngredientNameInput extends React.Component {
             id="free-solo-demo"
             freeSolo
             options={OPTIONS}
-            renderInput={(params) => <TextField {...params} label="name" />}
+            renderInput={(params) => <TextField {...params} label="Ingredient Name" />}
             value={this.props.value}
             onInputChange={(e, value) => {
                 this.props.onChange({target: {value: value}})}
