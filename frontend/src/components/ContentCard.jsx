@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 export default class ContentCard extends React.Component {
     render() {
         return (
-            <Box style={{ margin: "2%", padding:"1%" }}>
+            <Box style={{ margin: "4%", padding:"1%" }}>
                 <Card variant="outlined" style={{borderRadius: 2}}>
                     <CardContent>{this.props.children}</CardContent>
                 </Card>

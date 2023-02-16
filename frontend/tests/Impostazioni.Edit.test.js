@@ -51,11 +51,11 @@ describe('Impostazioni.jsx can correctly update equipement and name', () => {
     test('can update color', async () => {
         await act(() => {render(<Impostazioni/>);});
         fireEvent.mouseDown(screen.getByLabelText("Color"));
-        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
     })
     test('can update background', async () => {
         await act(() => {render(<Impostazioni/>);});
         fireEvent.mouseDown(screen.getByLabelText("Background"));
-        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
     })
 })

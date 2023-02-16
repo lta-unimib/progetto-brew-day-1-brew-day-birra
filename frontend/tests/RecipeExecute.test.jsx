@@ -2,8 +2,9 @@ import "@testing-library/jest-dom/extend-expect";
 import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
+import RecipeExecute from "../src/components/RecipeExecute";
 import { act } from "react-test-renderer";
-import { BEER_LIST_ENDPOINT, SHOPPING_ENDPOINT, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import { FAKE_NOTIFIER, BEER_LIST_ENDPOINT, SHOPPING_ENDPOINT, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var recipes = {
     "recipeID": {
@@ -16,7 +17,6 @@ const theIngredient = {
                 "name": "ingredientName", "quantity": "1",
                 "recipeID": "recipeID", "ingredientID": "ingredientID"
             };
-
 
 var flickContent = {
   equipment: true,
@@ -72,23 +72,31 @@ global.fetch = jest.fn().mockImplementation((url) => {
   }
 )
 
-describe('Ricette.jsx can correctly edit recipe', () => {
+describe('Ricette.jsx can correctly execute recipe', () => {
     test('open recipe execute and create a beer', async () => {
-        await act(() => {render(<Ricette/>);});
+        await act(() => {render(<Ricette notifier={FAKE_NOTIFIER}/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
 
     test('open recipe execute but recipe request fail', async () => {
         flickContent.recipe = false;
-        await act(() => {render(<Ricette/>);});
+        flickContent.equipment = true;
+        await act(() => {render(<RecipeExecute notifier={FAKE_NOTIFIER} recipeID="some"/>);});
+    })
+
+    test('open recipe execute but equipment request fail', async () => {
+        flickContent.recipe = false;
+        flickContent.equipment = false;
+        await act(() => {render(<RecipeExecute recipeID="some"/>);});
     })
 
     test('open recipe execute but equipment request fail', async () => {
         flickContent.recipe = true;
         flickContent.equipment = false;
-        await act(() => {render(<Ricette/>);});
+        await act(() => {render(<RecipeExecute recipeID="some"/>);});
     })
 
     test('open recipe execute and create a beer but missing ingredients', async () => {
