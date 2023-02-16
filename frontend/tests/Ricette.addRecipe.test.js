@@ -9,24 +9,24 @@ var recipes = {
 }
 
 global.fetch = jest.fn().mockImplementation((url) =>
-  Promise.resolve({
-    json: () => {
-      if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
-        return Promise.resolve({value:"30"})
-        if (url.startsWith(SETTINGS_ENDPOINT))
-          return Promise.resolve({value:"default"})
-        if (url == RECIPE_LIST_ENDPOINT)
-          return Promise.resolve(Object.keys(recipes));
-        else {
-            if (url.startsWith(RECIPE_ENDPOINT)) {
-                let recipeID = url.replace(RECIPE_ENDPOINT, "");
-                return Promise.resolve(recipes[recipeID]);
-            } else {
-                return Promise.resolve(null);
+    Promise.resolve({
+        json: () => {
+            if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
+                return Promise.resolve({value:"30"})
+            if (url.startsWith(SETTINGS_ENDPOINT))
+                return Promise.resolve({value:"default"})
+            if (url == RECIPE_LIST_ENDPOINT)
+                return Promise.resolve(Object.keys(recipes));
+            else {
+                if (url.startsWith(RECIPE_ENDPOINT)) {
+                    let recipeID = url.replace(RECIPE_ENDPOINT, "");
+                    return Promise.resolve(recipes[recipeID]);
+                } else {
+                    return Promise.resolve(null);
+                }
             }
-        }
-    },
-  })
+        },
+    })
 )
 
 describe('Ricette.jsx can correctly add recipe', () => {

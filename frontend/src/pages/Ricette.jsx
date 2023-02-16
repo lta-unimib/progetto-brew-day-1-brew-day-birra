@@ -136,8 +136,8 @@ export default class Ricette extends Component {
     programRecipe = () => {
       if (this.state.nextRecipeID === "")
         return this.notifier.warning("devi selezionare una ricetta per impostarla")
-        if (!(Number(this.state.nextRecipeQuantity) > 0))
-          return this.notifier.warning("devi inserire una quantita' maggiore di zero")
+      if (!(Number(this.state.nextRecipeQuantity) > 0))
+        return this.notifier.warning("devi inserire una quantita' maggiore di zero")
       this.updateNextRecipeSetting("nextRecipeID", this.state.nextRecipeID)
       .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
       .then(() => this.notifier.success("programmazione ricetta impostata correttamente"))
