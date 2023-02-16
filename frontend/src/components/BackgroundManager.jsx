@@ -1,6 +1,6 @@
 import React from 'react';
 import backgrounds from '../theme/backgrounds';
-import { BACKGROUND_MANAGER_ESCAPE, BACKGROUND_MANAGER_TRIGGER, DEFAULT_BACKGROUND, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../Protocol';
+import { BACKGROUND_MANAGER_ESCAPE, BACKGROUND_MANAGER_TRIGGER, DEFAULT_BACKGROUND, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../utils/Protocol';
 
 export default class BackgroundManager extends React.Component {
     triggerReload = () => {
@@ -8,7 +8,7 @@ export default class BackgroundManager extends React.Component {
             fetch(SETTINGS_ENDPOINT + "background")
             .then((response) => {
                 if (response.status >= 400 && response.status <= 600) {
-                    throw new Error();
+                    return {value: DEFAULT_BACKGROUND}
                 }
                 return response.json();
             })
@@ -16,12 +16,11 @@ export default class BackgroundManager extends React.Component {
                 let value = data.value;
                 if (backgrounds[value] === undefined)
                     value = "default";
+                localStorage.setItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, value);
                 document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[value]}")`;
+                acc()
             })
-            .catch(() => {
-                document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[DEFAULT_BACKGROUND]}")`;
-                acc();
-            });
+            .catch(() => acc())
         });
     }
 

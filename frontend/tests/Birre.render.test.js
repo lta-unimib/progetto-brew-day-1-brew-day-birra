@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
+import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var recipes = {
     "recipeID": {
@@ -25,6 +26,10 @@ var beers = {
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
     json: () => {
+      if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
+          return Promise.resolve({value:"30"})
+          if (url.startsWith(SETTINGS_ENDPOINT))
+            return Promise.resolve({value:"default"})
         if (url.startsWith("/api/recipes")) {
             if (url === "/api/recipes")
               return Promise.resolve(Object.keys(recipes));

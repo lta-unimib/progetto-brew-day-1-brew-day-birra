@@ -1,19 +1,19 @@
 import React, { Component }  from "react";
 import MButton from '../components/MButton';
-import {RECIPE_ENDPOINT} from '../Protocol';
+import {FAKE_NOTIFIER, RECIPE_ENDPOINT} from '../utils/Protocol';
 
 class RecipeDelete extends Component{
   constructor(props) {
     super(props);
     this.state = {name: "", description: "", ingredients: []};
-    this.deleteRecipe = this.deleteRecipe.bind(this);
-      this.triggerReload = this.triggerReload.bind(this);
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
-  triggerReload() {
+  triggerReload = () => {
       fetch(`/api/recipes/${this.props.recipeID}`)
       .then(response => response.json())
-      .then(data => this.setState({...data}));
+      .then(data => this.setState({...data}))
+      .catch(() => this.notifier.error("verificare la connessione"))
   }
 
   componentDidMount() {
@@ -33,7 +33,7 @@ class RecipeDelete extends Component{
     );
   }
 
-  deleteRecipe(id) {
+  deleteRecipe = (id) => {
     fetch(RECIPE_ENDPOINT+ `${id}`, {
         method: 'DELETE',
         headers: {
@@ -41,6 +41,7 @@ class RecipeDelete extends Component{
             'Content-Type': 'application/json'
         }
     })
+    .then(this.notifier.onRequestError("impossibile eliminare la ricetta"))
     .then(() => this.props.onConfirm())
 }
 

@@ -1,4 +1,5 @@
 package unimib.ingsof.persistence.service;
+import java.util.List;
 
 public class Protocol {
 	public static final String NAME_BODY_KEY = "name";
@@ -18,6 +19,9 @@ public class Protocol {
 	public static final String DEFAULT_EQUIPMENT = "30";
 	public static final String EQUIPMENT_SETTING_ID = "equipment";
 	
+	public static final String DEFAULT_NOTETYPE = "generic";
+	public static final List<String> NOTETYPES = List.of(DEFAULT_NOTETYPE, "taste", "problem");
+
 	Protocol() {
 	    throw new IllegalStateException("Utility class");
 	}

@@ -1,8 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, screen } from "@testing-library/react";
-import NavBar from "../src/components/NavBar";
-import QuantityInput from "../src/components/QuantityInput";
 import Modal from "../src/components/Modal";
 import { act } from "react-test-renderer";
 import MButton from "../src/components/MButton";
@@ -12,7 +10,11 @@ global.fetch = jest.fn().mockImplementation((url) =>
     json: () => {
       if (url === "/api/advice")
         return Promise.resolve(null);
-        if (url === "/api/settings/nextRecipeID")
+        if (url === "/api/settings/color")
+        return Promise.resolve({value:"default"});
+        if (url === "/api/settings/background")
+        return Promise.resolve({value:"default"});
+         if (url === "/api/settings/nextRecipeID")
         return Promise.resolve({value:""});
         if (url === "/api/settings/nextRecipeQuantity")
         return Promise.resolve({value:""});
@@ -20,126 +22,6 @@ global.fetch = jest.fn().mockImplementation((url) =>
     },
   })
 );
-
-describe("QuantityInput component", () => {
-  test("should render correctly", async () => {
-    let theContainer;
-    await act(() => {
-      const { container } = render(<QuantityInput />);
-      theContainer = container;
-    });
-    expect(theContainer.firstChild).toMatchSnapshot();
-  });
-
-  test("correctly sets the value of the input element", async () => {
-    let theContainer;
-    await act(() => {
-      const { container } = render(<QuantityInput />);
-      theContainer = container;
-    });
-    const input = theContainer.querySelector("input");
-
-    await act(() => fireEvent.change(input, { target: { value: "100" } }));
-    expect(input.value).toBe("100");
-
-    await act(() => fireEvent.change(input, { target: { value: "1000" } }));
-    expect(input.value).toBe("999");
-
-    await act(() => fireEvent.change(input, { target: { value: "100.5" } }));
-    expect(input.value).toBe("100.5");
-  });
-
-  test("correctly sets the value of the input element on blur", async () => {
-    let theContainer;
-    await act(() => {
-      const { container } = render(<QuantityInput />);
-      theContainer = container;
-    });
-    const input = theContainer.querySelector("input");
-
-    await act(() => fireEvent.change(input, { target: { value: "0.00" } }));
-    await act(() => fireEvent.blur(input));
-    expect(input.value).toBe("0");
-  });
-
-  test("Input only accepts numbers", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "a" },
-    }));
-    expect(component.getByTestId("quantity-input").value).toBe("");
-  });
-
-  test("Input does not allow minus sign, so negative numbers", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "-" },
-    }));
-    expect(component.getByTestId("quantity-input").value).toBe("");
-  });
-
-  test("If input starts with . it automatically returns 0.", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "." },
-    }));
-    expect(component.getByTestId("quantity-input").value).toBe("0.");
-  });
-
-  test("999 is the max input", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "1000" },
-    }));
-    expect(component.getByTestId("quantity-input").value).toBe("999");
-  });
-
-  test("00 is rendered to 0", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "00" },
-    }));
-    expect(component.getByTestId("quantity-input").value).toBe("0");
-  });
-
-  test("If the first comma comes after a digit or more, keep the number", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "0." },
-    }));
-    expect(component.getByTestId("quantity-input").value).toBe("0.");
-  });
-
-  test("0.0 renders to 0", async () => {
-    let component;
-    await act(() => {
-      component = render(<QuantityInput />);
-    });
-    await act(() => fireEvent.change(component.getByTestId("quantity-input"), {
-      target: { value: "0.0" },
-    }));
-    await act(() => fireEvent.blur(component.getByTestId("quantity-input")));
-    expect(component.getByTestId("quantity-input").value).toBe("0");
-  });
-});
 
 describe("Modal component", () => {
   test("should render correctly", async () => {

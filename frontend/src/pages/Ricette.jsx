@@ -5,15 +5,26 @@ import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
 import MButton from '../components/MButton';
-import { RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../Protocol';
+import { FAKE_NOTIFIER, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../utils/Protocol';
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
 import BodyThemeManager from '../components/BodyThemeManager';
+import QuantityInput from '../components/QuantityInput';
+import { TextField } from '@mui/material';
+import JimFlex from '../components/JimFlex';
+import JimGrid from '../components/JimGrid';
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
-        this.state = {recipes: [], currentAction: "", nextRecipeQuantity: "", nextRecipeID: "", selectedRecipe: null, showModal:false, newRecipeName: "", newRecipeDescription: "", filterName: "", recipesFiltered: []};
+        this.state = {
+          recipes: [], currentAction: "", 
+          nextRecipeQuantity: "", nextRecipeID: "", 
+          selectedRecipe: null, showModal:false, 
+          newRecipeName: "", newRecipeDescription: "", 
+          filterName: "", recipesFiltered: []
+        };
+        this.notifier = this.props.notifier || FAKE_NOTIFIER;
     }
 
     triggerReload = () => {
@@ -21,7 +32,8 @@ export default class Ricette extends Component {
         .then(response => response.json())
         .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
         .then(responses => Promise.all(responses.map(response => response.json())))
-        .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}));
+        .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}))
+        .catch(this.notifier.connectionError)
     }
 
      triggerReloadSettings = () => {
@@ -74,13 +86,13 @@ export default class Ricette extends Component {
       if (!selectedRecipe) return <div>Caricamento...</div>;
       switch (currentAction) {
         case "view":
-          return <RecipeView recipeID={selectedRecipe.recipeID}/>;
+          return <RecipeView notifier={this.notifier} recipeID={selectedRecipe.recipeID}/>;
         case "edit":
-          return <RecipeEdit recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
+          return <RecipeEdit notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
         case "delete":
-          return <RecipeDelete recipeID={selectedRecipe.recipeID} onConfirm={this.closeModalAndReload}/>;
+          return <RecipeDelete notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.closeModalAndReload}/>;
         case "execute":
-          return <RecipeExecute recipeID={selectedRecipe.recipeID} onConfirm={this.closeModal}/>;
+          return <RecipeExecute notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.closeModal}/>;
         default:
           return <div></div>;
       }
@@ -132,43 +144,47 @@ export default class Ricette extends Component {
         return (
           <BodyThemeManager>
             <div>
-              <JimTable>
-                <table style={{width: "100%"}}>
-                    <tbody>
-                      <tr>
-                        <td width="30%">FILTRA PER NOME</td>
-                        <td width="50%">
-                          <input
-                            value={this.state.filterName} type="text"
-                            style={{width: "100%", textAlign:"center"}}
-                            onChange={ (event) => this.setFilterName(event)}
-                          />
-                        </td>
-                        <td width="20%">
-                          <MButton text="Filtra" onClick={() => this.filterRecipe()} />
-                          <MButton text="Togli" onClick={() => this.removeFilter()} />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Seleziona la prossima ricetta</td>
-                        <td style={{display:"flex", flexFlow: "column nowrap", justifyContent:"space-around"}}>
-                          <Selector
-                            label="Recipe"
-                            value={this.state.nextRecipeID}
-                            onChange={this.setNewNextRecipeID}
-                            options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
-                          />
-                          <input
-                            style={{width: "100%", textAlign:"center"}}
-                            value={this.state.nextRecipeQuantity} type="text"
-                            onChange={ (event) => this.setNewNextRecipeQuantity(event)}
-                          />
-                        </td>
-                        <td><MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/></td>
-                      </tr>
-                    </tbody>
-                </table>
-              </JimTable>
+              <JimFlex>
+                <JimTable>
+                  <p style={{textAlign:"center"}}>FILTRA PER NOME</p>
+                  <TextField
+                    label="Name"
+                    value={this.state.filterName} type="text"
+                    style={{
+                      marginRight:"5%", marginLeft:"5%",
+                      marginTop:"1%", marginBottom:"1%",
+                      width: "90%", textAlign:"center"}}
+                    onChange={this.setFilterName}
+                  />
+                  <JimGrid>
+                    <MButton text="Filtra" onClick={this.filterRecipe}/>
+                  </JimGrid>
+                  <JimGrid>
+                    <MButton text="Togli" onClick={this.removeFilter}/>
+                  </JimGrid>
+                </JimTable>
+                <JimTable>
+                  <p style={{textAlign:"center"}}>Seleziona la prossima ricetta</p>
+                  <JimGrid>
+                    <Selector
+                      label="Recipe"
+                      value={this.state.nextRecipeID}
+                      onChange={this.setNewNextRecipeID}
+                      options={this.state.recipes.map((recipe) => { return {name: recipe.name, value: recipe.recipeID}; })}
+                    />
+                  </JimGrid>
+                  <JimGrid>
+                    <QuantityInput
+                      label="Quantity"
+                      value={this.state.nextRecipeQuantity}
+                      onChange={this.setNewNextRecipeQuantity}
+                    />
+                  </JimGrid>
+                  <JimGrid>
+                    <MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/>
+                  </JimGrid>
+                </JimTable>
+              </JimFlex>
 
               <RecipeTable
                 recipes={recipesFiltered}
@@ -191,6 +207,8 @@ export default class Ricette extends Component {
     }
 
     addRecipe = () => {
+      if (this.state.newRecipeName === "")
+        return this.notifier.warning("il nome della ricetta non deve essere vuoto");
       fetch(RECIPE_LIST_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -199,16 +217,19 @@ export default class Ricette extends Component {
         },
         body: JSON.stringify({name: this.state.newRecipeName, description: this.state.newRecipeDescription})
       })
+      .then(this.notifier.onRequestError("impossibile creare la ricetta"))
+      .then(this.notifier.onRequestSuccess("ricetta creata correttamente"))
       .then(() => this.triggerReload());
     }
 
     filterRecipe = () => {
       fetch(RECIPE_LIST_ENDPOINT + `?name=${this.state.filterName}`)
-        .then(response => response.json())
-        .then(recipesIDsFiltered => {
-          let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.recipeID));
-          this.setState({recipesFiltered: recipeFiltered});
-        })
+      .then(response => response.json())
+      .then(recipesIDsFiltered => {
+        let recipeFiltered = this.state.recipes.filter(recipe => recipesIDsFiltered.includes(recipe.recipeID));
+        this.setState({recipesFiltered: recipeFiltered});
+      })
+      .catch(this.notifier.connectionError);
     }
 
     updateNextRecipeSetting = (settingID, value) => {
@@ -220,6 +241,7 @@ export default class Ricette extends Component {
           },
           body: JSON.stringify({value: value})
       })
+      .then(this.notifier.onRequestError("verificare la connessione"))
     }
 
     postNextRecipeSetting = (settingID, value) => {
@@ -230,6 +252,7 @@ export default class Ricette extends Component {
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({settingID: settingID, value: value})
-      });
+      })
+      .then(this.notifier.onRequestError("verificare la connessione"))
     }
 }

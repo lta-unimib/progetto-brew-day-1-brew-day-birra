@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "./MButton";
-import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT} from '../Protocol';
+import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
+import { TextField } from "@mui/material";
 
 export default class NextRecipeView extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export default class NextRecipeView extends Component {
       equipment: "",
       recipe: {},
     };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   getNextRecipeID = () => {
@@ -28,8 +30,10 @@ export default class NextRecipeView extends Component {
         } else
           rej();
       })
-      .catch(() => this.updateNextRecipeSetting("nextRecipeID", ""))
-      .then(() => rej());
+      .catch(() => {
+        this.updateNextRecipeSetting("nextRecipeID", "")
+        rej();
+      })
     })
   }
 
@@ -44,8 +48,10 @@ export default class NextRecipeView extends Component {
         } else
           rej();
       })
-      .catch(() => this.updateNextRecipeSetting("nextRecipeQuantity", ""))
-      .then(() => rej());
+      .catch(() => {
+        this.updateNextRecipeSetting("nextRecipeQuantity", "")
+        rej();
+      })
     })
   }
 
@@ -64,6 +70,7 @@ export default class NextRecipeView extends Component {
       .then((response) => response.json())
       .then((data) => this.setState({ missingIngredients: data }))
       .then(() => acc())
+      .catch(this.notifier.connectionError)
     })
   }
 
@@ -71,7 +78,8 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + "equipment")
       .then(response => response.json())
-      .then(data => this.setState({equipment: parseFloat(data.value)}));
+      .then(data => this.setState({equipment: parseFloat(data.value)}))
+      .catch(this.notifier.connectionError)
     })
   }
 
@@ -107,14 +115,14 @@ export default class NextRecipeView extends Component {
           <table className="myTable">
               <tbody>
                 <tr>
-                  <td>Nome Nuova Birra: </td>
+                  <td>Nuova Birra</td>
                   <td>
-                    <input
+                    <TextField
+                      label="Name"
                       value={this.state.newBeerName}
-                      type="text"
                       style={{ width: "90%", textAlign: "center" }}
-                      onChange={(event) => this.setNewBeerName(event)}
-                    ></input>
+                      onChange={this.setNewBeerName}
+                    />
                   </td>
                   <td>
                     <MButton text="Crea" onClick={() => this.addBeer()} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_ESCAPE, THEME_MANAGER_TRIGGER } from '../Protocol';
+import { BACKGROUND_MANAGER_TRIGGER, THEME_MANAGER_ESCAPE, THEME_MANAGER_TRIGGER } from '../utils/Protocol';
 import BackgroundManager from './BackgroundManager';
 import ThemeManager from './ThemeManager';
 

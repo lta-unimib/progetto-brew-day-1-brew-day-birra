@@ -1,10 +1,8 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import { INGREDIENT_NAME_OPTIONS as OPTIONS } from '../utils/Protocol';
 
-const OPTIONS = [
-    "acqua", "additivi", "lievito", "luppoli", "malto", "zuccheri"
-];
 export default class IngredientNameInput extends React.Component {
     render() {
         return (<Autocomplete

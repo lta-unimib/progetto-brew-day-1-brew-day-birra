@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import NextRecipeView from "../components/NextRecipeView";
 import RecipeExecute from "../components/RecipeExecute";
 import BodyThemeManager from "../components/BodyThemeManager";
-import {ADVICE_ENDPOINT } from '../Protocol';
+import {ADVICE_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
 import ContentCard from '../components/ContentCard';
+import RecipeView from "../components/RecipeView";
 
 class Home extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class Home extends Component {
     this.state = {
       advice: null,
     };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   triggerReload() {
@@ -35,7 +37,11 @@ class Home extends Component {
           <h1 className="advice-texts">
             Ecco quale birra dovresti preparare
           </h1>
+          <RecipeView
+            notifier={this.notifier}
+            recipeID={this.state.advice.recipeID}/>
           <RecipeExecute
+            notifier={this.notifier}
             recipeID={this.state.advice.recipeID}
             onConfirm={this.triggerReload}
           />
@@ -49,7 +55,9 @@ class Home extends Component {
     );
 
     const nextRecipeView = (
-      <NextRecipeView/>
+      <NextRecipeView
+        notifier={this.notifier}
+      />
     );
     //<center>{adviceView}</center>
 

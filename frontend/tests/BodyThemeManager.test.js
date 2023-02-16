@@ -15,17 +15,6 @@ var settings = {
     }
 }
 
-var fakeSettings = {
-    color: {
-        settingID: "color",
-        value: "fake"
-    },
-    background: {
-        settingID: "background",
-        value: "fake"
-    }
-}
-
 var contentFlicks = {
     color: true,
     background: true
@@ -43,18 +32,15 @@ const getStatus = (settingID) => {
         return 404
 }
 
-const getSetting = (settingID) => {
-    if (contentFlicks[settingID])
-        return settings[settingID]
-    return fakeSettings[settingID]
-}
-
 global.fetch = jest.fn().mockImplementation((url) => {
     let settingID = url.replace("/api/settings/", "");
-    return Promise.resolve({
-        status: getStatus(settingID),
-        json: () => Promise.resolve(getSetting(settingID))
-    })
+    if (contentFlicks[settingID])
+      return Promise.resolve({
+          status: getStatus(settingID),
+          json: () => Promise.resolve(settings[settingID])
+      })
+    else
+      return Promise.resolve({})
 });
 
 describe("BodyThemeManager behave correctly", () => {

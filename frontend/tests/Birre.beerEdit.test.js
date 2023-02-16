@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
+import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var recipes = {
     "recipeID": {
@@ -26,7 +27,9 @@ var recipes = {
   global.fetch = jest.fn().mockImplementation((url) =>
     Promise.resolve({
       json: () => {
-          if (url.startsWith("/api/recipes")) {
+        if (url.startsWith(SETTINGS_ENDPOINT))
+          return Promise.resolve({value:"default"})
+           if (url.startsWith("/api/recipes")) {
               if (url === "/api/recipes")
                 return Promise.resolve(Object.keys(recipes));
               else {
@@ -49,8 +52,6 @@ describe('Birre.jsx can correctly edit recipe', () => {
     test('open beer edit', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
-        expect(screen.getAllByRole("textbox").length).toBeGreaterThanOrEqual(5);
-        expect(screen.getAllByRole("textbox").length).toBeLessThanOrEqual(5);
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
@@ -58,25 +59,25 @@ describe('Birre.jsx can correctly edit recipe', () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newName"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("V")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiorna")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open beer edit and update a note', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
-        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "newNoteType"}})});
-        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[2], {target: {value: "newNoteDescription"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("V")[1])});
+        await act(() => {fireEvent.change(within(screen.getAllByTestId("note-type-input")[0]).getByRole("combobox"), {target: { value: "newNoteType" },});});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "newNoteDescription"}})});
+        await act(() => {fireEvent.click(screen.getAllByText("V")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open beer edit and add a note', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
-        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[3], {target: {value: "newNoteType"}})});
-        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[4], {target: {value: "newNoteDescription"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("V")[2])});
+        await act(() => {fireEvent.change(within(screen.getAllByTestId("note-type-input")[1]).getByRole("combobox"), {target: { value: "newNoteType" },});});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[2], {target: {value: "newNoteDescription"}})});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     

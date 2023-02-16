@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import IngredientDelete from "../components/IngredientDelete";
 import Modal from "../components/Modal";
-import {INVENTORY_LIST_ENDPOINT, INVENTORY_ENDPOINT} from '../Protocol';
+import {INVENTORY_LIST_ENDPOINT, INVENTORY_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
 import BodyThemeManager from "../components/BodyThemeManager";
 import InventoryTable from "../components/InventoryTable";
 
@@ -14,6 +14,7 @@ class Inventario extends Component {
       showModal: false,
       ingredientID: null,
     };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   triggerReload = () => {
@@ -23,7 +24,8 @@ class Inventario extends Component {
       this.setState({ inventory: data, isLoading: false }, () => {
         return <p>Caricamento...</p>;
       });
-    });
+    })
+    .catch(this.notifier.connectionError)
   }
 
   componentDidMount() {
@@ -45,7 +47,9 @@ class Inventario extends Component {
     const { ingredientID } = this.state;
     fetch(INVENTORY_ENDPOINT+`${ingredientID}`, {
       method: "DELETE",
-    }).then(() => {
+    })
+    .then(this.notifier.onRequestError("impossibile eliminare l'ingrediente"))
+    .then(() => {
       this.setState({showModal: false,});
       this.triggerReload();
     });
