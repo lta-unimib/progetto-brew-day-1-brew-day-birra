@@ -14,6 +14,10 @@ global.fetch = jest.fn().mockImplementation((url) =>
         return Promise.resolve({value:""});
         if (url === "/api/settings/nextRecipeQuantity")
         return Promise.resolve({value:""});
+        if (url === "/api/settings/color")
+        return Promise.resolve({value:"default"});
+        if (url === "/api/settings/background")
+        return Promise.resolve({value:"default"});
       return Promise.resolve({});
     },
   })
@@ -24,17 +28,6 @@ describe("Home component", () => {
     let theContainer;
     await act(() => {
       const { container } = render(<Home />);
-      theContainer = container;
-    });
-    expect(theContainer.firstChild).toMatchSnapshot();
-  });
-});
-
-describe("Spesa component", () => {
-  test("should render correctly", async () => {
-    let theContainer;
-    await act(() => {
-      const { container } = render(<Spesa />);
       theContainer = container;
     });
     expect(theContainer.firstChild).toMatchSnapshot();

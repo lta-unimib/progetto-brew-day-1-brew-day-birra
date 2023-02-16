@@ -11,9 +11,9 @@ public class NoteTypeDefaultingValidationHandler extends BaseValidationHandler {
 	public Map<String, String> handle(Map<String, String> object) throws ValidationException {
 		String noteType = object.get(Protocol.NOTETYPE_BODY_KEY);
 		if (noteType == null)
-			noteType = "generic";
+			noteType = Protocol.DEFAULT_NOTETYPE;
 		else {
-			if (!(noteType.equals("taste")) && !(noteType.equals("generic")) )
+			if (!Protocol.NOTETYPES.contains(noteType))
 				throw new WrongBodyException();
 		}
 		

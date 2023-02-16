@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import {SHOPPING_ENDPOINT} from '../Protocol';
+import {SHOPPING_ENDPOINT} from '../utils/Protocol';
+import RecipeIngredientTableReadOnly from "./RecipeIngredientTableReadOnly";
 
 class ShoppingList extends Component {
   constructor(props) {
@@ -27,54 +28,14 @@ class ShoppingList extends Component {
 
 
   render() {
-    const itemList = this.state.missingIngredients.map((item) => {
-      let imagePath = `../../icons/inventory-icons/${item.name}.png`;
-      let defaultImage = "../../icons/inventory-icons/sconosciuto.png";
-      return (
-        <tr key={item.name}>
-          <td>
-            <img
-              className="shoppingImage"
-              src={imagePath}
-              alt=""
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = defaultImage;
-              }}
-            />
-          </td>
-          <td>{item.name}</td>
-          <td>{item.quantity}</td>
-        </tr>
-      );
-    });
-
-    const action = () => {
-      if (this.state.missingIngredients.length !== 0) {
-        return (
-          <div>
-            <center>
-              <h2>Ingredienti Mancanti</h2>
-            </center>
-            <table className="myTable">
-              <thead>
-                <tr>
-                  <th width="25%">Immagine</th>
-                  <th width="25%">Nome</th>
-                  <th width="25%">Quantità</th>
-                </tr>
-              </thead>
-              <tbody>{itemList}</tbody>
-            </table>
-          </div>
-        );
-      }
-    };
-
     return (
-        <div>
-          {action()}
-        </div>
+      <div>
+        <center>
+          <h2>Ingredienti Mancanti</h2>
+          <RecipeIngredientTableReadOnly
+            ingredients={this.state.missingIngredients}/>
+        </center>
+      </div>
     );
   }
 

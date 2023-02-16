@@ -1,21 +1,26 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from '../components/MButton';
-import {BEERS_ENDPOINT} from '../Protocol';
-
+import {BEERS_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
+import BeerNoteTableReadOnly from "./BeerNoteTableReadOnly";
 
 class BeerView extends Component {
-  state = {
-    showRicetta: false,
-    recipeID: null,
-    name: "",
-    notes: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      showRicetta: false,
+      recipeID: null,
+      name: "",
+      notes: []
+    };
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
+  }
 
   triggerReload = () => {
     fetch(BEERS_ENDPOINT + `${this.props.beerID}`)
     .then(response => response.json())
-    .then(data => this.setState({...data}));
+    .then(data => this.setState({...data}))
+    .catch(this.notifier.connectionError)
   }
 
   componentDidMount() {
@@ -27,15 +32,16 @@ class BeerView extends Component {
   };
 
   render() {
-    const { showRicetta, recipeID, name, notes } = this.state;
+    const { showRicetta, recipeID, name } = this.state;
+
+    const action = showRicetta
+    ? (<RecipeView notifier={this.notifier} recipeID={recipeID}/>)
+    : <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>;
 
     const recipeView = (
       <div>
         {(recipeID !== null) ? (
-          <div>
-            <MButton text="Visualizza Ricetta" onClick={this.handleShowRicetta}/>
-            {showRicetta ? (<RecipeView recipeID={recipeID}/>) : null}
-          </div>
+          action
         ) : null}
       </div>
     );
@@ -45,10 +51,9 @@ class BeerView extends Component {
         <center>
           <h1>{name}</h1>
           {recipeView}
-          <h4>Note:</h4>
-          {notes.map(note => (
-            <p key={note.noteID}>• {note.description}</p>
-          ))}
+          <BeerNoteTableReadOnly
+            notes={this.state.notes}
+          />
         </center>
       </div>
     );

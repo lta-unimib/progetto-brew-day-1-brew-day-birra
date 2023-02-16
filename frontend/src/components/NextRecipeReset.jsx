@@ -1,12 +1,11 @@
 import React, { Component }  from "react";
 import MButton from '../components/MButton';
-import { SETTINGS_ENDPOINT } from '../Protocol';
+import { FAKE_NOTIFIER, SETTINGS_ENDPOINT } from '../utils/Protocol';
 
 class NextRecipeReset extends Component{
   constructor(props) {
     super(props);
-    this.resetNextRecipeSettings = this.resetNextRecipeSettings.bind(this);
-    this.updateNextRecipeSetting = this.updateNextRecipeSetting.bind(this);
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   render(){
@@ -14,18 +13,21 @@ class NextRecipeReset extends Component{
         <div>
           <center>
             <p>Sei sicuro di voler rimuovere la ricetta?</p>
-            <MButton text="Conferma" onClick={() => this.resetNextRecipeSettings()} />
+            <MButton text="Conferma" onClick={this.resetNextRecipeSettings} />
           </center>
         </div>
     );
   }
 
-    resetNextRecipeSettings(){
-      this.updateNextRecipeSetting("nextRecipeID", "")
-      this.updateNextRecipeSetting("nextRecipeQuantity", "0");
-    }
-  
-    updateNextRecipeSetting(settingID, value) {
+  resetNextRecipeSettings = () => {
+    this.updateNextRecipeSetting("nextRecipeID", "")
+    .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", "0"))
+    .then(() => this.notifier.success("programmazione cancellata con successo"))
+    .catch(() => this.notifier.error("impossibile cancellare la programmazione"))
+  }
+
+  updateNextRecipeSetting = (settingID, value) => {
+    return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + `${settingID}`, {
           method: 'PUT',
           headers: {
@@ -33,9 +35,15 @@ class NextRecipeReset extends Component{
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({value: value})
-      }).then(() => this.props.onConfirm());
-    }
-
+      })
+      .then(response => {
+        if (response.status >= 400 && response.status < 600)
+          throw new Error();
+      })
+      .then(() => acc())
+      .catch(() => rej())
+    })
+  }
 }
 
 export default NextRecipeReset;

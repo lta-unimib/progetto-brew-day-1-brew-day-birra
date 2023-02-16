@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
-import {DO_SHOPPING_ENDPOINT} from '../Protocol';
+import {DO_SHOPPING_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
 import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
+import QuantityInput from "../components/QuantityInput";
 
 class Spesa extends Component {
   constructor(props) {
@@ -12,15 +13,14 @@ class Spesa extends Component {
       ingredients: [
         {
           ingredientName: "",
-          ingredientQuantity: "",
+          ingredientQuantity: "0",
         },
       ],
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleAddIngredient = this.handleAddIngredient.bind(this);
+    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     const _ingredients = [];
     for (const ingredient of this.state.ingredients) {
       const { ingredientName, ingredientQuantity } = ingredient;
@@ -40,27 +40,28 @@ class Spesa extends Component {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(_ingredients),
-      }).then(() => {
+      })
+      .then(this.notifier.onRequestSuccess("ingredienti inventariati con successo"))
+      .then(this.notifier.onRequestError("impossibile inventariare gli ingredienti"))
+      .then(() => {
         this.setState({
-          ingredients: [{ ingredientName: "", ingredientQuantity: "" }],
+          ingredients: [{ ingredientName: "", ingredientQuantity: "0" }],
         });
       });
     }
   }
-  handleDeleteIngredient(index) {
+
+  handleDeleteIngredient = (index) => {
     this.setState({
       added: this.state.added - 1,
       ingredients: this.state.ingredients.filter((p, i) => i !== index),
     });
   }
 
-  handleAddIngredient() {
-    const { ingredientName: newIngName, ingredientQuantity: newIngQuantity } =
-      this.state.ingredients[this.state.ingredients.length - 1];
+  handleAddIngredient = () => {
+    const { ingredientName: newIngName, ingredientQuantity: newIngQuantity } = this.state.ingredients[this.state.ingredients.length - 1];
     const ingredients = this.state.ingredients;
-    const isAlreadyAdded = ingredients.find(
-      (ingredient) => ingredient.ingredientName === newIngName
-    );
+    const isAlreadyAdded = ingredients.find((ingredient) => ingredient.ingredientName === newIngName);
     if (
       isAlreadyAdded &&
       ingredients.indexOf(isAlreadyAdded) !== ingredients.length - 1
@@ -73,16 +74,18 @@ class Spesa extends Component {
         ingredientName: newIngName,
         ingredientQuantity: newIngQuantity,
       };
-      if (newIngName !== "" && newIngQuantity !== "") {
-        ingredients.push({ ingredientName: "", ingredientQuantity: "" });
+      if (newIngName !== "") {
+        if (newIngQuantity !== "") {
+          ingredients.push({ ingredientName: "", ingredientQuantity: "0" })
+        }
+      } else {
+        this.notifier.warning("il nome dell'ingrediente non deve essere vuoto")
       }
     }
-    this.setState({
-      ingredients,
-      added: this.state.added + 1 });
+    this.setState({ ingredients, added: this.state.added + 1 });
   }
 
-  handleIngredientChange(field, index, value) {
+  handleIngredientChange = (field, index, value) => {
     const ingredients = this.state.ingredients;
     ingredients[index][field] = value;
     this.setState({ ingredients });
@@ -135,9 +138,8 @@ class Spesa extends Component {
                 >
                   <td>{firstColumn}</td>
                   <td>
-                    <input
-                      type="text"
-                      data-testid="shopping-quantity"
+                    <QuantityInput
+                      label="Quantity"
                       value={ingredient.ingredientQuantity}
                       onChange={(e) =>
                         this.handleIngredientChange(
