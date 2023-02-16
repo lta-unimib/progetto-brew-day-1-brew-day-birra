@@ -1,12 +1,11 @@
 import React from 'react';
-import { FAKE_NOTIFIER, SETTINGS_ENDPOINT } from '../utils/Protocol';
+import { SETTINGS_ENDPOINT } from '../utils/Protocol';
 import Typography from '@mui/material/Typography';
 
 export default class Greeter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
 
   triggerReload = () => {
