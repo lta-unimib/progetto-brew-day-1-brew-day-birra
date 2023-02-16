@@ -49,7 +49,7 @@ describe("Inventario component", () => {
 
   test("deletes an item from the inventory and updates the state", async () => {
     await act(() => render(<Inventario />));
-    const deleteButton = screen.getAllByText("Elimina")[0];
+    const deleteButton = screen.getAllByLabelText("Elimina")[0];
     await act(() => fireEvent.click(deleteButton));
     ingredients = ingredients.filter((ingredient) => ingredient.name != "ingredient1");
     const confirmDeleteButton = screen.getAllByText("Conferma")[0];
