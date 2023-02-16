@@ -66,15 +66,15 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "0"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("V")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("V")[0])});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "1"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("V")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("V")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     test('open recipe edit and delete an ingredient', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("X")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("X")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
 })
