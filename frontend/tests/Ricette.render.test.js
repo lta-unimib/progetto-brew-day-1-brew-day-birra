@@ -16,25 +16,28 @@ var recipes = {
     }
 }
 
-global.fetch = jest.fn().mockImplementation((url) =>
-  Promise.resolve({
-    json: () => {
-        if (url.startsWith(SETTINGS_ENDPOINT))
-          return Promise.resolve({value:"default"})
-        if (url.startsWith("/api/recipes?name="))
-          return Promise.resolve(Object.keys(recipes));
-        if (url == RECIPE_LIST_ENDPOINT)
-          return Promise.resolve(Object.keys(recipes));
-        else {
-            if (url.startsWith(RECIPE_ENDPOINT)) {
-                let recipeID = url.replace(RECIPE_ENDPOINT, "");
-                return Promise.resolve(recipes[recipeID]);
-            } else {
-                return Promise.resolve(null);
-            }
-        }
-    },
-  })
+global.fetch = jest.fn().mockImplementation((url) => {
+  if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipe"))
+    return Promise.resolve({});
+  return Promise.resolve({
+      json: () => {
+          if (url.startsWith(SETTINGS_ENDPOINT))
+            return Promise.resolve({value:"default"})
+          if (url.startsWith("/api/recipes?name="))
+            return Promise.resolve(Object.keys(recipes));
+          if (url == RECIPE_LIST_ENDPOINT)
+            return Promise.resolve(Object.keys(recipes));
+          else {
+              if (url.startsWith(RECIPE_ENDPOINT)) {
+                  let recipeID = url.replace(RECIPE_ENDPOINT, "");
+                  return Promise.resolve(recipes[recipeID]);
+              } else {
+                  return Promise.resolve(null);
+              }
+          }
+      },
+    })
+  }
 )
 
 describe('Ricette.jsx can correctly render page', () => {
@@ -42,20 +45,46 @@ describe('Ricette.jsx can correctly render page', () => {
         await act(() => {render(<Ricette/>);});
         expect(screen.getAllByText(recipes.recipeID.name, { exact: false })[0]).toBeInTheDocument();
         expect(screen.getByText(recipes.recipeID.description, { exact: false })).toBeInTheDocument();
-        fireEvent.click(screen.getByText("Nome"));
-        fireEvent.click(screen.getByText("Descrizione"));
+        await act(() => fireEvent.click(screen.getByText("Nome")));
+        await act(() => fireEvent.click(screen.getByText("Descrizione")));
     })
     
     test('can filter recipes', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "recipeName"}}));
+        await act(() => fireEvent.change(screen.getAllByLabelText("Name")[0], {target: {value: "recipeName"}}));
         await act(() => fireEvent.click(screen.getAllByText("Filtra")[0]));
         await act(() => fireEvent.click(screen.getAllByText("Togli")[0]));
     })
     
-    test('can program recipes', async () => {
+    test('can program recipes (quantity ok, recipe ok)', async () => {
         await act(() => {render(<Ricette/>);});
-        fireEvent.mouseDown(screen.getByLabelText("Recipe"));
-        fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName"));
+        await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
+        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName")));
+        await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
+        await act(() => fireEvent.click(screen.getByText("Programma")))
+    })
+    
+    test('can program recipes (quantity ok , recipe not ok)', async () => {
+        await act(() => {render(<Ricette/>);});
+        await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
+        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getAllByText("")[0]));
+        await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
+        await act(() => fireEvent.click(screen.getByText("Programma")))
+    })
+    
+    test('can program recipes (quantity not ok, recipe ok)', async () => {
+        await act(() => {render(<Ricette/>);});
+        await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
+        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getByText("recipeName")));
+        await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 0}}));
+        await act(() => fireEvent.click(screen.getByText("Programma")))
+    })
+    
+    test('can program recipes (quantity not ok, recipe not ok)', async () => {
+        await act(() => {render(<Ricette/>);});
+        await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
+        await act(() => fireEvent.mouseDown(within(screen.getByRole("listbox")).getAllByText("")[0]));
+        await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 0}}));
+        await act(() => fireEvent.click(screen.getByText("Programma")))
     })
 })

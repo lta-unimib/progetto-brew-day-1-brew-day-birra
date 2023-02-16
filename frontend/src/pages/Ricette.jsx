@@ -116,7 +116,6 @@ export default class Ricette extends Component {
     setNewNextRecipeID = (event) => {
       let newNextRecipeID = event.target.value;
       this.setState({nextRecipeID: newNextRecipeID});
-      this.updateNextRecipeSetting("nextRecipeID", newNextRecipeID)
     }
 
     setNewNextRecipeQuantity = (event) => {
@@ -132,6 +131,17 @@ export default class Ricette extends Component {
     
     removeFilter = () => {
       this.setState({recipesFiltered: this.state.recipes, filterName: ""})
+    }
+
+    programRecipe = () => {
+      if (this.state.nextRecipeID === "")
+        return this.notifier.warning("devi selezionare una ricetta per impostarla")
+        if (!(Number(this.state.nextRecipeQuantity) > 0))
+          return this.notifier.warning("devi inserire una quantita' maggiore di zero")
+      this.updateNextRecipeSetting("nextRecipeID", this.state.nextRecipeID)
+      .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
+      .then(() => this.notifier.success("programmazione ricetta impostata correttamente"))
+      .catch(this.notifier.connectionError)
     }
 
     render() {
@@ -181,7 +191,7 @@ export default class Ricette extends Component {
                     />
                   </JimGrid>
                   <JimGrid>
-                    <MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/>
+                    <MButton text="Programma" onClick={this.programRecipe}/>
                   </JimGrid>
                 </JimTable>
               </JimFlex>
@@ -233,15 +243,17 @@ export default class Ricette extends Component {
     }
 
     updateNextRecipeSetting = (settingID, value) => {
-      fetch(SETTINGS_ENDPOINT + `${settingID}`, {
-          method: 'PUT',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({value: value})
+      return new Promise((acc, rej) => {
+        fetch(SETTINGS_ENDPOINT + `${settingID}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({value: value})
+        })
+        .then(this.notifier.onRequestErrorResolvePromise(() => {}, acc, rej))
       })
-      .then(this.notifier.onRequestError("verificare la connessione"))
     }
 
     postNextRecipeSetting = (settingID, value) => {
