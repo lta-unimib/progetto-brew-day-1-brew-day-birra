@@ -1,5 +1,4 @@
 import "@testing-library/jest-dom/extend-expect";
-import Notifier from "../src/utils/Notifier";
 import { FAKE_NOTIFIER } from "../src/utils/Protocol";
 
 const notifier = FAKE_NOTIFIER;
@@ -35,7 +34,7 @@ describe("Notifier.js", () => {
     rule({status:400});
   })
   
-  test("Notifier ", async () => {
+  test("Notifier connectionError", async () => {
     notifier.connectionError();
   })
 })

@@ -5,7 +5,7 @@ import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
 import MButton from '../components/MButton';
-import { FAKE_NOTIFIER, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../utils/Protocol';
+import { FAKE_NOTIFIER, isNotValidPositiveQuantity, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../utils/Protocol';
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
@@ -136,7 +136,7 @@ export default class Ricette extends Component {
     programRecipe = () => {
       if (this.state.nextRecipeID === "")
         return this.notifier.warning("devi selezionare una ricetta per impostarla")
-      if (!(Number(this.state.nextRecipeQuantity) > 0))
+      if (isNotValidPositiveQuantity(this.state.nextRecipeQuantity))
         return this.notifier.warning("devi inserire una quantita' maggiore di zero")
       this.updateNextRecipeSetting("nextRecipeID", this.state.nextRecipeID)
       .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
