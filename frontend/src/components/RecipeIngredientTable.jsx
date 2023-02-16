@@ -21,7 +21,6 @@ export default class RecipeIngredientTable extends React.Component {
                 name: ingredient.name,
                 quantity: (<QuantityInput label="Ingredient Quantity" value={ingredient.quantity} onChange={(event) => this.props.setQuantity(ingredient.ingredientID, event)}/>),
                 toolbox: (<div>
-                    <MButton text="V" onClick={() => this.props.editQuantity(ingredient.ingredientID)} />
                     <IconButton aria-label="V" onClick={() => this.props.editQuantity(ingredient.ingredientID)}><DoneIcon /></IconButton>
                     <MButton text="X" onClick={() => this.props.deleteIngredient(ingredient.ingredientID)} />
                 </div>)
