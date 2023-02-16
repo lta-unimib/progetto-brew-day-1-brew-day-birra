@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
-import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
+import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import QuantityInput from "./QuantityInput";
 import { TextField } from "@mui/material";
@@ -116,7 +116,7 @@ class RecipeExecute extends Component {
   addBeer() {
     if (this.state.newBeerName === "")
       return this.notifier.warning("il nome della birra non deve essere vuoto");
-    if (!(Number(this.state.newBeerQuantity) > 0))
+    if (isNotValidPositiveQuantity(this.state.newBeerQuantity))
       return this.notifier.warning("la quantita' litri di birra prodotta deve essere strettamente positiva");
     if(this.state.newBeerQuantity > parseFloat(this.state.equipment)) {
       this.setState({missingEquipment: true});

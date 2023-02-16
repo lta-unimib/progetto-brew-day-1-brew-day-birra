@@ -38,3 +38,5 @@ export const NOTE_TYPE_ICONS = {
     problem: <Warning/>
 }
 export const FAKE_NOTIFIER = new Notifier(() => {});
+export const isValidPositiveQuantity = (value) => (Number(value) > 0);
+export const isNotValidPositiveQuantity = (value) => (! isValidPositiveQuantity(value));

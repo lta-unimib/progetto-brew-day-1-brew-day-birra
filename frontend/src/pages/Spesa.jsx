@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
-import {DO_SHOPPING_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
+import {DO_SHOPPING_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '../utils/Protocol';
 import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
 import QuantityInput from "../components/QuantityInput";
@@ -29,7 +29,7 @@ class Spesa extends Component {
         ingredientQuantity &&
         this.state.ingredients.indexOf(ingredient) < this.state.added
       ) {
-        if (!(Number(ingredientQuantity)>0))
+        if (isNotValidPositiveQuantity(ingredientQuantity))
           return this.notifier.warning("le quantita' dei singoli ingredienti devono essere strettamente positive");
         _ingredients.push({
           name: ingredientName,

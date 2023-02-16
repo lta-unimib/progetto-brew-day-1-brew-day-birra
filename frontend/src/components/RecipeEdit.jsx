@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FAKE_NOTIFIER, RECIPE_ENDPOINT } from '../utils/Protocol';
+import { FAKE_NOTIFIER, isNotValidPositiveQuantity, RECIPE_ENDPOINT } from '../utils/Protocol';
 import InputFieldSetting from "./InputFieldSetting";
 import InputTextAreaSetting from "./InputTextAreaSetting";
 import JimFlex from "./JimFlex";
@@ -109,7 +109,7 @@ class RecipeEdit extends Component{
 
   editQuantity = (id) => {
     let newQuantity = [...this.state.ingredients].filter(i => i.ingredientID === id)[0].quantity;
-    if (!(Number(newQuantity) > 0))
+    if (isNotValidPositiveQuantity(newQuantity))
       return this.notifier.warning("la quantita' degli ingredienti deve essere strettamente positiva");
     fetch(RECIPE_ENDPOINT+`${this.state.recipeID}/${id}`, {
         method: 'PUT',
@@ -166,7 +166,7 @@ class RecipeEdit extends Component{
       return this.notifier.warning("il nome dell'ingrediente non deve essere vuoto");
     if (this.state.ingredients.filter(item => this.state.newIngredientName === item.name).length !== 0)
       return this.notifier.warning("i nomi degli ingredienti devono essere distinti");
-    if (!(Number(this.state.newIngredientQuantity) > 0))
+    if (isNotValidPositiveQuantity(this.state.newIngredientQuantity))
       return this.notifier.warning("la quantita' degli ingredienti deve essere strettamente positiva");
     fetch(RECIPE_ENDPOINT+`${this.state.recipeID}`, {
       method: 'POST',
