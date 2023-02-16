@@ -29,6 +29,8 @@ class Spesa extends Component {
         ingredientQuantity &&
         this.state.ingredients.indexOf(ingredient) < this.state.added
       ) {
+        if (!(Number(ingredientQuantity)>0))
+          return this.notifier.warning("le quantita' dei singoli ingredienti devono essere strettamente positive");
         _ingredients.push({
           name: ingredientName,
           quantity: ingredientQuantity,
@@ -77,12 +79,12 @@ class Spesa extends Component {
       if (newIngName !== "") {
         if (newIngQuantity !== "") {
           ingredients.push({ ingredientName: "", ingredientQuantity: "0" })
+          this.setState({ ingredients, added: this.state.added + 1 });
         }
       } else {
-        this.notifier.warning("il nome dell'ingrediente non deve essere vuoto")
+        return this.notifier.warning("il nome dell'ingrediente non deve essere vuoto")
       }
     }
-    this.setState({ ingredients, added: this.state.added + 1 });
   }
 
   handleIngredientChange = (field, index, value) => {

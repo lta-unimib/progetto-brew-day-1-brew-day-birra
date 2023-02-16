@@ -72,10 +72,11 @@ global.fetch = jest.fn().mockImplementation((url) => {
   }
 )
 
-describe('Ricette.jsx can correctly edit recipe', () => {
+describe('Ricette.jsx can correctly execute recipe', () => {
     test('open recipe execute and create a beer', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })

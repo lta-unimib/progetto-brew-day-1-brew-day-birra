@@ -25,7 +25,7 @@ export default class RecipeTable extends React.Component {
         })
         const pivotRow = {
             name: (<TextField label="Name" value={this.props.newRecipeName} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeName(event)}/>),
-            description: (<TextField label="Description" value={this.props.newRecipeDescription} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeDescription(event)}/>),
+            description: (<TextField multiline label="Description" value={this.props.newRecipeDescription} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeDescription(event)}/>),
             toolbox: (<MButton text="Aggiungi" onClick={() => this.props.addRecipe()} />)
         };
 

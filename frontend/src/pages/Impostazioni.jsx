@@ -14,7 +14,6 @@ import JimFlex from "../components/JimFlex";
 import InputQuantitySetting from "../components/InputQuantitySetting";
 
 export default class Impostazioni extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -38,8 +37,8 @@ export default class Impostazioni extends Component {
           this.setState({color: data.filter(i => i.settingID === "color")[0].value});
         }
         if (data.filter(i => i.settingID === "name").length === 0){
-          this.postValue("name", " ");
-          this.setState({name: " "});
+          this.postValue("name", "");
+          this.setState({name: ""});
         } else {
           this.setState({name: data.filter(i => i.settingID === "name")[0].value});
         }
@@ -100,6 +99,7 @@ export default class Impostazioni extends Component {
     handleSetEquipment = () => {
       this.updateValue("equipment", this.state.equipment)
       .then(this.triggerReload)
+      .then(() => this.notifier.success("equipaggiamento aggiornato con successo"))
       .catch(() => this.notifier.error("impossibile cambiare l'equipaggiamento"))
     }
 
@@ -110,6 +110,7 @@ export default class Impostazioni extends Component {
       }
       this.updateValue("name", this.state.name)
       .then(this.triggerReload)
+      .then(() => this.notifier.success("nome aggiornato con successo"))
       .catch(() => this.notifier.error("impossibile cambiare il nome"))
     }
 

@@ -114,6 +114,10 @@ class RecipeExecute extends Component {
   }
 
   addBeer() {
+    if (this.state.newBeerName === "")
+      return this.notifier.warning("il nome della birra non deve essere vuoto");
+    if (!(Number(this.state.newBeerQuantity) > 0))
+      return this.notifier.warning("la quantita' litri di birra prodotta deve essere strettamente positiva");
     if(this.state.newBeerQuantity > parseFloat(this.state.equipment)) {
       this.setState({missingEquipment: true});
       this.notifier.warning("capacita' dell'equipaggiamento insufficiente");
