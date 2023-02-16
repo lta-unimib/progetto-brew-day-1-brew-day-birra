@@ -57,13 +57,7 @@ Per tenere traccia dell'attivita' e dello stato di avanzamento del progetto, e' 
 | il sistema deve supportare le note normale e le note di sapore per le istanze di una ricetta  | M |
 | il suggerimento della birra deve massimizzare l'uso di ingredienti e equipaggiamento | M |
 | il sistema deve supportare la possibilita' di aggiungere immagini alle istanze di birra | C |
-
-# Or is it?
-
-| entry | response |
-| --- | --- |
-| si deve permettere di eliminare una ricetta che ha associate delle birre prodotte? | |
-| quando una ricetta viene eliminata, le birre prodotte con essa devono essere eliminate? | |
+| si deve permettere di eliminare una ricetta che ha associate delle birre prodotte | M |
 
 # Casi d'Uso
 
@@ -106,7 +100,8 @@ Per tenere traccia dell'attivita' e dello stato di avanzamento del progetto, e' 
 
 ```
 Il birraio inizia l'immissione di una nuova ricetta.
-Il birraio inserisce il nome della nuova ricetta (chiave primaria).
+Il birraio inserisce il nome della nuova ricetta.
+Il birraio può inserire una descrizione della ricetta.
 import modificaRicetta
 il sistema salva la ricetta
 ```
@@ -120,14 +115,16 @@ while:
     inserisce il nome di un ingrediente
     inserisce la quantita' dell'ingrediente
   if opt2:
-    seleziona l'ingrediente da rinominare
+    individua l'ingrediente da rinominare
     inserisce il nuovo nome dell'ingrediente
   if opt3:
-    seleziona un ingrediente
+    individua un ingrediente
     inserisce la nuova quantita' dell'ingrediente
   if opt4:
     seleziona l'ingrediente da eliminare
   if opt5:
-    inserisci il nuovo nome della ricetta
-sistema salva la ricetta
+    inserisce il nuovo nome della ricetta
+  if opt5:
+    inserisce la nuova descrizione della ricetta
+  sistema salva la ricetta
 ```
