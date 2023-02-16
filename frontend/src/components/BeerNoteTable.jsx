@@ -3,6 +3,8 @@ import React from "react";
 import DedicatedTable from "./DedicatedTable";
 import MButton from "./MButton";
 import NoteTypeInput from "./NoteTypeInput";
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 const COLUMNS = [
     {title: "Tipo", key: "noteType"},
@@ -25,7 +27,7 @@ export default class BeerNoteTable extends React.Component {
         const pivotRow = {
             noteType: (<NoteTypeInput value={this.props.newNoteType} onChange={this.props.setNewNoteType}/>),
             description: (<TextField multiline sx={{width:"90%"}} value={this.props.newDescription} data-testid="note-type-textarea" onChange={this.props.setNewDescription}/>),
-            toolbox: (<MButton text="Aggiungi" onClick={this.props.addNote} />)
+            toolbox: (<IconButton aria-label="Aggiungi" onClick={this.props.addNote}><AddIcon /></IconButton>)
         };
 
         return <DedicatedTable rows={rows} columns={COLUMNS} pivotRow={pivotRow}/>
