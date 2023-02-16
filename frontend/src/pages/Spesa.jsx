@@ -6,6 +6,7 @@ import IngredientNameInput from "../components/IngredientNameInput";
 import QuantityInput from "../components/QuantityInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 class Spesa extends Component {
   constructor(props) {
@@ -119,16 +120,15 @@ class Spesa extends Component {
                 />
               );
               let button = (
-                <IconButton onClick={this.handleAddIngredient}>
+                <IconButton aria-label="Aggiungi" onClick={this.handleAddIngredient}>
                   <AddIcon />
                 </IconButton>
               );
               if (index !== this.state.ingredients.length - 1) {
                 button = (
-                  <MButton
-                    text="Elimina"
-                    onClick={() => this.handleDeleteIngredient(index)}
-                  />
+                  <IconButton aria-label="Elimina" onClick={() => this.handleDeleteIngredient(index)}>
+                    <DeleteIcon />
+                  </IconButton>
                 );
                 firstColumn = <p>{ingredient.ingredientName}</p>;
               }
