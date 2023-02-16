@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
-import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import { FAKE_NOTIFIER, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var recipes = {
     "recipeID": {
@@ -55,9 +55,11 @@ describe('Birre.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
-    test('open beer edit and set name', async () => {
-        await act(() => {render(<Birre/>);});
+    test('open beer edit and set name with mocked notifier', async () => {
+        await act(() => {render(<Birre notifier={FAKE_NOTIFIER}/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
+        await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: ""}})});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiorna")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newName"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Aggiorna")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});

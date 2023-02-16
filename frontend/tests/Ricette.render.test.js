@@ -16,7 +16,7 @@ var recipes = {
     }
 }
 
-global.fetch = jest.fn().mockImplementation((url, body) => {
+global.fetch = jest.fn().mockImplementation((url) => {
   if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipe"))
     return Promise.resolve({});
   return Promise.resolve({

@@ -21,7 +21,7 @@ export default class Greeter extends React.Component {
 
   render() {
     const nameIndication = (
-      this.state.name ? "" : ` ${this.state.name}`
+      this.state.name ? ` ${this.state.name}` : ""
     );
 
     return (

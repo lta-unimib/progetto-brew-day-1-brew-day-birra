@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
-import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import { FAKE_NOTIFIER, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var recipes = {
     "recipeID": {
@@ -43,8 +43,8 @@ global.fetch = jest.fn().mockImplementation((url) =>
 )
 
 describe('Ricette.jsx can correctly edit recipe', () => {
-    test('open recipe edit', async () => {
-        await act(() => {render(<Ricette/>);});
+    test('open recipe edit with mocked notifier', async () => {
+        await act(() => {render(<Ricette notifier={FAKE_NOTIFIER}/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })

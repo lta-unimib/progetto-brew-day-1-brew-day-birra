@@ -42,7 +42,7 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Ingredient Name"), {target: {value: "newIngredientName"}})});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "12"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
 
@@ -59,7 +59,7 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Ingredient Name"), {target: {value: ""}})});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "12"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
   })
 
@@ -68,7 +68,7 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Ingredient Name"), {target: {value: "boh"}})});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "12"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
   })
 
@@ -77,7 +77,7 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Ingredient Name"), {target: {value: ""}})});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "0"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
   })
 
@@ -86,7 +86,7 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Ingredient Name"), {target: {value: "boh"}})});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "0"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
   })
 
@@ -96,7 +96,7 @@ describe('Ricette.jsx can correctly edit recipe', () => {
         await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Ingredient Name"), {target: {value: "ingredientName"}})});
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[1], {target: {value: "12"}})});
-        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
+        await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
   })
 })

@@ -77,10 +77,8 @@ class Spesa extends Component {
         ingredientQuantity: newIngQuantity,
       };
       if (newIngName !== "") {
-        if (newIngQuantity !== "") {
           ingredients.push({ ingredientName: "", ingredientQuantity: "0" })
           this.setState({ ingredients, added: this.state.added + 1 });
-        }
       } else {
         return this.notifier.warning("il nome dell'ingrediente non deve essere vuoto")
       }
