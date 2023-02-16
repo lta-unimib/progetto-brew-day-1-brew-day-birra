@@ -6,6 +6,7 @@ import NoteTypeInput from "./NoteTypeInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import DoneIcon from '@mui/icons-material/Done';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const COLUMNS = [
     {title: "Tipo", key: "noteType"},
@@ -21,7 +22,7 @@ export default class BeerNoteTable extends React.Component {
                 description: (<TextField multiline sx={{width:"90%"}} value={note.description} data-testid="note-type-textarea" onChange={(event) => this.props.handleDescriptionChange(event, note)}/>),
                 toolbox: (<div>
                     <IconButton aria-label="V" onClick={() => this.props.editNote(note)}><DoneIcon /></IconButton>
-                    <MButton text="X" onClick={() => this.props.deleteNote(note)} />
+                    <IconButton aria-label="X" onClick={() => this.props.deleteNote(note)}><DeleteIcon /></IconButton>
                 </div>)
             }
         })
