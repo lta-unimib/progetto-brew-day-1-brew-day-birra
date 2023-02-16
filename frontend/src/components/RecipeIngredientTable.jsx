@@ -5,8 +5,8 @@ import MButton from "./MButton";
 import QuantityInput from "./QuantityInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/DeleteIcon';
-import DoneIcon from '@mui/icons-material/DoneIcon';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DoneIcon from '@mui/icons-material/Done';
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
