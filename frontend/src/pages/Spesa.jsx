@@ -4,6 +4,8 @@ import {DO_SHOPPING_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '.
 import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
 import QuantityInput from "../components/QuantityInput";
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 class Spesa extends Component {
   constructor(props) {
@@ -117,7 +119,9 @@ class Spesa extends Component {
                 />
               );
               let button = (
-                <MButton text="Aggiungi" onClick={this.handleAddIngredient} />
+                <IconButton onClick={this.handleAddIngredient}>
+                  <AddIcon />
+                </IconButton>
               );
               if (index !== this.state.ingredients.length - 1) {
                 button = (
