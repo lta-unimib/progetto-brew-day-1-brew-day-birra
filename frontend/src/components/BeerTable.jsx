@@ -1,6 +1,8 @@
 import React from "react";
 import DedicatedTable from "./DedicatedTable";
 import MButton from "./MButton";
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
@@ -13,7 +15,7 @@ export default class BeerTable extends React.Component {
             return {
                 name: beer.name,
                 toolbox: (<div>
-                    <MButton text="Dettagli" onClick={() => this.props.handleView(beer)} />
+                    <IconButton aria-label="Dettagli" onClick={() => this.props.handleView(beer)}><VisibilityIcon /></IconButton>
                     <MButton text="Modifica" onClick={() => this.props.handleEdit(beer)} />
                     <MButton text="Elimina" onClick={() => this.props.handleDelete(beer)} />
                 </div>)
