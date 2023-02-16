@@ -51,14 +51,14 @@ global.fetch = jest.fn().mockImplementation((url) =>
 describe('Birre.jsx can correctly render page', () => {
   test('open beer delete but dont delete', async () => {
       await act(() => {render(<Birre/>);});
-      await act(() => {fireEvent.click(screen.getAllByText("Elimina")[0])});
+      await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
       expect(screen.getByText("Sei sicuro di voler eliminare questa birra?", {exact: false})).toBeInTheDocument();
       await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
   })
   
   test('open beer delete and delete', async () => {
       await act(() => {render(<Birre/>);});
-      await act(() => {fireEvent.click(screen.getAllByText("Elimina")[0])});
+      await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
       delete beers.beerID;
       await act(() => {fireEvent.click(screen.getByText("Conferma"))});
       expect(screen.queryByText("beerName")).toBeNull();

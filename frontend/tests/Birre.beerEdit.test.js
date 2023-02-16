@@ -51,13 +51,13 @@ var recipes = {
 describe('Birre.jsx can correctly edit recipe', () => {
     test('open beer edit', async () => {
         await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open beer edit and set name with mocked notifier', async () => {
         await act(() => {render(<Birre notifier={FAKE_NOTIFIER}/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: ""}})});
         await act(() => {fireEvent.click(screen.getAllByText("Aggiorna")[0])});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "newName"}})});
@@ -67,7 +67,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
     
     test('open beer edit and update a note', async () => {
         await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
         await act(() => {fireEvent.change(within(screen.getAllByTestId("note-type-input")[0]).getByRole("combobox"), {target: { value: "newNoteType" },});});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "newNoteDescription"}})});
         await act(() => {fireEvent.click(screen.getAllByText("V")[0])});
@@ -76,7 +76,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
     
     test('open beer edit and add a note', async () => {
         await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
         await act(() => {fireEvent.change(within(screen.getAllByTestId("note-type-input")[1]).getByRole("combobox"), {target: { value: "newNoteType" },});});
         await act(() => {fireEvent.change(screen.getAllByRole("textbox")[2], {target: {value: "newNoteDescription"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Aggiungi")[0])});
@@ -85,7 +85,7 @@ describe('Birre.jsx can correctly edit recipe', () => {
     
     test('open beer edit and delete a note', async () => {
         await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Modifica")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("X")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
