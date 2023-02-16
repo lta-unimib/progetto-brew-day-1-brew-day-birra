@@ -166,7 +166,7 @@ export default class Ricette extends Component {
                 <JimTable>
                   <p style={{textAlign:"center"}}>Seleziona la prossima ricetta</p>
                   <JimGrid>
-                    <Selector
+                    <Selector optional
                       label="Recipe"
                       value={this.state.nextRecipeID}
                       onChange={this.setNewNextRecipeID}
