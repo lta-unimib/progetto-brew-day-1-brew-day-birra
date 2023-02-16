@@ -3,6 +3,8 @@ import DedicatedTable from "./DedicatedTable";
 import IngredientNameInput from "./IngredientNameInput";
 import MButton from "./MButton";
 import QuantityInput from "./QuantityInput";
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
@@ -25,7 +27,7 @@ export default class RecipeIngredientTable extends React.Component {
         const pivotRow = {
             name: (<IngredientNameInput value={this.props.newIngredientName} onChange={this.props.setNewIngredientName}/>),
             quantity: (<QuantityInput label="Ingredient Quantity" value={this.props.newIngredientQuantity} onChange={this.props.setNewIngredientQuantity}/>),
-            toolbox: (<MButton text="Aggiungi" onClick={() => this.props.addIngredient()} />)
+            toolbox: (<IconButton aria-label="Aggiungi" onClick={() => this.props.addIngredient()}><AddIcon /></IconButton>)
         };
 
         return <DedicatedTable rows={rows} columns={COLUMNS} pivotRow={pivotRow}/>
