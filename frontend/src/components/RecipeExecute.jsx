@@ -26,8 +26,12 @@ class RecipeExecute extends Component {
       const recipeID = this.props.recipeID;
       fetch(RECIPE_ENDPOINT+`${recipeID}`)
         .then((response) => response.json())
-        .then((data) => this.setState({ ...data }))
-        .catch(this.notifier.connectionError)
+        .then((data) => {
+          this.setState({ ...data }); acc();
+        })
+        .catch(() => {
+          this.notifier.connectionError(); rej();
+        })
     })
   }
 
@@ -35,14 +39,19 @@ class RecipeExecute extends Component {
       return new Promise((acc, rej) => {
         fetch(SETTINGS_ENDPOINT + "equipment")
         .then(response => response.json())
-        .then(data => this.setState({equipment: data.value}))
-        .catch(this.notifier.connectionError)
+        .then(data => {
+          this.setState({equipment: data.value}); acc();
+        })
+        .catch(() => {
+          this.notifier.connectionError(); rej();
+        })
       });
     }
 
-
   componentDidMount() {
-    this.triggerReload().then(this.triggerReloadSettings);
+    this.triggerReload()
+      .then(this.triggerReloadSettings)
+      .catch(() => {})
   }
 
   setNewBeerName = (event) => {
