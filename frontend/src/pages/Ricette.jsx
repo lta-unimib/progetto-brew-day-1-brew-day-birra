@@ -5,7 +5,7 @@ import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
 import MButton from '../components/MButton';
-import { FAKE_NOTIFIER, isNotValidPositiveQuantity, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../utils/Protocol';
+import { FAKE_NOTIFIER, isNotValidPositiveQuantity, RECIPE_LIST_ENDPOINT } from '../utils/Protocol';
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
