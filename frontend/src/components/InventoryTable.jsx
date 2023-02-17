@@ -15,6 +15,7 @@ export default class InventoryTable extends React.Component {
     render() {
         const rows = this.props.items.map((item) => {
             return {
+                key: item.ingredientID,
                 icon: (<img
                     className="shoppingImage"
                     src={`../../icons/inventory-icons/${item.name}.png`}

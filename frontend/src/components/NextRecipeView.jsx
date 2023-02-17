@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "./MButton";
-import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity } from '../utils/Protocol';
+import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import { TextField } from "@mui/material";
 import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
+import SettingsManager from '../utils/SettingsManager';
 
 export default class NextRecipeView extends Component {
   constructor(props) {
@@ -18,18 +19,19 @@ export default class NextRecipeView extends Component {
       recipe: {},
     };
     this.notifier = this.props.notifier || FAKE_NOTIFIER;
+    this.settingsManager = new SettingsManager();
   }
 
   getNextRecipeID = () => {
     return new Promise((acc, rej) => {
-      fetch(SETTINGS_ENDPOINT + "nextRecipeID")
-      .then(response => response.json())
+      this.settingsManager.getSetting("nextRecipeID")
       .then(data => {
-          this.setState({nextRecipeID: data.value})
-          acc(data.value);
+        if (data.value !== "") {
+          this.setState({nextRecipeID: data.value}, acc)
+        } else rej();
       })
       .catch((err) => {
-        this.updateNextRecipeSetting("nextRecipeID", "")
+        this.settingsManager.putSetting("nextRecipeID", "")
         rej(err);
       })
     })
@@ -37,44 +39,45 @@ export default class NextRecipeView extends Component {
 
   getNextRecipeQuantity = () => {
     return new Promise((acc, rej) => {
-      fetch(SETTINGS_ENDPOINT + "nextRecipeQuantity")
-      .then(response => response.json())
+      this.settingsManager.getSetting("nextRecipeQuantity")
       .then(data => {
-          this.setState({nextRecipeQuantity: Number(data.value)})
-          acc(data.value);
+        if (data.value !== "") {
+          this.setState({nextRecipeQuantity: data.value}, acc)
+        } else rej();
       })
       .catch((err) => {
-        this.updateNextRecipeSetting("nextRecipeQuantity", "")
+        this.settingsManager.putSetting("nextRecipeQuantity", "0")
         rej(err);
       })
     })
   }
 
-  getShoppingList = (nextRecipeID, nextRecipeQuantity) => {
+  getShoppingList = () => {
     return new Promise((acc, rej) => {
-      fetch(SHOPPING_ENDPOINT + `${nextRecipeID}`, {
+      fetch(SHOPPING_ENDPOINT + `${this.state.nextRecipeID}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          quantity: nextRecipeQuantity,
+          quantity: this.state.nextRecipeQuantity,
         }),
       })
       .then((response) => response.json())
-      .then((data) => this.setState({ missingIngredients: data }))
-      .then(() => acc())
+      .then((data) => this.setState({ missingIngredients: data }, acc))
       .catch(err => rej(err))
     })
   }
 
   getEquipment = () => {
     return new Promise((acc, rej) => {
-      fetch(SETTINGS_ENDPOINT + "equipment")
-      .then(response => response.json())
-      .then(data => this.setState({equipment: Number(data.value)}))
-      .then(() => acc())
+      this.settingsManager.getSetting("equipment")
+      .then(data => {
+        if (data.value !== "") {
+          this.setState({equipment: Number(data.value)}, acc)
+        } else rej();
+      })
       .catch((err) => {
         this.notifier.connectionError()
         rej(err)
@@ -87,14 +90,11 @@ export default class NextRecipeView extends Component {
   }
 
   triggerReload = () => {
-    this.getNextRecipeID().then((recipeID) => {
-      this.getNextRecipeQuantity()
-      .then((quantity) => {
-        this.getShoppingList(recipeID, quantity)
-        .then(this.getEquipment)
-        .catch((err) => {console.log(err)})
-      })
-    })
+    this.getNextRecipeID()
+    .then(this.getNextRecipeQuantity)
+    .then(this.getShoppingList)
+    .then(this.getEquipment)
+    .catch(() => {})
   }
 
   setNewBeerName = (event) => {
@@ -104,7 +104,6 @@ export default class NextRecipeView extends Component {
 
   render() {
     const action = () => {
-
       if (this.state.equipment < this.state.nextRecipeQuantity) {
         return (
           <div>
@@ -185,22 +184,12 @@ export default class NextRecipeView extends Component {
   }
 
   resetNextRecipeSettings = () => {
-    this.updateNextRecipeSetting("nextRecipeID", "")
-    .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", ""))
+    this.settingsManager.putSetting("nextRecipeID", "")
+    .then(() => this.settingsManager.putSetting("nextRecipeQuantity", ""))
+    .then(() => this.setState({
+      nextRecipeQuantity: null,
+      nextRecipeID: ""
+    }))
     .then(this.triggerReload);
   }
-
-  updateNextRecipeSetting = (settingID, value) => {
-    return new Promise((acc, rej) => {
-      fetch(SETTINGS_ENDPOINT + `${settingID}`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({value: value})
-      }).then(() => acc());
-    });
-  }
-
 }

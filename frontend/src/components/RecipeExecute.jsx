@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
-import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '../utils/Protocol';
+import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import QuantityInput from "./QuantityInput";
 import { TextField } from "@mui/material";
 import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
+import SettingsManager from '../utils/SettingsManager';
 
 class RecipeExecute extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class RecipeExecute extends Component {
       missingEquipment: false
     };
     this.notifier = this.props.notifier || FAKE_NOTIFIER;
+    this.settingsManager = new SettingsManager();
   }
 
   triggerReload = () => {
@@ -37,17 +39,20 @@ class RecipeExecute extends Component {
   }
 
   triggerReloadSettings = () => {
-      return new Promise((acc, rej) => {
-        fetch(SETTINGS_ENDPOINT + "equipment")
-        .then(response => response.json())
-        .then(data => {
-          this.setState({equipment: data.value}); acc();
-        })
-        .catch(() => {
-          this.notifier.connectionError(); rej();
-        })
-      });
-    }
+    return new Promise((acc, rej) => {
+      this.settingsManager.getSetting("equipment")
+      .then(data => {
+        if (data.value !== "") {
+          this.setState({equipment: Number(data.value)})
+          acc(data.value);
+        } else rej();
+      })
+      .catch((err) => {
+        this.notifier.connectionError()
+        rej(err)
+      })
+    })
+  }
 
   componentDidMount() {
     this.triggerReload()
