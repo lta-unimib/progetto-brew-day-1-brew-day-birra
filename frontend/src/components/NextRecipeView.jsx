@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "./MButton";
-import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
+import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity } from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import { TextField } from "@mui/material";
+import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
 
 export default class NextRecipeView extends Component {
   constructor(props) {
@@ -24,15 +25,12 @@ export default class NextRecipeView extends Component {
       fetch(SETTINGS_ENDPOINT + "nextRecipeID")
       .then(response => response.json())
       .then(data => {
-        if (data.value !== "") {
-            this.setState({nextRecipeID: data.value})
-            acc();
-        } else
-          rej();
+          this.setState({nextRecipeID: data.value})
+          acc(data.value);
       })
-      .catch(() => {
+      .catch((err) => {
         this.updateNextRecipeSetting("nextRecipeID", "")
-        rej();
+        rej(err);
       })
     })
   }
@@ -42,35 +40,32 @@ export default class NextRecipeView extends Component {
       fetch(SETTINGS_ENDPOINT + "nextRecipeQuantity")
       .then(response => response.json())
       .then(data => {
-        if (data.value !== "") {
-          this.setState({nextRecipeQuantity: parseFloat(data.value)})
-          acc();
-        } else
-          rej();
+          this.setState({nextRecipeQuantity: Number(data.value)})
+          acc(data.value);
       })
-      .catch(() => {
+      .catch((err) => {
         this.updateNextRecipeSetting("nextRecipeQuantity", "")
-        rej();
+        rej(err);
       })
     })
   }
 
-  getShoppingList = () => {
+  getShoppingList = (nextRecipeID, nextRecipeQuantity) => {
     return new Promise((acc, rej) => {
-      fetch(SHOPPING_ENDPOINT + `${this.state.nextRecipeID}`, {
+      fetch(SHOPPING_ENDPOINT + `${nextRecipeID}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          quantity: this.state.nextRecipeQuantity,
+          quantity: nextRecipeQuantity,
         }),
       })
       .then((response) => response.json())
       .then((data) => this.setState({ missingIngredients: data }))
       .then(() => acc())
-      .catch(this.notifier.connectionError)
+      .catch(err => rej(err))
     })
   }
 
@@ -78,8 +73,12 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + "equipment")
       .then(response => response.json())
-      .then(data => this.setState({equipment: parseFloat(data.value)}))
-      .catch(this.notifier.connectionError)
+      .then(data => this.setState({equipment: Number(data.value)}))
+      .then(() => acc())
+      .catch((err) => {
+        this.notifier.connectionError()
+        rej(err)
+      })
     })
   }
 
@@ -88,7 +87,14 @@ export default class NextRecipeView extends Component {
   }
 
   triggerReload = () => {
-    this.getNextRecipeID().then(this.getNextRecipeQuantity).then(this.getShoppingList).then(this.getEquipment).catch(() => {});
+    this.getNextRecipeID().then((recipeID) => {
+      this.getNextRecipeQuantity()
+      .then((quantity) => {
+        this.getShoppingList(recipeID, quantity)
+        .then(this.getEquipment)
+        .catch((err) => {console.log(err)})
+      })
+    })
   }
 
   setNewBeerName = (event) => {
@@ -118,14 +124,14 @@ export default class NextRecipeView extends Component {
                   <td>Nuova Birra</td>
                   <td>
                     <TextField
-                      label="Name"
+                      label="Beer Name"
                       value={this.state.newBeerName}
                       style={{ width: "90%", textAlign: "center" }}
                       onChange={this.setNewBeerName}
                     />
                   </td>
                   <td>
-                    <MButton text="Crea" onClick={() => this.addBeer()} />
+                    <MButton startIcon={<CoffeeMakerIcon/>} text="Crea" onClick={() => this.addBeer()} />
                   </td>
                 </tr>
               </tbody>
@@ -149,20 +155,33 @@ export default class NextRecipeView extends Component {
     );
   }
 
-  addBeer = () => {
+  addBeer() {
+    if (this.state.newBeerName === "")
+      return this.notifier.warning("il nome della birra non deve essere vuoto");
+    if(this.state.nextRecipeQuantity > Number(this.state.equipment)) {
+      this.setState({missingEquipment: true});
+      this.notifier.warning("la capacita' dell'equipaggiamento e' insufficiente");
+    } else {
       fetch(BEER_LIST_ENDPOINT, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: this.state.newBeerName,
-              recipeID: this.state.nextRecipeID,
-              quantity: this.state.nextRecipeQuantity,
-            }),
-          }).then( this.resetNextRecipeSettings());
-    
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.state.newBeerName,
+          recipeID: this.state.nextRecipeID,
+          quantity: this.state.nextRecipeQuantity,
+        }),
+      }).then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          this.setState({missingEquipment: false, missingIngredients: true});
+          this.notifier.warning("mancano degli ingredienti");
+        } else {
+          this.resetNextRecipeSettings();
+          this.notifier.success("birra creata con successo");
+      }});
+    }
   }
 
   resetNextRecipeSettings = () => {

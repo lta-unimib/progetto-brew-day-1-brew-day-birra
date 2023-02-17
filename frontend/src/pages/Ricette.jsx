@@ -14,6 +14,7 @@ import QuantityInput from '../components/QuantityInput';
 import { TextField } from '@mui/material';
 import JimFlex from '../components/JimFlex';
 import JimGrid from '../components/JimGrid';
+
 export default class Ricette extends Component {
     constructor(props) {
         super(props);

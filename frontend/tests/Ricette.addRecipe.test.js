@@ -34,13 +34,13 @@ describe('Ricette.jsx can correctly add recipe', () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.change(screen.getByLabelText("Recipe Name"), {target: {value: "newName"}})});
         await act(() => {fireEvent.change(screen.getByLabelText("Recipe Description"), {target: {value: "newDescription"}})});
-        await act(() => fireEvent.click(screen.getAllByText("Aggiungi")[0]));
+        await act(() => fireEvent.click(screen.getAllByLabelText("Aggiungi")[0]));
     })
     
     test('can add recipe with invalid name', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.change(screen.getByLabelText("Recipe Name"), {target: {value: ""}})});
         await act(() => {fireEvent.change(screen.getByLabelText("Recipe Description"), {target: {value: "newDescription"}})});
-        await act(() => fireEvent.click(screen.getAllByText("Aggiungi")[0]));
+        await act(() => fireEvent.click(screen.getAllByLabelText("Aggiungi")[0]));
     })
 })
