@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
 import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SHOPPING_ENDPOINT } from "../src/utils/Protocol";
