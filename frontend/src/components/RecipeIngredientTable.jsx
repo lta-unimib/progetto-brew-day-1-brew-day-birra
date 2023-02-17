@@ -1,7 +1,6 @@
 import React from "react";
 import DedicatedTable from "./DedicatedTable";
 import IngredientNameInput from "./IngredientNameInput";
-import MButton from "./MButton";
 import QuantityInput from "./QuantityInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';

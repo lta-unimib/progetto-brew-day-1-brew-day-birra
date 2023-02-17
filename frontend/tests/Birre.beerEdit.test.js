@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
-import { FAKE_NOTIFIER, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import { FAKE_NOTIFIER, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
 
 var recipes = {
     "recipeID": {

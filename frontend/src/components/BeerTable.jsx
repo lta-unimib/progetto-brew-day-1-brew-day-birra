@@ -1,6 +1,5 @@
 import React from "react";
 import DedicatedTable from "./DedicatedTable";
-import MButton from "./MButton";
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';

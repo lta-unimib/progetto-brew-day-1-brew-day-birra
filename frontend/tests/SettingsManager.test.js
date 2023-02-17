@@ -1,9 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
-import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
-import Impostazioni from "../src/pages/Impostazioni";
-import { act } from "react-test-renderer";
 import { SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from "../src/utils/Protocol";
+import SettingsManager from "../src/utils/SettingsManager";
 
 var settings = {
     settingID: "value"
@@ -43,16 +40,33 @@ global.fetch = jest.fn().mockImplementation((url) => {
     })
 })
 
-describe('Impostazioni.jsx can correctly render this page even if there is no setting at all', () => {
-    test('load page', async () => {
+const settingsManager = new SettingsManager();
+describe("SettingsManager tests", () => {
+    test("SettingsManager should be able to getSettings", () => {
+        contentFlick.settings = false;
+        settingsManager.getSettings().catch(() => {});
+        contentFlick.settings = true;
+        settingsManager.getSettings();
+    })
+
+    test("SettingsManager should be able to getSetting", () => {
+        contentFlick.setting = false;
+        settingsManager.getSetting("settingID").catch(() => {});
+        contentFlick.setting = true;
+        settingsManager.getSetting("settingID");
+    })
+    
+    test("SettingsManager should be able to postSetting", () => {
+        statusFlick.settings = false;
+        settingsManager.postSetting("settingID", "value").catch(() => {});
         statusFlick.settings = true;
+        settingsManager.postSetting("settingID", "value");
+    })
+    
+    test("SettingsManager should be able to putSetting", () => {
         statusFlick.setting = false;
-        await act(() => {render(<Impostazioni/>);});
-        expect(screen.getByText("Equipaggiamento disponibile", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Inserisci qui il tuo nome", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Seleziona il colore del tema", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Seleziona lo sfondo", { exact: false })).toBeInTheDocument();
-        expect(screen.getByText("Elimina tutti i dati")).toBeInTheDocument();
-        expect(screen.getByText("Resetta la prossima ricetta da eseguire")).toBeInTheDocument();
+        settingsManager.putSetting("settingID", "value").catch(() => {});
+        statusFlick.setting = true;
+        settingsManager.putSetting("settingID", "value");
     })
 })

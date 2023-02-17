@@ -1,7 +1,6 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import DedicatedTable from "./DedicatedTable";
-import MButton from "./MButton";
 import NoteTypeInput from "./NoteTypeInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
