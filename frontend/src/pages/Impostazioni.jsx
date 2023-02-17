@@ -13,6 +13,7 @@ import JimTable from "../components/JimTable";
 import JimFlex from "../components/JimFlex";
 import InputQuantitySetting from "../components/InputQuantitySetting";
 import SettingsManager from "../utils/SettingsManager";
+import twins from "../theme/twins";
 
 export default class Impostazioni extends Component {
     constructor(props) {
@@ -96,27 +97,39 @@ export default class Impostazioni extends Component {
       this.setState({name: newName});
     }
 
-    setNewBackground = (event) => {
+    setNewBackground = (event, noTwin) => {
       let newBackground = event.target.value;
       this.setState({background: newBackground});
       this.settingsManager.putSetting("background", newBackground)
         .then(() => document.cookie=BACKGROUND_MANAGER_TRIGGER)
         .then(() => localStorage.setItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, newBackground))
-        //.then(this.triggerReload)
         .then(this.notifyMaster)
+        .then(() => {
+          if (noTwin !== true) {
+            let twinOfBackground = twins.getTwinOfBackground(newBackground);
+            if (twinOfBackground !== undefined)
+              this.setNewColor({target:{value:twinOfBackground}}, true);
+          }
+        })
         .catch(() => this.notifier.error("impossibile cambiare lo sfondo"))
     }
 
-    setNewColor = (event) => {
+    setNewColor = (event, noTwin) => {
       let newColor = event.target.value;
       this.setState({color: newColor});
       this.settingsManager.putSetting("color", newColor)
         .then(() => document.cookie=THEME_MANAGER_TRIGGER)
         .then(() => document.cookie=NAVBAR_THEME_MANAGER_TRIGGER)
         .then(() => localStorage.setItem(LAST_USED_THEME_LOCALSTORAGE_KEY, newColor))
-        //.then(this.triggerReload)
         .then(this.notifyMaster)
-        .catch(() => this.notifier.error("impossibile il tema"))
+        .then(() => {
+            if (noTwin !== true) {
+            let twinOfColor = twins.getTwinOfColor(newColor);
+            if (twinOfColor !== undefined)
+              this.setNewBackground({target:{value:twinOfColor}}, true);
+          }
+        })
+        .catch(() => this.notifier.error("impossibile cambiare il tema"))
     }
 
     handleSetEquipment = () => {

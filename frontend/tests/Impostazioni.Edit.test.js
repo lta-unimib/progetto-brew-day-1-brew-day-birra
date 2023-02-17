@@ -48,14 +48,28 @@ describe('Impostazioni.jsx can correctly update equipement and name', () => {
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "Paolina"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[1]));
     })
+    
     test('can update color', async () => {
         await act(() => {render(<Impostazioni/>);});
         fireEvent.mouseDown(screen.getByLabelText("Color"));
         fireEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
     })
+
     test('can update background', async () => {
         await act(() => {render(<Impostazioni/>);});
         fireEvent.mouseDown(screen.getByLabelText("Background"));
         fireEvent.click(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
+    })
+    
+    test('can update color with a twin', async () => {
+        await act(() => {render(<Impostazioni/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Color"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("twin-dark"));
+    })
+
+    test('can update backgroun with a twind', async () => {
+        await act(() => {render(<Impostazioni/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Background"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Background"})).getByText("twin-dark"));
     })
 })
