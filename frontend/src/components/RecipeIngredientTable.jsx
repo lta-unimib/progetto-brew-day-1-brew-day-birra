@@ -1,12 +1,12 @@
 import React from "react";
 import DedicatedTable from "./DedicatedTable";
 import IngredientNameInput from "./IngredientNameInput";
-import MButton from "./MButton";
 import QuantityInput from "./QuantityInput";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
+import { Tooltip } from "@mui/material";
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
@@ -21,15 +21,27 @@ export default class RecipeIngredientTable extends React.Component {
                 name: ingredient.name,
                 quantity: (<QuantityInput label="Ingredient Quantity" value={ingredient.quantity} onChange={(event) => this.props.setQuantity(ingredient.ingredientID, event)}/>),
                 toolbox: (<div>
-                    <IconButton aria-label="V" onClick={() => this.props.editQuantity(ingredient.ingredientID)}><DoneIcon /></IconButton>
-                    <IconButton aria-label="X" onClick={() => () => this.props.deleteIngredient(ingredient.ingredientID)}><DeleteIcon /></IconButton>
+                    <Tooltip title="Aggiorna">
+                        <IconButton aria-label="V" onClick={() => this.props.editQuantity(ingredient.ingredientID)}>
+                            <DoneIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Elimina">
+                        <IconButton aria-label="X" onClick={() => this.props.deleteIngredient(ingredient.ingredientID)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
                 </div>)
             }
         })
         const pivotRow = {
             name: (<IngredientNameInput value={this.props.newIngredientName} onChange={this.props.setNewIngredientName}/>),
             quantity: (<QuantityInput label="Ingredient Quantity" value={this.props.newIngredientQuantity} onChange={this.props.setNewIngredientQuantity}/>),
-            toolbox: (<IconButton aria-label="Aggiungi" onClick={() => this.props.addIngredient()}><AddIcon /></IconButton>)
+            toolbox: (<Tooltip title="Aggiungi">
+                        <IconButton aria-label="Aggiungi" onClick={() => this.props.addIngredient()}>
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>)
         };
 
         return <DedicatedTable rows={rows} columns={COLUMNS} pivotRow={pivotRow}/>

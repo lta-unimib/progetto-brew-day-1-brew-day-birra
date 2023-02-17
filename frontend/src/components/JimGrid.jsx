@@ -8,7 +8,7 @@ export default class JimGrid extends React.Component {
             marginRight: "5%",
             marginTop: "2.5%",
             marginBottom: "2.5%",
-            display: {md: "grid"},
+            display: "grid",
             gridTemplateColumns: "100%"
           }}>
             {this.props.children}

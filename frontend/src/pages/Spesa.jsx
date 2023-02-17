@@ -5,8 +5,10 @@ import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
 import QuantityInput from "../components/QuantityInput";
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import { Tooltip } from "@mui/material";
 
 class Spesa extends Component {
   constructor(props) {
@@ -120,15 +122,19 @@ class Spesa extends Component {
                 />
               );
               let button = (
-                <IconButton aria-label="Aggiungi" onClick={this.handleAddIngredient}>
-                  <AddIcon />
-                </IconButton>
+                <Tooltip title="Aggiungi">
+                  <IconButton aria-label="Aggiungi" onClick={this.handleAddIngredient}>
+                    <AddShoppingCartIcon />
+                  </IconButton>
+                </Tooltip>
               );
               if (index !== this.state.ingredients.length - 1) {
                 button = (
-                  <IconButton aria-label="Elimina" onClick={() => this.handleDeleteIngredient(index)}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <Tooltip title="Elimina">
+                    <IconButton aria-label="Elimina" onClick={() => this.handleDeleteIngredient(index)}>
+                      <RemoveShoppingCartIcon />
+                    </IconButton>
+                  </Tooltip>
                 );
                 firstColumn = <p>{ingredient.ingredientName}</p>;
               }
@@ -161,7 +167,7 @@ class Spesa extends Component {
           </tbody>
         </table>
         <div id="shoppingButtonContainer">
-          <MButton text="Conferma" onClick={this.handleSubmit} />
+          <MButton startIcon={<ShoppingCartCheckoutIcon/>} text="Conferma" onClick={this.handleSubmit}/>
         </div>
       </BodyThemeManager>
     );

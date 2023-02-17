@@ -62,13 +62,13 @@ describe('Ricette.jsx can correctly execute recipe', () => {
     
     test('open recipe execute but dont create beer', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[1])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Esegui")[1])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open recipe execute and create beer', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Esegui")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}})});
         await act(() => {fireEvent.change(screen.getByLabelText("Beer Quantity"), {target: {value: "12"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
@@ -77,7 +77,7 @@ describe('Ricette.jsx can correctly execute recipe', () => {
 
     test('open recipe execute and create beer but not enoght equipment', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Esegui")[0])});
         await act(() => {fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}})});
         await act(() => {fireEvent.change(screen.getByLabelText("Beer Quantity"), {target: {value: "90"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
@@ -86,7 +86,7 @@ describe('Ricette.jsx can correctly execute recipe', () => {
     test('open recipe execute and create beer but not enoght ingredient', async () => {
         statusFlick = false;
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Esegui")[1])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Esegui")[1])});
         await act(() => {fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}})});
         await act(() => {fireEvent.change(screen.getByLabelText("Beer Quantity"), {target: {value: "1"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
