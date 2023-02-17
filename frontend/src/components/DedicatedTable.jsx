@@ -132,7 +132,7 @@ export default class DedicatedTable extends React.Component {
                             .concat(this.props.pivotRow || [])
                             .map((row, rowIndex) => {
             return (
-                <TableRow key={`row-${rowIndex}`}>
+                <TableRow key={row.key}>
                     {this.columns.map((column) => {
                         return (<TableCell key={column.key} align={column.align}>{row[column.key]}</TableCell>);
                     })}

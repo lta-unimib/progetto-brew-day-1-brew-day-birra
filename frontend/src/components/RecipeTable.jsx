@@ -18,6 +18,7 @@ export default class RecipeTable extends React.Component {
     render() {
         const rows = this.props.recipes.map((recipe) => {
             return {
+                key: recipe.recipeID,
                 name: recipe.name,
                 description: recipe.description,
                 toolbox: (<div>
@@ -45,6 +46,7 @@ export default class RecipeTable extends React.Component {
             }
         })
         const pivotRow = {
+            key: "pivot",
             name: (<TextField label="Recipe Name" value={this.props.newRecipeName} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeName(event)}/>),
             description: (<TextField multiline label="Recipe Description" value={this.props.newRecipeDescription} style={{width: "90%", textAlign:"center"}} onChange={ (event) => this.props.setNewRecipeDescription(event)}/>),
             toolbox: (<Tooltip title="Aggiungi">

@@ -33,7 +33,11 @@ export default class SettingsManager {
                 if (response.status >= 400)
                     throw new Error();
             })
-            .then(acc).catch(rej)
+            .then(acc)
+            .catch(() => {
+                this.postSetting(settingID, newValue)
+                .then(acc).catch(rej)
+            })
         })
     }
     
