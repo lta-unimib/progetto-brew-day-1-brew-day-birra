@@ -26,11 +26,11 @@ export default class NextRecipeView extends Component {
       .then(response => response.json())
       .then(data => {
           this.setState({nextRecipeID: data.value})
-          acc();
+          acc(data.value);
       })
-      .catch(() => {
+      .catch((err) => {
         this.updateNextRecipeSetting("nextRecipeID", "")
-        rej();
+        rej(err);
       })
     })
   }
@@ -41,31 +41,31 @@ export default class NextRecipeView extends Component {
       .then(response => response.json())
       .then(data => {
           this.setState({nextRecipeQuantity: Number(data.value)})
-          acc();
+          acc(data.value);
       })
-      .catch(() => {
+      .catch((err) => {
         this.updateNextRecipeSetting("nextRecipeQuantity", "")
-        rej();
+        rej(err);
       })
     })
   }
 
-  getShoppingList = () => {
+  getShoppingList = (nextRecipeID, nextRecipeQuantity) => {
     return new Promise((acc, rej) => {
-      fetch(SHOPPING_ENDPOINT + `${this.state.nextRecipeID}`, {
+      fetch(SHOPPING_ENDPOINT + `${nextRecipeID}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          quantity: this.state.nextRecipeQuantity,
+          quantity: nextRecipeQuantity,
         }),
       })
       .then((response) => response.json())
       .then((data) => this.setState({ missingIngredients: data }))
       .then(() => acc())
-      .catch(this.notifier.connectionError)
+      .catch(err => rej(err))
     })
   }
 
@@ -73,8 +73,12 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       fetch(SETTINGS_ENDPOINT + "equipment")
       .then(response => response.json())
-      .then(data => this.setState({equipment: parseFloat(data.value)}))
-      .catch(this.notifier.connectionError)
+      .then(data => this.setState({equipment: Number(data.value)}))
+      .then(() => acc())
+      .catch((err) => {
+        this.notifier.connectionError()
+        rej(err)
+      })
     })
   }
 
@@ -83,7 +87,14 @@ export default class NextRecipeView extends Component {
   }
 
   triggerReload = () => {
-    this.getNextRecipeID().then(this.getNextRecipeQuantity).then(this.getShoppingList).then(this.getEquipment).catch(() => {});
+    this.getNextRecipeID().then((recipeID) => {
+      this.getNextRecipeQuantity()
+      .then((quantity) => {
+        this.getShoppingList(recipeID, quantity)
+        .then(this.getEquipment)
+        .catch((err) => {console.log(err)})
+      })
+    })
   }
 
   setNewBeerName = (event) => {
@@ -113,7 +124,7 @@ export default class NextRecipeView extends Component {
                   <td>Nuova Birra</td>
                   <td>
                     <TextField
-                      label="Name"
+                      label="Beer Name"
                       value={this.state.newBeerName}
                       style={{ width: "90%", textAlign: "center" }}
                       onChange={this.setNewBeerName}
@@ -147,9 +158,7 @@ export default class NextRecipeView extends Component {
   addBeer() {
     if (this.state.newBeerName === "")
       return this.notifier.warning("il nome della birra non deve essere vuoto");
-    if (isNotValidPositiveQuantity(this.state.nextRecipeQuantity))
-      return this.notifier.warning("la quantita' di litri di birra prodotta deve essere strettamente positiva");
-    if(this.state.nextRecipeQuantity > parseFloat(this.state.equipment)) {
+    if(this.state.nextRecipeQuantity > Number(this.state.equipment)) {
       this.setState({missingEquipment: true});
       this.notifier.warning("la capacita' dell'equipaggiamento e' insufficiente");
     } else {
