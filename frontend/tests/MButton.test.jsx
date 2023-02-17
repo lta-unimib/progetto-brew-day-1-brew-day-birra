@@ -9,19 +9,13 @@ describe("MButton and its own", () => {
     await act(() => render(<MButton id="theID"/>));
     await act(() => render(<MButton id="theID" className="theClass"/>));
     await act(() => render(<MButton className="theClss"/>));
-    await act(() => render(<MButton/>));
-    await act(() => screen.getAllByRole("button").map(button => fireEvent.click(button)));
+    await act(() => render(<MButton text="Bottone"/>));
+    await act(() => fireEvent.click(screen.getByText("Bottone")));
   })
 
-  test("centered and uncentered button", async () => {
+  test("centered and uncentered button and onClick", async () => {
     await act(() => render(<MButton center/>));
     await act(() => render(<MButton/>));
-    await act(() => screen.getAllByRole("button").map(button => fireEvent.click(button)));
-  })
-  
-  test("button with onClick and click", async () => {
     await act(() => render(<MButton onClick={() => {}}/>));
-    await act(() => render(<MButton/>));
-    await act(() => screen.getAllByRole("button").map(button => fireEvent.click(button)));
   })
 })

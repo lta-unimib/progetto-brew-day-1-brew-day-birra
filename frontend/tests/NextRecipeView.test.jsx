@@ -114,8 +114,8 @@ describe("NextRecipeView tests", () => {
     contentFlicks.nextRecipeQuantity = true;
     contentFlicks.equipment = true;
     await act(() => render(<NextRecipeView/>))
-    await act(() => {fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: ""}})});
-    await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
+    await act(() => fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: ""}}));
+    await act(() => fireEvent.click(screen.getAllByText("Crea")[0]));
   })
 
   test("adding a beer but quantity is too much", async () => {
@@ -133,8 +133,8 @@ describe("NextRecipeView tests", () => {
     settings.nextRecipeQuantity = "30";
     await act(() => render(<NextRecipeView/>))
     statusFlicks.beer = 400;
-    await act(() => {fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}})});
-    await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
+    await act(() => fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}}));
+    await act(() => fireEvent.click(screen.getAllByText("Crea")[0]));
   })
 
   test("adding a beer", async () => {
@@ -143,7 +143,7 @@ describe("NextRecipeView tests", () => {
     contentFlicks.equipment = true;
     await act(() => render(<NextRecipeView/>))
     statusFlicks.beer = 200;
-    await act(() => {fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}})});
-    await act(() => {fireEvent.click(screen.getAllByText("Crea")[0])});
+    await act(() => fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}}));
+    await act(() => fireEvent.click(screen.getAllByText("Crea")[0]));
   })
 })

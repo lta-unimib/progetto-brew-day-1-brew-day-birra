@@ -50,7 +50,7 @@ class Inventario extends Component {
     })
     .then(this.notifier.onRequestError("impossibile eliminare l'ingrediente"))
     .then(() => {
-      this.setState({showModal: false,});
+      this.setShowModal(false);
       this.triggerReload();
     });
   };
