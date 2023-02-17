@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
 import { FAKE_NOTIFIER, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import RecipeEdit from "../src/components/RecipeEdit";
 
 var recipes = {
     "recipeID": {
@@ -42,39 +43,41 @@ global.fetch = jest.fn().mockImplementation((url) =>
   })
 )
 
+const setupRecipeEdit = (notifier) => render(<RecipeEdit onConfirm={() => {}} recipeID="recipeID" notifier={notifier}/>);
+
 describe('Ricette.jsx can correctly edit recipe', () => {
-    test('open recipe edit with mocked notifier', async () => {
-        await act(() => {render(<Ricette notifier={FAKE_NOTIFIER}/>);});
+    test('open recipe edit from Ricette', async () => {
+        await act(() => render(<Ricette/>));
         await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
-    test('open recipe edit and set name', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
-        await act(() => {fireEvent.change(screen.getAllByLabelText("Recipe Name")[1], {target: {value: "newName"}})});
+
+    test('open recipe edit and set name and mocked notifier', async () => {
+        await act(() => setupRecipeEdit(FAKE_NOTIFIER));
+        await act(() => {fireEvent.change(screen.getAllByLabelText("Recipe Name")[0], {target: {value: "newName"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Aggiorna")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
+    
     test('open recipe edit and set description', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
-        await act(() => {fireEvent.change(screen.getAllByLabelText("Recipe Description")[1], {target: {value: "newDescription"}})});
+        await act(() => setupRecipeEdit());
+        await act(() => {fireEvent.change(screen.getAllByLabelText("Recipe Description")[0], {target: {value: "newDescription"}})});
         await act(() => {fireEvent.click(screen.getAllByText("Aggiorna")[1])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
+    
     test('open recipe edit and update an ingredient', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
-        await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "0"}})});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("V")[0])});
+        await act(() => setupRecipeEdit());
         await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "1"}})});
         await act(() => {fireEvent.click(screen.getAllByLabelText("V")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
+    
+    test('open recipe edit and update an ingredient invalid', async () => {
+        await act(() => setupRecipeEdit());
+        await act(() => {fireEvent.change(screen.getAllByLabelText("Ingredient Quantity")[0], {target: {value: "0"}})});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("V")[0])});
+    })
+
     test('open recipe edit and delete an ingredient', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
+        await act(() => setupRecipeEdit());
         await act(() => {fireEvent.click(screen.getAllByLabelText("X")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
 })
