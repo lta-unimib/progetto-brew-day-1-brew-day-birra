@@ -1,0 +1,434 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{setspace}
+\usepackage[paper=a4paper,margin=1in]{geometry}
+
+
+\begin{document}
+    
+    \begin{titlepage}
+        
+        \noindent
+        \begin{minipage}[t]{0.19\textwidth}
+            \vspace{-4mm}{\includegraphics[scale=1.15]{image/logo-unimib.pdf}}
+        \end{minipage}
+        \begin{minipage}[t]{0.81\textwidth}
+        {
+                \setstretch{1.42}
+                {\textsc{Università degli Studi di Milano - Bicocca}} \\
+                \textbf{Scuola di Scienze} \\
+                \textbf{Dipartimento di Informatica, Sistemistica e Comunicazione} \\
+                \textbf{Corso di laurea in Informatica} \\
+                \par
+        }
+        \end{minipage}
+        
+	\vspace{55mm}
+        
+	\begin{center}
+            {\LARGE{
+                    \setstretch{1.2}
+                    \textbf{Relazione Finale del Progetto d'Esame\\ del corso di Ingegneria del Software \\ Brew-Day! }
+                    \par
+            }}
+        \end{center}
+        
+        \vspace{50mm}
+        
+        \begin{flushright}
+            {\large \textbf{Componenti del gruppo:}} \\
+            \large{Gilardi Alessandro - 866035} \\
+            \large{Qazim Toska - 847361} \\
+            \large{Refolli Francesco - 865955} \\
+        \end{flushright}
+        
+        \vspace{40mm}
+        \begin{center}
+            {\large{\bf Anno Accademico 2022-2023}}
+        \end{center}
+
+        \restoregeometry
+        
+    \end{titlepage}
+    
+    \newpage
+   \tableofcontents
+   
+   \newpage
+    
+    
+    \chapter{Introduzione}
+    
+    	\section{Descrizione del Progetto}	
+	Brew Day! è un'applicazione che consente ai birrai casalinghi produttori di birra "all-grain” di mantenere un database organizzato delle loro ricette di birra. Consente quindi agli utenti di creare, archiviare e modificare le ricette e successivamente eliminarle.\\
+Ogni home brewer ha un'attrezzatura specifica, le cui caratteristiche portano a un particolare "batch size", il numero massimo di litri che possono essere erogati in un singolo ciclo. Le ricette prevedono l’uso di ingredienti comuni come l’acqua, malti, luppolo, lieviti, zuccheri, additivi, oltre ad ingredienti aggiuntivi che rendono la birra particolare.\\
+L’applicazione memorizza le quantità degli ingredienti in una misura "assoluta", in unità per Litro, in modo da consentire una conversione diretta della ricetta quando l'apparecchiatura, e di conseguenza la dimensione del batch, viene aggiornata.\\
+Oltre alle ricette effettive, l'applicazione offre la possibilità di mantenere le istanze di ricette eseguite, ovvero particolari miscele basate su una ricetta.\\
+Le birre create possono essere accompagnate da note per fare riferimento a problemi che possono influire sulla birra risultante e che i birrai vorrebbero tenere registrati. Un particolare tipo di note sono le note di degustazione, che consentono ai birrai di tenere traccia delle opinioni su una birra di una particolare birra.\\
+Oltre a queste funzionalità più tradizionali di Brew Day!, l'applicazione mantiene un elenco di ingredienti disponibili. Ciò consente ai birrai di essere informati sugli ingredienti mancanti per la birra successiva.\\
+Un'istanza di ricetta, ovvero una particolare birra, consente agli utenti di aggiornare l'elenco degli ingredienti disponibili, sottraendo gli ingredienti utilizzati da quelli disponibili.\\
+Brew Day! supporta la funzione "cosa dovrei preparare oggi?” che consiglia la ricetta che massimizza l'uso degli ingredienti disponibili, tenendo conto della capacità dell'attrezzatura.
+Per informazioni sull'installazione e uso dell'applicazione è possibile visitare la sezione \href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki}{Wiki su gitHub}.
+	
+    	\section{Processo Adottato}	
+	E' stato adottato il Framework Scrum al fine tenere sotto controllo lo stato di avanzamento del progetto, ispezionando frequentemente il lavoro fatto per verificare che si stia procedendo verso gli obiettivi posti e, nel caso si stia deviando dagli obiettivi, fare delle correzioni. \\
+Abbiamo deciso di effettuare 4 sprint, ognuno della durata di 5 giorni.\\
+Sono state svolte le seguenti attività:
+	\begin{itemize}
+		\item Meeting iniziale, il primo giorno, in cui abbiamo creato la Product Backlog e il Gantt (figure \ref{fig:scrum1}, \ref{fig:scrum2}, \ref{fig:scrum3}, \ref{fig:scrum4} )
+		\item	Sprint Planning, all’inizio di ogni Sprint, in cui abbiamo pianificato la Sprint Backlog e identificato lo Sprint Goal
+		\item Daily Scrum, meeting online giornaliero di 10 minuti in cui ci siamo confrontati sul lavoro svolto il giorno precedente e pianificato i compiti del giorno per il raggiungimento dello Sprint Goal
+		\item Sprint Review e Sprint Retrospective, al termine di ogni Sprint, in cui abbiamo ispezionato il lavoro svolto, valutato se l’obiettivo prefissato è stato raggiunto e con quali risultati e infine valutato cosa continuare a fare, cosa smettere di fare e cosa migliorare nello sprint successivo per ottenere performance ancora più efficienti.
+	\end{itemize}
+La qualità del codice è stata monitorata utilizzando i tool Understand e SonarQube, oltre a SonarCloud.	
+
+    	\section{Utilizzo di GitHub}
+Per tenere traccia dell'attività e dello stato di avanzamento del progetto, abbiamo utilizzato gitHub:
+\begin{itemize}
+		\item Per ciascuno Sprint abbiamo definito una milestone che la caratterizza
+		\item Per ogni attività di sviluppo, abbiamo definito una issue che la descriva, all'interno della corrispondente milestone
+		\item Abbiamo fatto ampio uso dei branch per lavorare su soluzioni parziali o questioni più ampie
+		\item Sono state utilizzate le GitHub Action per automatizzare la fase di test, build e analisi con SonarCloud
+	\end{itemize}
+
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=0.9\linewidth]{image/scrum1.png}
+		\caption{Gantt - Sprint 1}\label{fig:scrum1}
+	\end{figure}
+
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=0.9\linewidth]{image/scrum2.png}
+		\caption{Gantt - Sprint 2}\label{fig:scrum2}
+	\end{figure}
+	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=0.9\linewidth]{image/scrum3.png}
+		\caption{Gantt - Sprint 3}\label{fig:scrum3}
+	\end{figure}
+	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=0.9\linewidth]{image/scrum4.png}
+		\caption{Gantt - Sprint 4}\label{fig:scrum4}
+	\end{figure}
+
+
+
+
+\newpage
+    \chapter{Analisi}
+    	\section{Glossario}
+    		\begin{table}[!h]
+      			\renewcommand{\arraystretch}{1.2}
+      			\begin{tabular}{p{0.2\textwidth}|p{0.7\textwidth}} 
+        				\textbf{Nome}  & \textbf{Descrizione} \\
+    				\hline
+           			birraio & un utente \\
+                        		equipaggiamento & bollitore, fermentatore, pipa da birra \\
+                            	capacita' & quantita' in litri che un equipaggiamento puo' supportare in una turnata \\
+                          	ingrediente & malto, luppolo, lievito, zucchero, acqua, additivi \\
+                          	ricetta & collezione di ingredienti con associata una quantita' \\
+                          	inventario & collezione di ingredienti che l'home brewer ha a disposizione \\
+                            	consiglio & ricetta che massimizza l'uso degli ingredienti nell'inventario \\
+                            	istanza di birra & anche chiamata `istanza di ricetta` nel testo, birra prodotta con una certa ricetta \\
+        			\end{tabular}
+        			\caption{Glossario}
+      			\label{tab:Gloassario}
+    		\end{table}
+	
+    \newpage
+	\section{Requisiti Funzionali}
+	
+    		\begin{table}[!h]
+      			\renewcommand{\arraystretch}{1.2}
+      			\begin{tabular}{p{0.8\textwidth}|p{0.1\textwidth}} 
+        				\textbf{Requisito}  & \textbf{MoSCoW} \\
+    				\hline
+                                  il sistema deve permettere all'utente di mantenere, aggiornare, eliminare ricette & M \\
+                                  il sistema deve permettere all'utente di mantenere l'inventario & M \\
+                                  il sistema deve permettere all'utente di indicare che una ricetta e' stata eseguita e quindi aggiornare l'inventario di conseguenza & M \\
+                                  il sistema deve permettere all'utente di indicare che ha fatto la spesa e quindi aggiornare l'inventario di conseguenza & M \\
+                                  il sistema deve permettere all'utente di produrre la lista della spesa per gli ingredienti mancanti di una ricetta & M \\
+                                  il sistema deve permettere all'utente di generare un consiglio per la prossima birra & M \\
+                                  il sistema deve permettere all'utente di mantenere le istanze di una ricetta & M \\
+                                  il sistema deve permettere all'utente di aggiungere, aggiornare, eliminare note alle istanze di una birra & M \\
+                                  il sistema deve notificare l'utente quando mancano degli ingredienti per la prossima birra & M \\
+        			\end{tabular}
+        			\caption{Requisiti Funzionali}
+      			\label{tab:Requisiti Funzionali}
+    		\end{table}
+	
+	
+	
+	\section{Specifiche Supplementari}
+	
+    		\begin{table}[!h]
+      			\renewcommand{\arraystretch}{1.2}
+      			\begin{tabular}{p{0.8\textwidth}|p{0.1\textwidth}} 
+        				\textbf{Requisito}  & \textbf{MoSCoW} \\
+    				\hline
+                                  il sistema deve mantenere le quantita' degli ingredienti nelle ricette (e nell'inventario) in termini di unita' assolute (anche diverse), in modo che sia piu' semplice calcolare i multipli & M \\
+                                  il sistema deve supportare le note normale e le note di sapore per le istanze di una ricetta  & M \\
+                                  il suggerimento della birra deve massimizzare l'uso di ingredienti e equipaggiamento & M \\
+                                  il sistema deve supportare la possibilita' di aggiungere immagini alle istanze di birra & C \\
+                                  si deve permettere di eliminare una ricetta che ha associate delle birre prodotte & M \\
+        			\end{tabular}
+        			\caption{Specifiche Supplementari}
+      			\label{tab:Specifiche Supplementari}
+    		\end{table}	
+	
+	
+    \newpage
+	\section{Casi d'Uso}
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\linewidth]{image/Casi-dUso.png}
+			\caption{Casi d'Uso}\label{fig:1}
+		\end{figure}
+
+		\subsection{Identificazione dei Casi d'Uso}
+			Abbiamo individuato i seguenti casi d'Uso suddivisi nelle 4 iterazioni svolte:
+			\begin{enumerate}
+    				\item Prima Iterazione
+					\begin{itemize}
+						\item aggiungiRicetta	
+						\item modificaRicetta	
+						\item eliminaRicetta	
+						\item cercaRicetta	
+						\item visualizzaRicetta	
+						\item visualizzaInventario	
+						\item aggiungiIngredienteAllInventario	
+						\item modificaIngredienteNellInventario	
+						\item eliminaIngredienteDallInventario
+					\end{itemize}
+    				\item Seconda Iterazione
+					\begin{itemize}
+						\item eseguiRicetta	
+						\item eliminaIstanzaDiBirra	
+						\item aggiungiNotaAllIstanzaDiBirra		
+						\item eliminaNotaDallIstanzaDiBirra	
+						\item modificaNotaDellIstanzaDiBirra		
+					\end{itemize}			
+    				\item Terza Iterazione
+					\begin{itemize}
+						\item eseguiSpesa	
+						\item indicaFuturaBirra	
+						\item preparaListaDellaSpesa	
+						\item suggeriscimiBirra	
+						\item notificaIngredientiMancanti	
+						\item modificaCapacitaEquipaggiamentoTotale		
+					\end{itemize}
+				\item Quarta Iterazione - nessuno
+			\end{enumerate}
+		
+		\subsection{Caso d'Uso in formato breve - aggiungiRicetta}
+			E' stato realizzato il caso d'Uso in formato breve di aggiungiRicetta nella prima iterazione
+			\begin{enumerate}
+    				\item Il birraio inizia l'immissione di una nuova ricetta.
+    				\item Il birraio inserisce il nome della nuova ricetta.
+				\item Il birraio può inserire una descrizione della ricetta.
+    				\item import caso d'uso modificaRicetta
+    				\item il sistema salva la ricetta		
+			\end{enumerate}		
+	
+		\subsection{Caso d'Uso in formato breve - modificaRicetta}		
+			E' stato realizzato il caso d'Uso in formato breve di modificaRicetta nella prima iterazione
+			\begin{enumerate}
+    				\item Il birraio inizia la modifica di una ricetta.
+    				\item while:
+				\begin{enumerate}
+					\item  if opt1:
+						\begin{enumerate}
+							\item inserisce il nome di un ingrediente
+							\item inserisce la quantita' dell'ingrediente
+						\end{enumerate}		
+					\item  if opt2:
+						\begin{enumerate}
+							\item individua l'ingrediente da rinominare
+							\item inserisce il nuovo nome dell'ingrediente
+						\end{enumerate}		
+					\item  if opt3:
+						\begin{enumerate}
+							\item individua un ingrediente
+							\item inserisce la nuova quantita' dell'ingrediente
+						\end{enumerate}
+ 					\item  if opt4:
+						\begin{enumerate}
+  							\item seleziona l'ingrediente da eliminare
+						\end{enumerate}	
+ 					\item  if opt5:
+						\begin{enumerate}
+  							\item inserisce il nuovo nome della ricetta
+						\end{enumerate}
+ 					\item  if opt6:
+						\begin{enumerate}
+  							\item inserisce la nuova descrizione della ricetta
+						\end{enumerate}	
+    					\item il sistema salva la ricetta
+				\end{enumerate}	
+			\end{enumerate}
+			
+	\newpage	
+	\section{Modello di Dominio}
+	
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\linewidth]{image/Modello-di-Dominio.png}
+			\caption{Casi d'Uso}\label{fig:1}
+		\end{figure}
+
+	\newpage
+	\section{Diagrammi di Sequenza di Sistema}
+		\subsection{SSD - aggiungiRicetta}
+			E' stato realizzato il diagramma di sequenza di sistema del caso d'suo aggiungiRicetta
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=0.8\linewidth]{image/SSD-aggiungiRicetta.png}
+				\caption{SSD - aggiungiRicetta}\label{fig:1}
+			\end{figure}	
+		\newpage	
+		\subsection{SSD - modificaRicetta}
+			E' stato realizzato il diagramma di sequenza di sistema del caso d'suo modificaRicetta
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=0.8\linewidth]{image/SSD-modificaRicetta.png}
+				\caption{SSD - modificaRicetta}\label{fig:1}
+			\end{figure}
+
+
+      \chapter{Progettazione}
+         \section{Architettura del Software}
+         
+         	Design principle utilizzati? 
+	
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=0.6\linewidth]{image/Diagramma-dell'Architettura-Software.png}
+			\caption{Casi d'Uso}\label{fig:1}
+		\end{figure}         
+         
+         
+         
+         \section{Diagramma delle Classi di Progettazione}
+     
+		\subsection{Diagramma delle Classi Api}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Api.png}
+				\caption{Diagramma delle Classi  Api}\label{fig:1}
+			\end{figure}         
+
+		\subsection{Diagramma delle Classi Logic}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Logic.png}
+				\caption{Diagramma delle Classi Logic  }\label{fig:1}
+			\end{figure}           
+
+		\subsection{Diagramma delle Classi Persistence}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Persistence.png}
+				\caption{Diagramma delle Classi Persistence}\label{fig:1}
+			\end{figure}      
+
+		\subsection{Diagramma delle Classi Validation}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Validation.png}
+				\caption{Diagramma delle Classi Validation}\label{fig:1}
+			\end{figure}           
+
+		\subsection{Diagramma delle Classi Generation}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Generation.png}
+				\caption{Diagramma delle Classi Generation}\label{fig:1}
+			\end{figure}  
+			
+			
+			    
+    \newpage
+      	\section{Diagrammi di Sequenza}    
+		\subsection{SD - modificaQuantitaIngrediente}
+			E' stato realizzato il diagramma di sequenza di modificaQuantitaIngrediente appartenente al caso d'suo modificaRicetta
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=0.7\linewidth]{image/SD-modificaQuantitaIngrediente.png}
+				\caption{SD - modificaQuantitaIngrediente}\label{fig:1}
+			\end{figure}	
+		\newpage	
+		\subsection{SD - modificaNomeIngrediente}
+			E' stato realizzato il diagramma di sequenza di modificaNomeIngrediente appartenente al caso d'suo modificaRicetta
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=01\linewidth]{image/SD-inserisciIngrediente.png}
+				\caption{SD - inserisciIngrediente}\label{fig:1}
+			\end{figure}
+
+         \section{Diagramma degli Stati}
+         
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=0.8\linewidth]{image/Diagramma-degli-Stati-Birra.png}
+			\caption{Diagramma degli Stati Birra}\label{fig:1}
+		\end{figure}    			
+
+
+         \section{Diagramma delle Attività }
+         
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=0.6\linewidth]{image/Diagramma-delle-Attivita-di-Esecuzione-Ricetta.png}
+			\caption{Diagramma delle Attivita di Esecuzione Ricetta}\label{fig:1}
+		\end{figure}    
+\newpage	
+      	\section{Pattern Utilizzati}		
+	Nel corso delle fasi di progettazione, implementazione e refactoring abbiamo individuato dei pattern archietturali e dei design pattern. 
+	      	\subsection{Pattern Architetturali}
+		
+			\subsubsection{Page Controller}
+			Le classi Endpoint rappresentano una divisione in pagine dell'API, quindi sono un'applicazione del pattern architetturale Page Controller.	
+			
+			\subsubsection{Table Data Gateway}
+Tutte le interfacce Repository implementano pattern architetturale Table Data Gateway, in quanto rappresentano un'interfaccia unificata e fruibile per ottenere informazioni dalla tabella di database che può essere remoto o locale.	
+      		
+		
+		\subsection{Design Pattern}
+			\subsubsection{Chain of Responsibility}
+			Le classi Validator e ValidatorHandler (e derivate) implementano il design pattern Chain of Responsibility, in quanto la validazione dei campi è delegata a catene di ValidatorHandler che eseguono controlli ed eventualmente lanciano una eccezione ValidationException.
+		
+			\subsubsection{Singleton}	
+			Tutti i controller (tranne ControllerResetController) implementano il design pattern Singleton, quindi hanno tutti rispettivamente l'istanza statica instance, il metodo statico createInstance che assegna ad ogni controller la sua istanza statica (creata e coordinata da ControllerResetController) e il metodo getInstance.
+Tutte le interfacce Repository hanno associato rispettivamente una classe utility nominata RepositoryGateway, una classe che usa il pattern singleton per avere solo una istanza dei repository JDBC.
+Implementano questo pattern anche le classi Validator, ValidatorHandler e le classi IDGenerator e derivate. 
+				
+		\subsubsection{Strategy, Template Method}
+		Le classi IDGenerator e derivate implementano i pattern Strategy e Template Method dal momento che IDGenerator definisce la successione delle fasi preprocess -> compute -> postprocess, le quali sono modificabili singolarmente dalle derivate, e perchè le derivate applicano potenzialmente algoritmi diversi per ottenere lo stesso risultato. 
+		
+		\subsubsection{Facade}		
+		La classe IDGenerationFacade è applicazione dei design pattern Facade.
+							
+      \chapter{Conclusioni}
+      	\section{Analisi con SonarQube e SonarCloud}
+	Abbiamo usato SonarQube e SonarCloud per mantenere controllato il livello di qualità del progetto.
+	
+	
+	
+      	\section{Analisi con Understand}
+	Abbiamo utilizzato il tool Understand per capire se nel progetto fossero presenti anti-pattern strutturali legati a problemi di dipendenza o altri problemi.
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\linewidth]{image/understand.png}
+			\caption{Understand}\label{fig:1}
+		\end{figure}    	
+	\section{Considerazioni Finali}
+    
+\end{document}
