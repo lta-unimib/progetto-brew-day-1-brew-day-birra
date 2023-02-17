@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
-import {DO_SHOPPING_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
+import {DO_SHOPPING_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '../utils/Protocol';
 import BodyThemeManager from '../components/BodyThemeManager';
 import IngredientNameInput from "../components/IngredientNameInput";
 import QuantityInput from "../components/QuantityInput";
+import IconButton from '@mui/material/IconButton';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import { Tooltip } from "@mui/material";
 
 class Spesa extends Component {
   constructor(props) {
@@ -29,6 +34,8 @@ class Spesa extends Component {
         ingredientQuantity &&
         this.state.ingredients.indexOf(ingredient) < this.state.added
       ) {
+        if (isNotValidPositiveQuantity(ingredientQuantity))
+          return this.notifier.warning("le quantita' dei singoli ingredienti devono essere strettamente positive");
         _ingredients.push({
           name: ingredientName,
           quantity: ingredientQuantity,
@@ -75,14 +82,12 @@ class Spesa extends Component {
         ingredientQuantity: newIngQuantity,
       };
       if (newIngName !== "") {
-        if (newIngQuantity !== "") {
           ingredients.push({ ingredientName: "", ingredientQuantity: "0" })
-        }
+          this.setState({ ingredients, added: this.state.added + 1 });
       } else {
-        this.notifier.warning("il nome dell'ingrediente non deve essere vuoto")
+        return this.notifier.warning("il nome dell'ingrediente non deve essere vuoto")
       }
     }
-    this.setState({ ingredients, added: this.state.added + 1 });
   }
 
   handleIngredientChange = (field, index, value) => {
@@ -117,14 +122,19 @@ class Spesa extends Component {
                 />
               );
               let button = (
-                <MButton text="Aggiungi" onClick={this.handleAddIngredient} />
+                <Tooltip title="Aggiungi">
+                  <IconButton aria-label="Aggiungi" onClick={this.handleAddIngredient}>
+                    <AddShoppingCartIcon />
+                  </IconButton>
+                </Tooltip>
               );
               if (index !== this.state.ingredients.length - 1) {
                 button = (
-                  <MButton
-                    text="Elimina"
-                    onClick={() => this.handleDeleteIngredient(index)}
-                  />
+                  <Tooltip title="Elimina">
+                    <IconButton aria-label="Elimina" onClick={() => this.handleDeleteIngredient(index)}>
+                      <RemoveShoppingCartIcon />
+                    </IconButton>
+                  </Tooltip>
                 );
                 firstColumn = <p>{ingredient.ingredientName}</p>;
               }
@@ -157,7 +167,7 @@ class Spesa extends Component {
           </tbody>
         </table>
         <div id="shoppingButtonContainer">
-          <MButton text="Conferma" onClick={this.handleSubmit} />
+          <MButton startIcon={<ShoppingCartCheckoutIcon/>} text="Conferma" onClick={this.handleSubmit}/>
         </div>
       </BodyThemeManager>
     );

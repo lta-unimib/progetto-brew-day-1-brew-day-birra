@@ -57,14 +57,14 @@ global.fetch = jest.fn().mockImplementation((url) =>
 describe('Birre.jsx can correctly render page', () => {
     test('open and close beer view', async () => {
         await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Dettagli")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Dettagli")[0])});
         expect(screen.getAllByText(beers.beerID.name)[1]).toBeInTheDocument();
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open and close beer view, view recipe', async () => {
         await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Dettagli")[1])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Dettagli")[1])});
         beers.beerID2.notes.forEach(note => expect(screen.getAllByText(note.description, {exact: false})[0]).toBeInTheDocument());
         await act(() => {fireEvent.click(screen.getAllByText("Visualizza Ricetta")[0])});
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});

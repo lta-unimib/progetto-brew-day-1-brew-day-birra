@@ -59,6 +59,8 @@ class BeerEdit extends Component {
   handleNameChange = () => {
     const { beerID } = this.props;
     const { name } = this.state;
+    if (name === "")
+      return this.notifier.warning("il nome della birra non deve essere vuoto");
 
     fetch(BEERS_ENDPOINT + `${beerID}`, {
       method: "PUT",

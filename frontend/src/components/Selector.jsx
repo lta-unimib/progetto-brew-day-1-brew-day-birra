@@ -6,7 +6,9 @@ export default class Selector extends React.Component {
         const options = this.props.options.map((option) => {
             return (<MenuItem value={option.value} key={option.name}>{option.name}</MenuItem>);
         });
-        options.push((<MenuItem value={''} key={''}>{''}</MenuItem>))
+        if (this.props.optional) {
+            options.push((<MenuItem value={''} key={''}>{''}</MenuItem>))
+        }
         return (
             <FormControl
                 sx={{textAlign:"center"}} fullWidth>

@@ -13,6 +13,8 @@ class MButton extends Component {
           variant="contained"
           color="primary"
           onClick={this.props.onClick ?? (() => {})}
+          startIcon={this.props.startIcon}
+          endIcon={this.props.endIcon}
         >
           {this.props.text}
         </Button>
@@ -22,6 +24,8 @@ class MButton extends Component {
             variant="contained"
             color="primary"
             onClick={this.props.onClick ?? (() => {})}
+            startIcon={this.props.startIcon}
+            endIcon={this.props.endIcon}
           >
             {this.props.text}
           </Button>

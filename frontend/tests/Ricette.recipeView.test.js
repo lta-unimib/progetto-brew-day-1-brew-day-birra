@@ -26,7 +26,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
     json: () => {
         if (url.startsWith(SETTINGS_ENDPOINT))
           return Promise.resolve({value:"default"})
-        if (url == RECIPE_LIST_ENDPOINT)
+        if (url === RECIPE_LIST_ENDPOINT)
           return Promise.resolve(Object.keys(recipes));
         else {
             if (url.startsWith(RECIPE_ENDPOINT)) {
@@ -43,7 +43,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
 describe('Ricette.jsx can correctly render page', () => {
     test('open and close recipe view', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Dettagli")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Dettagli")[0])});
         Object.keys(recipes).forEach((recipeID) => {
             let recipe = recipes[recipeID];
             expect(screen.getAllByText(recipe.name)[1]).toBeInTheDocument();

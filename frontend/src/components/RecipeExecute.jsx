@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import MButton from "../components/MButton";
-import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
+import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, SETTINGS_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQuantity} from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import QuantityInput from "./QuantityInput";
 import { TextField } from "@mui/material";
+import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
 
 class RecipeExecute extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class RecipeExecute extends Component {
                   <td>Nuova Birra</td>
                   <td>
                     <TextField
-                      label="Name"
+                      label="Beer Name"
                       value={this.state.newBeerName}
                       style={{ width: "90%", textAlign: "center" }}
                       onChange={this.setNewBeerName}
@@ -97,13 +98,13 @@ class RecipeExecute extends Component {
                   </td>
                   <td>
                     <QuantityInput
-                      label="Quantity"
+                      label="Beer Quantity"
                       value={this.state.newBeerQuantity}
                       onChange={this.setNewBeerQuantity}
                     ></QuantityInput>
                   </td>
                   <td>
-                    <MButton text="Crea" onClick={() => this.addBeer()} />
+                    <MButton startIcon={<CoffeeMakerIcon/>} text="Crea" onClick={() => this.addBeer()} />
                   </td>
                 </tr>
               </tbody>
@@ -114,9 +115,13 @@ class RecipeExecute extends Component {
   }
 
   addBeer() {
+    if (this.state.newBeerName === "")
+      return this.notifier.warning("il nome della birra non deve essere vuoto");
+    if (isNotValidPositiveQuantity(this.state.newBeerQuantity))
+      return this.notifier.warning("la quantita' di litri di birra prodotta deve essere strettamente positiva");
     if(this.state.newBeerQuantity > parseFloat(this.state.equipment)) {
       this.setState({missingEquipment: true});
-      this.notifier.warning("capacita' dell'equipaggiamento insufficiente");
+      this.notifier.warning("la capacita' dell'equipaggiamento e' insufficiente");
     } else {
       fetch(BEER_LIST_ENDPOINT, {
         method: "POST",

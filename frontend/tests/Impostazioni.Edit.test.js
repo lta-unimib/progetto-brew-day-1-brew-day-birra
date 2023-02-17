@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import Impostazioni from "../src/pages/Impostazioni";
 import { act } from "react-test-renderer";
+import { SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from "../src/utils/Protocol";
 
 var settings = [
     {
@@ -23,8 +24,22 @@ const findSetting = (settingID) => {
     }
 }
 
+var statusFlick = {
+    settings: true,
+    setting: true
+}
+
+function getStatus(url) {
+    if (url === SETTING_LIST_ENDPOINT && !statusFlick.settings)
+        return 400
+    if (url.startsWith(SETTINGS_ENDPOINT) && !statusFlick.setting)
+        return 400
+    return 200
+}
+
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
+    status: getStatus(url),
     json: () => {
         if (url === "/api/settings")
           return Promise.resolve(settings);
@@ -41,21 +56,76 @@ global.fetch = jest.fn().mockImplementation((url) =>
 )
 
 describe('Impostazioni.jsx can correctly update equipement and name', () => {
-    test('can update equipment and name', async () => {
+    test('can update name', async () => {
         await act(() => {render(<Impostazioni/>);});
-        await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "10"}}));
-        await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[0]));
         await act(() => fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "Paolina"}}));
         await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[1]));
     })
-    test('can update color', async () => {
+
+    
+    test('can update equipment', async () => {
         await act(() => {render(<Impostazioni/>);});
-        fireEvent.mouseDown(screen.getByLabelText("Color"));
-        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
+        await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "10"}}));
+        await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[0]));
     })
+    test('cannot update name', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni/>);});
+        statusFlick.setting = false;
+        await act(() => fireEvent.change(screen.getAllByRole("textbox")[1], {target: {value: "Paolina"}}));
+        await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[1]));
+    })
+
+    
+    test('cannot update equipment', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni/>);});
+        statusFlick.setting = false;
+        await act(() => fireEvent.change(screen.getAllByRole("textbox")[0], {target: {value: "10"}}));
+        await act(() => fireEvent.click(screen.getAllByText("Aggiorna")[0]));
+    })
+    
+    test('cannot update color', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni/>);});
+        statusFlick.setting = false;
+        fireEvent.mouseDown(screen.getByLabelText("Color"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
+    })
+
+    test('cannot update background', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni/>);});
+        statusFlick.setting = false;
+        fireEvent.mouseDown(screen.getByLabelText("Background"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
+    })
+    
+    test('can update color and has a masterCall', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni masterCall={() => {}}/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Color"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
+    })
+
     test('can update background', async () => {
+        statusFlick.setting = true;
         await act(() => {render(<Impostazioni/>);});
         fireEvent.mouseDown(screen.getByLabelText("Background"));
-        fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Background"})).getByText("strange"));
+    })
+    
+    test('can update color with a twin', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Color"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Color"})).getByText("twin-dark"));
+    })
+
+    test('can update backgroun with a twin', async () => {
+        statusFlick.setting = true;
+        await act(() => {render(<Impostazioni/>);});
+        fireEvent.mouseDown(screen.getByLabelText("Background"));
+        fireEvent.click(within(screen.getByRole("listbox", {name: "Background"})).getByText("twin-dark"));
     })
 })

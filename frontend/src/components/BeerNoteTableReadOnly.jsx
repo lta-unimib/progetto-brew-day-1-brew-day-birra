@@ -11,7 +11,7 @@ export default class BeerNoteTableReadOnly extends React.Component {
     render() {
         const rows = this.props.notes.map((note) => {
             return {
-                noteType: NOTE_TYPE_ICONS[note.noteType],
+              noteType: (<p style={{textAlign:"center", fontStyle: "italic", fontSize: 20, vertialAlign: "center", wordSpacing: 10}}>{NOTE_TYPE_ICONS[note.noteType]} {note.noteType}</p>),
                 description: note.description
             }
         })

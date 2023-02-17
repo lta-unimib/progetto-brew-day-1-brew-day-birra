@@ -190,7 +190,7 @@ class Birre extends Component {
               <JimTable>
                 <p style={{textAlign:"center"}}>FILTRA PER RICETTA</p>
                 <JimGrid>
-                  <Selector
+                  <Selector optional
                     label="Recipe"
                     value={this.state.filterRecipe}
                     onChange={this.setFilterRecipe}

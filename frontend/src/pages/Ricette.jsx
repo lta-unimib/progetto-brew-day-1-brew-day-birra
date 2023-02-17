@@ -5,7 +5,7 @@ import RecipeEdit from "../components/RecipeEdit";
 import RecipeDelete from "../components/RecipeDelete";
 import RecipeExecute from "../components/RecipeExecute";
 import MButton from '../components/MButton';
-import { FAKE_NOTIFIER, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../utils/Protocol';
+import { FAKE_NOTIFIER, isNotValidPositiveQuantity, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT } from '../utils/Protocol';
 import Selector from '../components/Selector';
 import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
@@ -14,6 +14,7 @@ import QuantityInput from '../components/QuantityInput';
 import { TextField } from '@mui/material';
 import JimFlex from '../components/JimFlex';
 import JimGrid from '../components/JimGrid';
+
 export default class Ricette extends Component {
     constructor(props) {
         super(props);
@@ -116,7 +117,6 @@ export default class Ricette extends Component {
     setNewNextRecipeID = (event) => {
       let newNextRecipeID = event.target.value;
       this.setState({nextRecipeID: newNextRecipeID});
-      this.updateNextRecipeSetting("nextRecipeID", newNextRecipeID)
     }
 
     setNewNextRecipeQuantity = (event) => {
@@ -132,6 +132,17 @@ export default class Ricette extends Component {
     
     removeFilter = () => {
       this.setState({recipesFiltered: this.state.recipes, filterName: ""})
+    }
+
+    programRecipe = () => {
+      if (this.state.nextRecipeID === "")
+        return this.notifier.warning("devi selezionare una ricetta per impostarla")
+      if (isNotValidPositiveQuantity(this.state.nextRecipeQuantity))
+        return this.notifier.warning("devi inserire una quantita' maggiore di zero")
+      this.updateNextRecipeSetting("nextRecipeID", this.state.nextRecipeID)
+      .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
+      .then(() => this.notifier.success("programmazione ricetta impostata correttamente"))
+      .catch(this.notifier.connectionError)
     }
 
     render() {
@@ -166,7 +177,7 @@ export default class Ricette extends Component {
                 <JimTable>
                   <p style={{textAlign:"center"}}>Seleziona la prossima ricetta</p>
                   <JimGrid>
-                    <Selector
+                    <Selector optional
                       label="Recipe"
                       value={this.state.nextRecipeID}
                       onChange={this.setNewNextRecipeID}
@@ -181,7 +192,7 @@ export default class Ricette extends Component {
                     />
                   </JimGrid>
                   <JimGrid>
-                    <MButton text="Programma" onClick={() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity)}/>
+                    <MButton text="Programma" onClick={this.programRecipe}/>
                   </JimGrid>
                 </JimTable>
               </JimFlex>
@@ -233,15 +244,17 @@ export default class Ricette extends Component {
     }
 
     updateNextRecipeSetting = (settingID, value) => {
-      fetch(SETTINGS_ENDPOINT + `${settingID}`, {
-          method: 'PUT',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({value: value})
+      return new Promise((acc, rej) => {
+        fetch(SETTINGS_ENDPOINT + `${settingID}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({value: value})
+        })
+        .then(this.notifier.onRequestErrorResolvePromise(() => {}, acc, rej))
       })
-      .then(this.notifier.onRequestError("verificare la connessione"))
     }
 
     postNextRecipeSetting = (settingID, value) => {
