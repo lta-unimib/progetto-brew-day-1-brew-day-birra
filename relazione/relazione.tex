@@ -316,6 +316,12 @@ Durante le iterazioni è stato realizzato il modello di dominio (figura \ref{fig
      
          \section{Architettura del Software}
 Come architettura software è stato scelto di usare un'architettura multi-strato di tipo client-server. Abbiamo suddiviso logicamente le varie funzionalità del software su più strati differenti in comunicazione tra loro. Gli strati individuati sono UI, Application, Domain, Technical Services.
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=0.5\linewidth]{image/Diagramma-dell'Architettura-Software.png}
+			\caption{Diagramma dell'Architettura Software}\label{fig:Diagramma-dell'Architettura-Software.}
+		\end{figure}         
+\newpage
 		\subsection{Design Principles}
 			\subsubsection{Interface Segregation Principle}		
 Applicando questo principio di sviluppo ci siamo sincerati di aver suddiviso il più possibile le responsabilità e le attività svolte dai singoli controller.
@@ -325,28 +331,31 @@ Per esempio si e' scelto appositamente di spezzettare il piu' possibile la caten
 Altro esempio e' il fatto che ogni Handler si occupa di un punto specifico a atomico della validazione dell'input.
 			\subsubsection{Open–closed principle}
 Le classi del package Generation permettono di aggiungere pezzi di computazione senza modificare la classi da cui derivano.
-		\begin{figure}[!h]
-			\centering
-			\includegraphics[width=0.6\linewidth]{image/Diagramma-dell'Architettura-Software.png}
-			\caption{Diagramma dell'Architettura Software}\label{fig:Diagramma-dell'Architettura-Software.}
-		\end{figure}         
+
          
          \section{Diagramma delle Classi di Progettazione}
 Durante le iterazioni sono stati creati/aggiornati i diagrammi delle classi, che descrivono gli aspetti statici del sistema, classi, la loro struttura e le relazioni con altre classi.
 Di seguito vengono riportati tutti i diagrammi di classi realizzati, suddivisi per Package. Nello specifico, abbiamo il diagramma delle classi per il package Api, Logic, Persistence, Validation e Generation.
-\newpage
+
 		\subsection{Diagramma delle Classi Api}
 			\begin{figure}[!h]
 				\centering
 				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Api.png}
 				\caption{Diagramma delle Classi  Api}\label{fig:1}
-			\end{figure}         
-
-		\subsection{Diagramma delle Classi Logic}
+			\end{figure}         		
+\newpage			
+  		\subsection{Diagramma delle Classi Logic}
 			\begin{figure}[!h]
 				\centering
-				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Logic.png}
+				\includegraphics[width=0.9\linewidth]{image/Diagramma-delle-Classi-Logic.png}
 				\caption{Diagramma delle Classi Logic  }\label{fig:1}
+			\end{figure}  
+			
+		\subsection{Diagramma delle Classi Validation}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=0.9\linewidth]{image/Diagramma-delle-Classi-Validation.png}
+				\caption{Diagramma delle Classi Validation}\label{fig:1}
 			\end{figure}           
 \newpage
 		\subsection{Diagramma delle Classi Persistence}
@@ -354,19 +363,12 @@ Di seguito vengono riportati tutti i diagrammi di classi realizzati, suddivisi p
 				\centering
 				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Persistence.png}
 				\caption{Diagramma delle Classi Persistence}\label{fig:1}
-			\end{figure}      
-\newpage
-		\subsection{Diagramma delle Classi Validation}
-			\begin{figure}[!h]
-				\centering
-				\includegraphics[width=01\linewidth]{image/Diagramma-delle-Classi-Validation.png}
-				\caption{Diagramma delle Classi Validation}\label{fig:1}
-			\end{figure}           
+			\end{figure}             
 
 		\subsection{Diagramma delle Classi Generation}
 			\begin{figure}[!h]
 				\centering
-				\includegraphics[width=0.5\linewidth]{image/Diagramma-delle-Classi-Generation.png}
+				\includegraphics[width=0.3\linewidth]{image/Diagramma-delle-Classi-Generation.png}
 				\caption{Diagramma delle Classi Generation}\label{fig:1}
 			\end{figure}  
 			
