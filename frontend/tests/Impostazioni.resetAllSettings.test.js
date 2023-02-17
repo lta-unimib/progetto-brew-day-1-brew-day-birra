@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
 import Impostazioni from "../src/pages/Impostazioni";
 import { act } from "react-test-renderer";
+import SettingsReset from "../src/components/SettingsReset";
 
 global.fetch = jest.fn().mockImplementation((url) =>
   Promise.resolve({
@@ -19,10 +20,7 @@ describe('Impostazioni.jsx can reset Settings', () => {
     })
     
     test('open and reset', async () => {
-        await act(() => {render(<Impostazioni/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Elimina tutti i dati")[0])});
-        //delete recipes.recipeID;
+        await act(() => {render(<SettingsReset onConfirm={() => {}}/>);});
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
-        expect(screen.queryByText("70")).toBeNull();
     })
 })

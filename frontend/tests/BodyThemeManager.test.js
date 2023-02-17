@@ -48,6 +48,12 @@ describe("BodyThemeManager behave correctly", () => {
         await act(() => render(<BodyThemeManager/>))
     })
     
+    test("theme manager request settings and all is there but wrong", async () => {
+        settings.color.value = "wrong";
+        settings.background.value = "wrong";
+        await act(() => render(<BodyThemeManager/>))
+    })
+    
     test("theme manager request settings but values are invalid", async () => {
         contentFlicks.color = false;
         contentFlicks.background = false;
@@ -55,6 +61,8 @@ describe("BodyThemeManager behave correctly", () => {
     })
     
     test("theme manager request settings but nothing is there", async () => {
+        contentFlicks.color = true;
+        contentFlicks.background = true;
         statusFlicks.color = false;
         statusFlicks.background = false;
         await act(() => render(<BodyThemeManager/>))
