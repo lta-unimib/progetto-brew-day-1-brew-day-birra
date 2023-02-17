@@ -55,4 +55,10 @@ describe('Impostazioni.jsx can correctly render this page even if there is no se
         expect(screen.getByText("Elimina tutti i dati")).toBeInTheDocument();
         expect(screen.getByText("Resetta la prossima ricetta da eseguire")).toBeInTheDocument();
     })
+
+    test('load page but cannot add settings so launch snackbar', async () => {
+        statusFlick.settings = false;
+        statusFlick.setting = false;
+        await act(() => {render(<Impostazioni/>);});
+    })
 })

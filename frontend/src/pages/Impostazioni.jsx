@@ -81,10 +81,7 @@ export default class Impostazioni extends Component {
       .then(this.queryBackgroundSetting)
       .then(this.queryEquipmentSetting)
       .then(this.queryNameSetting)
-      .catch(() => {
-        this.notifier.connectionError();
-        setTimeout(this.triggerReload, 10000);
-      })
+      .catch(this.notifier.connectionError)
     }
 
     setNewEquipment = (event) => {
