@@ -93,6 +93,7 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto, abb
 		\item Per ogni attività di sviluppo, abbiamo definito una issue che la descriva, all'interno della corrispondente milestone
 		\item Abbiamo fatto ampio uso dei branch per lavorare su soluzioni parziali o questioni più ampie
 		\item Sono state utilizzate le GitHub Action per automatizzare la fase di test, build e analisi con SonarCloud
+		\item E' stato utilizzato il task Tracker offerto da gitHub nella sezione Project per condividere i progressi effettuati tra i componenti del gruppo
 	\end{itemize}
 
 	\begin{figure}[!h]
@@ -125,6 +126,7 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto, abb
 \newpage
     \chapter{Analisi}
     	\section{Glossario}
+	All'inizio del progetto è stato realizzato il glossario riportato nella tabella \ref{tab:Gloassario}.
     		\begin{table}[!h]
       			\renewcommand{\arraystretch}{1.2}
       			\begin{tabular}{p{0.2\textwidth}|p{0.7\textwidth}} 
@@ -145,7 +147,7 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto, abb
 	
     \newpage
 	\section{Requisiti Funzionali}
-	
+	All'inizio del progetto sono stati individuati i requisiti funzionali e a ciascuno è stata attribuita un'importanza, come prevede la tecnica MoSCoW (tabella \ref{ab:Requisiti-Funzionali}).
     		\begin{table}[!h]
       			\renewcommand{\arraystretch}{1.2}
       			\begin{tabular}{p{0.8\textwidth}|p{0.1\textwidth}} 
@@ -162,39 +164,40 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto, abb
                                   il sistema deve notificare l'utente quando mancano degli ingredienti per la prossima birra & M \\
         			\end{tabular}
         			\caption{Requisiti Funzionali}
-      			\label{tab:Requisiti Funzionali}
+      			\label{tab:Requisiti-Funzionali}
     		\end{table}
 	
 	
 	
-	\section{Specifiche Supplementari}
-	
+	\section{Requisiti non funzionali}
+	Oltre ai requisiti funzionali, abbiamo individuato anche quelli non funzionali (tabella \ref{ab:Requisiti-Non-Funzionali}). 
     		\begin{table}[!h]
       			\renewcommand{\arraystretch}{1.2}
       			\begin{tabular}{p{0.8\textwidth}|p{0.1\textwidth}} 
         				\textbf{Requisito}  & \textbf{MoSCoW} \\
     				\hline
-                                  il sistema deve mantenere le quantita' degli ingredienti nelle ricette (e nell'inventario) in termini di unita' assolute (anche diverse), in modo che sia piu' semplice calcolare i multipli & M \\
+                                  il sistema deve mantenere le quantita' degli ingredienti nelle ricette (e nell'inventario) in termini di unita' assolute (anche diverse), in modo che sia più semplice calcolare i multipli & M \\
                                   il sistema deve supportare le note normale e le note di sapore per le istanze di una ricetta  & M \\
                                   il suggerimento della birra deve massimizzare l'uso di ingredienti e equipaggiamento & M \\
                                   il sistema deve supportare la possibilita' di aggiungere immagini alle istanze di birra & C \\
                                   si deve permettere di eliminare una ricetta che ha associate delle birre prodotte & M \\
         			\end{tabular}
-        			\caption{Specifiche Supplementari}
-      			\label{tab:Specifiche Supplementari}
+        			\caption{Requisiti Non Funzionali}
+      			\label{tab:Requisiti-Non-Funzionali}
     		\end{table}	
 	
 	
     \newpage
 	\section{Casi d'Uso}
+	Nei primi giorni del progetto abbiamo identificato i seguenti casi d'uso sulla base dei requisiti del progetto. 
 		\begin{figure}[!h]
 			\centering
 			\includegraphics[width=1\linewidth]{image/Casi-dUso.png}
-			\caption{Casi d'Uso}\label{fig:1}
+			\caption{Casi d'Uso}\label{fig:Casi-d'Uso}
 		\end{figure}
 
 		\subsection{Identificazione dei Casi d'Uso}
-			Abbiamo individuato i seguenti casi d'Uso suddivisi nelle 4 iterazioni svolte:
+			Casi d'Uso suddivisi nelle 4 iterazioni svolte:
 			\begin{enumerate}
     				\item Prima Iterazione
 					\begin{itemize}
@@ -277,15 +280,17 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto, abb
 			
 	\newpage	
 	\section{Modello di Dominio}
-	
+	Il modello di dominio realizzato e riportato nella figura \ref{fig:Modello-Dominio} fornisce una rappresentazione visuale delle classi concettuali e degli oggetti del mondo reale del dominio.
 		\begin{figure}[!h]
 			\centering
 			\includegraphics[width=1\linewidth]{image/Modello-di-Dominio.png}
-			\caption{Casi d'Uso}\label{fig:1}
+			\caption{Modello di Dominio}\label{fig:Modello-Dominio}
 		\end{figure}
 
 	\newpage
 	\section{Diagrammi di Sequenza di Sistema}
+	Nella prima iterazione sono stati realizzati due diagrammi di sequenza di sistema per rappresentare l'interazione tra l'utente esterno al sistema con l'applicazione.
+	I casi scelti sono l'aggiunta di una ricetta nel sistema e la sua modifica.
 		\subsection{SSD - aggiungiRicetta}
 			E' stato realizzato il diagramma di sequenza di sistema del caso d'suo aggiungiRicetta
 			\begin{figure}[!h]
@@ -418,10 +423,20 @@ Implementano questo pattern anche le classi Validator, ValidatorHandler e le cla
 							
       \chapter{Conclusioni}
       	\section{Analisi con SonarQube e SonarCloud}
-	Abbiamo usato SonarQube e SonarCloud per mantenere controllato il livello di qualità del progetto.
-	
-	
-	
+	Abbiamo usato SonarQube e SonarCloud per mantenere controllato il livello di qualità del progetto.\\
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\linewidth]{image/sonarCloud-backend.png}
+			\caption{sonarCloud-backend}\label{fig:sonarCloud-backend}
+		\end{figure}	
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\linewidth]{image/sonarCloud-frontend.png}
+			\caption{sonarCloud-frontend}\label{fig:sonarCloud-frontend}
+		\end{figure} 
+	Dalle analisi finali svolte, i cui risultati sono riportati nelle figure \ref{fig:sonarCloud-backend} \ref{fig:sonarCloud-frontend}, si può affermare che il progetto non presenta bugs, codeSmells, vulnerabilità e problemi di sicurezza.
+	Utilizzando i test JUnits per il backend e Jest per il frontend, siamo inoltre riusciti ad ottenere una coverage elevata del codice, pari al 97.8\% nel backed e del 94.2\% nel frontend.
+\newpage
       	\section{Analisi con Understand}
 	Abbiamo utilizzato il tool Understand per capire se nel progetto fossero presenti anti-pattern strutturali legati a problemi di dipendenza o altri problemi.
 		\begin{figure}[!h]
