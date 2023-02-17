@@ -91,8 +91,8 @@ export default class Ricette extends Component {
     handleDelete = (item) => {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
       if(item.recipeID === this.state.nextRecipeID){
-        this.updateNextRecipeSetting("nextRecipeID", "");
-        this.updateNextRecipeSetting("nextRecipeQuantity", "0");
+        this.settingsManager.putSetting("nextRecipeID", "");
+        this.settingsManager.putSetting("nextRecipeQuantity", "0");
       }
 
     };
@@ -162,8 +162,8 @@ export default class Ricette extends Component {
         return this.notifier.warning("devi selezionare una ricetta per impostarla")
       if (isNotValidPositiveQuantity(this.state.nextRecipeQuantity))
         return this.notifier.warning("devi inserire una quantita' maggiore di zero")
-      this.updateNextRecipeSetting("nextRecipeID", this.state.nextRecipeID)
-      .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
+      this.settingsManager.putSetting("nextRecipeID", this.state.nextRecipeID)
+      .then(() => this.settingsManager.putSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
       .then(() => this.notifier.success("programmazione ricetta impostata correttamente"))
       .catch(this.notifier.connectionError)
     }
@@ -264,31 +264,5 @@ export default class Ricette extends Component {
         this.setState({recipesFiltered: recipeFiltered});
       })
       .catch(this.notifier.connectionError);
-    }
-
-    updateNextRecipeSetting = (settingID, value) => {
-      return new Promise((acc, rej) => {
-        fetch(SETTINGS_ENDPOINT + `${settingID}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({value: value})
-        })
-        .then(this.notifier.onRequestErrorResolvePromise(() => {}, acc, rej))
-      })
-    }
-
-    postNextRecipeSetting = (settingID, value) => {
-      fetch(SETTING_LIST_ENDPOINT, {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({settingID: settingID, value: value})
-      })
-      .then(this.notifier.onRequestError("verificare la connessione"))
     }
 }
