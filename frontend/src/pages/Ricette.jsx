@@ -14,6 +14,7 @@ import QuantityInput from '../components/QuantityInput';
 import { TextField } from '@mui/material';
 import JimFlex from '../components/JimFlex';
 import JimGrid from '../components/JimGrid';
+import SettingsManager from '../utils/SettingsManager';
 
 export default class Ricette extends Component {
     constructor(props) {
@@ -26,35 +27,57 @@ export default class Ricette extends Component {
           filterName: "", recipesFiltered: []
         };
         this.notifier = this.props.notifier || FAKE_NOTIFIER;
+        this.settingsManager = new SettingsManager();
     }
 
     triggerReload = () => {
-        fetch(RECIPE_LIST_ENDPOINT)
-        .then(response => response.json())
-        .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
-        .then(responses => Promise.all(responses.map(response => response.json())))
-        .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}))
-        .catch(this.notifier.connectionError)
+        return new Promise((acc, rej) => {
+          fetch(RECIPE_LIST_ENDPOINT)
+          .then(response => response.json())
+          .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
+          .then(responses => Promise.all(responses.map(response => response.json())))
+          .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}))
+          .then(acc).catch(rej)
+        })
     }
 
-     triggerReloadSettings = () => {
-        fetch(SETTINGS_ENDPOINT + "nextRecipeID")
-        .then(response => response.json())
-        .then(data => this.setState({nextRecipeID: data.value}))
-        .catch((error) => {this.postNextRecipeSetting("nextRecipeID", "");
-                          this.setState({nextRecipeID: ""});
-                    });
-        fetch(SETTINGS_ENDPOINT + "nextRecipeQuantity")
-        .then(response => response.json())
-        .then(data => this.setState({nextRecipeQuantity: data.value}))
-        .catch((error) => {this.postNextRecipeSetting("nextRecipeQuantity", "0");
-                          this.setState({nextRecipeQuantity: "0"});
-                    });     
+    getNextRecipeID = () => {
+      return new Promise((acc, rej) => {
+        this.settingsManager.getSetting("nextRecipeID")
+        .then(data => {
+          if (data.value !== "") {
+            this.setState({nextRecipeID: data.value})
+          }
+          acc();
+        })
+        .catch((err) => {
+          this.settingsManager.putSetting("nextRecipeID", "")
+          .then(acc).catch(rej)
+        })
+      })
+    }
+
+    getNextRecipeQuantity = () => {
+      return new Promise((acc, rej) => {
+        this.settingsManager.getSetting("nextRecipeQuantity")
+        .then(data => {
+          if (data.value !== "") {
+            this.setState({nextRecipeQuantity: data.value})
+          }
+          acc();
+        })
+        .catch((err) => {
+          this.settingsManager.putSetting("nextRecipeQuantity", "0")
+          .then(acc).catch(rej)
+        })
+      })
     }
 
     componentDidMount() {
-      this.triggerReload();
-      this.triggerReloadSettings();
+      this.triggerReload()
+      .then(this.getNextRecipeID)
+      .then(this.getNextRecipeQuantity)
+      .catch(this.notifier.connectionError);
     }
 
     handleView = (item) => {
@@ -68,8 +91,8 @@ export default class Ricette extends Component {
     handleDelete = (item) => {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
       if(item.recipeID === this.state.nextRecipeID){
-        this.updateNextRecipeSetting("nextRecipeID", "");
-        this.updateNextRecipeSetting("nextRecipeQuantity", "0");
+        this.settingsManager.putSetting("nextRecipeID", "");
+        this.settingsManager.putSetting("nextRecipeQuantity", "0");
       }
 
     };
@@ -139,8 +162,8 @@ export default class Ricette extends Component {
         return this.notifier.warning("devi selezionare una ricetta per impostarla")
       if (isNotValidPositiveQuantity(this.state.nextRecipeQuantity))
         return this.notifier.warning("devi inserire una quantita' maggiore di zero")
-      this.updateNextRecipeSetting("nextRecipeID", this.state.nextRecipeID)
-      .then(() => this.updateNextRecipeSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
+      this.settingsManager.putSetting("nextRecipeID", this.state.nextRecipeID)
+      .then(() => this.settingsManager.putSetting("nextRecipeQuantity", this.state.nextRecipeQuantity))
       .then(() => this.notifier.success("programmazione ricetta impostata correttamente"))
       .catch(this.notifier.connectionError)
     }
@@ -241,31 +264,5 @@ export default class Ricette extends Component {
         this.setState({recipesFiltered: recipeFiltered});
       })
       .catch(this.notifier.connectionError);
-    }
-
-    updateNextRecipeSetting = (settingID, value) => {
-      return new Promise((acc, rej) => {
-        fetch(SETTINGS_ENDPOINT + `${settingID}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({value: value})
-        })
-        .then(this.notifier.onRequestErrorResolvePromise(() => {}, acc, rej))
-      })
-    }
-
-    postNextRecipeSetting = (settingID, value) => {
-      fetch(SETTING_LIST_ENDPOINT, {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({settingID: settingID, value: value})
-      })
-      .then(this.notifier.onRequestError("verificare la connessione"))
     }
 }

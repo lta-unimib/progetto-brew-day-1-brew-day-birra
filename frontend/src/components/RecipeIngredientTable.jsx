@@ -18,6 +18,7 @@ export default class RecipeIngredientTable extends React.Component {
     render() {
         const rows = this.props.ingredients.map((ingredient) => {
             return {
+                key: ingredient.ingredientID,
                 name: ingredient.name,
                 quantity: (<QuantityInput label="Ingredient Quantity" value={ingredient.quantity} onChange={(event) => this.props.setQuantity(ingredient.ingredientID, event)}/>),
                 toolbox: (<div>
@@ -35,6 +36,7 @@ export default class RecipeIngredientTable extends React.Component {
             }
         })
         const pivotRow = {
+            key: "pivot",
             name: (<IngredientNameInput value={this.props.newIngredientName} onChange={this.props.setNewIngredientName}/>),
             quantity: (<QuantityInput label="Ingredient Quantity" value={this.props.newIngredientQuantity} onChange={this.props.setNewIngredientQuantity}/>),
             toolbox: (<Tooltip title="Aggiungi">

@@ -11,6 +11,7 @@ export default class RecipeIngredientTableReadOnly extends React.Component {
     render() {
         const rows = this.props.ingredients.map((ingredient) => {
             return {
+                key: ingredient.ingredientID,
                 icon: (<img
                     className="shoppingImage"
                     src={`../../icons/inventory-icons/${ingredient.name}.png`}

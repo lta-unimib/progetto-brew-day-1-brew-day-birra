@@ -15,6 +15,7 @@ export default class BeerTable extends React.Component {
     render() {
         const rows = this.props.beers.map((beer) => {
             return {
+                key: beer.beerID,
                 name: beer.name,
                 toolbox: (<div>
                     <Tooltip title="Dettagli">

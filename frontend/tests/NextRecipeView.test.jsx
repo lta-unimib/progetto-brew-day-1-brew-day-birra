@@ -7,7 +7,8 @@ import { BEER_LIST_ENDPOINT, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_END
 
 var settings = {
   nextRecipeQuantity: "30",
-  nextRecipeID: "recipeID"
+  nextRecipeID: "recipeID",
+  settings: "30"
 }
 
 var recipes = {
@@ -58,7 +59,7 @@ global.fetch = jest.fn().mockImplementation((url) => {
       if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeQuantity"))
       return Promise.resolve({value:settings.nextRecipeQuantity})
       if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
-      return Promise.resolve({value:"30"})
+      return Promise.resolve({value:settings.equipment})
       if (url.startsWith(SETTINGS_ENDPOINT))
       return Promise.resolve({value:"default"})
       if (url === RECIPE_LIST_ENDPOINT)
