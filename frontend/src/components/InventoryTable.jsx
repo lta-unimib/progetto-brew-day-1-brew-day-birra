@@ -2,6 +2,7 @@ import React from "react";
 import DedicatedTable from "./DedicatedTable";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Tooltip } from "@mui/material";
 
 const COLUMNS = [
     {title: "Immagine", key: "icon", sortable: false},
@@ -25,9 +26,11 @@ export default class InventoryTable extends React.Component {
                 name: item.name,
                 quantity: item.quantity,
                 toolbox: (<div>
-                    <IconButton aria-label="Elimina" onClick={() => this.props.handleDelete(item.ingredientID)}>
-                        <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title="Elimina">
+                        <IconButton aria-label="Elimina" onClick={() => this.props.handleDelete(item.ingredientID)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
                 </div>)
             }
         })

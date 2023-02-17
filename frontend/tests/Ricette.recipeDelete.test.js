@@ -38,14 +38,14 @@ global.fetch = jest.fn().mockImplementation((url) =>
 describe('Ricette.jsx can correctly render page', () => {
     test('open recipe delete but dont delete', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Elimina")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
         expect(screen.getByText("Sei sicuro di voler rimuovere la ricetta?", {exact: false})).toBeInTheDocument();
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open recipe delete and delete', async () => {
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Elimina")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
         delete recipes.recipeID;
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
         expect(screen.queryByText("recipeName")).toBeNull();
@@ -59,7 +59,7 @@ describe('Ricette.jsx can correctly render page', () => {
             }
         })
         await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByText("Elimina")[0])});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
         delete recipes.recipeID2;
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
         expect(screen.queryByText("recipeName")).toBeNull();
