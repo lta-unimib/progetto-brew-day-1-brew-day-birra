@@ -60,12 +60,11 @@ class ShoppingEndpointTest {
 			inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 			
 			assertFalse(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getBody().isEmpty());
-	
 			assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 	
 			Map<String, String> shoppingBody = new TreeMap<>();
 			shoppingBody.put(Protocol.QUANTITY_BODY_KEY, "1000");
-			assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(shoppingBody)).getStatusCode().is4xxClientError());
+			assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(shoppingBody)).getStatusCode().is2xxSuccessful());
 			
 			resetController.doDrop();
 		} catch(AlreadyExistsException | DoesntExistsException | ValidationException | WrongIDGenerationInitialization | InternalServerException e) {
