@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
+import BirreIcon from "../svgicons/BirreIcon";
 
 const COLUMNS = [
     {title: "Nome", key: "name"},
@@ -29,7 +29,7 @@ export default class RecipeTable extends React.Component {
                     </Tooltip>
                     <Tooltip title="Esegui">
                         <IconButton aria-label="Esegui" onClick={() => this.props.handleExecute(recipe)}>
-                            <CoffeeMakerIcon/>
+                            <BirreIcon/>
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Modifica">

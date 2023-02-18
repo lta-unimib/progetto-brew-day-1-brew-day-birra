@@ -3,9 +3,13 @@ import React from "react";
 import { render, screen, act } from "@testing-library/react";
 import Home from "../src/pages/Home";
 import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import AdviceView from "../src/components/AdviceView";
+
+var contentFlick = true;
+var adviceQuantity = 30.0;
 
 global.fetch = jest.fn().mockImplementation((url) =>
-  Promise.resolve({
+  (contentFlick ? Promise.resolve({
     json: () => {
       if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
           return Promise.resolve({value:"30"})
@@ -16,7 +20,7 @@ global.fetch = jest.fn().mockImplementation((url) =>
       if (url == "/api/advice") {
         return Promise.resolve({
           recipeID: "recipe1",
-          quantity: 30.0,
+          quantity: adviceQuantity,
         });
       } else if (url == "/api/recipes/recipe1") {
         return Promise.resolve({
@@ -35,12 +39,23 @@ global.fetch = jest.fn().mockImplementation((url) =>
       }
       return Promise.resolve([]);
     }
-  })
+  }) : Promise.resolve({}))
 );
 
 describe("Home component", () => {
   test("If response is not null, show recipe to execute", async () => {
     await act(() => render(<Home />));
     expect(screen.getAllByText("Crea")[0]).toBeInTheDocument();
+  });
+
+  test("If advice is null, dont show", async () => {
+    contentFlick = false;
+    await act(() => render(<AdviceView />));
+    contentFlick = true;
+  });
+
+  test("If advice is null, dont show", async () => {
+    adviceQuantity = -1;
+    await act(() => render(<AdviceView />));
   });
 });

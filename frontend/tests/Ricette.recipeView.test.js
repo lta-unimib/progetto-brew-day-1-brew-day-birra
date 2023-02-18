@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
 import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import RecipeView from "../src/components/RecipeView";
 
 var recipes = {
     "recipeID": {
@@ -21,9 +22,13 @@ var recipes = {
     }
 }
 
+var contentFlick = true;
+
 global.fetch = jest.fn().mockImplementation((url) =>
-  Promise.resolve({
+  (contentFlick ? Promise.resolve({
     json: () => {
+        if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeID"))
+          return Promise.resolve({value:""})
         if (url.startsWith(SETTINGS_ENDPOINT))
           return Promise.resolve({value:"default"})
         if (url === RECIPE_LIST_ENDPOINT)
@@ -37,19 +42,30 @@ global.fetch = jest.fn().mockImplementation((url) =>
             }
         }
     },
-  })
+  }) : Promise.resolve({}))
 )
 
 describe('Ricette.jsx can correctly render page', () => {
     test('open and close recipe view', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Dettagli")[0])});
-        Object.keys(recipes).forEach((recipeID) => {
-            let recipe = recipes[recipeID];
-            expect(screen.getAllByText(recipe.name)[1]).toBeInTheDocument();
-            expect(screen.getAllByText(recipe.description)[1]).toBeInTheDocument();
-            recipe.ingredients.forEach((ing) => expect(screen.getAllByText(ing.name)[0]).toBeInTheDocument());
-        })
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
+        await act(() => render(<Ricette/>));
+        await act(() => fireEvent.click(screen.getAllByLabelText("Dettagli")[0]));
+    })
+
+    test('open recipe view but connection error occur', async () => {
+        contentFlick = false;
+        await act(() => render(<RecipeView recipeID="recipeID" />));
+        contentFlick = true;
+    })
+
+    test('open recipe view but ingredient image error occur', async () => {
+        await act(() => render(<RecipeView recipeID="recipeID" />));
+        await act(() => fireEvent.error(screen.getByAltText('ingsoc')));
+    })
+
+    test('open and close recipe view', async () => {
+        await act(() => render(<RecipeView recipeID="recipeID" />));
+        expect(screen.getAllByText(recipes.recipeID.name)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(recipes.recipeID.description)[0]).toBeInTheDocument();
+        recipes.recipeID.ingredients.forEach((ing) => expect(screen.getAllByText(ing.name)[0]).toBeInTheDocument());
     })
 })

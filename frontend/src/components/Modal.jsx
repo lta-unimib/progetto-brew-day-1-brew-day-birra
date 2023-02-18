@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
+import MButton from './MButton';
 
 function PaperComponent(props) {
   return (
@@ -29,6 +29,7 @@ export default class Modal extends React.Component {
           fullWidth={true}
           maxWidth={'md'}
           className='modale'
+          aria-label='Modal'
         >
           <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
           </DialogTitle>
@@ -36,9 +37,7 @@ export default class Modal extends React.Component {
           {this.props.children}
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={() => this.props.setShowModal(false)}>
-              Cancel
-            </Button>
+            <MButton autoFocus onClick={() => this.props.setShowModal(false)} text="Cancel"/>
           </DialogActions>
         </Dialog>
     );

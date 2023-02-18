@@ -44,13 +44,17 @@ global.fetch = jest.fn().mockImplementation((url) => {
 })
 
 describe('Impostazioni.jsx can correctly render this page even if there is no setting at all', () => {
-    test('load page', async () => {
+    test('load page 1-3', async () => {
         statusFlick.settings = true;
         statusFlick.setting = false;
         await act(() => {render(<Impostazioni/>);});
         expect(screen.getByText("Equipaggiamento disponibile", { exact: false })).toBeInTheDocument();
         expect(screen.getByText("Inserisci qui il tuo nome", { exact: false })).toBeInTheDocument();
         expect(screen.getByText("Seleziona il colore del tema", { exact: false })).toBeInTheDocument();
+    })
+
+    test('load page 4-6', async () => {
+        await act(() => {render(<Impostazioni/>);});
         expect(screen.getByText("Seleziona lo sfondo", { exact: false })).toBeInTheDocument();
         expect(screen.getByText("Elimina tutti i dati")).toBeInTheDocument();
         expect(screen.getByText("Resetta la prossima ricetta da eseguire")).toBeInTheDocument();

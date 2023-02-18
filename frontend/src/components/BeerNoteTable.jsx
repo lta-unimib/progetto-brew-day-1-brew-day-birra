@@ -19,7 +19,7 @@ export default class BeerNoteTable extends React.Component {
             return {
                 key: note.noteID,
                 noteType: (<NoteTypeInput value={note.noteType} onChange={(event) => this.props.handleNoteTypeChange(event, note)}/>),
-                description: (<TextField multiline sx={{width:"90%"}} value={note.description} data-testid="note-type-textarea" onChange={(event) => this.props.handleDescriptionChange(event, note)}/>),
+                description: (<TextField label="Description" multiline sx={{width:"90%"}} value={note.description} data-testid="note-type-textarea" onChange={(event) => this.props.handleDescriptionChange(event, note)}/>),
                 toolbox: (<div>
                     <Tooltip title="Aggiorna">
                         <IconButton aria-label="V" onClick={() => this.props.editNote(note)}>
@@ -37,7 +37,7 @@ export default class BeerNoteTable extends React.Component {
         const pivotRow = {
             key: "pivot",
             noteType: (<NoteTypeInput value={this.props.newNoteType} onChange={this.props.setNewNoteType}/>),
-            description: (<TextField multiline sx={{width:"90%"}} value={this.props.newDescription} data-testid="note-type-textarea" onChange={this.props.setNewDescription}/>),
+            description: (<TextField label="Description" multiline sx={{width:"90%"}} value={this.props.newDescription} data-testid="note-type-textarea" onChange={this.props.setNewDescription}/>),
             toolbox: (<Tooltip title="Aggiungi">
                         <IconButton aria-label="Aggiungi" onClick={this.props.addNote}>
                             <AddIcon />

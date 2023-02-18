@@ -26,7 +26,6 @@ class NextRecipeReset extends Component{
     .then(() => this.settingsManager.putSetting("nextRecipeQuantity", "0"))
     .then(() => this.notifier.success("programmazione cancellata con successo"))
     .then(() => this.props.onConfirm())
-    .catch((err) => console.log(err))
     .catch(() => this.notifier.error("impossibile cancellare la programmazione"))
   }
 }

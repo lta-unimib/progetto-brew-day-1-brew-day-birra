@@ -53,9 +53,9 @@ describe('NavBar component', () => {
         </MemoryRouter>
       );
     })
-    await act(() => {fireEvent.click(screen.getAllByRole("button")[0])});
-    await act(() => {fireEvent.click(screen.getAllByText("Impostazioni")[0])});
-    fireEvent.mouseDown(screen.getByLabelText("Color"));
-    fireEvent.mouseDown(within(screen.getByRole("listbox", {name: "Color"})).getByText("dark"));
+    await act(() => fireEvent.click(screen.getByLabelText("OpenNavMenu")));
+    await act(() => fireEvent.click(screen.getAllByText("Impostazioni")[0]));
+    await act(() => fireEvent.mouseDown(screen.getByLabelText("Color")));
+    await act(() => fireEvent.click(screen.getAllByText("dark")[0]));
   })
 });

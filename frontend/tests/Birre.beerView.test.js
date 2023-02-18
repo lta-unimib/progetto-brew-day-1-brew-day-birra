@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { render, screen, fireEvent, waitFor, getByRole } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Birre from "../src/pages/Birre";
 import { act } from "react-test-renderer";
-import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import { BEERS_ENDPOINT, BEER_LIST_ENDPOINT, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import BeerView from "../src/components/BeerView";
 
 var recipes = {
     "recipeID": {
@@ -35,18 +36,18 @@ global.fetch = jest.fn().mockImplementation((url) =>
           return Promise.resolve({value:"30"})
           if (url.startsWith(SETTINGS_ENDPOINT))
             return Promise.resolve({value:"default"})
-        if (url.startsWith("/api/recipes")) {
-            if (url === "/api/recipes")
+        if (url.startsWith(RECIPE_LIST_ENDPOINT)) {
+            if (url === RECIPE_LIST_ENDPOINT)
               return Promise.resolve(Object.keys(recipes));
             else {
-                let recipeID = url.replace("/api/recipes/", "");
+                let recipeID = url.replace(RECIPE_ENDPOINT, "");
                 return Promise.resolve(recipes[recipeID]);
             }
-        } else if (url.startsWith("/api/beers")) {
-            if (url === "/api/beers" || url.startsWith("/api/beers?"))
+        } else if (url.startsWith(BEER_LIST_ENDPOINT)) {
+            if (url === BEER_LIST_ENDPOINT || url.startsWith(BEER_LIST_ENDPOINT+"?"))
               return Promise.resolve(Object.keys(beers));
             else {
-                let beerID = url.replace("/api/beers/", "");
+                let beerID = url.replace(BEERS_ENDPOINT, "");
                 return Promise.resolve(beers[beerID]);
             }
         }
@@ -58,15 +59,17 @@ describe('Birre.jsx can correctly render page', () => {
     test('open and close beer view', async () => {
         await act(() => {render(<Birre/>);});
         await act(() => {fireEvent.click(screen.getAllByLabelText("Dettagli")[0])});
-        expect(screen.getAllByText(beers.beerID.name)[1]).toBeInTheDocument();
         await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
+    test('expect beer data in view', async () => {
+        await act(() => {render(<BeerView beerID="beerID"/>);});
+        expect(screen.getAllByText(beers.beerID.name)[0]).toBeInTheDocument();
+    })
+    
     test('open and close beer view, view recipe', async () => {
-        await act(() => {render(<Birre/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Dettagli")[1])});
+        await act(() => {render(<BeerView beerID="beerID2"/>);});
         beers.beerID2.notes.forEach(note => expect(screen.getAllByText(note.description, {exact: false})[0]).toBeInTheDocument());
         await act(() => {fireEvent.click(screen.getAllByText("Visualizza Ricetta")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
 })

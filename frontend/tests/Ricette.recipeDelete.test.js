@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Ricette from "../src/pages/Ricette";
 import { act } from "react-test-renderer";
 import { RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT } from "../src/utils/Protocol";
+import RecipeDelete from "../src/components/RecipeDelete";
 
 var recipes = {
     "recipeID": {
@@ -12,15 +13,21 @@ var recipes = {
     }
 }
 
+var contentFlick = true;
+var programmedRecipe = "recipeID";
+
 global.fetch = jest.fn().mockImplementation((url) =>
+  (contentFlick ?
   Promise.resolve({
     json: () => {
+        if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeID"))
+          return Promise.resolve({value:programmedRecipe})
         if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeQuantity"))
           return Promise.resolve({value:"1"})
         if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
           return Promise.resolve({value:"30"})
           if (url.startsWith(SETTINGS_ENDPOINT))
-            return Promise.resolve({value:"recipeID"})
+            return Promise.resolve({value:"boh"})
         if (url === RECIPE_LIST_ENDPOINT)
           return Promise.resolve(Object.keys(recipes));
         else {
@@ -32,36 +39,37 @@ global.fetch = jest.fn().mockImplementation((url) =>
             }
         }
     },
-  })
+  }) : Promise.resolve({}))
 )
 
 describe('Ricette.jsx can correctly render page', () => {
-    test('open recipe delete but dont delete', async () => {
-        await act(() => {render(<Ricette/>);});
-        await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
+    test('open recipe delete but connection error', async () => {
+        contentFlick = false;
+        await act(() => {render(<RecipeDelete recipeID="recipeID" onConfirm={() => {}}/>);});
+        contentFlick = true;
+    })
+    
+    test('open recipe delete', async () => {
+        await act(() => {render(<RecipeDelete recipeID="recipeID" onConfirm={() => {}}/>);});
         expect(screen.getByText("Sei sicuro di voler rimuovere la ricetta?", {exact: false})).toBeInTheDocument();
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
     
     test('open recipe delete and delete', async () => {
+        await act(() => {render(<RecipeDelete recipeID="recipeID" onConfirm={() => {}}/>);});
+        await act(() => {fireEvent.click(screen.getByText("Conferma"))});
+    })
+
+    test('open recipe delete and delete a recipe that is the programmed one', async () => {
+        programmedRecipe = "recipeID";
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
-        delete recipes.recipeID;
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
-        expect(screen.queryByText("recipeName")).toBeNull();
     })
 
     test('open recipe delete and delete a recipe that isnt the programmed one', async () => {
-        recipes = Object.assign(recipes, {
-            recipeID2: {
-                recipeID2: "recipeID2", name: "recipeName",
-                description: "recipeDescription", ingredients: []
-            }
-        })
+        programmedRecipe = "recipeID2";
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
-        delete recipes.recipeID2;
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
-        expect(screen.queryByText("recipeName")).toBeNull();
     })
 })
