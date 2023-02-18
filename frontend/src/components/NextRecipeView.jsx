@@ -155,11 +155,8 @@ export default class NextRecipeView extends Component {
   }
 
   addBeer() {
-    if (this.state.newBeerName === "")
+    if (this.state.newBeerName === "") {
       return this.notifier.warning("il nome della birra non deve essere vuoto");
-    if(this.state.nextRecipeQuantity > Number(this.state.equipment)) {
-      this.setState({missingEquipment: true});
-      this.notifier.warning("la capacita' dell'equipaggiamento e' insufficiente");
     } else {
       fetch(BEER_LIST_ENDPOINT, {
         method: "POST",
@@ -172,14 +169,19 @@ export default class NextRecipeView extends Component {
           recipeID: this.state.nextRecipeID,
           quantity: this.state.nextRecipeQuantity,
         }),
-      }).then((response) => {
-        if (response.status >= 400 && response.status < 600) {
-          this.setState({missingEquipment: false, missingIngredients: true});
-          this.notifier.warning("mancano degli ingredienti");
-        } else {
-          this.resetNextRecipeSettings();
-          this.notifier.success("birra creata con successo");
-      }});
+      })
+      .then((response) => {
+        if (response.status >= 400)
+          throw new Error();
+      })
+      .then(() => {
+        this.resetNextRecipeSettings();
+        this.notifier.success("birra creata con successo");
+      })
+      .catch(() => {
+        this.setState({missingIngredients: true});
+        this.notifier.warning("mancano degli ingredienti");
+      })
     }
   }
 

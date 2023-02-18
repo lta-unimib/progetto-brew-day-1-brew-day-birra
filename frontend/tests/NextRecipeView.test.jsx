@@ -8,7 +8,7 @@ import { BEER_LIST_ENDPOINT, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_END
 var settings = {
   nextRecipeQuantity: "30",
   nextRecipeID: "recipeID",
-  settings: "30"
+  equipment: "30"
 }
 
 var recipes = {
@@ -23,7 +23,8 @@ var contentFlicks = {
   nextRecipeQuantity: true,
   equipment: true,
   recipe: true,
-  beer: true
+  beer: true,
+  shopping: true
 };
 
 var statusFlicks = {
@@ -31,12 +32,17 @@ var statusFlicks = {
   nextRecipeQuantity: 200,
   equipment: 200,
   recipe: 200,
-  beer: 200
+  beer: 200,
+  shopping: 200
 };
 
 function getStatus(url) {
   if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
   return statusFlicks.equipment;
+  if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeID"))
+  return statusFlicks.nextRecipeID;
+  if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeQuantity"))
+  return statusFlicks.nextRecipeQuantity;
   if (url.startsWith(RECIPE_ENDPOINT))
   return statusFlicks.recipe;
   if (url.startsWith(BEER_LIST_ENDPOINT))
@@ -45,7 +51,13 @@ function getStatus(url) {
 };
 
 global.fetch = jest.fn().mockImplementation((url) => {
+  if (url.startsWith(SHOPPING_ENDPOINT) && (!contentFlicks.shopping))
+  return Promise.resolve({});
   if (url.startsWith(SETTINGS_ENDPOINT + "equipment") && (!contentFlicks.equipment))
+  return Promise.resolve({});
+  if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeID") && (!contentFlicks.nextRecipeID))
+  return Promise.resolve({});
+  if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeQuantity") && (!contentFlicks.nextRecipeQuantity))
   return Promise.resolve({});
   if (url.startsWith(RECIPE_ENDPOINT) && (!contentFlicks.recipe))
   return Promise.resolve({});
@@ -81,32 +93,74 @@ global.fetch = jest.fn().mockImplementation((url) => {
 )
 
 describe("NextRecipeView tests", () => {
+  test("settings are not very ok 1", async () => {
+    settings.nextRecipeID = "";
+    await act(() => render(<NextRecipeView/>))
+    settings.nextRecipeID = "recipeID";
+  })
+  
+  test("settings are not very ok 1 but cannot post", async () => {
+    settings.nextRecipeID = "";
+    statusFlicks.nextRecipeID = 400;
+    await act(() => render(<NextRecipeView/>))
+    statusFlicks.nextRecipeID = 200;
+    settings.nextRecipeID = "recipeID";
+  })
+  
+  test("settings are not very ok 2", async () => {
+    settings.nextRecipeQuantity = "";
+    await act(() => render(<NextRecipeView/>))
+    settings.nextRecipeQuantity = "30";
+  })
+  
+  test("settings are not very ok 2 but cannot post", async () => {
+    settings.nextRecipeQuantity = "";
+    statusFlicks.nextRecipeQuantity = 400;
+    await act(() => render(<NextRecipeView/>))
+    statusFlicks.nextRecipeQuantity = 200;
+    settings.nextRecipeQuantity = "30";
+  })
+
+  test("settings are not very ok 3", async () => {
+    settings.equipment = "";
+    await act(() => render(<NextRecipeView/>))
+    settings.equipment = "30";
+  })
+  
+  test("settings are not very ok 3 but cannot post", async () => {
+    settings.equipment = "";
+    statusFlicks.equipment = 400;
+    await act(() => render(<NextRecipeView/>))
+    statusFlicks.equipment = 200;
+    settings.equipment = "30";
+  })
+  
   test("settings are there", async () => {
-    contentFlicks.nextRecipeID = true;
-    contentFlicks.nextRecipeQuantity = true;
-    contentFlicks.equipment = true;
     await act(() => render(<NextRecipeView/>))
   })
   
-  test("settings are there 1", async () => {
+  test("settings there is not 1", async () => {
+    contentFlicks.nextRecipeID = false;
+    await act(() => render(<NextRecipeView/>))
     contentFlicks.nextRecipeID = true;
+  })
+  
+  test("settings there is not 2", async () => {
+    contentFlicks.nextRecipeQuantity = false;
+    await act(() => render(<NextRecipeView/>))
     contentFlicks.nextRecipeQuantity = true;
+  })
+  
+  test("settings there is not 3", async () => {
     contentFlicks.equipment = false;
     await act(() => render(<NextRecipeView/>))
-  })
-  
-  test("settings are there 2", async () => {
-    contentFlicks.nextRecipeID = false;
-    contentFlicks.nextRecipeQuantity = false;
     contentFlicks.equipment = true;
-    await act(() => render(<NextRecipeView/>))
   })
   
-  test("settings are there 3", async () => {
-    contentFlicks.nextRecipeID = false;
-    contentFlicks.nextRecipeQuantity = false;
-    contentFlicks.equipment = false;
+  test("settings there is not 4", async () => {
+    contentFlicks.shopping = false;
     await act(() => render(<NextRecipeView/>))
+    contentFlicks.shopping = true;
   })
 
   test("adding a beer but name is invalid", async () => {

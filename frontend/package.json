@@ -50,7 +50,8 @@
     ]
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "coverageReporters": ["json", "html"]
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.18.6",

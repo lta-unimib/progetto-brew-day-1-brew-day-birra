@@ -86,13 +86,18 @@ export default class Ricette extends Component {
 
     handleEdit = (item) => {
       this.setState({currentAction:"edit", selectedRecipe:item, showModal:true})
-    };    
+    };
     
     handleDelete = (item) => {
-      this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
-      if(item.recipeID === this.state.nextRecipeID){
+      this.setShowModal(true);
+      this.setState({currentAction:"delete", selectedRecipe:item});
+    };
+    
+    finalizeDeleteHandle = (id) => {
+      if(id === this.state.nextRecipeID) {
         this.settingsManager.putSetting("nextRecipeID", "")
-        .then(() => this.settingsManager.putSetting("nextRecipeQuantity", "0"));
+        .then(() => this.settingsManager.putSetting("nextRecipeQuantity", "0"))
+        .then(this.closeModalAndReload)
       }
     };
 
@@ -113,7 +118,7 @@ export default class Ricette extends Component {
         case "edit":
           return <RecipeEdit notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.triggerReload}/>;
         case "delete":
-          return <RecipeDelete notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.closeModalAndReload}/>;
+          return <RecipeDelete notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.finalizeDeleteHandle}/>;
         case "execute":
           return <RecipeExecute notifier={this.notifier} recipeID={selectedRecipe.recipeID} onConfirm={this.closeModal}/>;
         default:

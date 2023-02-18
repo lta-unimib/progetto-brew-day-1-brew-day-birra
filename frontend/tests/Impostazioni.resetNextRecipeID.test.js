@@ -18,7 +18,7 @@ describe('Impostazioni.jsx can reset NextRecipeID', () => {
         await act(() => {render(<Impostazioni/>);});
         await act(() => {fireEvent.click(screen.getAllByText("Resetta la prossima ricetta da eseguire")[0])});
         expect(screen.getByText("Sei sicuro di voler rimuovere la ricetta?", {exact: false})).toBeInTheDocument();
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
+        await act(() => {fireEvent.click(screen.getByText("Conferma"))});
     })
     
     test('open resetNextRecipeID and reset', async () => {
