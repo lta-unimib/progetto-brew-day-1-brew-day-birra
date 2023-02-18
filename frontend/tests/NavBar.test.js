@@ -55,5 +55,7 @@ describe('NavBar component', () => {
     })
     await act(() => fireEvent.click(screen.getByLabelText("OpenNavMenu")));
     await act(() => fireEvent.click(screen.getAllByText("Impostazioni")[0]));
+    await act(() => fireEvent.mouseDown(screen.getByLabelText("Color")));
+    await act(() => fireEvent.click(screen.getAllByText("dark")[0]));
   })
 });
