@@ -24,7 +24,7 @@ import unimib.ingsof.persistence.view.IngredientView;
 @RequestMapping("/api/shopping/{recipeID}")
 public class ShoppingEndpoint {
 	@PostMapping
-    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) throws ValidationException, InternalServerException, WrongIDGenerationInitialization {
+    public ResponseEntity<List<IngredientView>> getShoppingList(@PathVariable String recipeID, @RequestBody Optional<Map<String, String>> requestBody) throws ValidationException, WrongIDGenerationInitialization {
 		List<IngredientView> result = new ArrayList<>();
 		try {
 			result = ShoppingController.getInstance().getShoppingList(recipeID, requestBody.orElse(null));
