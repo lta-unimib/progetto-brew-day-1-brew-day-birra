@@ -142,7 +142,7 @@ export default class DedicatedTable extends React.Component {
         })
 
         return (
-            <JimTable sx={{ overflow: 'hidden' }}>
+            <JimTable width="93.5%" sx={{ overflow: 'hidden' }}>
             <TableContainer>
                 <Table sx={{ margin: 0 }} stickyHeader aria-label="sticky table">
                     <TableHead>

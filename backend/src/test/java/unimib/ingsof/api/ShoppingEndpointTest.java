@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.logic.RepositoryResetController;
@@ -60,15 +59,14 @@ class ShoppingEndpointTest {
 			inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 			
 			assertFalse(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getBody().isEmpty());
-	
 			assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 	
 			Map<String, String> shoppingBody = new TreeMap<>();
-			shoppingBody.put(Protocol.QUANTITY_BODY_KEY, "1000");
+			shoppingBody.put(Protocol.QUANTITY_BODY_KEY, "xx");
 			assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(shoppingBody)).getStatusCode().is4xxClientError());
 			
 			resetController.doDrop();
-		} catch(AlreadyExistsException | DoesntExistsException | ValidationException | WrongIDGenerationInitialization | InternalServerException e) {
+		} catch(AlreadyExistsException | DoesntExistsException | ValidationException | WrongIDGenerationInitialization e) {
 			fail();
 		}
 	}

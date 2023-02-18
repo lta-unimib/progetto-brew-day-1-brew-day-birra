@@ -1,16 +1,17 @@
 import React from 'react';
-import { SETTINGS_ENDPOINT } from '../utils/Protocol';
 import Typography from '@mui/material/Typography';
+import TitleCard from './TitleCard';
+import SettingsManager from '../utils/SettingsManager';
 
 export default class Greeter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.settingsManager = new SettingsManager();
   }
 
   triggerReload = () => {
-    fetch(SETTINGS_ENDPOINT + "name")
-      .then((res) => res.json())
+    this.settingsManager.getSetting("name")
       .then((data) => this.setState({ name: data.value }))
       .catch(() => {});
   }
@@ -25,14 +26,16 @@ export default class Greeter extends React.Component {
     );
 
     return (
-      <Typography variant="h6" sx={{
-          color: 'white',
-          fontSize: 80,
-          textAlign: "center"
-        }}
-      >
-        Benvenuto{nameIndication}!
-      </Typography>
+      <TitleCard>
+        <Typography variant="h6" sx={{
+            color: 'black',
+            fontSize: 80,
+            textAlign: "center"
+          }}
+        >
+          Benvenuto{nameIndication}!
+        </Typography>
+      </TitleCard>
     );
   }
 }
