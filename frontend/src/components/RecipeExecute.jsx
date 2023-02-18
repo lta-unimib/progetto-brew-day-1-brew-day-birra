@@ -4,8 +4,8 @@ import { RECIPE_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER, isNotValidPositiveQ
 import ShoppingList from "./ShoppingList";
 import QuantityInput from "./QuantityInput";
 import { TextField } from "@mui/material";
-import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
 import SettingsManager from '../utils/SettingsManager';
+import BirreIcon from "../svgicons/BirreIcon";
 
 class RecipeExecute extends Component {
   constructor(props) {
@@ -109,7 +109,7 @@ class RecipeExecute extends Component {
                     ></QuantityInput>
                   </td>
                   <td>
-                    <MButton startIcon={<CoffeeMakerIcon/>} text="Crea" onClick={this.addBeer} />
+                    <MButton startIcon={<BirreIcon/>} text="Crea" onClick={this.addBeer} />
                   </td>
                 </tr>
               </tbody>

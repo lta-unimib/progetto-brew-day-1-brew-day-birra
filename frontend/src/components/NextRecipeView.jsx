@@ -4,8 +4,8 @@ import MButton from "./MButton";
 import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import { TextField } from "@mui/material";
-import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
 import SettingsManager from '../utils/SettingsManager';
+import BirreIcon from "../svgicons/BirreIcon";
 
 export default class NextRecipeView extends Component {
   constructor(props) {
@@ -130,7 +130,7 @@ export default class NextRecipeView extends Component {
                     />
                   </td>
                   <td>
-                    <MButton startIcon={<CoffeeMakerIcon/>} text="Crea" onClick={() => this.addBeer()} />
+                    <MButton startIcon={<BirreIcon/>} text="Crea" onClick={() => this.addBeer()} />
                   </td>
                 </tr>
               </tbody>
