@@ -91,10 +91,9 @@ export default class Ricette extends Component {
     handleDelete = (item) => {
       this.setState({currentAction:"delete", selectedRecipe:item, showModal:true});
       if(item.recipeID === this.state.nextRecipeID){
-        this.settingsManager.putSetting("nextRecipeID", "");
-        this.settingsManager.putSetting("nextRecipeQuantity", "0");
+        this.settingsManager.putSetting("nextRecipeID", "")
+        .then(() => this.settingsManager.putSetting("nextRecipeQuantity", "0"));
       }
-
     };
 
     handleExecute = (item) => {
@@ -169,12 +168,7 @@ export default class Ricette extends Component {
     }
 
     render() {
-        const {recipesFiltered, isLoading} = this.state;
-        
-        if (isLoading) {
-            return <p>Caricamento...</p>;
-        }
-        
+        const {recipesFiltered} = this.state;
         return (
           <BodyThemeManager>
             <div>

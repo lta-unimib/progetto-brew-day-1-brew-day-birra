@@ -59,7 +59,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity ok, recipe ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.click(screen.getAllByText("recipeName")[0]));
+        await act(() => fireEvent.click(screen.getAllByText("recipeName")[1]));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })
@@ -67,7 +67,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity ok , recipe not ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.click(screen.getAllByText("")[0]));
+        await act(() => fireEvent.click(screen.getAllByText("")[1]));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 10}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })
@@ -75,7 +75,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity not ok, recipe ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.click(screen.getAllByText("recipeName")[0]));
+        await act(() => fireEvent.click(screen.getAllByText("recipeName")[1]));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 0}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })
@@ -83,7 +83,7 @@ describe('Ricette.jsx can correctly render page', () => {
     test('can program recipes (quantity not ok, recipe not ok)', async () => {
         await act(() => {render(<Ricette/>);});
         await act(() => fireEvent.mouseDown(screen.getByLabelText("Recipe")));
-        await act(() => fireEvent.click(screen.getAllByText("")[0]));
+        await act(() => fireEvent.click(screen.getAllByText("")[1]));
         await act(() => fireEvent.change(screen.getAllByLabelText("Quantity")[0], {target:{value: 0}}));
         await act(() => fireEvent.click(screen.getByText("Programma")))
     })

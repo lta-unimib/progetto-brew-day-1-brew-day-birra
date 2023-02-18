@@ -14,4 +14,10 @@ describe("DedicatedTable", () => {
         await act(() => fireEvent.click(screen.getByLabelText("Pagina Successiva")));
         await act(() => fireEvent.click(screen.getByLabelText("Pagina Precedente")));
     })
+    
+    test("should use rows per page", async () => {
+        await act(() => deploy());
+        await act(() => fireEvent.mouseDown(screen.getByLabelText("Righe per Pagina").firstChild));
+        await act(() => fireEvent.click(screen.getByText("5")));
+    })
 })

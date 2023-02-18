@@ -6,7 +6,6 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
 import BirreIcon from "../svgicons/BirreIcon";
 
 const COLUMNS = [

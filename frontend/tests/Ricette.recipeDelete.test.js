@@ -14,19 +14,20 @@ var recipes = {
 }
 
 var contentFlick = true;
+var programmedRecipe = "recipeID";
 
 global.fetch = jest.fn().mockImplementation((url) =>
   (contentFlick ?
   Promise.resolve({
     json: () => {
         if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeID"))
-          return Promise.resolve({value:""})
+          return Promise.resolve({value:programmedRecipe})
         if (url.startsWith(SETTINGS_ENDPOINT + "nextRecipeQuantity"))
           return Promise.resolve({value:"1"})
         if (url.startsWith(SETTINGS_ENDPOINT + "equipment"))
           return Promise.resolve({value:"30"})
           if (url.startsWith(SETTINGS_ENDPOINT))
-            return Promise.resolve({value:"recipeID"})
+            return Promise.resolve({value:"boh"})
         if (url === RECIPE_LIST_ENDPOINT)
           return Promise.resolve(Object.keys(recipes));
         else {
@@ -58,13 +59,15 @@ describe('Ricette.jsx can correctly render page', () => {
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
     })
 
+    test('open recipe delete and delete a recipe that is the programmed one', async () => {
+        programmedRecipe = "recipeID";
+        await act(() => {render(<Ricette/>);});
+        await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
+        await act(() => {fireEvent.click(screen.getByText("Conferma"))});
+    })
+
     test('open recipe delete and delete a recipe that isnt the programmed one', async () => {
-        recipes = Object.assign(recipes, {
-            recipeID2: {
-                recipeID2: "recipeID2", name: "recipeName",
-                description: "recipeDescription", ingredients: []
-            }
-        })
+        programmedRecipe = "recipeID2";
         await act(() => {render(<Ricette/>);});
         await act(() => {fireEvent.click(screen.getAllByLabelText("Elimina")[0])});
         await act(() => {fireEvent.click(screen.getByText("Conferma"))});
