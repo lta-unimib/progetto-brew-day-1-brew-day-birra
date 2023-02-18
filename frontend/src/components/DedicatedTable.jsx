@@ -78,6 +78,7 @@ export default class DedicatedTable extends React.Component {
     }
     
     handleChangeRowsPerPage = (event) => {
+        console.log(event);
         this.setRowsPerPage(+event.target.value);
         this.setPage(0);
     }
@@ -161,6 +162,9 @@ export default class DedicatedTable extends React.Component {
                     page={this.state.page}
                     onPageChange={this.handleChangePage}
                     onRowsPerPageChange={this.handleChangeRowsPerPage}
+                    backIconButtonProps={{"aria-label": "Pagina Precedente"}}
+                    nextIconButtonProps={{"aria-label": "Pagina Successiva"}}
+                    SelectProps={{"aria-label": "Righe per Pagina"}}
                 />
             </TableContainer>
             </JimTable>

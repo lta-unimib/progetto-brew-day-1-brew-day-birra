@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -26,13 +25,13 @@ export default class Modal extends React.Component {
           open={this.props.showModal}
           onClose={() => this.props.setShowModal(false)}
           PaperComponent={PaperComponent}
-          aria-labelledby="ModalTitle"
+          aria-labelledby="draggable-dialog-title"
           fullWidth={true}
           maxWidth={'md'}
           className='modale'
           aria-label='Modal'
         >
-          <DialogTitle style={{ cursor: 'move' }} id="ModalTitle">
+          <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
           </DialogTitle>
           <DialogContent>
           {this.props.children}

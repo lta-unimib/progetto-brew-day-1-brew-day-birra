@@ -57,6 +57,11 @@ describe('Ricette.jsx can correctly render page', () => {
         contentFlick = true;
     })
 
+    test('open recipe view but ingredient image error occur', async () => {
+        await act(() => render(<RecipeView recipeID="recipeID" />));
+        await act(() => fireEvent.error(screen.getByAltText('ingsoc')));
+    })
+
     test('open and close recipe view', async () => {
         await act(() => render(<RecipeView recipeID="recipeID" />));
         expect(screen.getAllByText(recipes.recipeID.name)[0]).toBeInTheDocument();
