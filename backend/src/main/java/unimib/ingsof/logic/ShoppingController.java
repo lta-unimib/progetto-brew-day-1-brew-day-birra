@@ -8,7 +8,6 @@ import java.util.TreeMap;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.service.Protocol;
@@ -39,13 +38,13 @@ public class ShoppingController {
 		}
 	}
 	
-	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, InternalServerException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, WrongIDGenerationInitialization {
 		requestBody = ShoppingListCreationValidator.getInstance().handle(requestBody);
 		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_BODY_KEY));
 		return this.getShoppingList(recipeID, multiplier);
 	}
 
-	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, ValidationException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = RecipeController.getInstance().getRecipeByID(recipeID);
 		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {

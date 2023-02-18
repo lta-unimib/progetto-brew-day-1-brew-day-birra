@@ -98,7 +98,7 @@ export default class Ricette extends Component {
         this.settingsManager.putSetting("nextRecipeID", "")
         .then(() => this.settingsManager.putSetting("nextRecipeQuantity", "0"))
         .then(this.closeModalAndReload)
-      }
+      } else this.closeModalAndReload();
     };
 
     handleExecute = (item) => {
