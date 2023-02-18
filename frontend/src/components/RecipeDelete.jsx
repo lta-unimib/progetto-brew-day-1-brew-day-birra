@@ -42,7 +42,7 @@ class RecipeDelete extends Component{
         }
     })
     .then(this.notifier.onRequestError("impossibile eliminare la ricetta"))
-    .then(() => this.props.onConfirm())
+    .then(() => this.props.onConfirm(id))
 }
 
 }

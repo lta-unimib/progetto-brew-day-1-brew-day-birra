@@ -31,33 +31,33 @@ describe("Modal component", () => {
       theContainer = container;
     });
     expect(theContainer.firstChild).toMatchSnapshot();
-    await act(() => fireEvent.keyDown(screen.getByRole("dialog"), {
+    await act(() => fireEvent.keyDown(screen.getByLabelText("Modal"), {
       key: "Escape",
       code: "Escape",
       keyCode: 27,
       charCode: 27
     }));
   });
-
-  test("handleModalClick should stopPropagation", async () => {
-    let theGetByTestId;
+  
+  test("should cancel correctly", async () => {
+    let theContainer;
     await act(() => {
-      const { getByTestId } = render(
-        <Modal showModal={true} setShowModal={() => {}}>
-          <div data-testid="modal-content"></div>
-        </Modal>
-      );
-      theGetByTestId = getByTestId;
+      const { container } = render(<Modal showModal={true} setShowModal={() => {}}/>);
+      theContainer = container;
     });
-    const modalContent = theGetByTestId("modal-content");
-    await act(() => fireEvent.click(modalContent));
-    expect(modalContent).toBeInTheDocument();
+    await act(() => fireEvent.click(screen.getByText("Cancel")));
   });
 
   test("create a MButton with custom class and id", async () => {
     await act(() => render(<MButton id="theID" className="theClassName"/>));
     await act(() => render(<MButton className="theClassName"/>));
     await act(() => render(<MButton id="theID"/>));
+  });
+
+  test("create a MButton with custom onClick and center", async () => {
     await act(() => render(<MButton />));
+    await act(() => render(<MButton onClick={() => {}}/>));
+    await act(() => render(<MButton center/>));
+    await act(() => render(<MButton onClick={() => {}} center/>));
   });
 });

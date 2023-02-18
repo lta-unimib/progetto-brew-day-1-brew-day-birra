@@ -131,7 +131,6 @@ export default class Impostazioni extends Component {
 
     handleSetEquipment = () => {
       this.settingsManager.putSetting("equipment", this.state.equipment)
-      //.then(this.triggerReload)
       .then(() => this.notifier.success("equipaggiamento aggiornato con successo"))
       .catch(() => this.notifier.error("impossibile cambiare l'equipaggiamento"))
     }
@@ -142,7 +141,6 @@ export default class Impostazioni extends Component {
         return this.triggerReload();
       }
       this.settingsManager.putSetting("name", this.state.name)
-      //.then(this.triggerReload)
       .then(() => this.notifier.success("nome aggiornato con successo"))
       .catch(() => this.notifier.error("impossibile cambiare il nome"))
     }
@@ -158,8 +156,14 @@ export default class Impostazioni extends Component {
 
     closeModal = () => this.setShowModal(false);
     closeModalAndReload = () => {this.closeModal(); this.triggerReload()};
-    handleResetSettings = () => this.setState({currentAction:"resetSettings", showModal:true})
-    handleResetNextRecipeID = () => this.setState({currentAction:"resetRecipeID", showModal:true}) 
+    handleResetSettings = () => {
+      this.setShowModal(true);
+      this.setState({currentAction:"resetSettings"});
+    }
+    handleResetNextRecipeID = () => {
+      this.setShowModal(true);
+      this.setState({currentAction:"resetRecipeID"});
+    }
 
     getCurrentComponent = () => {
       let currentAction = this.state.currentAction;

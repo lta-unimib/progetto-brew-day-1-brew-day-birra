@@ -9,7 +9,7 @@ export default class NoteTypeInput extends React.Component {
             id="free-solo-demo"
             disableClearable
             options={OPTIONS}
-            renderInput={(params) => <TextField {...params} label="notetype" />}
+            renderInput={(params) => <TextField {...params} label="NoteType" />}
             value={this.props.value}
             onInputChange={(e, value) => {
                 if (OPTIONS.includes(value))

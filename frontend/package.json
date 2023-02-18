@@ -28,6 +28,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js src/**/*.jsx",
     "sonarqube": "sonar-scanner -Dsonar.login=squ_f91b9a7394d69d0f9ac15370ad6d8fffa9001a62 -Dsonar.host.url=http://localhost:9000 -Dsonar.projectKey=brew.day.frontend -Dsonar.sources=\"src\" -Dsonar.javascript.lcov.reportPaths=\"./coverage/lcov.info\"",
+    "stalin": "jest --coverage -u --verbose --maxWorkers=50%",
     "coverage": "jest --coverage -u --silent --maxWorkers=50%"
   },
   "eslintConfig": {
@@ -49,7 +50,8 @@
     ]
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "coverageReporters": ["clover", "json", "lcov", "text"]
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.18.6",

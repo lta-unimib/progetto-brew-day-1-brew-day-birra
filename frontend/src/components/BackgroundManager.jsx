@@ -3,6 +3,11 @@ import backgrounds from '../theme/backgrounds';
 import { BACKGROUND_MANAGER_ESCAPE, BACKGROUND_MANAGER_TRIGGER, DEFAULT_BACKGROUND, LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, SETTINGS_ENDPOINT } from '../utils/Protocol';
 
 export default class BackgroundManager extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
     triggerReload = () => {
         return new Promise((acc, rej) => {
             fetch(SETTINGS_ENDPOINT + "background")
@@ -18,6 +23,7 @@ export default class BackgroundManager extends React.Component {
                     value = "default";
                 localStorage.setItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY, value);
                 document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[value]}")`;
+                this.setState({});
                 acc()
             })
             .catch(() => acc())
@@ -25,6 +31,9 @@ export default class BackgroundManager extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.testBackgroundCookie) {
+            document.cookie = BACKGROUND_MANAGER_TRIGGER;
+        }
         document.body.style.backgroundImage = `url("/backgrounds/${backgrounds[localStorage.getItem(LAST_USED_BACKGROUND_LOCALSTORAGE_KEY) || DEFAULT_BACKGROUND]}")`;
         document.body.style.backgroundSize = "cover";
         this.triggerReload();

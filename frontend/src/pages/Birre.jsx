@@ -72,30 +72,32 @@ class Birre extends Component {
   }
 
   handleView = (item) => {
+    this.setShowModal(true);
     this.setState({
       currentAction: "view",
-      selectedBeer: item,
-      showModal: true,
+      selectedBeer: item
     });
   }
 
   handleEdit = (item) => {
+    this.setShowModal(true);
     this.setState({
       currentAction: "edit",
-      selectedBeer: item,
-      showModal: true,
+      selectedBeer: item
     });
   }
 
   handleDelete = (item) => {
+    this.setShowModal(true);
     this.setState({
       currentAction: "delete",
-      selectedBeer: item,
-      showModal: true,
+      selectedBeer: item
     });
   }
 
   setShowModal = (flag) => {
+    if (!flag)
+      this.setState({ currentAction: "" })
     this.setState({ showModal: flag });
   };
 
@@ -224,20 +226,11 @@ class Birre extends Component {
   }
 
   filterBeer = () => {
-    let url = "";
-    if (this.state.filterName === "") {
-      if (this.state.filterRecipe === "") {
-        url = BEER_LIST_ENDPOINT;
-      } else {
-        url = BEER_LIST_ENDPOINT + `?recipeID=${this.state.filterRecipe}`;
-      }
-    } else {
-      if (this.state.filterRecipe === "") {
-        url = BEER_LIST_ENDPOINT + `?name=${this.state.filterName}`;
-      } else {
-        url = BEER_LIST_ENDPOINT + `?name=${this.state.filterName}&&recipeID=${this.state.filterRecipe}`;
-      }
-    }
+    let url = BEER_LIST_ENDPOINT+"?";
+    if (this.state.filterName !== "")
+      url += `&&name=${this.state.filterName}`;
+    if (this.state.filterRecipe !== "")
+      url += `&&recipeID=${this.state.filterRecipe}`;
 
     fetch(url)
     .then((response) => response.json())
