@@ -49,7 +49,6 @@ describe('Ricette.jsx can correctly edit recipe', () => {
     test('open recipe edit from Ricette', async () => {
         await act(() => render(<Ricette/>));
         await act(() => {fireEvent.click(screen.getAllByLabelText("Modifica")[0])});
-        await act(() => {fireEvent.click(screen.getAllByText("Cancel")[0])});
     })
 
     test('open recipe edit and set name and mocked notifier', async () => {

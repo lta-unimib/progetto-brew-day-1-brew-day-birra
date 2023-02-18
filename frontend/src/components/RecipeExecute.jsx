@@ -109,7 +109,7 @@ class RecipeExecute extends Component {
                     ></QuantityInput>
                   </td>
                   <td>
-                    <MButton startIcon={<CoffeeMakerIcon/>} text="Crea" onClick={() => this.addBeer()} />
+                    <MButton startIcon={<CoffeeMakerIcon/>} text="Crea" onClick={this.addBeer} />
                   </td>
                 </tr>
               </tbody>
@@ -119,7 +119,7 @@ class RecipeExecute extends Component {
     );
   }
 
-  addBeer() {
+  addBeer = () => {
     if (this.state.newBeerName === "")
       return this.notifier.warning("il nome della birra non deve essere vuoto");
     if (isNotValidPositiveQuantity(this.state.newBeerQuantity))
@@ -139,14 +139,19 @@ class RecipeExecute extends Component {
           recipeID: this.state.recipeID,
           quantity: this.state.newBeerQuantity,
         }),
-      }).then((response) => {
-        if (response.status >= 400 && response.status < 600) {
-          this.setState({missingEquipment: false, missingIngredients: true});
-          this.notifier.warning("mancano degli ingredienti");
-        } else {
-          this.props.onConfirm();
-          this.notifier.success("birra creata con successo");
-      }});
+      })
+      .then((response) => {
+        if (response.status >= 400)
+          throw new Error();
+      })
+      .then(() => {
+        this.props.onConfirm();
+        this.notifier.success("birra creata con successo");
+      })
+      .catch(() => {
+        this.setState({missingEquipment: false, missingIngredients: true});
+        this.notifier.warning("mancano degli ingredienti");
+      })
     }
   }
 
