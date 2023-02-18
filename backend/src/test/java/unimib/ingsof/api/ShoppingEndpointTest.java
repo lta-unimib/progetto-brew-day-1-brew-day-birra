@@ -60,11 +60,10 @@ class ShoppingEndpointTest {
 			inventoryIngredientEndpoint.updateIngredient(ingredientID, ingredientBody);
 			
 			assertFalse(shoppingEndpoint.getShoppingList(recipeID, Optional.empty()).getBody().isEmpty());
-	
 			assertTrue(shoppingEndpoint.getShoppingList("id", Optional.empty()).getStatusCode().is4xxClientError());
 	
 			Map<String, String> shoppingBody = new TreeMap<>();
-			shoppingBody.put(Protocol.QUANTITY_BODY_KEY, "1000");
+			shoppingBody.put(Protocol.QUANTITY_BODY_KEY, "xx");
 			assertTrue(shoppingEndpoint.getShoppingList(recipeID, Optional.of(shoppingBody)).getStatusCode().is4xxClientError());
 			
 			resetController.doDrop();

@@ -32,7 +32,7 @@ export default class NextRecipeView extends Component {
       })
       .catch((err) => {
         this.settingsManager.putSetting("nextRecipeID", "")
-        rej(err);
+        .then(rej).catch(() => rej(err))
       })
     })
   }
@@ -41,13 +41,13 @@ export default class NextRecipeView extends Component {
     return new Promise((acc, rej) => {
       this.settingsManager.getSetting("nextRecipeQuantity")
       .then(data => {
-        if (data.value !== "") {
+        if (Number(data.value) > 0) {
           this.setState({nextRecipeQuantity: data.value}, acc)
         } else rej();
       })
       .catch((err) => {
         this.settingsManager.putSetting("nextRecipeQuantity", "0")
-        rej(err);
+        .then(rej).catch(() => rej(err))
       })
     })
   }
@@ -78,10 +78,7 @@ export default class NextRecipeView extends Component {
           this.setState({equipment: Number(data.value)}, acc)
         } else rej();
       })
-      .catch((err) => {
-        this.notifier.connectionError()
-        rej(err)
-      })
+      .catch(err => rej(err))
     })
   }
 
@@ -94,7 +91,7 @@ export default class NextRecipeView extends Component {
     .then(this.getNextRecipeQuantity)
     .then(this.getShoppingList)
     .then(this.getEquipment)
-    .catch(() => {})
+    .catch(err => !err || this.notifier.connectionError())
   }
 
   setNewBeerName = (event) => {

@@ -8,8 +8,6 @@ import java.util.TreeMap;
 import org.springframework.stereotype.Service;
 
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.InsufficientEquipmentException;
-import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
 import unimib.ingsof.persistence.service.Protocol;
@@ -40,23 +38,15 @@ public class ShoppingController {
 		}
 	}
 	
-	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, Map<String, String> requestBody) throws ValidationException, DoesntExistsException, WrongIDGenerationInitialization {
 		requestBody = ShoppingListCreationValidator.getInstance().handle(requestBody);
 		float multiplier = Float.parseFloat(requestBody.get(Protocol.QUANTITY_BODY_KEY));
 		return this.getShoppingList(recipeID, multiplier);
 	}
 
-	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization {
+	public List<IngredientView> getShoppingList(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization {
 		ArrayList<IngredientView> result = new ArrayList<>();
 		RecipeView recipe = RecipeController.getInstance().getRecipeByID(recipeID);
-		float equipment = 0;
-		try {
-			equipment = Float.parseFloat(SettingController.getInstance().getEquipment());
-		} catch (Exception e) {
-			throw new InternalServerException();
-		}
-		if (multiplier > equipment)
-			throw new InsufficientEquipmentException();
 		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {
 			String ingredientID = recipeIngredient.getIngredientID();
 			float inventoryIngredientQuantity = this.probeInventoryIngredient(ingredientID, recipeIngredient.getName()).getQuantity();
