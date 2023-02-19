@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InsufficientEquipmentException;
 import unimib.ingsof.exceptions.InternalServerException;
@@ -33,7 +32,7 @@ public class BeerListEndpoint {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Object> postBeer(@RequestBody Map<String, String> beerObject) throws InternalServerException, WrongIDGenerationInitialization, NumberFormatException, AlreadyExistsException {
+	public ResponseEntity<Object> postBeer(@RequestBody Map<String, String> beerObject) throws InternalServerException, WrongIDGenerationInitialization {
 		try {
 			String beerID = BeerListController.getInstance().addBeer(beerObject);
 			HttpHeaders headers = new HttpHeaders();
