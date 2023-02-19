@@ -5,10 +5,7 @@ import java.util.TreeMap;
 
 import org.springframework.stereotype.Service;
 
-import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
-import unimib.ingsof.exceptions.InsufficientEquipmentException;
-import unimib.ingsof.exceptions.InternalServerException;
 import unimib.ingsof.exceptions.NotEnoughIngredientsException;
 import unimib.ingsof.exceptions.ValidationException;
 import unimib.ingsof.exceptions.WrongIDGenerationInitialization;
@@ -26,11 +23,9 @@ public class ExecuteRecipeController {
 		ExecuteRecipeController.instance = instance;
 	}
 
-	public void execute(String recipeID, float multiplier) throws DoesntExistsException, InternalServerException, InsufficientEquipmentException, ValidationException, WrongIDGenerationInitialization, NotEnoughIngredientsException, NumberFormatException, AlreadyExistsException {
-		if (Float.compare(multiplier, Float.parseFloat(SettingController.getInstance().getEquipment()))>0) 
-			throw new InsufficientEquipmentException();
+	public void execute(String recipeID, float multiplier) throws DoesntExistsException, ValidationException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
 		if (!ShoppingController.getInstance().getShoppingList(recipeID, multiplier).isEmpty()) 
-			throw new NotEnoughIngredientsException();		
+			throw new NotEnoughIngredientsException();
 		RecipeView recipe = RecipeController.getInstance().getRecipeByID(recipeID);
 		for (RecipeIngredientView recipeIngredient : recipe.getIngredients()) {
 			String ingredientID = recipeIngredient.getIngredientID();

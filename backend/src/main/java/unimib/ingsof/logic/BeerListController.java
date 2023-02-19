@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import unimib.ingsof.exceptions.AlreadyExistsException;
 import unimib.ingsof.exceptions.DoesntExistsException;
 import unimib.ingsof.exceptions.InsufficientEquipmentException;
 import unimib.ingsof.exceptions.InternalServerException;
@@ -32,7 +31,7 @@ public class BeerListController {
 		return BeerRepositoryGateway.getInstance().getAllBeerIDs(filterByName.orElse(""), filterByRecipeID.orElse(""));
 	}
 	
-	public String addBeer(Map<String, String> beerObject) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization, NotEnoughIngredientsException, NumberFormatException, AlreadyExistsException {
+	public String addBeer(Map<String, String> beerObject) throws ValidationException, DoesntExistsException, InternalServerException, InsufficientEquipmentException, WrongIDGenerationInitialization, NotEnoughIngredientsException {
 		beerObject = BeerInitializationValidator.getInstance().handle(beerObject);
 		String name = beerObject.get(Protocol.NAME_BODY_KEY);
 		String recipeID = beerObject.get(Protocol.RECIPE_ID_BODY_KEY);
