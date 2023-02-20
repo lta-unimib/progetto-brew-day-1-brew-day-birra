@@ -69,11 +69,11 @@
 Ogni home brewer ha un'attrezzatura specifica, le cui caratteristiche portano a un particolare "batch size", il numero massimo di litri che possono essere erogati in un singolo ciclo. Le ricette prevedono l’uso di ingredienti comuni come l’acqua, malti, luppolo, lieviti, zuccheri, additivi, oltre ad ingredienti aggiuntivi che rendono la birra particolare.\\
 L’applicazione memorizza le quantità degli ingredienti in una misura "assoluta", in unità per Litro, in modo da consentire una conversione diretta della ricetta quando l'apparecchiatura, e di conseguenza la dimensione del batch, viene aggiornata.\\
 Oltre alle ricette effettive, l'applicazione offre la possibilità di mantenere le istanze di ricette eseguite, ovvero particolari miscele basate su una ricetta.\\
-Le birre create possono essere accompagnate da note per fare riferimento a problemi che possono influire sulla birra risultante e che i birrai vorrebbero tenere registrati. Un particolare tipo di note sono le note di degustazione, che consentono ai birrai di tenere traccia delle opinioni su una birra di una particolare birra.\\
+Le birre create possono essere accompagnate da note per fare riferimento a problemi che possono influire sulla birra risultante e che i birrai vorrebbero tenere registrati. Un particolare tipo di note sono le note di degustazione, che consentono ai birrai di tenere traccia delle opinioni su una particolare birra.\\
 Oltre a queste funzionalità più tradizionali di Brew Day!, l'applicazione mantiene un elenco di ingredienti disponibili. Ciò consente ai birrai di essere informati sugli ingredienti mancanti per la birra successiva.\\
 Un'istanza di ricetta, ovvero una particolare birra, consente agli utenti di aggiornare l'elenco degli ingredienti disponibili, sottraendo gli ingredienti utilizzati da quelli disponibili.\\
 Brew Day! supporta la funzione "cosa dovrei preparare oggi?” che consiglia la ricetta che massimizza l'uso degli ingredienti disponibili, tenendo conto della capacità dell'attrezzatura.
-Per informazioni sull'installazione e uso dell'applicazione è possibile visitare la sezione \href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki}{Wiki su gitHub}.
+Per informazioni sull'installazione e uso dell'applicazione è possibile visitare la sezione \href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki}{Wiki su GitHub}.
 
 \newpage
     	\section{Processo Adottato}	
@@ -113,13 +113,13 @@ La qualità del codice è stata monitorata utilizzando i tool Understand e Sonar
 	\end{figure}
 
     	\section{Utilizzo di GitHub}
-Per tenere traccia dell'attività e dello stato di avanzamento del progetto abbiamo utilizzato gitHub:
+Per tenere traccia dell'attività e dello stato di avanzamento del progetto abbiamo utilizzato GitHub:
 \begin{itemize}
 		\item Per ciascuno Sprint abbiamo definito una milestone che la caratterizza
 		\item Per ogni attività di sviluppo abbiamo definito una issue che la descriva, all'interno della corrispondente milestone
 		\item Abbiamo fatto ampio uso dei branch per lavorare su soluzioni parziali o questioni più ampie
 		\item Sono state utilizzate le GitHub Action per automatizzare la fase di test, build e analisi con SonarCloud
-		\item E' stato utilizzato il task Tracker offerto da gitHub nella sezione Project per condividere i progressi effettuati tra i componenti del gruppo
+		\item E' stato utilizzato il task Tracker offerto da GitHub nella sezione Project per condividere i progressi effettuati tra i componenti del gruppo
 		\item E' stata adottata la seguente strategia di gestione del branch (figura \ref{fig:branchStrategy}): una branch master, con il codice stabile; una branch per ogni sprint (associato ad una milestone), da cui si forkano le varie branch che contengono le feature della milestone; ogni k merge / commit sulla branch di sprint si rilascia una preview sul master
 	\end{itemize}
 
@@ -173,7 +173,7 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto abbi
     		\end{table}
 
 \newpage
-	\section{Requisiti non funzionali}
+	\section{Requisiti Non Funzionali}
 	Oltre ai requisiti funzionali, abbiamo individuato anche quelli non funzionali (tabella \ref{tab:Requisiti-Non-Funzionali}). 
     		\begin{table}[!h]
       			\renewcommand{\arraystretch}{1.2}
@@ -241,7 +241,6 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto abbi
     				\item Il birraio inizia l'immissione di una nuova ricetta.
     				\item Il birraio inserisce il nome della nuova ricetta.
 				\item Il birraio può inserire una descrizione della ricetta.
-    				\item import caso d'uso modificaRicetta
     				\item il sistema salva la ricetta		
 			\end{enumerate}		
 	
@@ -323,13 +322,11 @@ Come architettura software è stato scelto di usare un'architettura multi-strato
 		\end{figure}         
 \newpage
 		\subsection{Design Principles}
-			\subsubsection{Interface Segregation Principle}		
-Applicando questo principio di sviluppo ci siamo sincerati di aver suddiviso il più possibile le responsabilità e le attività svolte dai singoli controller.
 			\subsubsection{Single Responsibility Principle}
 Le classi Handler per la validazione dei dati e le classi che compongono il package Generation aggiungono una e una sola responsabilita' al contesto in cui sono utilizzate.
 Per esempio si e' scelto appositamente di spezzettare il piu' possibile la catena per la generazione degli ID separando la classe che usa una funzione di Hashing da quella che genera un Seed randomico da usare insieme al Seed di input.
-Altro esempio e' il fatto che ogni Handler si occupa di un punto specifico a atomico della validazione dell'input.
-			\subsubsection{Open–closed principle}
+Altro esempio e' il fatto che ogni Handler si occupa di un punto specifico atomico della validazione dell'input.
+			\subsubsection{Open–Closed Principle}
 Le classi del package Generation permettono di aggiungere pezzi di computazione senza modificare la classi da cui derivano.
 
          
@@ -374,7 +371,7 @@ Di seguito vengono riportati tutti i diagrammi di classi realizzati, suddivisi p
 			
     \newpage
       	\section{Diagrammi di Sequenza} 
-	Nella prima iterazione abbiamo realizatto due diagrammi di sequenza per illustrare le interazioni tra gli oggetti del sistema.
+	Nella prima iterazione abbiamo realizzato due diagrammi di sequenza per illustrare le interazioni tra gli oggetti del sistema.
 		\subsection{SD - modificaQuantitaIngrediente}
 			E' stato realizzato il diagramma di sequenza di modificaQuantitaIngrediente appartenente al caso d'suo modificaRicetta (figura \ref{fig:SD-modificaQuantitaIngrediente}).
 			Si ha l'interazione tra l'oggetto Ricetta e IngredienteRicetta.
@@ -384,8 +381,8 @@ Di seguito vengono riportati tutti i diagrammi di classi realizzati, suddivisi p
 				\caption{SD - modificaQuantitaIngrediente}\label{fig:SD-modificaQuantitaIngrediente}
 			\end{figure}	
 		\newpage	
-		\subsection{SD - modificaNomeIngrediente}
-			E' stato realizzato il diagramma di sequenza di modificaNomeIngrediente appartenente al caso d'suo modificaRicetta (figura \ref{fig:SD-inserisciIngrediente}).
+		\subsection{SD - inserisciIngrediente}
+			E' stato realizzato il diagramma di sequenza di inserisciIngrediente appartenente al caso d'suo modificaRicetta (figura \ref{fig:SD-inserisciIngrediente}).
 Si ha l'interazione tra l'oggetto Ricetta, IngredienteRicetta e Ingrediente.
 			\begin{figure}[!h]
 				\centering
@@ -452,7 +449,7 @@ Per effetturare i test nel backend abbiamo utilizzato il framework di unit testi
       \chapter{Conclusioni}
     
      	\section{Analisi con SonarQube e SonarCloud}
-Durante le fasi di implementazione abbiamo utilizzato il tool SonarQube e la gitHub Action che automatizza l'analisi con SonarCloud per mantenere controllato il livello di qualità del progetto.\\
+Durante le fasi di implementazione abbiamo utilizzato il tool SonarQube e la GitHub Action che automatizza l'analisi con SonarCloud per mantenere controllato il livello di qualità del progetto.\\
 
 		\begin{figure}[!h]
 			\centering
@@ -466,12 +463,12 @@ Durante le fasi di implementazione abbiamo utilizzato il tool SonarQube e la git
 		\end{figure}
 		\newpage 
 Dalle analisi finali svolte, i cui risultati sono riportati nelle figure \ref{fig:sonarCloud-backend} e \ref{fig:sonarCloud-frontend}, si può affermare che il progetto non presenta bugs, code Smells, vulnerabilità e problemi di sicurezza.\\
-Utilizzando i test JUnits per il backend e Jest per il frontend, siamo inoltre riusciti ad ottenere una coverage elevata del codice, pari al 97.8\% nel backed e del 94.2\% nel frontend.
+Utilizzando i test JUnits per il backend e Jest per il frontend, siamo inoltre riusciti ad ottenere una coverage elevata del codice, pari al 97.9\% nel backed e del 99.8\% nel frontend.
 
 
 \newpage
       	\section{Analisi con Understand}
-	Abbiamo utilizzato il tool Understand per capire se nel progetto fossero presenti anti-pattern strutturali legati a problemi di dipendenza o altri problemi.\\
+Abbiamo utilizzato il tool Understand per capire se nel progetto fossero presenti anti-pattern strutturali legati a problemi di dipendenza o altri problemi.\\
 Secondo un'analisi generale (figura \ref{fig:understand}) si può intuire come il progetto sia privo di problemi e presenti una struttura ben bilanciata.\\
 Sono stati realizzati i grafici metrici per le classi e i metodi sia del front-end (figura \ref{fig:F-Classi} e \ref{fig:F-Metodi}) sia per il back-end (figura \ref{fig:B-Classi} e \ref{fig:B-Metodi}).\\
 Nei grafici la grandezza rappresenta il numero di istruzioni, mentre il colore la complessità ciclomatica.\\
@@ -509,17 +506,17 @@ Nei grafici la grandezza rappresenta il numero di istruzioni, mentre il colore l
 	\section{Considerazioni Finali}
 Consideriamo il progetto completo nelle funzionalità richieste.\\
 Con questo progetto abbiamo potuto realizzare un'applicazione lavorando in team e andando a coprire tutte le fasi, dall'analisi, la progettazione, l'implementazione, il refactoring, fino al rilascio.\\
-Siamo soddisfatti di come abbiamo lavorato in gruppo dal momento che siamo sempre riusciti a comunicare e ad avere le idee chiare su ciò che andava fatto. Tutto ciò è stato semplificato dall'utilizzo del framework Scrum e l'uso proficuo di gitHub.\\
+Siamo soddisfatti di come abbiamo lavorato in gruppo dal momento che siamo sempre riusciti a comunicare e ad avere le idee chiare su ciò che andava fatto. Tutto ciò è stato semplificato dall'utilizzo del framework Scrum e l'uso proficuo di GitHub.\\
 Abbiamo avuto la possibilità di mettere in pratica le conoscenze di gestione del progetto acquisite da ogni componente del gruppo durante il corso di Analisi e Progettazione del Software e di Ingegneria del Software, oltre ad altri corsi per quanto riguarda l'implementazione.\\
  
 	
 	
  	\section{Link Utili}  
-	\href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra}{Repository githHub}\\
-	\href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki}{Wiki su gitHub}\\
-	\href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki/Installazione-Guidata}{Installazione Guidata}\\
-	\href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki/Uso-dell'Applicazione}{Uso dell'Applicazione}\\
-	\href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/tree/master/backend#readme}{Documentazione Api}\\
-	\href{https://github.com/lta-unimib/progetto-brew-day-1-brew-day-birra/tree/master/scrum}{Documentazione Scrum}\\
+	\href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra}{Repository GitHub}\\
+	\href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki}{Wiki su GitHub}\\
+	\href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki/Installazione-Guidata}{Installazione Guidata}\\
+	\href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra/wiki/Uso-dell'Applicazione}{Uso dell'Applicazione}\\
+	\href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra/tree/master/backend#readme}{Documentazione Api}\\
+	\href{https://GitHub.com/lta-unimib/progetto-brew-day-1-brew-day-birra/tree/master/scrum}{Documentazione Scrum}\\
 
 \end{document}
