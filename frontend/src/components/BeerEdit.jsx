@@ -114,6 +114,7 @@ class BeerEdit extends Component {
               onChange={this.handleInputChange}
               onConfirm={this.handleNameChange}
             />
+            <h1>note:</h1>
             <BeerNoteTable
               notes={this.state.notes}
               newNoteType={this.state.noteType}

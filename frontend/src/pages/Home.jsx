@@ -22,6 +22,7 @@ class Home extends Component {
     const nextRecipeView = (
       <NextRecipeView
         notifier={this.notifier}
+        masterCall={() => this.setState({})}
       />
     );
 

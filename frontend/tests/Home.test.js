@@ -50,11 +50,11 @@ describe("Home component", () => {
 
   test("If advice is null, dont show", async () => {
     contentFlick = false;
-    await act(() => render(<AdviceView />));
+    await act(() => render(<AdviceView testAdviceCookie/>));
     contentFlick = true;
   });
 
-  test("If advice is null, dont show", async () => {
+  test("If advice is null (invalid adviceQuantity), dont show", async () => {
     adviceQuantity = -1;
     await act(() => render(<AdviceView />));
   });

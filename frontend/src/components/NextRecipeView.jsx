@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "./MButton";
-import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
+import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER, ADVICE_VIEW_TRIGGER } from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import { TextField } from "@mui/material";
 import SettingsManager from '../utils/SettingsManager';
@@ -114,6 +114,7 @@ export default class NextRecipeView extends Component {
         return (<ShoppingList recipeID={this.state.nextRecipeID} quantity={this.state.nextRecipeQuantity}/>);
       } else {
         return <div>
+          <h3 style={{textAlign:"center"}}>Quantita' in litri prevista: {this.state.nextRecipeQuantity}</h3>
           <table className="myTable">
               <tbody>
                 <tr>
@@ -189,6 +190,8 @@ export default class NextRecipeView extends Component {
       nextRecipeQuantity: null,
       nextRecipeID: ""
     }))
-    .then(this.triggerReload);
+    .then(() => document.cookie = ADVICE_VIEW_TRIGGER)
+    .then(this.props.masterCall)
+    .then(this.triggerReload)
   }
 }

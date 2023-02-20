@@ -51,6 +51,7 @@ class BeerView extends Component {
         <center>
           <h1>{name}</h1>
           {recipeView}
+          <h1>note:</h1>
           <BeerNoteTableReadOnly
             notes={this.state.notes}
           />

@@ -55,6 +55,7 @@ class RecipeExecute extends Component {
   }
 
   componentDidMount() {
+    console.log("caricato");
     this.triggerReload()
       .then(this.triggerReloadSettings)
       .catch(() => {})

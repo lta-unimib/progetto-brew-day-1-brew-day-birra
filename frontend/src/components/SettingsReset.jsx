@@ -1,11 +1,16 @@
 import React, { Component }  from "react";
 import MButton from '../components/MButton';
-import { FAKE_NOTIFIER, RESET_ENDPOINT } from '../utils/Protocol';
+import { BACKGROUND_MANAGER_TRIGGER, FAKE_NOTIFIER, NAVBAR_THEME_MANAGER_TRIGGER, RESET_ENDPOINT, THEME_MANAGER_TRIGGER } from '../utils/Protocol';
 
 class SettingsReset extends Component{
   constructor(props) {
     super(props);
     this.notifier = this.props.notifier || FAKE_NOTIFIER;
+  }
+
+  notifyMaster = () => {
+    if (this.props.masterCall)
+      this.props.masterCall();
   }
 
   render(){
@@ -28,7 +33,14 @@ class SettingsReset extends Component{
         },
     })
     .then(this.notifier.onRequestError("impossibile cancellare i dati"))
-    .then(this.notifier.onRequestSuccess("dati cancellati con successo"))
+    .then(this.notifier.onRequestSuccessResolvePromise(() => {
+      document.cookie=BACKGROUND_MANAGER_TRIGGER;
+      document.cookie=THEME_MANAGER_TRIGGER;
+      document.cookie=NAVBAR_THEME_MANAGER_TRIGGER;
+      localStorage.clear();
+      this.notifyMaster();
+      this.notifier.success("dati cancellati con successo");
+    }))
     .then(() => this.props.onConfirm());
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FAKE_NOTIFIER, ADVICE_ENDPOINT } from '../utils/Protocol';
+import { FAKE_NOTIFIER, ADVICE_ENDPOINT, ADVICE_VIEW_TRIGGER, ADVICE_VIEW_ESCAPE } from '../utils/Protocol';
 import RecipeView from './RecipeView';
 import RecipeExecute from './RecipeExecute';
 
@@ -13,17 +13,27 @@ export default class AdviceView extends React.Component {
   }
 
   triggerReload = () => {
-    fetch(ADVICE_ENDPOINT)
+    this.setState(({advice: null}), () => {
+      fetch(ADVICE_ENDPOINT)
       .then((res) => res.json())
       .then((data) => this.setState({ advice: data }))
       .catch(() => this.setState({ advice: null }));
+    })
   }
 
   componentDidMount() {
+    if (this.props.testAdviceCookie) {
+        document.cookie = ADVICE_VIEW_TRIGGER;
+    }
     this.triggerReload();
   }
 
   render() {
+    if (document.cookie.includes(ADVICE_VIEW_TRIGGER)) {
+      document.cookie = ADVICE_VIEW_ESCAPE;
+      this.triggerReload();
+    }
+
     return (
       <div>
         <h1 className="advice-texts">Vuoi un consiglio?</h1>
