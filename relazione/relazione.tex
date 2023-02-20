@@ -424,13 +424,13 @@ Tutte le interfacce Repository implementano pattern architetturale Table Data Ga
 			\subsubsection{Singleton}	
 			Tutti i controller (tranne ControllerResetController) implementano il design pattern Singleton, quindi hanno tutti rispettivamente l'istanza statica instance, il metodo statico createInstance che assegna ad ogni controller la sua istanza statica (creata e coordinata da ControllerResetController) e il metodo getInstance.
 Tutte le interfacce Repository hanno associato rispettivamente una classe utility nominata RepositoryGateway, una classe che usa il pattern singleton per avere solo una istanza dei repository JDBC.
-Implementano questo pattern anche le classi Validator, ValidatorHandler e le classi IDGenerator e derivate. 
+Implementano questo pattern anche le classi Validator, le classi IDGenerator e derivate. 
 				
 		\subsubsection{Strategy, Template Method}
 		Le classi IDGenerator e derivate implementano i pattern Strategy e Template Method dal momento che IDGenerator definisce la successione delle fasi preprocess -> compute -> postprocess, le quali sono modificabili singolarmente dalle derivate, e perchè le derivate applicano potenzialmente algoritmi diversi per ottenere lo stesso risultato. 
 		
 		\subsubsection{Facade}		
-		La classe IDGenerationFacade è applicazione dei design pattern Facade.
+		La classe IDGenerationFacade è applicazione del design pattern Facade.
 
       \chapter{Implementazione e Testing}
       
@@ -462,7 +462,7 @@ Durante le fasi di implementazione abbiamo utilizzato il tool SonarQube e la Git
 			\caption{sonarCloud-frontend}\label{fig:sonarCloud-frontend}
 		\end{figure}
 		\newpage 
-Dalle analisi finali svolte, i cui risultati sono riportati nelle figure \ref{fig:sonarCloud-backend} e \ref{fig:sonarCloud-frontend}, si può affermare che il progetto non presenta bugs, code Smells, vulnerabilità e problemi di sicurezza.\\
+Dalle analisi finali svolte, i cui risultati sono riportati nelle figure \ref{fig:sonarCloud-backend} e \ref{fig:sonarCloud-frontend}, si può affermare che il progetto non presenta bugs, code smells, vulnerabilità e problemi di sicurezza.\\
 Utilizzando i test JUnits per il backend e Jest per il frontend, siamo inoltre riusciti ad ottenere una coverage elevata del codice, pari al 97.9\% nel backed e del 99.8\% nel frontend.
 
 
