@@ -17,6 +17,8 @@ export const SETTING_LIST_ENDPOINT = '/api/settings';
 
 export const ADVICE_VIEW_TRIGGER = "adviceReload=true";
 export const ADVICE_VIEW_ESCAPE = "adviceReload=false";
+export const NEXT_RECIPE_VIEW_TRIGGER = "nextRecipeReload=true";
+export const NEXT_RECIPE_VIEW_ESCAPE = "nextRecipeReload=false";
 export const THEME_MANAGER_TRIGGER = "themeReload=true";
 export const THEME_MANAGER_ESCAPE = "themeReload=false";
 export const NAVBAR_THEME_MANAGER_TRIGGER = "navbarReload=true";

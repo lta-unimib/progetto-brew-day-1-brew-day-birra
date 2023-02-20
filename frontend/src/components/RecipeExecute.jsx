@@ -13,7 +13,7 @@ class RecipeExecute extends Component {
     this.state = {
       missingIngredients: false,
       newBeerName: "new Beer",
-      newBeerQuantity: 0,
+      newBeerQuantity: this.props.beerQuantity || 0,
       name: "",
       description: "",
       ingredients: [],
@@ -55,7 +55,6 @@ class RecipeExecute extends Component {
   }
 
   componentDidMount() {
-    console.log("caricato");
     this.triggerReload()
       .then(this.triggerReloadSettings)
       .catch(() => {})
@@ -121,39 +120,44 @@ class RecipeExecute extends Component {
   }
 
   addBeer = () => {
-    if (this.state.newBeerName === "")
-      return this.notifier.warning("il nome della birra non deve essere vuoto");
-    if (isNotValidPositiveQuantity(this.state.newBeerQuantity))
-      return this.notifier.warning("la quantita' di litri di birra prodotta deve essere strettamente positiva");
-    if(this.state.newBeerQuantity > parseFloat(this.state.equipment)) {
-      this.setState({missingEquipment: true});
-      this.notifier.warning("la capacita' dell'equipaggiamento e' insufficiente");
-    } else {
-      fetch(BEER_LIST_ENDPOINT, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: this.state.newBeerName,
-          recipeID: this.state.recipeID,
-          quantity: this.state.newBeerQuantity,
-        }),
-      })
-      .then((response) => {
-        if (response.status >= 400)
-          throw new Error();
-      })
-      .then(() => {
-        this.props.onConfirm();
-        this.notifier.success("birra creata con successo");
-      })
-      .catch(() => {
-        this.setState({missingEquipment: false, missingIngredients: true});
-        this.notifier.warning("mancano degli ingredienti");
-      })
-    }
+    this.setState({
+      missingEquipment: false,
+      missingIngredients: false
+    }, () => {
+      if (this.state.newBeerName === "")
+        return this.notifier.warning("il nome della birra non deve essere vuoto");
+      if (isNotValidPositiveQuantity(this.state.newBeerQuantity))
+        return this.notifier.warning("la quantita' di litri di birra prodotta deve essere strettamente positiva");
+      if(this.state.newBeerQuantity > parseFloat(this.state.equipment)) {
+        this.setState({missingEquipment: true});
+        this.notifier.warning("la capacita' dell'equipaggiamento e' insufficiente");
+      } else {
+        fetch(BEER_LIST_ENDPOINT, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: this.state.newBeerName,
+            recipeID: this.state.recipeID,
+            quantity: this.state.newBeerQuantity,
+          }),
+        })
+        .then((response) => {
+          if (response.status >= 400)
+            throw new Error();
+        })
+        .then(() => {
+          this.props.onConfirm();
+          this.notifier.success("birra creata con successo");
+        })
+        .catch(() => {
+          this.setState({missingEquipment: false, missingIngredients: true});
+          this.notifier.warning("mancano degli ingredienti");
+        })
+      }
+    });
   }
 
 }

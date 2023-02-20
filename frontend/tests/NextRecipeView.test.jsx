@@ -101,7 +101,7 @@ const setupNextRecipeView = () => render(<NextRecipeView masterCall={() => {}}/>
 describe("NextRecipeView tests", () => {
   test("settings are not very ok 1", async () => {
     settings.nextRecipeID = "";
-    await act(() => setupNextRecipeView())
+    await act(() => render(<NextRecipeView testNextRecipeCookie masterCall={() => {}}/>))
     settings.nextRecipeID = "recipeID";
   })
   
