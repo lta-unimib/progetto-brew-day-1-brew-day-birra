@@ -14,11 +14,13 @@ import JimFlex from "../components/JimFlex";
 import InputQuantitySetting from "../components/InputQuantitySetting";
 import SettingsManager from "../utils/SettingsManager";
 import twins from "../theme/twins";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default class Impostazioni extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          isLoading: true,
           currentAction: "",
           showModal:false,
           colors: Object.keys(themes).map((key) => { return {name:key, value:key}; }),
@@ -81,6 +83,7 @@ export default class Impostazioni extends Component {
       .then(this.queryBackgroundSetting)
       .then(this.queryEquipmentSetting)
       .then(this.queryNameSetting)
+      .then(() => this.setState({isLoading: false}))
       .catch(this.notifier.connectionError)
     }
 
@@ -169,7 +172,7 @@ export default class Impostazioni extends Component {
       let currentAction = this.state.currentAction;
       switch (currentAction) {
         case "resetSettings":
-          return <SettingsReset notifier={this.notifier} onConfirm={this.closeModalAndReload}/>;
+          return <SettingsReset masterCall={this.props.masterCall} notifier={this.notifier} onConfirm={this.closeModalAndReload}/>;
         case "resetRecipeID":
           return <NextRecipeReset notifier={this.notifier} onConfirm={this.closeModal}/>;
         default:
@@ -184,51 +187,45 @@ export default class Impostazioni extends Component {
     }
 
     render() {
+      const settingsPanel = () => (
+        <JimFlex>
+          <InputQuantitySetting
+            value={this.state.equipment}
+            title="Equipaggiamento Disponibile"
+            label="Equipment"
+            onChange={this.setNewEquipment}
+            onConfirm={this.handleSetEquipment}/>
+          <InputFieldSetting
+            value={this.state.name}
+            title="Inserisci qui il tuo nome"
+            label="Name"
+            onChange={this.setNewName}
+            onConfirm={this.handleSetName}/>
+          <InputSelectorSetting
+            title="Seleziona il colore del tema"
+            label="Color"
+            value={this.state.color}
+            onChange={this.setNewColor}
+            options={this.state.colors}/>
+          <InputSelectorSetting
+            title="Seleziona lo sfondo"
+            label="Background"
+            value={this.state.background}
+            onChange={this.setNewBackground}
+            options={this.state.backgrounds}/>
+          <JimTable>
+            <MButton center text="Elimina tutti i dati" onClick={this.handleResetSettings}/>
+          </JimTable>
+          <JimTable>
+            <MButton center text="Resetta la prossima ricetta da eseguire" onClick={this.handleResetNextRecipeID}/>
+          </JimTable>
+        </JimFlex>
+      )
+
       return (
         <BodyThemeManager>
-          <JimFlex>
-            {(this.state.equipment !== undefined
-              ?  (<InputQuantitySetting
-              value={this.state.equipment}
-              title="Equipaggiamento Disponibile"
-              label="Equipment"
-              onChange={this.setNewEquipment}
-              onConfirm={this.handleSetEquipment}
-            />) : null)}
-            
-            {(this.state.name !== undefined
-              ?  (<InputFieldSetting
-              value={this.state.name}
-              title="Inserisci qui il tuo nome"
-              label="Name"
-              onChange={this.setNewName}
-              onConfirm={this.handleSetName}
-            />) : null)}
-            
-            {(this.state.color !== undefined
-              ?  (<InputSelectorSetting
-              title="Seleziona il colore del tema"
-              label="Color"
-              value={this.state.color}
-              onChange={this.setNewColor}
-              options={this.state.colors}
-            />) : null)}
-            
-            {(this.state.background !== undefined
-              ?  (<InputSelectorSetting
-              title="Seleziona lo sfondo"
-              label="Background"
-              value={this.state.background}
-              onChange={this.setNewBackground}
-              options={this.state.backgrounds}
-            />) : null)}
-            <JimTable>
-              <MButton center text="Elimina tutti i dati" onClick={this.handleResetSettings}/>
-            </JimTable>
-            <JimTable>
-              <MButton center text="Resetta la prossima ricetta da eseguire" onClick={this.handleResetNextRecipeID}/>
-            </JimTable>
-          </JimFlex>
+          <LoadingScreen isLoading={this.state.isLoading}/>
+          {this.state.isLoading ? null : settingsPanel()}
           <Modal showModal={this.state.showModal} setShowModal={this.setShowModal}>
             {this.getCurrentComponent()}
           </Modal>

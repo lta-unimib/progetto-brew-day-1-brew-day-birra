@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import {INVENTORY_LIST_ENDPOINT, INVENTORY_ENDPOINT, FAKE_NOTIFIER} from '../utils/Protocol';
 import BodyThemeManager from "../components/BodyThemeManager";
 import InventoryTable from "../components/InventoryTable";
+import LoadingScreen from "../components/LoadingScreen";
 
 class Inventario extends Component {
   constructor(props) {
@@ -21,9 +22,7 @@ class Inventario extends Component {
     fetch(INVENTORY_LIST_ENDPOINT)
     .then((response) => response.json())
     .then((data) => {
-      this.setState({ inventory: data, isLoading: false }, () => {
-        return <p>Caricamento...</p>;
-      });
+      this.setState({ inventory: data, isLoading: false })
     })
     .catch(this.notifier.connectionError)
   }
@@ -56,15 +55,12 @@ class Inventario extends Component {
   };
 
   render() {
-    const { inventory, isLoading } = this.state;
-
-    if (isLoading) {
-      return <p>Caricamento...</p>;
-    }
+    const { inventory } = this.state;
 
     return (
       <BodyThemeManager>
         <div>
+          <LoadingScreen isLoading={this.state.isLoading}/>
           <InventoryTable
             items={inventory}
             handleDelete={this.handleDelete}

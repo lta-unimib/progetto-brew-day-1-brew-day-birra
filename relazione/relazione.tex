@@ -435,13 +435,19 @@ Implementano questo pattern anche le classi Validator, ValidatorHandler e le cla
 		\subsubsection{Facade}		
 		La classe IDGenerationFacade è applicazione dei design pattern Facade.
 
-      \chapter{Implementazione}
+      \chapter{Implementazione e Testing}
       
       \section{Scelte Implementative - Backend}
-Per realizzare il backend abbiamo deciso di utilizzare Spring, framework open source per lo sviluppo di applicazioni su piattaforma Java.
-Come interfaccia per il database abbiamo usato CrudRepository.\\
+Per realizzare il backend abbiamo deciso di utilizzare Spring, framework open source per lo sviluppo di applicazioni su piattaforma Java.\\
+Come interfaccia per il database abbiamo usato JDBC.\\
    	\section{Scelte Implementative - Frontend}
 Per realizzare l'interfaccia utente abbiamo deciso di utilizzare la libreria open-source React, la quale utilizza come linguaggio JavaScript/JSX.
+
+   	\section{Testing - Frontend}
+Per effetturare i test nel frontend abbiamo utilizzato il framework di test Jest
+
+   	\section{Testing - Backend}
+Per effetturare i test nel backend abbiamo utilizzato il framework di unit testing JUnit.
 							
       \chapter{Conclusioni}
     

@@ -11,10 +11,11 @@ import RecipeTable from '../components/RecipeTable';
 import JimTable from '../components/JimTable';
 import BodyThemeManager from '../components/BodyThemeManager';
 import QuantityInput from '../components/QuantityInput';
-import { TextField } from '@mui/material';
 import JimFlex from '../components/JimFlex';
 import JimGrid from '../components/JimGrid';
 import SettingsManager from '../utils/SettingsManager';
+import LoadingScreen from '../components/LoadingScreen';
+import { TextField } from '@mui/material';
 
 export default class Ricette extends Component {
     constructor(props) {
@@ -24,7 +25,8 @@ export default class Ricette extends Component {
           nextRecipeQuantity: "", nextRecipeID: "", 
           selectedRecipe: null, showModal:false, 
           newRecipeName: "", newRecipeDescription: "", 
-          filterName: "", recipesFiltered: []
+          filterName: "", recipesFiltered: [],
+          isLoading: true
         };
         this.notifier = this.props.notifier || FAKE_NOTIFIER;
         this.settingsManager = new SettingsManager();
@@ -36,7 +38,11 @@ export default class Ricette extends Component {
           .then(response => response.json())
           .then(recipeIDs => Promise.all(recipeIDs.map(recipeID => fetch(`/api/recipes/${recipeID}`))))
           .then(responses => Promise.all(responses.map(response => response.json())))
-          .then(data => this.setState({recipes: data, recipesFiltered: data, newRecipeName: "", newRecipeDescription: ""}))
+          .then(data => this.setState({
+            recipes: data, recipesFiltered: data,
+            newRecipeName: "", newRecipeDescription: "",
+            isLoading: false
+          }))
           .then(acc).catch(rej)
         })
     }
@@ -177,6 +183,7 @@ export default class Ricette extends Component {
         return (
           <BodyThemeManager>
             <div>
+              <LoadingScreen isLoading={this.state.isLoading}/>
               <JimFlex>
                 <JimTable>
                   <p style={{textAlign:"center"}}>FILTRA PER NOME</p>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import RecipeView from "./RecipeView";
 import MButton from "./MButton";
-import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER } from '../utils/Protocol';
+import { SHOPPING_ENDPOINT, BEER_LIST_ENDPOINT, FAKE_NOTIFIER, ADVICE_VIEW_TRIGGER, NEXT_RECIPE_VIEW_TRIGGER, NEXT_RECIPE_VIEW_ESCAPE } from '../utils/Protocol';
 import ShoppingList from "./ShoppingList";
 import { TextField } from "@mui/material";
 import SettingsManager from '../utils/SettingsManager';
@@ -83,15 +83,27 @@ export default class NextRecipeView extends Component {
   }
 
   componentDidMount() {
+    if (this.props.testNextRecipeCookie) {
+        document.cookie = NEXT_RECIPE_VIEW_TRIGGER;
+    }
     this.triggerReload();
   }
 
   triggerReload = () => {
-    this.getNextRecipeID()
-    .then(this.getNextRecipeQuantity)
-    .then(this.getShoppingList)
-    .then(this.getEquipment)
-    .catch(err => !err || this.notifier.connectionError())
+    this.setState({
+      missingIngredients: [],
+      newBeerName: "new Beer",
+      nextRecipeQuantity: null,
+      nextRecipeID: "",
+      equipment: "",
+      recipe: {},
+    }, () => {
+      this.getNextRecipeID()
+      .then(this.getNextRecipeQuantity)
+      .then(this.getShoppingList)
+      .then(this.getEquipment)
+      .catch(err => !err || this.notifier.connectionError())
+    });
   }
 
   setNewBeerName = (event) => {
@@ -100,6 +112,11 @@ export default class NextRecipeView extends Component {
   }
 
   render() {
+    if (document.cookie.includes(NEXT_RECIPE_VIEW_TRIGGER)) {
+      document.cookie = NEXT_RECIPE_VIEW_ESCAPE;
+      this.triggerReload();
+    }
+
     const action = () => {
       if (this.state.equipment < this.state.nextRecipeQuantity) {
         return (
@@ -114,6 +131,7 @@ export default class NextRecipeView extends Component {
         return (<ShoppingList recipeID={this.state.nextRecipeID} quantity={this.state.nextRecipeQuantity}/>);
       } else {
         return <div>
+          <h3 style={{textAlign:"center"}}>Quantita' in litri prevista: {this.state.nextRecipeQuantity}</h3>
           <table className="myTable">
               <tbody>
                 <tr>
@@ -189,6 +207,8 @@ export default class NextRecipeView extends Component {
       nextRecipeQuantity: null,
       nextRecipeID: ""
     }))
-    .then(this.triggerReload);
+    .then(() => document.cookie = ADVICE_VIEW_TRIGGER)
+    .then(this.props.masterCall)
+    .then(this.triggerReload)
   }
 }

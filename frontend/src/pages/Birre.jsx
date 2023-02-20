@@ -12,6 +12,7 @@ import JimTable from "../components/JimTable";
 import { TextField } from "@mui/material";
 import JimFlex from "../components/JimFlex";
 import JimGrid from "../components/JimGrid";
+import LoadingScreen from "../components/LoadingScreen";
 
 
 class Birre extends Component {
@@ -27,6 +28,7 @@ class Birre extends Component {
       filterName: "",
       beerIDsFiltered: [],
       recipes: [],
+      isLoading: true
     };
     this.notifier = this.props.notifier || FAKE_NOTIFIER;
   }
@@ -59,7 +61,7 @@ class Birre extends Component {
                   Promise.all(responses.map((response) => response.json()))
                 )
                 .then((data) => {
-                  this.setState({ recipes: data });
+                  this.setState({ recipes: data, isLoading: false });
                 });
             });
         });
@@ -170,6 +172,7 @@ class Birre extends Component {
     return (
       <BodyThemeManager>
         <div>
+          <LoadingScreen isLoading={this.state.isLoading}/>
           <JimFlex>
             <JimTable>
                 <p style={{textAlign:"center"}}>FILTRA PER NOME</p>

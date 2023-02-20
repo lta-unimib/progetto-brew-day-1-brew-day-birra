@@ -16,12 +16,15 @@ class Home extends Component {
   render() {
     const adviceView = (
       <AdviceView
-        notifier={this.notifier}/>
+        notifier={this.notifier}
+        masterCall={() => this.setState({})}
+      />
     );
 
     const nextRecipeView = (
       <NextRecipeView
         notifier={this.notifier}
+        masterCall={() => this.setState({})}
       />
     );
 

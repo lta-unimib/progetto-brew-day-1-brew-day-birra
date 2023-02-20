@@ -4,6 +4,7 @@ import { act } from "react-test-renderer";
 import NextRecipeView from "../src/components/NextRecipeView";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { BEER_LIST_ENDPOINT, RECIPE_ENDPOINT, RECIPE_LIST_ENDPOINT, SETTINGS_ENDPOINT, SETTING_LIST_ENDPOINT, SHOPPING_ENDPOINT } from "../src/utils/Protocol";
+import Home from "../src/pages/Home";
 
 var settings = {
   nextRecipeQuantity: "30",
@@ -95,38 +96,40 @@ global.fetch = jest.fn().mockImplementation((url, body) => {
 }
 )
 
+const setupNextRecipeView = () => render(<NextRecipeView masterCall={() => {}}/>);
+
 describe("NextRecipeView tests", () => {
   test("settings are not very ok 1", async () => {
     settings.nextRecipeID = "";
-    await act(() => render(<NextRecipeView/>))
+    await act(() => render(<NextRecipeView testNextRecipeCookie masterCall={() => {}}/>))
     settings.nextRecipeID = "recipeID";
   })
   
   test("settings are not very ok 2", async () => {
     settings.nextRecipeQuantity = "";
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     settings.nextRecipeQuantity = "30";
   })
 
   test("settings are not very ok 4", async () => {
     settings.equipment = "";
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     settings.equipment = "30";
   })
   
   test("settings are there", async () => {
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
   })
   
   test("settings there is not 1", async () => {
     contentFlicks.nextRecipeID = false;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     contentFlicks.nextRecipeID = true;
   })
   
   test("settings there is not 2", async () => {
     contentFlicks.nextRecipeQuantity = false;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     contentFlicks.nextRecipeQuantity = true;
   })
   
@@ -134,7 +137,7 @@ describe("NextRecipeView tests", () => {
     contentFlicks.nextRecipeID = false;
     statusFlicks.nextRecipeID = 400;
     statusFlicks.settings = 400;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     statusFlicks.settings = 200;
     statusFlicks.nextRecipeID = 200;
     contentFlicks.nextRecipeID = true;
@@ -144,7 +147,7 @@ describe("NextRecipeView tests", () => {
     contentFlicks.nextRecipeQuantity = false;
     statusFlicks.nextRecipeQuantity = 400;
     statusFlicks.settings = 400;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     statusFlicks.settings = 200;
     statusFlicks.nextRecipeQuantity = 200;
     contentFlicks.nextRecipeQuantity = true;
@@ -152,13 +155,13 @@ describe("NextRecipeView tests", () => {
   
   test("settings there is not 3", async () => {
     contentFlicks.shopping = false;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     contentFlicks.shopping = true;
   })
   
   test("settings there is not 4", async () => {
     contentFlicks.equipment = false;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     contentFlicks.equipment = true;
   })
 
@@ -167,9 +170,9 @@ describe("NextRecipeView tests", () => {
     contentFlicks.nextRecipeID = true;
     contentFlicks.nextRecipeQuantity = true;
     contentFlicks.equipment = true;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     await act(() => fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: ""}}));
-    await act(() => fireEvent.click(screen.getAllByText("Crea")[0]));
+    await act(() => fireEvent.click(screen.getByText("Crea")));
   })
 
   test("adding a beer but quantity is too much", async () => {
@@ -177,7 +180,7 @@ describe("NextRecipeView tests", () => {
     contentFlicks.nextRecipeQuantity = true;
     contentFlicks.equipment = true;
     settings.nextRecipeQuantity = "90";
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
   })
 
   test("adding a beer but not enough ingreditents", async () => {
@@ -185,19 +188,19 @@ describe("NextRecipeView tests", () => {
     contentFlicks.nextRecipeQuantity = true;
     contentFlicks.equipment = true;
     settings.nextRecipeQuantity = "30";
-    await act(() => render(<NextRecipeView/>))
+    await act(() => setupNextRecipeView())
     statusFlicks.beer = 400;
     await act(() => fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}}));
-    await act(() => fireEvent.click(screen.getAllByText("Crea")[0]));
+    await act(() => fireEvent.click(screen.getByText("Crea")));
   })
 
   test("adding a beer", async () => {
     contentFlicks.nextRecipeID = true;
     contentFlicks.nextRecipeQuantity = true;
     contentFlicks.equipment = true;
-    await act(() => render(<NextRecipeView/>))
+    await act(() => render(<Home/>))
     statusFlicks.beer = 200;
     await act(() => fireEvent.change(screen.getByLabelText("Beer Name"), {target: {value: "newBeerName"}}));
-    await act(() => fireEvent.click(screen.getAllByText("Crea")[0]));
+    await act(() => fireEvent.click(screen.getByText("Crea")));
   })
 })
