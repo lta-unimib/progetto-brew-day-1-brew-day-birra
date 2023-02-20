@@ -117,7 +117,6 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto abbi
 \begin{itemize}
 		\item Per ciascuno Sprint abbiamo definito una milestone che la caratterizza
 		\item Per ogni attività di sviluppo abbiamo definito una issue che la descriva, all'interno della corrispondente milestone
-		\item Abbiamo fatto ampio uso dei branch per lavorare su soluzioni parziali o questioni più ampie
 		\item Sono state utilizzate le GitHub Action per automatizzare la fase di test, build e analisi con SonarCloud
 		\item E' stato utilizzato il task Tracker offerto da GitHub nella sezione Project per condividere i progressi effettuati tra i componenti del gruppo
 		\item E' stata adottata la seguente strategia di gestione del branch (figura \ref{fig:branchStrategy}): una branch master, con il codice stabile; una branch per ogni sprint (associato ad una milestone), da cui si forkano le varie branch che contengono le feature della milestone; ogni k merge / commit sulla branch di sprint si rilascia una preview sul master
@@ -128,7 +127,12 @@ Per tenere traccia dell'attività e dello stato di avanzamento del progetto abbi
 		\includegraphics[width=0.9\linewidth]{image/branchStrategy.png}
 		\caption{Branch Strategy}\label{fig:branchStrategy}
 	\end{figure}
-	
+Le Github Actions sono state usate di default per ogni azione sul master e in generale su qualsiasi pull request in branch.
+Le Github Action producono un eseguibile jar che combina frontend e backend in un unico pacchetto, quindi per ogni tag e' presente una versione dell'applicativo completo.\\
+Sfortunatamente tali applicativi integrali compilati e presenti nei tag degli sprint 1,2,3 e' molto probabile che non funzionino a dovere per quanto concerne il visualizzare il frontend tramite l'engine statico di Spring Boot.
+Questo e' dovuto al fatto che si e' deciso di utilizzare solo in seguito un MemoryRouter e una strategia full-on-memory per i link, per evitare che sia il server a dover eseguire il routing del frontend. Se queste versioni vengono usate tramite frontend e backend come entita' separate il problema non si presenta perche' in questo caso il routing viene fatto da nodejs invece di Spring Boot.
+A partire dalla prima preview dallo sprint 4 questo errore e' stato corretto.
+I tag di Github contengono le 4 versioni (una per sprint) realizzate progressivamente nel progetto.
 \newpage
     \chapter{Analisi}
     	\section{Glossario}
